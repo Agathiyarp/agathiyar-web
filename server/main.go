@@ -1,24 +1,77 @@
 package main
 
 import (
+	"context"
 	"database/sql"
 	"encoding/json"
+	"fmt"
 	"log"
 	"net/http"
+	"time"
 
 	_ "github.com/go-sql-driver/mysql"
 	"github.com/gorilla/handlers"
 	"github.com/gorilla/mux"
+	"go.mongodb.org/mongo-driver/mongo"
+	"go.mongodb.org/mongo-driver/mongo/options"
 )
+
+type MongoDBConfig struct {
+	URI      string
+	Database string
+	Timeout  time.Duration
+}
+
+func ConnectToMongoDB(cfg MongoDBConfig) (*mongo.Client, error) {
+	// Set client options
+	clientOptions := options.Client().ApplyURI(cfg.URI)
+
+	// Create a new client and connect to the server
+	ctx, cancel := context.WithTimeout(context.Background(), cfg.Timeout)
+	defer cancel()
+
+	client, err := mongo.Connect(ctx, clientOptions)
+	if err != nil {
+		return nil, fmt.Errorf("failed to connect to MongoDB: %w", err)
+	}
+
+	// Check the connection
+	err = client.Ping(ctx, nil)
+	if err != nil {
+		return nil, fmt.Errorf("failed to ping MongoDB: %w", err)
+	}
+
+	fmt.Println("Connected to MongoDB!")
+	return client, nil
+}
 
 var db *sql.DB
 
 func init() {
-	var err error
-	db, err = sql.Open("mysql", "user:password@tcp(localhost:3306)/dbname")
-	if err != nil {
-		log.Fatal(err)
+	// MongoDB configuration
+	cfg := MongoDBConfig{
+		URI:      "mongodb://localhost:27017", // Replace with your MongoDB URI
+		Database: "agathiyar",
+		Timeout:  10 * time.Second,
 	}
+
+	// Connect to MongoDB
+	client, err := ConnectToMongoDB(cfg)
+	log.Println(client)
+	if err != nil {
+		log.Fatalf("Error connecting to MongoDB: %v", err)
+	}
+
+	// Use the `client` to interact with the database...
+	// e.g., client.Database(cfg.Database).Collection("mycollection")
+
+	// Close the connection once you're done
+	// defer func() {
+	// 	if err := client.Disconnect(context.TODO()); err != nil {
+	// 		log.Fatalf("Error disconnecting from MongoDB: %v", err)
+	// 	}
+	// 	fmt.Println("Disconnected from MongoDB.")
+	// }()
 }
 
 func main() {
@@ -35,7 +88,7 @@ func main() {
 	)(r)
 
 	//http.ListenAndServe(":5000", corsHandler)
-	log.Fatal(http.ListenAndServe(":8080", corsHandler))
+	log.Fatal(http.ListenAndServe(":8081", corsHandler))
 }
 
 func RegisterHandler(w http.ResponseWriter, r *http.Request) {

@@ -6,15 +6,15 @@ function App() {
   const [password, setPassword] = useState('');
 
   const handleRegister = async () => {
-    await axios.post('http://localhost:8080/register', { username, password });
+    await axios.post('http://localhost:8081/register', { username, password });
   };
 
   const handleLogin = async () => {
-    await axios.post('http://localhost:8080/login', { username, password });
+    await axios.post('http://localhost:8081/login', { username, password });
   };
 
   const handleLogout = async () => {
-    await axios.post('http://localhost:8080/logout');
+    await axios.post('http://localhost:8081/logout');
   };
 
   return (
