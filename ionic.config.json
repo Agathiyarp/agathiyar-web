@@ -1,0 +1,7 @@
+{
+    "name": "agathiyar",
+    "integrations": {
+      "capacitor": {}
+    },
+    "type": "react"
+  }
