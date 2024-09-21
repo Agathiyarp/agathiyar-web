@@ -1,11 +1,14 @@
 import React, { useState } from 'react';
 import axios from 'axios';
 import AccountCircleIcon from '@mui/icons-material/AccountCircle';
+import 'bootstrap/dist/css/bootstrap.min.css';
+import 'bootstrap/dist/js/bootstrap.bundle.min.js';
 import Button from '@mui/material/Button';
 import Stack from '@mui/material/Stack';
 import MenuIntroduction from './components/menu/menu';
 import './App.css'
 import mainlogo from './images/mainlogo.png'
+import Slider from './components/slider/slider';
 
 function App() {
   const [username, setUsername] = useState('');
@@ -24,20 +27,26 @@ function App() {
   };
 
   return (
-    <div class='main-container'>
-      <div class="image-container">
-        <img class='logo-image' src={mainlogo}/>
-        <div class='title'>
-          <h2 class='align-center m-30'>AGATHIYAR PYRAMID</h2>
-          <h2 class='align-center'>DHYANA ASHRAM</h2>
-          <h4 class='align-center m-0'>Mounam - Dhyanam - Gnanam</h4>
+    <div>
+      <div class='main-container'>
+        <div class="image-container">
+          <img class='logo-image' src={mainlogo}/>
+          <div class='title'>
+            <h2 class='align-center m-30'>AGATHIYAR PYRAMID</h2>
+            <h2 class='align-center'>DHYANA ASHRAM</h2>
+            <h4 class='align-center m-0'>Mounam - Dhyanam - Gnanam</h4>
+          </div>
+        </div>
+        <MenuIntroduction/>
+        <div class='account-icon'>
+          <AccountCircleIcon/>
         </div>
       </div>
-      <MenuIntroduction/>
-      <div class='account-icon'>
-        <AccountCircleIcon/>
-      </div>
+      
       <div>
+        <div>
+          <Slider />
+        </div>
       {/* <Stack direction="row" spacing={2}>
         <Button>WORKSHOP LOGIN</Button>
       </Stack> */}
