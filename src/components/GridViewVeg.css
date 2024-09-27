@@ -1,0 +1,18 @@
+.image-container {
+    flex: 1; /* Take equal space */
+    background-color: #ffe0b2; /* Light orange background */
+    display: flex; /* Center image */
+    justify-content: center; /* Center image horizontally */
+    padding: 20px; /* Padding inside image section */
+  }
+  .photo-frame {
+    border: 5px solid #ccc; /* Frame border color */
+    border-radius: 10px; /* Rounded corners for frame */
+    padding: 10px; /* Padding inside the frame */
+    background-color: #fff; /* Frame background color */
+  }
+  .image {
+    max-width: 100%; /* Ensure responsive image */
+    height: auto; /* Maintain aspect ratio */
+    border-radius: 5px; /* Rounded corners for image */
+  }

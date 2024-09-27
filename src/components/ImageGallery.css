@@ -1,0 +1,45 @@
+.image-gallery {
+    display: flex;
+    width: 100%; /* Full width */
+  }
+  
+  .image-container {
+    flex: 1; /* Equal space for each image */
+    position: relative; /* Position for the frame effect */
+    overflow: hidden; /* Hide overflow */
+  }
+  
+  .gallery-image {
+    width: 100%; /* Full width to fit the container */
+    height: 250px; /* Fixed height */
+    object-fit: cover; /* Maintain aspect ratio */
+    transition: transform 0.3s ease; /* Smooth transition */
+  }
+  
+  .gallery-image:hover {
+    transform: scale(1.1); /* Scale image on hover */
+  }
+  
+  .frame {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    border: 5px solid transparent; /* Initial border */
+    border-radius: 10px; /* Rounded corners */
+    box-shadow: 0 0 15px rgba(0, 0, 0, 0.3); /* Shadow for depth */
+    animation: pulse 1.5s infinite; /* Animation effect */
+  }
+  
+  @keyframes pulse {
+    0% {
+      border-color: rgba(255, 255, 255, 0.8);
+    }
+    50% {
+      border-color: rgba(255, 255, 255, 0);
+    }
+    100% {
+      border-color: rgba(255, 255, 255, 0.8);
+    }
+  }

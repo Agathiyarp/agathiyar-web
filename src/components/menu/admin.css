@@ -1,0 +1,14 @@
+.icon-button {
+    transition: transform 0.3s, color 0.3s;
+    padding: 60px;
+    background: white;
+    border-radius: 80px; /* Rounded corners */
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  }
+  .icon-button:hover {
+    color: #1976d2; /* Change this to your desired hover color */
+    transform: scale(1.1);
+  }
+  .menu-paper {
+    transition: opacity 0.3s ease;
+  }

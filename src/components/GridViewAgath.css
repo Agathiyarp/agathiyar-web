@@ -1,0 +1,34 @@
+.outer-container {
+    border-radius: 8px; /* Rounded corners */
+    overflow: hidden; /* Ensure contents don't overflow */
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1); /* Subtle shadow */
+    padding: 20px; /* Padding around the container */
+  }
+  .grid-container {
+    display: flex; /* Use flexbox for horizontal layout */
+    align-items: flex-start; /* Align items to the top */
+  }
+  .image-container {
+    flex: 1; /* Take equal space */
+    background-color: #ffe0b2; /* Light orange background */
+    display: flex; /* Center image */
+    justify-content: center; /* Center image horizontally */
+    padding: 20px; /* Padding inside image section */
+  }
+
+  .text-container {
+    flex: 1; /* Take equal space */
+    background-color: #e0f7fa; /* Light blue background */
+    padding: 20px; /* Padding inside text section */
+  }
+  .photo-frame {
+    border: 5px solid #ccc; /* Frame border color */
+    border-radius: 10px; /* Rounded corners for frame */
+    padding: 10px; /* Padding inside the frame */
+    background-color: #fff; /* Frame background color */
+  }
+  .image {
+    max-width: 100%; /* Ensure responsive image */
+    height: auto; /* Maintain aspect ratio */
+    border-radius: 5px; /* Rounded corners for image */
+  }
