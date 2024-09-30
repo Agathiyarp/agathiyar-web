@@ -1,7 +1,7 @@
 import React from 'react';
 import './GridViewVeg.css';
-import yourImage from '../images/image5.png'; 
-const GridView = () => {
+import vegetarian from '../images/vegetarian.png'; 
+const GridViewVeg = () => {
   const vegetarianText = `
     Being a Vegetarian
     Vegetarianism is a conscious effort, a deliberate effort to get out of the heaviness 
@@ -17,11 +17,11 @@ const GridView = () => {
         </div>
         <div className="image-container">
           <div className="photo-frame">
-            <img className="image" src={yourImage} alt="Meditation" />
+            <img className="image" src={vegetarian} alt="vegetarian" />
           </div>
         </div>
       </div>
     </div>
   );
 };
-export default GridView;
+export default GridViewVeg;

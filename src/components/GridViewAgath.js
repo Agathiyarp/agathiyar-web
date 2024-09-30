@@ -1,7 +1,7 @@
 import React from 'react';
 import './GridViewAgath.css';
-import yourImage from './images/your-image.jpg'; // Update with your image path
-const GridView = () => {
+import swathayayam from '../images/swathayayam.png'; // Update with your image path
+const GridViewAgath = () => {
     const spiritualText = `
       Swadhyayam
       Reading Spiritual Books
@@ -16,11 +16,10 @@ const GridView = () => {
         <div className="grid-container">
           <div className="image-container">
             <div className="photo-frame">
-              <img className="image" src={yourImage} alt="Spiritual Reading" />
+              <img className="image" src={swathayayam} alt="Swathayayam" />
             </div>
           </div>
           <div className="text-container">
-            <h3>Swadhyayam</h3>
             <p>{spiritualText}</p>
           </div>
         </div>
@@ -28,4 +27,4 @@ const GridView = () => {
     );
   };
   
-  export default GridView;
+  export default GridViewAgath;

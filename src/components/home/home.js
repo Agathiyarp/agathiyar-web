@@ -2,7 +2,9 @@ import React from 'react';
 import { AppBar, Toolbar, Typography, Button } from '@mui/material';
 import Slider from 'react-slick';
 import './home.css'; // Custom CSS
-import GridView from '../../components/GridView';
+import Meditation from '../Meditation';
+import GridViewVeg from '../GridViewVeg';
+import GridViewAgath from '../GridViewAgath';
 import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
 import AdminIconWithRoles from '../../components/menu/admin';
@@ -94,17 +96,17 @@ const Home = () => {
     </div>
     <div>
       <h1 className='meditation-heading'>How to do Meditation ?</h1>
-      <GridView />
+      <Meditation />
     </div>
 
     <div>
       <h1 className='meditation-heading'>Being a Vegetarian</h1>
-      <GridView />
+      <GridViewVeg />
     </div>
 
     <div>
-      <h1>Swadhyayam and Spiritual Reading</h1>
-      <GridView />
+      <h1 className='meditation-heading'>Swadhyayam</h1>
+      <GridViewAgath />
     </div>
 
     <div>

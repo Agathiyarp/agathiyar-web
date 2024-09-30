@@ -1,8 +1,8 @@
 import React from 'react';
-import './GridView.css';
-import yourImage from '../images/image3.png';
+import './Meditation.css';
+import meditationImg from '../images/meditation.png';
 
-const GridView = () => {
+const Meditation = () => {
     const meditationGuide = [
       { title: "Right Posture, Sit Comfortably", steps: [
           "Clasp Your Hands",
@@ -41,7 +41,7 @@ const GridView = () => {
           <div className="border"></div>
           <div className="image-container">
             <div className="photo-frame">
-              <img className="image" src={yourImage} alt="Meditation" />
+              <img className="image" src={meditationImg} alt="Meditation" />
             </div>
           </div>
         </div>
@@ -49,4 +49,4 @@ const GridView = () => {
     );
   };
  
-  export default GridView;
+  export default Meditation;
