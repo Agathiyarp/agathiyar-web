@@ -1,65 +1,40 @@
-body {
-    font-family: 'Arial', sans-serif;
-    background-color: #f4f4f4; /* Light background */
-    margin: 0;
-    padding: 0;
+.footer {
+  background-color: #e2eff7ff;
+  color: #0b0202ff;
+  padding: 30px 20px;
+  text-align: center;
 }
-.ashram-container {
-    max-width: 800px;
-    margin: 40px auto; /* Center container */
-    padding: 20px;
-    background-color: white; /* White background for contrast */
-    border-radius: 10px; /* Rounded corners */
-    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1); /* Soft shadow */
+
+.footer-content {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin-bottom: 20px;
 }
-.ashram-header {
-    text-align: center;
-    margin-bottom: 30px;
+
+.footer-info {
+  margin-bottom: 15px;
+  font-weight: 600;
+  font-size: 16px;
 }
-h1 {
-    font-size: 2em; /* Larger font size for title */
-    color: #2c3e50; /* Dark color for the title */
+
+.footer-links {
+  display: flex;
+  gap: 5px;
 }
-.address {
-    font-size: 1em; /* Standard size for address */
-    color: #7f8c8d; /* Softer color */
+
+.footer-links a {
+  color: #1b954eff;
+  text-decoration: none;
+  font-weight: bold;
+  transition: color 0.3s;
 }
-.ashram-content {
-    margin-bottom: 30px; /* Space before footer */
+
+.footer-links a:hover {
+  color: #f39c12; /* Change color on hover */
 }
-h2 {
-    font-size: 1.5em; /* Section header */
-    color: #34495e; /* Dark color */
-    margin-bottom: 10px; /* Space below header */
-}
-h3 {
-    font-size: 1.2em; /* Subsection header */
-    color: #34495e;
-    margin-top: 15px; /* Space above */
-}
-p {
-    font-size: 1em; /* Base text size */
-    line-height: 1.6; /* Line height for readability */
-    color: #333; /* Standard text color */
-    margin: 10px 0; /* Space between paragraphs */
-}
-.subscribe-button {
-    margin-top: 15px;
-    padding: 12px 20px; /* Padding for button */
-    font-size: 1em; /* Button text size */
-    color: white;
-    background-color: #3498db; /* Button color */
-    border: none;
-    border-radius: 5px; /* Rounded button */
-    cursor: pointer;
-    transition: background-color 0.3s; /* Hover effect */
-}
-.subscribe-button:hover {
-    background-color: #2980b9; /* Darker on hover */
-}
-.ashram-footer {
-    text-align: center;
-    font-size: 0.9em; /* Smaller footer text */
-    color: #7f8c8d; /* Softer footer color */
-    margin-top: 20px; /* Space above footer */
+
+.footer-bottom {
+  border-top: 1px solid #444;
+  padding-top: 15px;
 }

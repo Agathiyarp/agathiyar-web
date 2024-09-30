@@ -1,6 +1,7 @@
 import React from "react";
 import { AppBar, Toolbar, Typography, Button } from "@mui/material";
 import Slider from "react-slick";
+import { useNavigate } from "react-router-dom"; // Import useNavigate
 import "./home.css"; // Custom CSS
 import Meditation from "../Meditation";
 import GridViewVeg from "../GridViewVeg";
@@ -8,7 +9,6 @@ import GridViewAgath from "../GridViewAgath";
 import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
 import AdminIconWithRoles from "../../components/menu/admin";
-//import Menu from '../../components/menu/menu';
 import MeditationInfo from "../../components/MeditationInfo";
 import Footer from "../Footer";
 import ImageGallery from "../../components/ImageGallery";
@@ -25,7 +25,10 @@ const statements = [
   "Self healing and Self realization in the lap of mother nature along with pyramid energies.",
   "Spreading the message of compassion and vegetarian living to all humanity.",
 ];
+
 const Home = () => {
+  const navigate = useNavigate(); // Initialize useNavigate
+
   const settings = {
     dots: true,
     infinite: true,
@@ -35,6 +38,7 @@ const Home = () => {
     autoplay: true,
     autoplaySpeed: 3000,
   };
+
   const images = [
     { src: image1, alt: "Slide 1" },
     { src: image2, alt: "Slide 2" },
@@ -43,14 +47,41 @@ const Home = () => {
     { src: image5, alt: "Slide 5" },
   ];
 
+  const handleButtonClick = (text) => {
+    switch (text) {
+      case "Home":
+        navigate("/");
+        break;
+      case "Events":
+        navigate("/events");
+        break;
+      case "Videos":
+        navigate("/videos");
+        break;
+      case "Contact Us":
+        navigate("/contact");
+        break;
+      case "Donate":
+        navigate("/donate");
+        break;
+      case "About":
+        navigate("/about");
+        break;
+      case "Books":
+        navigate("/room");
+        break;
+      case "Login":
+        navigate("/login");
+        break;
+      default:
+        break;
+    }
+  };
+
   return (
     <div className="app-container">
       {/* Header */}
-      <AppBar
-        position="fixed"
-        className="fixed-header"
-        sx={{ backgroundColor: "white" }}
-      >
+      <AppBar position="fixed" className="fixed-header" sx={{ backgroundColor: "white" }}>
         <Toolbar disableGutters>
           <img src={mainlogo} alt="Logo" className="logo" />
           <Typography
@@ -67,14 +98,7 @@ const Home = () => {
             <span style={{ fontSize: 14 }}>Mounam - Dhyanam - Gnanam</span>
           </Typography>
 
-          <div
-            className="menu"
-            style={{
-              display: "flex",
-              alignItems: "center",
-              paddingLeft: "40px",
-            }}
-          >
+          <div className="menu" style={{ display: "flex", alignItems: "center", paddingLeft: "40px" }}>
             {[
               "Home",
               "Events",
@@ -88,12 +112,13 @@ const Home = () => {
               <Button
                 key={text}
                 sx={{ color: "black", fontWeight: "bold", marginRight: "12px" }}
+                onClick={() => handleButtonClick(text)} // Add click handler
               >
                 {text}
               </Button>
             ))}
           </div>
-          <AdminIconWithRoles />
+          {/* <AdminIconWithRoles /> */}
         </Toolbar>
       </AppBar>
 
@@ -109,7 +134,7 @@ const Home = () => {
 
       {/* Content Section */}
       <div className="mission-statements-container">
-        <h2 class="vision-heading">Our Vision</h2>
+        <h2 className="vision-heading">Our Vision</h2>
         <div className="single-image-container">
           <img src={image5} alt={"our vision"} className="single-image" />
         </div>
@@ -121,12 +146,11 @@ const Home = () => {
           ))}
         </ul>
       </div>
+
+      <MeditationInfo />
+     
       <div>
-        <MeditationInfo />
-        {/* Other components */}
-      </div>
-      <div>
-        <h1 className="meditation-heading">How to do Meditation ?</h1>
+        <h1 className="meditation-heading">How to do Meditation?</h1>
         <Meditation />
       </div>
 
@@ -141,13 +165,12 @@ const Home = () => {
       </div>
 
       <div>
-        <h1>Image Gallery</h1>
+        <h1 className="meditation-heading">Image Gallery</h1>
         <ImageGallery />
       </div>
-      <div>
-        <Footer />
-      </div>
+      <Footer />
     </div>
   );
 };
+
 export default Home;
