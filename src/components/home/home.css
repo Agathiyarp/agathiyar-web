@@ -24,7 +24,6 @@
   .carousel-container {
     margin: 20px 0;
     width: 100%; /* Adjust width as needed, e.g., 80%, 600px, etc. */
-    height: 400px; /* Set your desired height */
     overflow: hidden; /* Prevent overflow if needed */
   }
   
