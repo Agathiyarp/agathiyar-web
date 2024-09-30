@@ -4,8 +4,7 @@ import yourImage from '../images/image3.png';
 
 const GridView = () => {
     const meditationGuide = [
-      { title: "Right Posture", steps: [
-          "Sit Comfortably",
+      { title: "Right Posture, Sit Comfortably", steps: [
           "Clasp Your Hands",
           "Cross Your Legs",
           "Close Your Eyes"
@@ -30,7 +29,7 @@ const GridView = () => {
           <div className="text-container">
             {meditationGuide.map((section, index) => (
               <div key={index}>
-                <h3>{section.title}</h3>
+                <h3 class='section-title'>{section.title}</h3>
                 <ul className="bullet-points">
                   {section.steps.map((step, i) => (
                     <li key={i}>{step}</li>

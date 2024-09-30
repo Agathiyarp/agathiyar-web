@@ -1,0 +1,121 @@
+.login-container {
+    min-height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background-color: #f3f4f6;
+    font-family: 'Arial', sans-serif;
+  }
+  
+  .login-form {
+    background-color: #ffffff;
+    padding: 2rem;
+    border-radius: 0.5rem;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    width: 100%;
+    max-width: 400px;
+  }
+  
+  .login-title {
+    font-size: 1.5rem;
+    font-weight: bold;
+    text-align: center;
+    margin-bottom: 1.5rem;
+    color: #1f2937;
+  }
+  
+  .input-group {
+    margin-bottom: 1rem;
+  }
+  
+  .input-field {
+    width: 100%;
+    padding: 0.75rem;
+    border: 1px solid #d1d5db;
+    border-radius: 0.25rem;
+    font-size: 1rem;
+    transition: border-color 0.15s ease-in-out, box-shadow 0.15s ease-in-out;
+  }
+  
+  .input-field:focus {
+    outline: none;
+    border-color: #3b82f6;
+    box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.3);
+  }
+  
+  .error-message {
+    color: #ef4444;
+    font-size: 0.875rem;
+    margin-top: 0.25rem;
+  }
+  
+  .submit-button {
+    width: 100%;
+    padding: 0.75rem;
+    background-color: #3b82f6;
+    color: #ffffff;
+    border: none;
+    border-radius: 0.25rem;
+    font-size: 1rem;
+    font-weight: bold;
+    cursor: pointer;
+    transition: background-color 0.15s ease-in-out;
+  }
+  
+  .submit-button:hover {
+    background-color: #2563eb;
+  }
+  
+  .submit-button:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+  }
+  
+  .social-login-divider {
+    text-align: center;
+    margin: 1.5rem 0;
+    color: #6b7280;
+  }
+  
+  .social-login-button {
+    width: 100%;
+    padding: 0.75rem;
+    margin-top: 1rem;
+    border: none;
+    border-radius: 0.25rem;
+    font-size: 1rem;
+    font-weight: bold;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: background-color 0.15s ease-in-out;
+  }
+  
+  .social-login-button svg {
+    margin-right: 0.5rem;
+  }
+  
+  .twitter-login {
+    background-color: #1da1f2;
+    color: #ffffff;
+  }
+  
+  .twitter-login:hover {
+    background-color: #1a91da;
+  }
+  
+  .facebook-login {
+    background-color: #1877f2;
+    color: #ffffff;
+  }
+  
+  .facebook-login:hover {
+    background-color: #166fe5;
+  }
+  
+  @media (max-width: 640px) {
+    .login-form {
+      padding: 1.5rem;
+    }
+  }

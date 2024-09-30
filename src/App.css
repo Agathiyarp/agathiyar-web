@@ -1,104 +1,41 @@
-/* src/App.css */
+html,
 body {
-  font-family: Arial, sans-serif;
-  margin: 0;
-  padding: 0;
-  background-color: #e9ecef; /* Light background color */
+  overflow-x: hidden; /* Prevent horizontal scrolling */
+  margin: 0; /* Remove default margin */
+  padding: 0; /* Remove default padding */
+  box-sizing: border-box; /* Include padding and border in element's total width and height */
 }
 
-.app-container {
-  flex-direction: column; /* Stack header and content vertically */
-  align-items: center;
-  font-family: Raleway, sans-serif;
-    font-weight: 400;
-    font-size: 15px;
-    color: #3c3c3c;
-    line-height: 1.5;
-    text-rendering: optimizeLegibility;
-    -webkit-font-smoothing: antialiased;
+*,
+*:before,
+*:after {
+  box-sizing: inherit; /* Apply box-sizing globally */
 }
 
-.logo {
-  height: 150px; /* Adjust logo size */
-  margin-right: 20px; /* Space between logo and text */
+/* Additional Components Styles */
+h1 {
+  margin-top: 40px;
+  font-size: 24px;
+  color: #333;
 }
 
-.carousel-container {
-  margin: 20px 0; /* Margin around the carousel */
+h2 {
+  font-size: 28px;
+  margin-bottom: 20px;
 }
 
-.carousel-image {
-    width: 100%; /* or specify a fixed width, e.g., 300px */
-    height: auto; /* maintains aspect ratio */
-    max-height: 800px; /* specify a max height if needed */
-    /*object-fit: cover;  ensures the image covers the area */
-    min-height: 60vh;
-    -o-object-fit: cover;
-    object-fit: cover;
-    -o-object-position: center;
-    object-position: center;
-    font-family: "object-fit: cover; object-position: center";
-}
+/* Responsive Styles */
+@media (max-width: 768px) {
+  .menu {
+    flex-direction: column;
+    align-items: flex-start;
+  }
 
+  .carousel-image {
+    height: 200px; /* Adjust for smaller screens */
+  }
 
-.content-section {
-  padding: 20px;
-  text-align: center; /* Center align content */
-  background-color: white; /* White background for content */
-  border-radius: 8px; /* Rounded corners */
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1); /* Shadow effect */
-}
-
-.menu-list {
-  list-style-type: none; /* Remove bullet points */
-  padding: 0; /* Remove padding */
-}
-
-.menu-list li {
-  margin: 10px 0; /* Space between list items */
-}
-.menu {  
- align-items: center;
- }
-
-.centered-list {
-    list-style-type: disc; /* Adds bullet points */
-    padding: 0; /* Removes default padding */
-    text-align: center; /* Center-aligns the text */
-}
-
-.centered-list li {
-    display: inline-block; /* Allows list items to be centered */
-    margin: 5px 0; /* Adds spacing between items */
-}
-
-.mission-statements-container {
-  max-width: 600px; /* Adjust max width as needed */
-  margin: 20px auto; /* Center the container */
-  padding: 20px;
-  background-color: #f9f9f9; /* Light background for contrast */
-  border-radius: 8px; /* Rounded corners */
-  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1); /* Subtle shadow */
-}
-
-.mission-list {
-  list-style-type: disc; /* Bullet points */
-  padding-left: 20px; /* Indent the list */
-}
-
-.mission-item {
-  margin-bottom: 10px; /* Space between items */
-  font-size: 1.1em; /* Slightly larger text */
-}
-.single-image-container {
-  max-width: 100%; /* Set a max width for the image container */
-  margin: 20px auto; /* Center the container */
-}
-
-.single-image {
-  width: 100%; /* Make the image responsive */
-  height: auto; /* Maintain aspect ratio */
-  display: block; /* Remove extra space below images */
-  border-radius: 8px; /* Optional: rounded corners */
-  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1); /* Optional: subtle shadow */
+  .single-image {
+    width: 100%;
+  }
 }

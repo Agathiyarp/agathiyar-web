@@ -35,14 +35,16 @@
   }
   
   .photo-frame {
-    border: 5px solid #ccc; /* Frame border color */
     border-radius: .5px; /* Rounded corners for frame */
     padding: 10px; /* Padding inside the frame */
-    background-color: #fff; /* Frame background color */
   }
   
   .image {
     max-width: 100%; /* Ensure responsive image */
     height: auto; /* Maintain aspect ratio */
     border-radius: 5px; /* Rounded corners for image */
+  }
+
+  .section-title {
+    margin-bottom: 10px;
   }
