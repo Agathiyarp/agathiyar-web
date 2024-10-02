@@ -1,0 +1,55 @@
+.book-grid {
+    max-width: auto; /* Maximum width of the grid */
+    max-height: auto;
+    margin: 0 auto; /* Center the grid horizontally */
+    padding: 20px; /* Padding around the grid */
+    margin-top: 80px;
+  }
+  
+  .grid-container {
+    height: 600px;
+    max-width: 100%; /* Responsive image */
+    grid-template-columns: repeat(
+      auto-fill,
+      minmax(350px, 1fr)
+    ); /* Responsive grid */
+    gap: 20px; /* Space between grid items */
+  }
+  
+  .book-item {
+    border: 1px solid #ccc; /* Add a border around book items */
+    border-radius: 8px; /* Rounded corners */
+    padding: 15px; /* Inner padding */
+    text-align: center; /* Center text */
+    transition: transform 0.2s; /* Animation on hover */
+  }
+  
+  .book-item img {
+    max-width: 100%; /* Responsive image */
+    height: auto; /* Maintain aspect ratio */
+    border-radius: 5px; /* Rounded corners for images */
+  }
+  
+  .book-item button {
+    margin-top: 10px; /* Space between title and button */
+    padding: 10px 15px; /* Button padding */
+    background-color: #007bff; /* Button color */
+    color: white; /* Text color */
+    border: none; /* Remove border */
+    border-radius: 5px; /* Rounded corners */
+    cursor: pointer; /* Pointer cursor on hover */
+  }
+  
+  .book-item button:hover {
+    background-color: #0056b3; /* Darken button on hover */
+  }
+  
+  .book-item:hover {
+    transform: scale(1.05); /* Slightly enlarge item on hover */
+  }
+  
+  h1 {
+    color: #e9de41ff; /* Title color */
+    text-align: center;
+  }
+  

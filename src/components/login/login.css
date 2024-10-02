@@ -1,121 +1,121 @@
-.login-container {
-    min-height: 100vh;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    background-color: #f3f4f6;
-    font-family: 'Arial', sans-serif;
-  }
-  
-  .login-form {
-    background-color: #ffffff;
-    padding: 2rem;
-    border-radius: 0.5rem;
-    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-    width: 100%;
-    max-width: 400px;
-  }
-  
-  .login-title {
-    font-size: 1.5rem;
-    font-weight: bold;
-    text-align: center;
-    margin-bottom: 1.5rem;
-    color: #1f2937;
-  }
-  
-  .input-group {
-    margin-bottom: 1rem;
-  }
-  
-  .input-field {
-    width: 100%;
-    padding: 0.75rem;
-    border: 1px solid #d1d5db;
-    border-radius: 0.25rem;
-    font-size: 1rem;
-    transition: border-color 0.15s ease-in-out, box-shadow 0.15s ease-in-out;
-  }
-  
-  .input-field:focus {
-    outline: none;
-    border-color: #3b82f6;
-    box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.3);
-  }
-  
-  .error-message {
-    color: #ef4444;
-    font-size: 0.875rem;
-    margin-top: 0.25rem;
-  }
-  
-  .submit-button {
-    width: 100%;
-    padding: 0.75rem;
-    background-color: #3b82f6;
-    color: #ffffff;
-    border: none;
-    border-radius: 0.25rem;
-    font-size: 1rem;
-    font-weight: bold;
-    cursor: pointer;
-    transition: background-color 0.15s ease-in-out;
-  }
-  
-  .submit-button:hover {
-    background-color: #2563eb;
-  }
-  
-  .submit-button:disabled {
-    opacity: 0.5;
-    cursor: not-allowed;
-  }
-  
-  .social-login-divider {
-    text-align: center;
-    margin: 1.5rem 0;
-    color: #6b7280;
-  }
-  
-  .social-login-button {
-    width: 100%;
-    padding: 0.75rem;
-    margin-top: 1rem;
-    border: none;
-    border-radius: 0.25rem;
-    font-size: 1rem;
-    font-weight: bold;
-    cursor: pointer;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    transition: background-color 0.15s ease-in-out;
-  }
-  
-  .social-login-button svg {
-    margin-right: 0.5rem;
-  }
-  
-  .twitter-login {
-    background-color: #1da1f2;
-    color: #ffffff;
-  }
-  
-  .twitter-login:hover {
-    background-color: #1a91da;
-  }
-  
-  .facebook-login {
-    background-color: #1877f2;
-    color: #ffffff;
-  }
-  
-  .facebook-login:hover {
-    background-color: #166fe5;
-  }
-  
-  @media (max-width: 640px) {
-    .login-form {
-      padding: 1.5rem;
-    }
-  }
+.login-page {
+  display: flex;
+  height: 120vh;
+}
+
+.form-container {
+  background-color: rgba(255, 255, 255, 0.9); /* Slight transparency */
+  padding: 10rem;
+  border-radius: 18px;
+  box-shadow: 0 5px 10px rgba(0, 0, 0, 0.2);
+  width: 50%; /* Adjust the width as needed */
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+
+.heading {
+  font-size: 2rem;
+  font-weight: bold;
+  margin-bottom: 1.5rem;
+  text-align: center;
+}
+
+.input-container {
+  margin-bottom: 1rem;
+}
+
+.input {
+  width: 100%;
+  padding: 0.5rem;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  outline: none;
+  transition: border-color 0.3s;
+  font-size: 1rem;
+}
+
+.input.error {
+  border-color: red;
+}
+
+.error-text {
+  margin-top: 0.25rem;
+  color: red;
+  font-size: 0.875rem;
+}
+
+.api-error-text {
+  margin-bottom: 1rem;
+  color: red;
+  font-size: 0.875rem;
+  text-align: center;
+}
+
+.options-container {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 1rem;
+}
+
+.forgot-password {
+  color: #007bff;
+  text-decoration: none;
+}
+
+.forgot-password:hover {
+  text-decoration: underline;
+}
+
+.button {
+  width: 100%;
+  background-color: #007bff;
+  color: #fff;
+  padding: 0.5rem;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  transition: background-color 0.3s;
+  font-size: 1rem;
+}
+
+.button.disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+.signup-link {
+  text-align: center;
+  margin-top: 1rem;
+}
+
+.signup-link a {
+  color: #007bff;
+  text-decoration: none;
+}
+
+.signup-link a:hover {
+  text-decoration: underline;
+}
+
+.image-container {
+  width: 60%; /* Adjust the width as needed */
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden; /* Optional to crop the image */
+}
+
+.image-container img {
+  /*width: 100%;*/
+  height: 668px;
+  object-fit: cover; /* Maintain aspect ratio */
+}
+
+.app-container {
+  padding-top: 64px; /* Adjust this value based on your menu bar height */
+}
+.fixed-header {
+  height: 120px; /* Set an appropriate height */
+}

@@ -1,5 +1,9 @@
 import React, { useState } from "react";
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
+import { useNavigate } from 'react-router-dom';
 import "./register.css";
+import MenuBar from "../menumain/menubar";
 
 const RegistrationForm = () => {
   const [formData, setFormData] = useState({
@@ -12,19 +16,47 @@ const RegistrationForm = () => {
     addressLine2: "",
     country: "",
     city: "",
-    region: "",
     postalCode: "",
+    password: "",
+    confirmPassword: "",
   });
+
+  const [errors, setErrors] = useState({});
+  const navigate = useNavigate();
 
   const handleChange = (e) => {
     const { name, value } = e.target;
     setFormData({ ...formData, [name]: value });
   };
 
+  const validateForm = () => {
+    const newErrors = {};
+    if (!formData.fullName) newErrors.fullName = "Full name is required";
+    if (!formData.email) newErrors.email = "Email is required";
+    if (!formData.phoneNumber) newErrors.phoneNumber = "Phone number is required";
+    if (!formData.birthDate) newErrors.birthDate = "Birth date is required";
+    if (!formData.address) newErrors.address = "Address is required";
+    if (!formData.country) newErrors.country = "Country is required";
+    if (!formData.city) newErrors.city = "City is required";
+    if (!formData.postalCode) newErrors.postalCode = "Postal code is required";
+    if (!formData.password) newErrors.password = "Password is required";
+    if (!formData.confirmPassword) newErrors.confirmPassword = "Confirm password is required";
+    if (formData.password !== formData.confirmPassword) newErrors.confirmPassword = "Passwords do not match";
+
+    return newErrors;
+  };
+
   const handleSubmit = async (e) => {
     e.preventDefault();
+    const formErrors = validateForm();
+
+    if (Object.keys(formErrors).length > 0) {
+      setErrors(formErrors);
+      return;
+    }
+
     try {
-      const response = await fetch("https://example.com/api/register", {
+      const response = await fetch("http://localhost:8080/api/register", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -38,15 +70,17 @@ const RegistrationForm = () => {
 
       const data = await response.json();
       console.log("Success:", data);
-      // Handle success (e.g., show a success message or redirect)
+      toast.success("Registration successful!");
+      navigate("/login"); // Redirect to login on success
     } catch (error) {
       console.error("Error:", error);
-      // Handle error (e.g., show an error message)
+      toast.error("Registration failed. User Already Register");
     }
   };
 
   return (
     <div className='register-container'>
+      <div><MenuBar /></div>
       <section className="container">
         <header>Registration Form</header>
         <form onSubmit={handleSubmit} className="form">
@@ -60,6 +94,7 @@ const RegistrationForm = () => {
               onChange={handleChange}
               required
             />
+            {errors.fullName && <p className="error-text">{errors.fullName}</p>}
           </div>
 
           <div className="input-box">
@@ -72,19 +107,21 @@ const RegistrationForm = () => {
               onChange={handleChange}
               required
             />
+            {errors.email && <p className="error-text">{errors.email}</p>}
           </div>
 
           <div className="column">
             <div className="input-box">
               <label>Phone Number</label>
               <input
-                type="number"
+                type="tel"
                 name="phoneNumber"
                 placeholder="Enter phone number"
                 value={formData.phoneNumber}
                 onChange={handleChange}
                 required
               />
+              {errors.phoneNumber && <p className="error-text">{errors.phoneNumber}</p>}
             </div>
             <div className="input-box">
               <label>Birth Date</label>
@@ -95,6 +132,7 @@ const RegistrationForm = () => {
                 onChange={handleChange}
                 required
               />
+              {errors.birthDate && <p className="error-text">{errors.birthDate}</p>}
             </div>
           </div>
 
@@ -147,6 +185,7 @@ const RegistrationForm = () => {
               onChange={handleChange}
               required
             />
+            {errors.address && <p className="error-text">{errors.address}</p>}
             <input
               type="text"
               name="addressLine2"
@@ -168,6 +207,7 @@ const RegistrationForm = () => {
                   <option value="India">India</option>
                   <option value="Nepal">Nepal</option>
                 </select>
+                {errors.country && <p className="error-text">{errors.country}</p>}
               </div>
               <input
                 type="text"
@@ -177,16 +217,9 @@ const RegistrationForm = () => {
                 onChange={handleChange}
                 required
               />
+              {errors.city && <p className="error-text">{errors.city}</p>}
             </div>
             <div className="column">
-              <input
-                type="text"
-                name="region"
-                placeholder="Enter your region"
-                value={formData.region}
-                onChange={handleChange}
-                required
-              />
               <input
                 type="number"
                 name="postalCode"
@@ -195,12 +228,40 @@ const RegistrationForm = () => {
                 onChange={handleChange}
                 required
               />
+              {errors.postalCode && <p className="error-text">{errors.postalCode}</p>}
             </div>
+          </div>
+
+          <div className="input-box">
+            <label>Password</label>
+            <input
+              type="password"
+              name="password"
+              placeholder="Enter password"
+              value={formData.password}
+              onChange={handleChange}
+              required
+            />
+            {errors.password && <p className="error-text">{errors.password}</p>}
+          </div>
+
+          <div className="input-box">
+            <label>Confirm Password</label>
+            <input
+              type="password"
+              name="confirmPassword"
+              placeholder="Confirm password"
+              value={formData.confirmPassword}
+              onChange={handleChange}
+              required
+            />
+            {errors.confirmPassword && <p className="error-text">{errors.confirmPassword}</p>}
           </div>
 
           <button type="submit">Submit</button>
         </form>
       </section>
+      <ToastContainer position="top-right" autoClose={3000} hideProgressBar={false} closeOnClick pauseOnHover draggable />
     </div>
   );
 };

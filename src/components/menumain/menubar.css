@@ -1,0 +1,13 @@
+.fixed-header {
+    box-shadow: none; /* Optional: Remove shadow */
+  }
+  
+  .logo {
+    height: 50px; /* Adjust logo height */
+    margin-right: 20px; /* Space between logo and title */
+  }
+  
+  /* Optional: Global button styles */
+  .menu .MuiButton-root {
+    border-radius: 5px; /* Rounded corners for all buttons */
+  }

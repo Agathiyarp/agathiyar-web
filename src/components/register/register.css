@@ -3,6 +3,8 @@
 
 .register-container {
   background-color: #e0f7fa;
+  margin-top: 125px;
+  height: 1000px;
 }
 
 .container {
@@ -23,7 +25,7 @@
 }
 
 .container .form {
-  margin-top: 30px;
+  margin-top: 15px;
 }
 
 .form .input-box {

@@ -1,108 +1,107 @@
-
 /* General Styles */
 .app-container {
-    padding: 20px;
-    background-color: #f5f5f5;
-    padding-top: 80px; 
-  }
-  
-  /* Header Styles */
-  .logo {
-    margin-right: 20px;
-    margin-left: 20px;
-    width: 104px;
-    height: 104px;
-  }
-  
-  .menu {
-    display: flex;
-    align-items: center;
-    flex-grow: 1;
-  }
-  
-  /* Carousel Styles */
-  .carousel-container {
-    margin: 20px 0;
-    width: 100%; /* Adjust width as needed, e.g., 80%, 600px, etc. */
-    overflow: hidden; /* Prevent overflow if needed */
-  }
-  
-  .carousel-image {
-    width: 100%;
-    height: 100%; /* Make sure the image fills the container */
-    object-fit: cover; /* Maintain aspect ratio while covering the container */
-    border-radius: 8px; /* Optional: add rounded corners */
-  }
-  /* App.css */
-  
-  /* Mission Statements Section */
-  .mission-statements-container {
-    margin: 40px 0;
-    text-align: center; /* Center align text */
-    padding: 20px; /* Add some padding */
-    background-color: #f9f9f9; /* Light background color */
-    border-radius: 10px; /* Rounded corners */
-    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1); /* Subtle shadow for depth */
-  }
-  
-  .mission-statements-container h2 {
-    font-size: 28px;
-    color: #333; /* Dark color for the heading */
-    margin-bottom: 20px; /* Space below the heading */
-  }
-  
-  .single-image-container {
-    margin: 20px 0; /* Margin above and below the image */
-  }
-  
-  .single-image {
-    width: 100%; /* Full width */
-    max-width: 800px; /* Maximum width */
-    height: auto; /* Maintain aspect ratio */
-    border-radius: 8px; /* Optional: rounded corners */
-  }
-  
-  .mission-list {
-    list-style-type: none; /* Remove default list styles */
-    padding: 0; /* Remove padding */
-  }
-  
-  .mission-item {
-    background-color: #fff; /* White background for list items */
-    margin: 10px 0; /* Space between items */
-    padding: 15px; /* Padding inside the item */
-    border-radius: 8px; /* Rounded corners */
-    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1); /* Shadow for depth */
-    transition: background-color 0.3s; /* Smooth transition for hover effect */
-  }
-  
-  .mission-item:hover {
-    background-color: #f0f0f0; /* Change background on hover */
-  }
-  
-  /* Fixed Header Styles */
+  padding: 20px;
+  background-color: #f5f5f5;
+  padding-top: 80px;
+}
+
+/* Header Styles */
+.logo {
+  margin-right: 20px;
+  margin-left: 20px;
+  width: 104px;
+  height: 104px;
+}
+
+.menu {
+  display: flex;
+  align-items: center;
+  flex-grow: 1;
+}
+
+/* Carousel Styles */
+.carousel-container {
+  margin: 20px 0;
+  width: 100%; /* Adjust width as needed, e.g., 80%, 600px, etc. */
+  overflow: hidden; /* Prevent overflow if needed */
+}
+
+.carousel-image {
+  width: 100%;
+  height: 100%; /* Make sure the image fills the container */
+  object-fit: cover; /* Maintain aspect ratio while covering the container */
+  border-radius: 8px; /* Optional: add rounded corners */
+}
+/* App.css */
+
+/* Mission Statements Section */
+.mission-statements-container {
+  margin: 40px 0;
+  text-align: center; /* Center align text */
+  padding: 20px; /* Add some padding */
+  background-color: #f9f9f9; /* Light background color */
+  border-radius: 10px; /* Rounded corners */
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1); /* Subtle shadow for depth */
+}
+
+.mission-statements-container h2 {
+  font-size: 28px;
+  color: #333; /* Dark color for the heading */
+  margin-bottom: 20px; /* Space below the heading */
+}
+
+.single-image-container {
+  margin: 20px 0; /* Margin above and below the image */
+}
+
+.single-image {
+  width: 100%; /* Full width */
+  max-width: 800px; /* Maximum width */
+  height: auto; /* Maintain aspect ratio */
+  border-radius: 8px; /* Optional: rounded corners */
+}
+
+.mission-list {
+  list-style-type: none; /* Remove default list styles */
+  padding: 0; /* Remove padding */
+}
+
+.mission-item {
+  background-color: #fff; /* White background for list items */
+  margin: 10px 0; /* Space between items */
+  padding: 15px; /* Padding inside the item */
+  border-radius: 8px; /* Rounded corners */
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1); /* Shadow for depth */
+  transition: background-color 0.3s; /* Smooth transition for hover effect */
+}
+
+.mission-item:hover {
+  background-color: #f0f0f0; /* Change background on hover */
+}
+
+/* Fixed Header Styles */
 .fixed-header {
-    position: fixed;
-    top: 0;
-    left: 0;
-    right: 0;
-    z-index: 1000; /* Ensure it stays above other elements */
-    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1); /* Optional: add shadow */
-  }
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  z-index: 1000; /* Ensure it stays above other elements */
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1); /* Optional: add shadow */
+}
 
-  .MuiToolbar-root {
-    margin: 10px;
-  }
+.MuiToolbar-root {
+  margin: 10px;
+}
 
-  .slick-arrow .slick-next {
-    background: #000;
-    border-radius: 5px;
-  }
+.slick-arrow .slick-next {
+  background: #000;
+  border-radius: 5px;
+}
 
-  .vision-heading {
-    color: green !important;
-  }
-  .meditation-heading {
-    color: green !important;
-    text-align: center;
-  }
+.vision-heading {
+  color: green !important;
+}
+.meditation-heading {
+  color: green !important;
+  text-align: center;
+}

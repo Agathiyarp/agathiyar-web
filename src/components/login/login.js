@@ -1,24 +1,32 @@
-import React, { useState } from 'react';
-import './login.css'
+import React, { useState } from "react";
+import { useNavigate } from "react-router-dom";
+import "./login.css";
+import MenuBar from "../menumain/menubar";
+import loginimage from '../../images/reg2.png';
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 
 const LoginForm = () => {
-  const [email, setEmail] = useState('');
-  const [password, setPassword] = useState('');
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+  const [rememberMe, setRememberMe] = useState(false);
   const [errors, setErrors] = useState({});
   const [isLoading, setIsLoading] = useState(false);
-  const [apiError, setApiError] = useState('');
+  const [apiError, setApiError] = useState("");
+
+  const navigate = useNavigate(); // Initialize useNavigate
 
   const validateForm = () => {
     let formErrors = {};
     if (!email) {
-      formErrors.email = 'Email is required';
+      formErrors.email = "Email is required";
     } else if (!/\S+@\S+\.\S+/.test(email)) {
-      formErrors.email = 'Email is invalid';
+      formErrors.email = "Email is invalid";
     }
     if (!password) {
-      formErrors.password = 'Password is required';
+      formErrors.password = "Password is required";
     } else if (password.length < 6) {
-      formErrors.password = 'Password must be at least 6 characters';
+      formErrors.password = "Password must be at least 6 characters";
     }
     return formErrors;
   };
@@ -28,24 +36,28 @@ const LoginForm = () => {
     const formErrors = validateForm();
     if (Object.keys(formErrors).length === 0) {
       setIsLoading(true);
-      setApiError('');
+      setApiError("");
       try {
-        const response = await fetch('https://api.example.com/login', {
-          method: 'POST',
+        const response = await fetch("http://localhost:8080/api/login", {
+          method: "POST",
           headers: {
-            'Content-Type': 'application/json',
+            "Content-Type": "application/json",
           },
-          body: JSON.stringify({ email, password }),
+          body: JSON.stringify({ email, password, rememberMe }),
         });
         const data = await response.json();
+
         if (response.ok) {
-          // Handle successful login (e.g., store token, redirect)
-          console.log('Login successful', data);
+          toast.success("Login successful!"); // Show success message
+          console.log("Login successful", data);
+          navigate("/"); // Navigate to home page
+        } else if (response.status === 401) {
+          toast.error("Invalid email or password. Please try again."); // Show error message
         } else {
-          setApiError(data.message || 'Login failed');
+          toast.error(data.message || "Login failed. Please check your credentials.");
         }
       } catch (error) {
-        setApiError('An error occurred. Please try again.');
+        toast.error("An error occurred. Please try again."); // Show error message
       } finally {
         setIsLoading(false);
       }
@@ -55,46 +67,61 @@ const LoginForm = () => {
   };
 
   return (
-    <div className="min-h-screen flex items-center justify-center bg-gray-100">
-      <div className="bg-white p-8 rounded-lg shadow-md w-full max-w-md">
+    <div className="login-page">
+      <div><MenuBar/></div>
+      <div className="image-container">
+        <img src={loginimage} alt="Background" />
+      </div>
+      <div className="form-container">
         <form onSubmit={handleSubmit}>
-          <h2 className="text-2xl font-bold mb-6 text-center">Login</h2>
-          <div className="mb-4">
+          <h2 className="heading">Login</h2>
+          <div className="input-container">
             <input
               type="email"
               placeholder="Enter Your Email"
               value={email}
               onChange={(e) => setEmail(e.target.value)}
-              className={`w-full px-3 py-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 ${
-                errors.email ? 'border-red-500' : 'border-gray-300'
-              }`}
+              className={`input ${errors.email ? "error" : ""}`}
             />
-            {errors.email && <p className="mt-1 text-red-500 text-sm">{errors.email}</p>}
+            {errors.email && <p className="error-text">{errors.email}</p>}
           </div>
-          <div className="mb-6">
+          <div className="input-container">
             <input
               type="password"
               placeholder="Enter Your Password"
               value={password}
               onChange={(e) => setPassword(e.target.value)}
-              className={`w-full px-3 py-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 ${
-                errors.password ? 'border-red-500' : 'border-gray-300'
-              }`}
+              className={`input ${errors.password ? "error" : ""}`}
             />
-            {errors.password && <p className="mt-1 text-red-500 text-sm">{errors.password}</p>}
+            {errors.password && <p className="error-text">{errors.password}</p>}
           </div>
-          {apiError && <p className="mb-4 text-red-500 text-sm text-center">{apiError}</p>}
+          <div className="options-container">
+            <label>
+              <input
+                type="checkbox"
+                checked={rememberMe}
+                onChange={() => setRememberMe(!rememberMe)}
+              />
+              Remember Me
+            </label>
+            <a href="/forgot-password" className="forgot-password">
+              Forgot Password?
+            </a>
+          </div>
+          {apiError && <p className="api-error-text">{apiError}</p>}
           <button
             type="submit"
             disabled={isLoading}
-            className={`w-full bg-blue-500 text-white py-2 rounded-md hover:bg-blue-600 transition duration-300 ${
-              isLoading ? 'opacity-50 cursor-not-allowed' : ''
-            }`}
+            className={`button ${isLoading ? "disabled" : ""}`}
           >
-            {isLoading ? 'Logging in...' : 'Continue'}
+            {isLoading ? "Logging in..." : "Continue"}
           </button>
+          <p className="signup-link">
+            Don't have an account? <a href="/registration">Sign Up</a>
+          </p>
         </form>
       </div>
+      <ToastContainer position="top-right" autoClose={3000} hideProgressBar={false} closeOnClick pauseOnHover draggable />
     </div>
   );
 };

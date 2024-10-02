@@ -7,7 +7,9 @@ import Home from './components/home/home';
 import About from './components/about/about';
 import AppRegistration from './components/register/register';
 import Login from './components/login/login';
-
+import Contact from './components/contactus/contactinfo';
+import Donate from './components/donate/donate';
+import Book from './components/book/book';
 const App = () => {
 
   return (
@@ -18,6 +20,9 @@ const App = () => {
           <Route path="/about" element={<About />} />
           <Route path="/registration" element={<AppRegistration />} />
           <Route path="/login" element={<Login />} />
+          <Route path="/contact" element={<Contact />} />
+          <Route path="/donate" element={<Donate />} />
+          <Route path="/book" element={<Book />} />
         </Routes>
       </Router>
     </div>

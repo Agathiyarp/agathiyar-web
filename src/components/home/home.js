@@ -1,18 +1,15 @@
 import React from "react";
-import { AppBar, Toolbar, Typography, Button } from "@mui/material";
 import Slider from "react-slick";
-import { useNavigate } from "react-router-dom"; // Import useNavigate
 import "./home.css"; // Custom CSS
 import Meditation from "../Meditation";
 import GridViewVeg from "../GridViewVeg";
 import GridViewAgath from "../GridViewAgath";
-import "slick-carousel/slick/slick.css";
-import "slick-carousel/slick/slick-theme.css";
-import AdminIconWithRoles from "../../components/menu/admin";
 import MeditationInfo from "../../components/MeditationInfo";
 import Footer from "../Footer";
 import ImageGallery from "../../components/ImageGallery";
-import mainlogo from "../../images/mainlogo.png";
+import MenuBar from "../menumain/menubar"; // Import the MenuBar
+import "slick-carousel/slick/slick.css";
+import "slick-carousel/slick/slick-theme.css";
 import image1 from "../../images/image1.png";
 import image2 from "../../images/image2.png";
 import image3 from "../../images/image3.png";
@@ -27,8 +24,6 @@ const statements = [
 ];
 
 const Home = () => {
-  const navigate = useNavigate(); // Initialize useNavigate
-
   const settings = {
     dots: true,
     infinite: true,
@@ -47,82 +42,12 @@ const Home = () => {
     { src: image5, alt: "Slide 5" },
   ];
 
-  const handleButtonClick = (text) => {
-    switch (text) {
-      case "Home":
-        navigate("/");
-        break;
-      case "Events":
-        navigate("/events");
-        break;
-      case "Videos":
-        navigate("/videos");
-        break;
-      case "Contact Us":
-        navigate("/contact");
-        break;
-      case "Donate":
-        navigate("/donate");
-        break;
-      case "About":
-        navigate("/about");
-        break;
-      case "Books":
-        navigate("/room");
-        break;
-      case "Login":
-        navigate("/login");
-        break;
-      default:
-        break;
-    }
-  };
-
   return (
     <div className="app-container">
       {/* Header */}
-      <AppBar position="fixed" className="fixed-header" sx={{ backgroundColor: "white" }}>
-        <Toolbar disableGutters>
-          <img src={mainlogo} alt="Logo" className="logo" />
-          <Typography
-            sx={{
-              fontSize: "23px",
-              fontWeight: "bold",
-              color: "black",
-              flexGrow: 1,
-            }}
-          >
-            AGATHIYAR PYRAMID <br />
-            DHYANA ASHRAM
-            <br />
-            <span style={{ fontSize: 14 }}>Mounam - Dhyanam - Gnanam</span>
-          </Typography>
-
-          <div className="menu" style={{ display: "flex", alignItems: "center", paddingLeft: "40px" }}>
-            {[
-              "Home",
-              "Events",
-              "Videos",
-              "Contact Us",
-              "Donate",
-              "About",
-              "Books",
-              "Login",
-            ].map((text) => (
-              <Button
-                key={text}
-                sx={{ color: "black", fontWeight: "bold", marginRight: "12px" }}
-                onClick={() => handleButtonClick(text)} // Add click handler
-              >
-                {text}
-              </Button>
-            ))}
-          </div>
-          {/* <AdminIconWithRoles /> */}
-        </Toolbar>
-      </AppBar>
-
-      <div className="carousel-container" style={{ marginTop: "2px" }}>
+      <MenuBar /> {/* Use MenuBar here */}
+     
+      <div className="carousel-container" style={{ marginTop: "64px" }}>
         <Slider {...settings}>
           {images.map((image, index) => (
             <div key={index}>
