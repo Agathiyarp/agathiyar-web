@@ -50,7 +50,9 @@ const LoginForm = () => {
         if (response.ok) {
           toast.success("Login successful!"); // Show success message
           console.log("Login successful", data);
-          navigate("/"); // Navigate to home page
+          setTimeout(()=> {
+            navigate("/"); // Navigate to home page
+          }, 3000);
         } else if (response.status === 401) {
           toast.error("Invalid email or password. Please try again."); // Show error message
         } else {

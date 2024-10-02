@@ -2,6 +2,7 @@ import React from "react";
 import MenuBar from "../menumain/menubar";
 import Footer from "../Footer";
 import ScanImage from "../../images/scanimage.png";
+import './donate.css';
 
 const Donate = () => {
   const spiritualPoints = [
@@ -23,7 +24,7 @@ const Donate = () => {
         </div>
       </div>
       <div className="grid-container">
-        <div className="image-container">
+        <div className="donate-image-container">
           <div className="photo-frame">
             <img className="image" src={ScanImage} alt="ScanImage" />
           </div>
