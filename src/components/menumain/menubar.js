@@ -2,8 +2,10 @@ import React from "react";
 import { AppBar, Toolbar, Typography, Button } from "@mui/material";
 import { useNavigate, useLocation } from "react-router-dom";
 import mainlogo from "../../images/mainlogo.png"; // Adjust the path as necessary
+import './menubar.css';
 
 const MenuBar = () => {
+  var name = '';
   const navigate = useNavigate();
   const location = useLocation(); // Get the current location for active link highlighting
 
@@ -15,10 +17,21 @@ const MenuBar = () => {
     Donate: "/donate",
     About: "/about",
     Books: "/book",
-    Login: "/login",
+    Login: "/login"
   };
 
+  const data = sessionStorage.getItem('userDetails');
+
+  if(data && data.length > 0 && JSON.parse(data)?.name) {
+    delete routes.Login;
+    routes.Logout = "";
+    name = JSON.parse(data).name;
+  }
+
   const handleButtonClick = (text) => {
+    if(text === 'Logout') {
+      sessionStorage.setItem('userDetails', '')
+    }
     navigate(routes[text]);
   };
 
@@ -65,6 +78,7 @@ const MenuBar = () => {
           ))}
         </div>
       </Toolbar>
+      <h3 className="welcome-text">{name && `Hello, ${name}`}</h3>
     </AppBar>
   );
 };
