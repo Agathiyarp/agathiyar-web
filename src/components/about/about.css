@@ -1,45 +1,85 @@
 .outer-containers {
-    border-radius: 8px; /* Rounded corners */
-    overflow: hidden; /* Ensure contents don't overflow */
-    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1); /* Subtle shadow */
-    padding: 20px; /* Padding around the container */
-    margin-top: 115px;
-  }
+  border-radius: 8px; /* Rounded corners */
+  overflow: hidden; /* Ensure contents don't overflow */
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1); /* Subtle shadow */
+  padding: 20px; /* Padding around the container */
+  margin-top: 115px;
+}
+
+.grid-containers {
+  display: flex; /* Use flexbox for horizontal layout */
+  align-items: flex-start; /* Align items to the top */
+  flex-wrap: wrap; /* Allow items to wrap in smaller screens */
+}
+
+.image-containers {
+  flex: 1; /* Take equal space */
+  display: flex; /* Center image */
+  justify-content: center; /* Center image horizontally */
+  padding: 20px; /* Padding inside image section */
+  max-width: 400px; /* Limit the width for larger screens */
+}
+
+.text-containers {
+  margin-top: 30px;
+  flex: 1; /* Take equal space */
+  background-color: #e0f7fa; /* Light blue background */
+  padding: 20px; /* Padding inside text section */
+}
+
+.photo-frames {
+  border-radius: 10px; /* Rounded corners for frame */
+  padding: 10px; /* Padding inside the frame */
+}
+
+.image {
+  max-width: 100%; /* Ensure responsive image */
+  height: auto; /* Maintain aspect ratio */
+  border-radius: 5px; /* Rounded corners for image */
+}
+
+.text-containers ul {
+  list-style-type: disc; /* Default bullet points */
+  padding-left: 20px; /* Add some padding to the left */
+}
+
+.text-containers li {
+  margin-bottom: 10px; /* Space between bullet points */
+}
+
+h3 {
+  color: #4caf50; /* Title color */
+}
+
+/* Media Queries for Responsiveness */
+@media (max-width: 768px) {
   .grid-containers {
-    display: flex; /* Use flexbox for horizontal layout */
-    align-items: flex-start; /* Align items to the top */
+      flex-direction: column; /* Stack items vertically on smaller screens */
+      align-items: center; /* Center items */
   }
+
   .image-containers {
-    flex: 1; /* Take equal space */
-    display: flex; /* Center image */
-    justify-content: center; /* Center image horizontally */
-    padding: 20px; /* Padding inside image section */
+      margin-bottom: 20px; /* Space between image and text */
+      max-width: 100%; /* Allow image to take full width */
   }
-  
+
   .text-containers {
-    margin-top: 30px;
-    flex: 1; /* Take equal space */
-    background-color: #e0f7fa; /* Light blue background */
-    padding: 20px; /* Padding inside text section */
+      margin-top: 0; /* Remove margin-top on small screens */
+      width: 100%; /* Allow text to take full width */
+      margin-bottom: 20px;
   }
-  .photo-frames {
-    border-radius: 10px; /* Rounded corners for frame */
-    padding: 10px; /* Padding inside the frame */
-  }
-  .images {
-    max-width: 100%; /* Ensure responsive image */
-    height: auto; /* Maintain aspect ratio */
-    border-radius: 5px; /* Rounded corners for image */
-  }
-  .text-containers ul {
-    list-style-type: disc; /* Default bullet points */
-    padding-left: 20px; /* Add some padding to the left */
-  }
-  
-  .text-containers li {
-    margin-bottom: 10px; /* Space between bullet points */
-  }
+
   h3 {
-    color: #4caf50; /* Title color */
+      font-size: 1.5rem; /* Adjust title size for tablets */
   }
-  
+}
+
+@media (max-width: 480px) {
+  h3 {
+      font-size: 1.3rem; /* Further reduce title size for mobile */
+  }
+
+  .text-containers li {
+      font-size: 0.9rem; /* Adjust bullet point size */
+  }
+}
