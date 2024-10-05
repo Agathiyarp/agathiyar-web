@@ -43,11 +43,11 @@ const contactInfo = () => {
         <div className="text-container-contact">
           <h2>Opening Hours</h2>
           <p>
-            Mon - Fri: 8:00 am – 8:00 pm
+            Mon - Fri :  8:00 am – 8:00 pm
             <br />
-            Saturday:  9:00 am – 7:00 pm
+            Saturday        :  9:00 am – 7:00 pm
             <br />
-            Sunday:    9:00 am – 9:00 pm
+            Sunday          :  9:00 am – 9:00 pm
           </p>
         </div>
       </div>
