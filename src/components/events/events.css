@@ -1,0 +1,182 @@
+
+.workshop-page {
+    padding: 20px;
+    margin-top: 105px;
+  }
+  
+  /* Banner Section Styles */
+  .banner-section {
+    background-color: #8bc34a; /* Green background */
+    padding: 40px;
+    text-align: center;
+    position: relative;
+    border-radius: 10px;
+  }
+  
+  .banner-section h1 {
+    font-size: 36px;
+    color: #fff;
+  }
+  
+  .banner-people {
+    position: absolute;
+    right: 10px;
+    bottom: -10px;
+    width: 400px;
+    height: 300px;
+    background: linear-gradient(to right, #8bc34a, #558b2f); /* Green Gradient */
+    border-radius: 10px;
+  }
+  
+  /* Workshop List Section */
+  .workshop-list {
+    margin-top: 30px;
+  }
+  
+  .workshop-item {
+    display: flex;
+    border: 1px solid #ddd;
+    background-color: #fff;
+    padding: 20px;
+    border-radius: 10px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    margin-bottom: 10px;
+  }
+  
+  .image-and-time {
+    width: 30%;
+    text-align: center;
+    margin-right: 20px;
+  }
+  
+  .time-left {
+    background-color: #e8f5e9; /* Light green background */
+    padding: 5px 10px;
+    border-radius: 5px;
+    font-size: 14px;
+    margin-bottom: 10px;
+  }
+  
+  .time-left span {
+    color: #388e3c; /* Green text */
+  }
+  
+  .time-left strong {
+    color: #4caf50; /* Stronger Green for timer */
+    display: block;
+  }
+  
+  .image-placeholder {
+    width: 100%;
+    height: 220px; 
+    background-color: #e0e0e0;
+    background: radial-gradient(
+      circle,
+      #8bc34a,
+      #558b2f
+    ); /* Green Gradient Placeholder */
+  }
+  
+  .workshop-host {
+    font-size: 14px;
+    margin-top: 10px;
+    color: #666;
+  }
+  
+  /* Workshop Details Section */
+  .workshop-details {
+    width: 70%;
+  }
+  
+  .workshop-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+  
+  .workshop-header h2 {
+    font-size: 24px;
+    color: #333;
+  }
+  
+  .price {
+    font-size: 15px;
+    font-weight: 700;
+  }
+  
+  .description {
+    margin: 10px 0;
+    color: #555;
+    font-size: 15px;
+    font-weight: 400;
+  }
+  
+  .workshop-info {
+    margin-top: 20px;
+    display: flex;
+    flex-direction: row;
+  }
+  
+  .info-item {
+    display: flex;
+    align-items: center;
+    margin-bottom: 10px;
+    font-size: 14px;
+    color: #333;
+    border-right: 1px solid #b3d6b5;
+    padding: 10px;
+  }
+  
+  .info-item i {
+    margin-right: 10px;
+    font-size: 18px;
+  }
+  
+  /* Timing List */
+  ul {
+    list-style: none;
+    margin-left: 30px;
+    padding-left: 0;
+  }
+  
+  ul li {
+    margin-bottom: 5px;
+  }
+  
+  /* Register Button */
+  .register-button {
+    margin-top: 20px;
+    float: right;
+  }
+  
+  .btn-register {
+    display: inline-block;
+    padding: 10px 20px;
+    background-color: #4caf50; /* Green Button */
+    color: white;
+    text-decoration: none;
+    font-weight: bold;
+    border-radius: 5px;
+  }
+  
+  .btn-register:hover {
+    background-color: #388e3c; /* Darker Green on hover */
+  }
+  
+  /* Icon Styles (You can replace these with actual icon libraries like Font Awesome) */
+  .icon-calendar::before {
+    content: "📅";
+  }
+  
+  .icon-clock::before {
+    content: "⏳";
+  }
+  
+  .icon-time::before {
+    content: "⏲️";
+  }
+  
+  .icon-language::before {
+    content: "🌐";
+  }
+  

@@ -1,0 +1,15 @@
+.event-title {
+    font-size: 20px !important;
+    font-weight: 700;
+    margin-bottom: 0;
+}
+
+.event-image {
+    width: 220px;
+    height: 220px;
+}
+
+.text-item {
+    font-size: 14px;
+    color: green;
+}
