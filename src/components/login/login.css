@@ -1,6 +1,8 @@
+/* General styles for larger screens (desktop) */
 .login-page {
   display: flex;
-  height: 120vh;
+  height: 100vh;
+  flex-direction: row; /* Default layout for larger screens */
 }
 
 .form-container {
@@ -116,6 +118,73 @@
 .app-container {
   padding-top: 64px; /* Adjust this value based on your menu bar height */
 }
+
 .fixed-header {
   height: 120px; /* Set an appropriate height */
+}
+
+
+/* Media query for tablets */
+@media (max-width: 768px) {
+  .login-page {
+    flex-direction: column; /* Stack elements vertically */
+  }
+
+  .form-container {
+    width: 100%; /* Take full width */
+    padding: 5rem; /* Reduce padding for tablets */
+  }
+
+  .image-container {
+    width: 100%; /* Make image take full width */
+    height: 50vh; /* Adjust height for tablets */
+  }
+
+  .image-container img {
+    height: 100%; /* Make sure the image covers the container */
+  }
+
+  .heading {
+    font-size: 1.75rem; /* Slightly smaller font for headings */
+  }
+
+  .button {
+    font-size: 0.875rem; /* Reduce button font size */
+  }
+}
+
+/* Media query for mobile devices */
+@media (max-width: 480px) {
+  .login-page {
+    flex-direction: column;
+    height: auto; /* Allow page to adjust based on content */
+    margin-top: 100px;
+  }
+
+  .form-container {
+    width: 100%;
+    padding: 2rem; /* Reduce padding for mobile */
+  }
+
+  .image-container {
+    display: none; /* Hide the image on mobile to save space */
+  }
+
+  .input {
+    padding: 0.5rem; /* Keep padding small on inputs */
+    font-size: 0.875rem; /* Reduce input font size */
+  }
+
+  .heading {
+    font-size: 1.5rem; /* Smaller font for headings */
+  }
+
+  .button {
+    font-size: 0.875rem; /* Smaller button font */
+    padding: 0.5rem; /* Reduce button padding */
+  }
+
+  .signup-link {
+    font-size: 0.875rem; /* Smaller font for the sign-up link */
+  }
 }
