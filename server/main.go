@@ -34,6 +34,11 @@ type User struct {
 	ConfirmPassword string `json:"confirmPassword"`
 }
 
+type LoginResponse struct {
+	FullName string `json:"fullName"`
+	Email    string `json:"email"`
+}
+
 type Response struct {
 	Message string `json:"message"`
 }
@@ -166,8 +171,7 @@ func loginHandler(w http.ResponseWriter, r *http.Request) {
 	session.Values["authenticated"] = true
 	session.Values["email"] = user.Email
 	session.Save(r, w)
-
-	response := Response{Message: "Login successful"}
+	response := LoginResponse{Email: user.Email}
 	w.WriteHeader(http.StatusOK)
 	json.NewEncoder(w).Encode(response)
 }

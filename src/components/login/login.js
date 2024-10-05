@@ -53,7 +53,8 @@ const LoginForm = () => {
           setTimeout(()=> {
             navigate("/"); // Navigate to home page
           }, 3000);
-          data.name = 'vignesh'
+          console.log(data.email)
+          data.name = data.email;
           sessionStorage.setItem('userDetails', JSON.stringify(data));
         } else if (response.status === 401) {
           toast.error("Invalid email or password. Please try again."); // Show error message

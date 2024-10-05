@@ -29,7 +29,7 @@ const Meditation = () => {
           <div className="text-container">
             {meditationGuide.map((section, index) => (
               <div key={index}>
-                <h3 class='section-title'>{section.title}</h3>
+                <h3 className='section-title'>{section.title}</h3>
                 <ul className="bullet-points">
                   {section.steps.map((step, i) => (
                     <li key={i}>{step}</li>

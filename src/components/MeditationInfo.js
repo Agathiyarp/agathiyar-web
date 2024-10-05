@@ -3,7 +3,7 @@ import './MeditationInfo.css'; // Create this file for custom styles
 const MeditationInfo = () => {
   return (
     <div className="meditation-info-container">
-      <h2 class='meditation-heading'>What is Meditation</h2>
+      <h2 className='meditation-heading'>What is Meditation</h2>
       <p>
         Meditation means making our mind 'rather empty'.
       </p>
