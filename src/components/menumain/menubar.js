@@ -4,6 +4,7 @@ import MoreVertIcon from "@mui/icons-material/MoreVert"; // 3-dots icon for mobi
 import { useNavigate, useLocation } from "react-router-dom";
 import mainlogo from "../../images/mainlogo.png"; // Adjust the path as necessary
 import './menubar.css';
+import { ToastContainer, toast } from 'react-toastify';
 
 const MenuBar = () => {
   const [isMobile, setIsMobile] = useState(false);
@@ -40,9 +41,27 @@ const MenuBar = () => {
     name = JSON.parse(data).name;
   }
 
-  const handleButtonClick = (text) => {
+  const handleButtonClick = async (text) => {
     if (text === 'Logout') {
-      sessionStorage.setItem('userDetails', '');
+      try {
+        const sessionData = sessionStorage.getItem('userDetails');
+        const email = sessionData?.email;
+        const response = await fetch("http://localhost:8080/api/logout", {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({ email }),
+        });
+        const data = await response.json();
+        if(data) {
+          toast.success("Logout successful!"); 
+          sessionStorage.setItem('userDetails', '');
+        }
+      } catch(err) {
+        toast.error("Logout failed");
+      }
+      
     }
     navigate(routes[text]);
     setAnchorEl(null); // Close the mobile menu after navigating
@@ -146,6 +165,7 @@ const MenuBar = () => {
         </Menu>}
       </Toolbar>
       <h3 className="welcome-text">{name && `Hello, ${name}`}</h3>
+      <ToastContainer position="top-right" autoClose={3000} hideProgressBar={false} closeOnClick pauseOnHover draggable />
     </AppBar>
   );
 };

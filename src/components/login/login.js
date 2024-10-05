@@ -49,11 +49,9 @@ const LoginForm = () => {
 
         if (response.ok) {
           toast.success("Login successful!"); // Show success message
-          console.log("Login successful", data);
           setTimeout(()=> {
             navigate("/"); // Navigate to home page
           }, 3000);
-          console.log(data.email)
           data.name = data.email;
           sessionStorage.setItem('userDetails', JSON.stringify(data));
         } else if (response.status === 401) {
