@@ -32,7 +32,7 @@ const BookGrid = () => {
     <div className="book-grid">
       <MenuBar />
       <h1>READ THE SCIENCE OF MEDITATION</h1>
-      <div className="grid-container">
+      <div className="book-grid-container">
         {books.map((book, index) => (
           <div className="book-item" key={index}>
             <img src={book.imageUrl} alt={book.title} />
