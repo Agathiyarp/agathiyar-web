@@ -88,23 +88,22 @@ const MenuBar = () => {
         <img src={mainlogo} alt="Logo" className="logo" />
         <Typography
           sx={!isMobile ? {
-            fontSize: "23px",
-            fontWeight: "bold",
+            fontSize: "20px",
             color: "black",
             flexGrow: 1,
             textAlign: "left",
+            fontFamily: 'Raleway, sans-serif'
           } : {
             fontSize: "14px",
-            fontWeight: "bold",
             color: "black",
             flexGrow: 1,
             textAlign: "left",
+            fontFamily: 'Raleway, sans-serif'
           }}
         >
-          AGATHIYAR PYRAMID <br />
-          DHYANA ASHRAM
+          Agathiyar Pyramid
+          Dhyanam Ashram
           <br />
-          <span className="agathiyar-moto">Mounam - Dhyanam - Gnanam</span>
         </Typography>
 
         { !isMobile &&
