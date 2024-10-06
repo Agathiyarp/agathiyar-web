@@ -3,6 +3,7 @@ package main
 import (
 	"context"
 	"encoding/json"
+	"fmt"
 	"net/http"
 	"regexp"
 
@@ -90,7 +91,7 @@ func connectMongo() {
 	if err != nil {
 		panic(err)
 	}
-
+	fmt.Println("mongoDB connected!!")
 	err = client.Ping(context.TODO(), nil)
 	if err != nil {
 		panic(err)
