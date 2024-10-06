@@ -4,9 +4,12 @@ import (
 	"context"
 	"encoding/json"
 	"fmt"
+	"log"
 	"net/http"
 	"regexp"
+	"strings"
 
+	"github.com/gorilla/handlers"
 	"github.com/gorilla/mux"
 	"github.com/gorilla/sessions"
 	"go.mongodb.org/mongo-driver/bson"
@@ -57,18 +60,42 @@ func isAuthenticated(next http.Handler) http.Handler {
 }
 
 // CORS Middleware
-func cors(next http.Handler) http.Handler {
-	return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
-		w.Header().Set("Access-Control-Allow-Origin", "*")
-		w.Header().Set("Access-Control-Allow-Methods", "GET, POST, OPTIONS")
-		w.Header().Set("Access-Control-Allow-Headers", "Content-Type, Cookie")
+// List of allowed IP addresses
+var allowedIPs = []string{
+	"213.210.37.35", // Replace with actual IPs
+	"http://localhost:3000",
+}
 
-		if r.Method == http.MethodOptions {
-			w.WriteHeader(http.StatusNoContent)
-			return
+// Check if the IP is allowed
+func isIPAllowed(ip string) bool {
+	for _, allowedIP := range allowedIPs {
+		if allowedIP == ip {
+			return true
 		}
+	}
+	return false
+}
 
-		next.ServeHTTP(w, r)
+// CORS middleware
+func corsMiddleware(next http.Handler) http.Handler {
+	return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
+		origin := r.Header.Get("Origin")
+		remoteAddr := strings.Split(r.RemoteAddr, ":")[0] // Extract IP from RemoteAddr
+
+		if isIPAllowed(remoteAddr) {
+			// Set CORS headers
+			w.Header().Set("Access-Control-Allow-Origin", origin)
+			w.Header().Set("Access-Control-Allow-Methods", "GET, POST, PUT, DELETE, OPTIONS")
+			w.Header().Set("Access-Control-Allow-Headers", "Content-Type, Authorization")
+			if r.Method == "OPTIONS" {
+				w.WriteHeader(http.StatusOK)
+				return
+			}
+			// Proceed to the next handler
+			next.ServeHTTP(w, r)
+		} else {
+			http.Error(w, "Forbidden", http.StatusForbidden)
+		}
 	})
 }
 
@@ -206,8 +233,14 @@ func main() {
 	router.HandleFunc("/api/login", loginHandler).Methods("POST")
 	router.HandleFunc("/api/logout", logoutHandler).Methods("POST")
 	router.Handle("/api/protected", isAuthenticated(http.HandlerFunc(protectedHandler))).Methods("GET")
-
-	handler := cors(router)
-
-	http.ListenAndServe(":8080", handler)
+	// Allowed origins (use * for development, or specify the exact frontend URL in production)
+	allowedOrigins := handlers.AllowedOrigins([]string{"http://213.210.37.35:3000", "http://213.210.37.35:8080", "http://localhost:3000", "http://localhost:8080"})
+	allowedMethods := handlers.AllowedMethods([]string{"GET", "POST", "PUT", "DELETE", "OPTIONS"})
+	allowedHeaders := handlers.AllowedHeaders([]string{"Content-Type", "Authorization"})
+	//////////////////////////////////////////
+	// Start the server with CORS settings
+	log.Println("Server starting on port 8080")
+	if err := http.ListenAndServe(":8080", handlers.CORS(allowedOrigins, allowedMethods, allowedHeaders)(router)); err != nil {
+		log.Fatalf("could not start server: %s", err)
+	}
 }
