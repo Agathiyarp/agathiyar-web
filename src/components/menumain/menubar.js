@@ -46,7 +46,7 @@ const MenuBar = () => {
       try {
         const sessionData = sessionStorage.getItem('userDetails');
         const email = sessionData?.email;
-        const response = await fetch("http://localhost:8080/api/logout", {
+        const response = await fetch("http://213.210.37.35:8080/api/logout", {
           method: "POST",
           headers: {
             "Content-Type": "application/json",
