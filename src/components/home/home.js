@@ -13,8 +13,8 @@ import "slick-carousel/slick/slick-theme.css";
 import image1 from "../../images/image1.png";
 import image2 from "../../images/image2.png";
 import image3 from "../../images/image3.png";
-import image4 from "../../images/image4.png";
-import image5 from "../../images/image5.png";
+// import image4 from "../../images/image4.png";
+// import image5 from "../../images/image5.png";
 
 const statements = [
   "To teach meditation and spiritual science to all seekers of the truth.",
@@ -37,9 +37,7 @@ const Home = () => {
   const images = [
     { src: image1, alt: "Slide 1" },
     { src: image2, alt: "Slide 2" },
-    { src: image3, alt: "Slide 3" },
-    { src: image4, alt: "Slide 4" },
-    { src: image5, alt: "Slide 5" },
+    { src: image3, alt: "Slide 3" }
   ];
 
   return (
@@ -60,9 +58,9 @@ const Home = () => {
       {/* Content Section */}
       <div className="mission-statements-container">
         <h2 className="vision-heading">Our Vision</h2>
-        <div className="single-image-container">
+        {/* <div className="single-image-container">
           <img src={image5} alt={"our vision"} className="single-image" />
-        </div>
+        </div> */}
         <ul className="mission-list">
           {statements.map((statement, index) => (
             <li key={index} className="mission-item">
