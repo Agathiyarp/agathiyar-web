@@ -234,7 +234,7 @@ func main() {
 	router.HandleFunc("/api/logout", logoutHandler).Methods("POST")
 	router.Handle("/api/protected", isAuthenticated(http.HandlerFunc(protectedHandler))).Methods("GET")
 	// Allowed origins (use * for development, or specify the exact frontend URL in production)
-	allowedOrigins := handlers.AllowedOrigins([]string{"http://213.210.37.35:3000", "http://213.210.37.35:8080", "http://localhost:3000", "http://localhost:8080"})
+	allowedOrigins := handlers.AllowedOrigins([]string{"https://213.210.37.35:3000", "https://213.210.37.35:8080", "https://www.agathiyarpyramid.org", "http://www.agathiyarpyramid.org", "http://localhost:3000", "http://localhost:8080"})
 	allowedMethods := handlers.AllowedMethods([]string{"GET", "POST", "PUT", "DELETE", "OPTIONS"})
 	allowedHeaders := handlers.AllowedHeaders([]string{"Content-Type", "Authorization"})
 	//////////////////////////////////////////
