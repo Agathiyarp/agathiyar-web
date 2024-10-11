@@ -181,6 +181,7 @@ func registerHandler(w http.ResponseWriter, r *http.Request) {
 
 func loginHandler(w http.ResponseWriter, r *http.Request) {
 	var user User
+	fmt.Println("login start")
 	err := json.NewDecoder(r.Body).Decode(&user)
 	if err != nil || !validateEmail(user.Email) {
 		http.Error(w, "Invalid input", http.StatusBadRequest)
@@ -234,7 +235,8 @@ func main() {
 	router.HandleFunc("/api/logout", logoutHandler).Methods("POST")
 	router.Handle("/api/protected", isAuthenticated(http.HandlerFunc(protectedHandler))).Methods("GET")
 	// Allowed origins (use * for development, or specify the exact frontend URL in production)
-	allowedOrigins := handlers.AllowedOrigins([]string{"https://213.210.37.35:3000", "https://213.210.37.35:8080", "https://www.agathiyarpyramid.org", "http://www.agathiyarpyramid.org", "http://localhost:3000", "http://localhost:8080"})
+	// allowedOrigins := handlers.AllowedOrigins([]string{"https://213.210.37.35:3000", "https://213.210.37.35:8080", "https://www.agathiyarpyramid.org", "http://www.agathiyarpyramid.org", "http://localhost:3000", "http://localhost:8080"})
+	allowedOrigins := handlers.AllowedOrigins([]string{"*"})
 	allowedMethods := handlers.AllowedMethods([]string{"GET", "POST", "PUT", "DELETE", "OPTIONS"})
 	allowedHeaders := handlers.AllowedHeaders([]string{"Content-Type", "Authorization"})
 	//////////////////////////////////////////
