@@ -10,6 +10,7 @@ import Login from './components/login/login';
 import Contact from './components/contactus/contactinfo';
 import Donate from './components/donate/donate';
 import Book from './components/book/book';
+import Booking from './components/booking/booking';
 const App = () => {
 
   return (
@@ -23,6 +24,7 @@ const App = () => {
           <Route path="/contact" element={<Contact />} />
           <Route path="/donate" element={<Donate />} />
           <Route path="/book" element={<Book />} />
+          <Route path="/booking" element={<Booking />} />
         </Routes>
       </Router>
     </div>

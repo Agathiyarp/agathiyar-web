@@ -26,6 +26,7 @@ const MenuBar = () => {
     Home: "/",
     Events: "/events",
     Videos: "/videos",
+    Booking: "/booking",
     ContactUs: "/contact",
     Donate: "/donate",
     About: "/about",
