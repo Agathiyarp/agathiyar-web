@@ -24,23 +24,18 @@ var (
 )
 
 type User struct {
-	FullName        string `json:"fullName"`
+	Name            string `json:"name"`
 	Email           string `json:"email"`
 	PhoneNumber     string `json:"phoneNumber"`
-	BirthDate       string `json:"birthDate"`
-	Gender          string `json:"gender"`
-	Address         string `json:"address"`
-	AddressLine2    string `json:"addressLine2"`
 	Country         string `json:"country"`
-	City            string `json:"city"`
-	PostalCode      string `json:"postalCode"`
+	Username        string `json:"username"`
 	Password        string `json:"password"`
 	ConfirmPassword string `json:"confirmPassword"`
 }
 
 type LoginResponse struct {
-	FullName string `json:"fullName"`
-	Email    string `json:"email"`
+	Name  string `json:"name"`
+	Email string `json:"email"`
 }
 
 type Response struct {

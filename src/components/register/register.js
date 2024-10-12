@@ -7,16 +7,11 @@ import MenuBar from "../menumain/menubar";
 
 const RegistrationForm = () => {
   const [formData, setFormData] = useState({
-    fullName: "",
+    name: "",
     email: "",
     phoneNumber: "",
-    birthDate: "",
-    gender: "male",
-    address: "",
-    addressLine2: "",
     country: "",
-    city: "",
-    postalCode: "",
+    username: "",
     password: "",
     confirmPassword: "",
   });
@@ -26,19 +21,45 @@ const RegistrationForm = () => {
 
   const handleChange = (e) => {
     const { name, value } = e.target;
+    if(name === 'phoneNumber') {
+      const phoneRegex = /^[0-9]{10}$/;  // Adjust the pattern based on your requirement (e.g., country codes)
+    
+      if (!phoneRegex.test(value)) {
+        errors.phoneNumber = 'Invalid phone number. Please enter a 10-digit number.';
+      } else {
+        errors.phoneNumber = '';
+      }
+    }
+    if(name === 'username') {
+      const usernameRegex = /^[a-zA-Z0-9]{4,15}$/;
+
+      if (!usernameRegex.test(value)) {
+        errors.username = 'Username must be 4-15 characters long and can only contain letters and numbers.';
+      } else {
+        errors.username = '';
+      }
+    }
+    console.log(name, 'testv1')
+    if(name === 'name') {
+      const nameRegex = /^[a-zA-Z0-9]{4,15}$/;
+
+      if (!nameRegex.test(value)) {
+        console.log('testv2')
+        errors.name = 'Name must be 4-15 characters long and can only contain letters and numbers.';
+      } else {
+        errors.name = '';
+      }
+    }
     setFormData({ ...formData, [name]: value });
   };
 
   const validateForm = () => {
     const newErrors = {};
-    if (!formData.fullName) newErrors.fullName = "Full name is required";
+    if (!formData.name) newErrors.name = "Name is required";
     if (!formData.email) newErrors.email = "Email is required";
-    if (!formData.phoneNumber) newErrors.phoneNumber = "Phone number is required";
-    if (!formData.birthDate) newErrors.birthDate = "Birth date is required";
-    if (!formData.address) newErrors.address = "Address is required";
+    if (!formData.phoneNumber) newErrors.phoneNumber = "Whatsapp Phone number is required";
     if (!formData.country) newErrors.country = "Country is required";
-    if (!formData.city) newErrors.city = "City is required";
-    if (!formData.postalCode) newErrors.postalCode = "Postal code is required";
+    if (!formData.username) newErrors.username = "Username is required";
     if (!formData.password) newErrors.password = "Password is required";
     if (!formData.confirmPassword) newErrors.confirmPassword = "Confirm password is required";
     if (formData.password !== formData.confirmPassword) newErrors.confirmPassword = "Passwords do not match";
@@ -82,23 +103,23 @@ const RegistrationForm = () => {
     <div className='register-container'>
       <div><MenuBar /></div>
       <section className="container">
-        <header>Registration Form</header>
+        <header>New user registration</header>
         <form onSubmit={handleSubmit} className="form">
           <div className="input-box">
-            <label>Full Name</label>
+            <label>Name</label>
             <input
               type="text"
-              name="fullName"
-              placeholder="Enter full name"
-              value={formData.fullName}
+              name="name"
+              placeholder="Enter name"
+              value={formData.name}
               onChange={handleChange}
               required
             />
-            {errors.fullName && <p className="error-text">{errors.fullName}</p>}
+            {errors.name && <p className="error-text">{errors.name}</p>}
           </div>
 
           <div className="input-box">
-            <label>Email Address</label>
+            <label>Email ID</label>
             <input
               type="email"
               name="email"
@@ -116,120 +137,39 @@ const RegistrationForm = () => {
               <input
                 type="tel"
                 name="phoneNumber"
-                placeholder="Enter phone number"
+                placeholder="Enter Watsapp number"
                 value={formData.phoneNumber}
                 onChange={handleChange}
                 required
               />
               {errors.phoneNumber && <p className="error-text">{errors.phoneNumber}</p>}
             </div>
-            <div className="input-box">
-              <label>Birth Date</label>
-              <input
-                type="date"
-                name="birthDate"
-                value={formData.birthDate}
-                onChange={handleChange}
-                required
-              />
-              {errors.birthDate && <p className="error-text">{errors.birthDate}</p>}
-            </div>
           </div>
 
-          <div className="gender-box">
-            <h3>Gender</h3>
-            <div className="gender-option">
-              <div className="gender">
-                <input
-                  type="radio"
-                  id="check-male"
-                  name="gender"
-                  value="male"
-                  checked={formData.gender === "male"}
-                  onChange={handleChange}
-                />
-                <label htmlFor="check-male">Male</label>
-              </div>
-              <div className="gender">
-                <input
-                  type="radio"
-                  id="check-female"
-                  name="gender"
-                  value="female"
-                  checked={formData.gender === "female"}
-                  onChange={handleChange}
-                />
-                <label htmlFor="check-female">Female</label>
-              </div>
-              <div className="gender">
-                <input
-                  type="radio"
-                  id="check-other"
-                  name="gender"
-                  value="other"
-                  checked={formData.gender === "other"}
-                  onChange={handleChange}
-                />
-                <label htmlFor="check-other">Prefer not to say</label>
-              </div>
-            </div>
-          </div>
-
-          <div className="input-box address">
-            <label>Address</label>
+          <div className="input-box">
+            <label>Country</label>
             <input
               type="text"
-              name="address"
-              placeholder="Enter street address"
-              value={formData.address}
+              name="country"
+              placeholder="Enter Country"
+              value={formData.country}
               onChange={handleChange}
               required
             />
-            {errors.address && <p className="error-text">{errors.address}</p>}
+            {errors.country && <p className="error-text">{errors.country}</p>}
+          </div>
+
+          <div className="input-box">
+            <label>Username</label>
             <input
               type="text"
-              name="addressLine2"
-              placeholder="Enter street address line 2"
-              value={formData.addressLine2}
+              name="username"
+              placeholder="Enter username"
+              value={formData.username}
               onChange={handleChange}
+              required
             />
-            <div className="column">
-              <div className="select-box">
-                <select
-                  name="country"
-                  value={formData.country}
-                  onChange={handleChange}
-                  required
-                >
-                  <option hidden>Country</option>
-                  <option value="America">America</option>
-                  <option value="Japan">Japan</option>
-                  <option value="India">India</option>
-                  <option value="Nepal">Nepal</option>
-                </select>
-                {errors.country && <p className="error-text">{errors.country}</p>}
-              </div>
-              <input
-                type="text"
-                name="city"
-                placeholder="Enter your city"
-                value={formData.city}
-                onChange={handleChange}
-                required
-              />
-              {errors.city && <p className="error-text">{errors.city}</p>}
-            </div>
-            <div className="column">
-              <input
-                type="number"
-                name="postalCode"
-                placeholder="Enter postal code"
-                value={formData.postalCode}
-                onChange={handleChange}
-                required
-              />
-              {errors.postalCode && <p className="error-text">{errors.postalCode}</p>}
-            </div>
+            {errors.username && <p className="error-text">{errors.username}</p>}
           </div>
 
           <div className="input-box">
