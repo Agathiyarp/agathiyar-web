@@ -1,0 +1,249 @@
+/* General styles */
+.room-search-results {
+  font-family: "Arial", sans-serif;
+  color: #333;
+}
+
+.room-search-results__content {
+  display: flex;
+  justify-content: space-between;
+  margin: 20px 0;
+}
+
+/* room List Styles */
+.room-search-results__list {
+  width: 66%;
+  padding-right: 20px;
+}
+
+.room-search-results__header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 20px;
+}
+
+.room-search-results__stats {
+  color: #718096;
+  font-size: 0.875rem;
+}
+
+.room-card {
+  background-color: #fff;
+  border-radius: 0.5rem;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+  padding: 1rem;
+  margin-bottom: 1rem;
+  display: flex;
+  height: 250px;
+}
+
+.room-search-results__stats {
+  color: #555;
+}
+
+.room-card {
+  display: flex;
+  background: white;
+  border-radius: 8px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  padding: 20px;
+  margin-bottom: 20px;
+}
+
+.room-card__image-container {
+  width: 33%;
+  position: relative;
+}
+
+.room-card__image {
+  border-radius: 8px;
+  width: 75%;
+  height: auto;
+}
+
+.room-card__image-counter,
+.room-card__popular-badge {
+  position: absolute;
+  background: rgba(0, 0, 0, 0.5);
+  color: white;
+  font-size: 12px;
+  padding: 4px 6px;
+  border-radius: 4px;
+}
+
+.room-card__image-counter {
+  bottom: 8px;
+  left: 8px;
+}
+
+.room-card__popular-badge {
+  top: 8px;
+  left: 8px;
+}
+
+.room-card__content {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  width: 67%;
+}
+
+.room-card__name {
+  font-size: 1.25rem;
+  font-weight: bold;
+}
+
+.room-card__description {
+  margin-top: 10px;
+  font-size: 0.9rem;
+  color: #555;
+}
+
+.room-card__distance,
+.room-card__score-ratings {
+  font-size: 0.85rem;
+  color: #777;
+}
+
+.room-card__booking {
+  text-align: right;
+}
+
+.room-card__view-deal {
+  background: #38a169; /* Green */
+  color: white;
+  padding: 8px 12px;
+  border-radius: 4px;
+  display: inline-flex;
+  align-items: center;
+  font-weight: bold;
+}
+
+.room-card__view-deal-icon {
+  margin-left: 6px;
+}
+
+/* Map Styles */
+.room-search-results__map-container {
+  background: #f7fafc;
+  border-radius: 8px;
+  height: 100%;
+  position: relative;
+}
+
+.room-search-results__map-controls button {
+  background: white;
+  border: none;
+  padding: 8px;
+  margin: 0;
+  border-radius: 4px;
+  cursor: pointer;
+}
+
+.room-search-results__map-zoom-control {
+  margin-top: 4px;
+}
+
+.room-search-results__map-placeholder {
+  text-align: center;
+  color: #777;
+  margin-bottom: 20px; /* Adds space below the placeholder */
+  padding: 10px; /* Adds padding inside the placeholder */
+}
+
+/* Seat Selection & Booking Summary */
+.grid-cols-15 {
+  display: grid;
+  grid-template-columns: repeat(15, 1fr);
+  gap: 5px;
+}
+
+button {
+  cursor: pointer;
+}
+
+button.p-2 {
+  padding: 20px;
+  text-align: center;
+  font-weight: bold;
+  margin: 5px;
+}
+
+.bg-green-500 {
+  background-color: #38a169; /* Seat selected */
+}
+
+.text-green-500 {
+  color: #38a169; /* Seat not selected */
+}
+
+.bg-pink-500 {
+  background-color: #d53f8c;
+}
+
+/* Responsive Styles */
+@media (max-width: 900px) {
+  .room-search-results__list {
+    width: 100%; /* Full width on tablet */
+    padding-right: 0; /* Remove right padding */
+  }
+
+  .room-card {
+    flex-direction: column; /* Stack image and content vertically */
+  }
+
+  .room-card__image-container {
+    width: 100%; /* Full width for image on tablet */
+  }
+
+  .room-card__content {
+    width: 100%; /* Full width for content on tablet */
+  }
+}
+
+@media (max-width: 600px) {
+  .room-search-results {
+    margin-top: 100px; /* Adjust margin for mobile */
+  }
+
+  .room-search-results__header {
+    flex-direction: column; /* Stack header elements vertically */
+    align-items: flex-start; /* Align items to the start */
+  }
+
+  .room-search-results__sort {
+    margin-bottom: 10px; /* Add margin for sort select on mobile */
+  }
+
+  .room-card {
+    padding: 10px; /* Reduce padding for room cards on mobile */
+  }
+
+  .room-card__name {
+    font-size: 1.1rem; /* Smaller font size on mobile */
+  }
+
+  .room-card__rating,
+  .room-card__description,
+  .room-card__distance,
+  .room-card__score-ratings {
+    font-size: 0.8rem; /* Smaller font sizes on mobile */
+  }
+
+  .room-card__price {
+    font-size: 1.2rem; /* Smaller price font size on mobile */
+  }
+
+  .room-card__view-deal {
+    padding: 6px 10px; /* Reduce padding for view deal button */
+  }
+
+  .grid-cols-15 {
+    grid-template-columns: repeat(5, 1fr); /* Adjust grid for mobile */
+  }
+}
+.border {
+  width: 0.2px; /* Width of the border */
+  height: 100%; /* Full height */
+}

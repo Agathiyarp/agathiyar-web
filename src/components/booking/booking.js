@@ -3,7 +3,7 @@ import Footer from "../Footer";
 import './booking.css';
 import MenuBar from "../menumain/menubar";
 import SearchBar from "./Search/Searchbar";
-import BookingList from './bookinglist/bookinglist';
+import BookingContent from "./bookingContent/bookingContent";
 
 const Booking = () => {
 
@@ -14,7 +14,7 @@ const Booking = () => {
         <SearchBar />
       </div>
       <div>
-      <BookingList />
+      <BookingContent />
       </div>
       <div>
         <Footer />
