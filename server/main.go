@@ -34,8 +34,8 @@ type User struct {
 }
 
 type LoginResponse struct {
-	Name  string `json:"name"`
-	Email string `json:"email"`
+	Name     string `json:"name"`
+	Username string `json:"username"`
 }
 
 type Response struct {
@@ -178,24 +178,24 @@ func loginHandler(w http.ResponseWriter, r *http.Request) {
 	var user User
 	fmt.Println("login start")
 	err := json.NewDecoder(r.Body).Decode(&user)
-	if err != nil || !validateEmail(user.Email) {
+	if err != nil {
 		http.Error(w, "Invalid input", http.StatusBadRequest)
 		return
 	}
 
 	collection := client.Database("userdb").Collection("users")
 	var existingUser User
-	err = collection.FindOne(context.TODO(), bson.M{"email": user.Email}).Decode(&existingUser)
+	err = collection.FindOne(context.TODO(), bson.M{"username": user.Username}).Decode(&existingUser)
 	if err != nil || bcrypt.CompareHashAndPassword([]byte(existingUser.Password), []byte(user.Password)) != nil {
-		http.Error(w, "Invalid email or password", http.StatusUnauthorized)
+		http.Error(w, "Invalid username or password", http.StatusUnauthorized)
 		return
 	}
 
 	session, _ := store.Get(r, "session")
 	session.Values["authenticated"] = true
-	session.Values["email"] = user.Email
+	session.Values["username"] = user.Username
 	session.Save(r, w)
-	response := LoginResponse{Email: user.Email}
+	response := LoginResponse{Username: user.Username}
 	w.WriteHeader(http.StatusOK)
 	json.NewEncoder(w).Encode(response)
 }
@@ -203,7 +203,7 @@ func loginHandler(w http.ResponseWriter, r *http.Request) {
 func logoutHandler(w http.ResponseWriter, r *http.Request) {
 	session, _ := store.Get(r, "session")
 	session.Values["authenticated"] = false
-	session.Values["email"] = ""
+	session.Values["username"] = ""
 	session.Save(r, w)
 
 	response := Response{Message: "Logout successful"}

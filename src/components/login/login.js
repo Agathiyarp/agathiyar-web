@@ -7,9 +7,8 @@ import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 
 const LoginForm = () => {
-  const [email, setEmail] = useState("");
+  const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
-  const [rememberMe, setRememberMe] = useState(false);
   const [errors, setErrors] = useState({});
   const [isLoading, setIsLoading] = useState(false);
   const [apiError, setApiError] = useState("");
@@ -18,11 +17,9 @@ const LoginForm = () => {
 
   const validateForm = () => {
     let formErrors = {};
-    if (!email) {
-      formErrors.email = "Email is required";
-    } else if (!/\S+@\S+\.\S+/.test(email)) {
-      formErrors.email = "Email is invalid";
-    }
+    if (!username) {
+      formErrors.username = "Username or MemberID is required";
+    } 
     if (!password) {
       formErrors.password = "Password is required";
     } else if (password.length < 6) {
@@ -38,12 +35,12 @@ const LoginForm = () => {
       setIsLoading(true);
       setApiError("");
       try {
-        const response = await fetch("https://www.agathiyarpyramid.org/api/login", {
+          const response = await fetch("https://www.agathiyarpyramid.org/api/login", {
           method: "POST",
           headers: {
             "Content-Type": "application/json",
           },
-          body: JSON.stringify({ email, password, rememberMe }),
+          body: JSON.stringify({ username, password }),
         });
         const data = await response.json();
 
@@ -80,36 +77,23 @@ const LoginForm = () => {
           <h2 className="heading">Login</h2>
           <div className="input-container">
             <input
-              type="email"
-              placeholder="Enter Your Email"
-              value={email}
-              onChange={(e) => setEmail(e.target.value)}
+              type="text"
+              placeholder="Enter Username or MemberID"
+              value={username}
+              onChange={(e) => setUsername(e.target.value)}
               className={`input ${errors.email ? "error" : ""}`}
             />
-            {errors.email && <p className="error-text">{errors.email}</p>}
+            {errors.username && <p className="error-text">{errors.username}</p>}
           </div>
           <div className="input-container">
             <input
               type="password"
-              placeholder="Enter Your Password"
+              placeholder="Enter Password"
               value={password}
               onChange={(e) => setPassword(e.target.value)}
               className={`input ${errors.password ? "error" : ""}`}
             />
             {errors.password && <p className="error-text">{errors.password}</p>}
-          </div>
-          <div className="options-container">
-            <label>
-              <input
-                type="checkbox"
-                checked={rememberMe}
-                onChange={() => setRememberMe(!rememberMe)}
-              />
-              Remember Me
-            </label>
-            <a href="/forgot-password" className="forgot-password">
-              Forgot Password?
-            </a>
           </div>
           {apiError && <p className="api-error-text">{apiError}</p>}
           <button

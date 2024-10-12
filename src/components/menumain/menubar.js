@@ -36,10 +36,10 @@ const MenuBar = () => {
 
   const data = sessionStorage.getItem('userDetails');
 
-  if(data && data.length > 0 && JSON.parse(data)?.name) {
+  if(data && data.length > 0 && JSON.parse(data)?.username) {
     delete routes.Login;
     routes.Logout = "";
-    name = JSON.parse(data).name;
+    name = JSON.parse(data).username;
   }
 
   const handleButtonClick = async (text) => {
