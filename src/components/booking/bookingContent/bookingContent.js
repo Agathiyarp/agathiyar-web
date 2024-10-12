@@ -4,14 +4,24 @@ import MenuBar from "../../menumain/menubar"; // Import the MenuBar
 import Footer from "../../Footer";
 import "./bookingContent.css";
 import mainlogo from "../../../images/mainlogo.png"; // Adjust the path as necessary
+import ConfirmModal from "../confirmModal";
 const RoomBook = () => {
   const [selectedSeats, setSelectedSeats] = useState([]);
   const [donationAmount, setDonationAmount] = useState(0);
+  const [openModal, setOpenModal] = useState(false);
 
   const rows = 6;
   const seatsPerRow = 5;
   const seatPrice = 200; // Rs. 200 per seat
   const convenienceFeePercentage = 0.1296; // 12.96%
+
+  const handleOpen = () => {
+    setOpenModal(true);
+  };
+
+  const handleClose = () => {
+    setOpenModal(false);
+  };
 
   const toggleSeat = (seatNumber) => {
     if (selectedSeats.includes(seatNumber)) {
@@ -160,77 +170,48 @@ const RoomBook = () => {
                     <h2 className="text-xl font-bold mb-4">BOOKING SUMMARY</h2>
                     <div className="mb-4">
                       <div className="flex justify-between mb-2">
-                        <span>
-                          Silver Class: G1, G2 ({selectedSeats.length} Tickets)
-                        </span>
-                        <span>Rs. {calculateSubtotal().toFixed(2)}</span>
+                        <span>UserId: </span>
+                        <span>{"test1"}</span>
+                      </div>
+                      <div className="flex justify-between mb-2">
+                        <span>UserName: </span>
+                        <span>{"test2"}</span>
+                      </div>
+                      <div className="flex justify-between mb-2">
+                        <span>Destination: </span>
+                        <span>{"Agathiyar Bhavan"}</span>
+                      </div>
+                      <div className="flex justify-between mb-4">
+                        <span>CheckIn: </span>
+                        <span>{"10/11/2023"}</span>
+                      </div>
+                      <div className="flex justify-between mb-4">
+                        <span>CheckOut: </span>
+                        <span>{"12/11/2023"}</span>
                       </div>
                       <div className="text-gray-500 text-sm">
-                        Akash cinema Lagere
+                        Room type: {"A/C"} ({selectedSeats.length} Rooms)
                       </div>
                     </div>
                     <div className="flex justify-between mb-4">
-                      <span>Convenience fees</span>
+                      <span>Convenience fees: </span>
                       <span>Rs. {calculateConvenienceFee().toFixed(2)}</span>
-                    </div>
-                    <div className="border-t border-gray-300 pt-2 mb-4">
-                      <div className="flex justify-between font-semibold">
-                        <span>Sub total</span>
-                        <span>
-                          Rs.{" "}
-                          {(
-                            calculateSubtotal() + calculateConvenienceFee()
-                          ).toFixed(2)}
-                        </span>
-                      </div>
-                    </div>
-                    <div className="bg-gray-100 p-3 rounded-lg mb-4">
-                      <div className="flex items-center justify-between mb-2">
-                        <div className="flex items-center">
-                          <span className="mr-2">🎗️</span>
-                          <span>Donate to BookAChange</span>
-                        </div>
-                        <span className="text-red-500">
-                          Rs. {donationAmount}
-                          <button
-                            className="ml-2 text-blue-500"
-                            onClick={() =>
-                              setDonationAmount(donationAmount + 2)
-                            }
-                          >
-                            Add Rs. 2
-                          </button>
-                        </span>
-                      </div>
-                      <div className="text-xs text-gray-500">
-                        (₹1 per ticket has been added).
-                      </div>
-                      <div className="text-xs text-blue-500 underline cursor-pointer">
-                        VIEW T&C
-                      </div>
-                    </div>
-                    <div className="mb-4">
-                      <div className="text-sm text-gray-500">
-                        Your current state is TamilNadu
-                      </div>
                     </div>
                     <div className="bg-yellow-100 p-3 rounded-lg mb-4">
                       <div className="flex justify-between font-semibold">
-                        <span>Amount Payable</span>
+                        <span>Amount Payable: </span>
                         <span>Rs. {calculateTotal().toFixed(2)}</span>
                       </div>
                     </div>
-                    <div className="mb-4 text-xs text-gray-500">
-                      By proceeding, I express my consent to complete this
-                      transaction.
-                    </div>
-                    <button className="w-full bg-pink-500 text-white py-3 rounded-lg font-semibold">
+                    <button
+                      onClick={handleOpen}
+                      className="w-full bg-pink-500 text-white py-3 rounded-lg font-semibold"
+                    >
                       Proceed
                     </button>
                     <div className="mt-4 text-xs text-gray-500 text-center">
-                      You can cancel the tickets 4 hour(s) before the show.
-                      Refunds will be done according to{" "}
-                      <span className="text-red-500">Cancellation Policy</span>
+                      If you are not confirming the selected room the booking
+                      will be cancelled after 1 hour
                     </div>
                   </div>
                 </div>
@@ -239,6 +220,7 @@ const RoomBook = () => {
           </div>
         </div>
       </div>
+      {openModal && <ConfirmModal handleClose={handleClose} />}
       <Footer />
     </div>
   );
