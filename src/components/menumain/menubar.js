@@ -5,14 +5,42 @@ import { useNavigate, useLocation } from "react-router-dom";
 import mainlogo from "../../images/mainlogo.png"; // Adjust the path as necessary
 import './menubar.css';
 import { ToastContainer, toast } from 'react-toastify';
+import ProfileMenu from './Profile';
 
 const MenuBar = () => {
   const [isMobile, setIsMobile] = useState(false);
   const [anchorEl, setAnchorEl] = useState(null); // State to control mobile menu
   const isMenuOpen = Boolean(anchorEl);
-  var name = '';
   const navigate = useNavigate();
   const location = useLocation(); // Get the current location for active link highlighting
+
+  const [user, setUser] = useState({
+    name: 'John Doe',
+    profilePicture: 'https://via.placeholder.com/150',
+  });
+
+  const handleLogout = async () => {
+      try {
+        const sessionData = sessionStorage.getItem('userDetails');
+        const username = sessionData?.username;
+        const response = await fetch("https://www.agathiyarpyramid.org/api/logout", {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({ username }),
+        });
+        const data = await response.json();
+        if(data) {
+          toast.success("Logout successful!"); 
+          sessionStorage.setItem('userDetails', '');
+          setUser(null);
+        }
+      } catch(err) {
+        toast.error("Logout failed");
+      }
+      
+  };
 
   const handleResize = () => {
     if (window.innerWidth <= 768) {
@@ -38,32 +66,9 @@ const MenuBar = () => {
 
   if(data && data.length > 0 && JSON.parse(data)?.username) {
     delete routes.Login;
-    routes.Logout = "";
-    name = JSON.parse(data).username;
   }
 
   const handleButtonClick = async (text) => {
-    if (text === 'Logout') {
-      try {
-        const sessionData = sessionStorage.getItem('userDetails');
-        const email = sessionData?.email;
-        const response = await fetch("https://www.agathiyarpyramid.org/api/logout", {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-          },
-          body: JSON.stringify({ email }),
-        });
-        const data = await response.json();
-        if(data) {
-          toast.success("Logout successful!"); 
-          sessionStorage.setItem('userDetails', '');
-        }
-      } catch(err) {
-        toast.error("Logout failed");
-      }
-      
-    }
     navigate(routes[text]);
     setAnchorEl(null); // Close the mobile menu after navigating
   };
@@ -134,6 +139,7 @@ const MenuBar = () => {
               {text}
             </Button>
           ))}
+          {user && (data && JSON.parse(data)?.username) && <ProfileMenu user={user} onLogout={handleLogout} />}
         </div>}
 
         { isMobile &&
@@ -168,7 +174,6 @@ const MenuBar = () => {
           ))}
         </Menu>}
       </Toolbar>
-      <h3 className="welcome-text">{name && `Hello, ${name}`}</h3>
       <ToastContainer position="top-right" autoClose={3000} hideProgressBar={false} closeOnClick pauseOnHover draggable />
     </AppBar>
   );
