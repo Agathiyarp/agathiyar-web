@@ -16,7 +16,7 @@ const MenuBar = () => {
 
   const [user, setUser] = useState({
     name: 'John Doe',
-    profilePicture: 'https://via.placeholder.com/150',
+    profilePicture: mainlogo,
   });
 
   const handleLogout = async () => {
