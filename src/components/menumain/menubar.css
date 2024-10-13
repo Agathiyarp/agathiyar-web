@@ -21,6 +21,7 @@
   height: 90px;
   width: 90px;
   margin-right: 15px;
+  cursor: pointer;
 }
 
 .fixed-header {

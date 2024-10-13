@@ -76,6 +76,10 @@ const MenuBar = () => {
     setAnchorEl(null);
   };
 
+  const imageClickHandler = ()=> {
+    navigate("/"); 
+  }
+
   React.useEffect(() => {
     handleResize(); // Check the screen size on mount
     window.addEventListener('resize', handleResize);
@@ -86,7 +90,7 @@ const MenuBar = () => {
   return (
     <AppBar position="fixed" className="fixed-header" sx={{ backgroundColor: "white" }}>
       <Toolbar disableGutters>
-        <img src={mainlogo} alt="Logo" className="logo" />
+        <img src={mainlogo} alt="Logo" className="logo" onClick={imageClickHandler}/>
         <Typography
           sx={!isMobile ? {
             fontSize: "20px",

@@ -10,9 +10,10 @@ import ImageGallery from "../../components/ImageGallery";
 import MenuBar from "../menumain/menubar"; // Import the MenuBar
 import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
-import image1 from "../../images/image1.png";
-import image2 from "../../images/image2.png";
-import image3 from "../../images/image3.png";
+import image0 from "../../images/image0.png";
+// import image1 from "../../images/image1.png";
+// import image2 from "../../images/image2.png";
+// import image3 from "../../images/image3.png";
 // import image4 from "../../images/image4.png";
 // import image5 from "../../images/image5.png";
 
@@ -25,19 +26,19 @@ const statements = [
 
 const Home = () => {
   const settings = {
-    dots: true,
-    infinite: true,
-    speed: 500,
+    // dots: true,
+    // infinite: true,
+    // speed: 500,
     slidesToShow: 1,
-    slidesToScroll: 1,
-    autoplay: true,
-    autoplaySpeed: 3000,
+    // slidesToScroll: 1,
+    // autoplay: true,
+    // autoplaySpeed: 3000,
   };
 
   const images = [
-    { src: image1, alt: "Slide 1" },
-    { src: image2, alt: "Slide 2" },
-    { src: image3, alt: "Slide 3" }
+    { src: image0, alt: "Slide 1" }
+    // { src: image2, alt: "Slide 2" },
+    // { src: image3, alt: "Slide 3" }
   ];
 
   return (
@@ -46,13 +47,16 @@ const Home = () => {
       <MenuBar /> {/* Use MenuBar here */}
      
       <div className="carousel-container" style={{ marginTop: "64px" }}>
-        <Slider {...settings}>
+        {/* <Slider {...settings}>
           {images.map((image, index) => (
             <div key={index}>
               <img src={image.src} alt={image.alt} className="carousel-image" />
             </div>
           ))}
-        </Slider>
+        </Slider> */}
+        <div key={0}>
+          <img src={image0} alt={image0.alt} className="carousel-image" />
+        </div>
       </div>
 
       {/* Content Section */}
