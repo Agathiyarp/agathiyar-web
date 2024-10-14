@@ -73,6 +73,7 @@
   border-radius: 8px; /* Rounded corners */
   box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1); /* Shadow for depth */
   transition: background-color 0.3s; /* Smooth transition for hover effect */
+  font-family: 'Raleway, sans-serif';
 }
 
 .mission-item:hover {
@@ -100,8 +101,10 @@
 
 .vision-heading {
   color: green !important;
+  font-family: 'Raleway, sans-serif';
 }
 .meditation-heading {
   color: green !important;
   text-align: center;
+  font-family: 'Raleway, sans-serif';
 }

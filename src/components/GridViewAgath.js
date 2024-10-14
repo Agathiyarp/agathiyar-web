@@ -2,10 +2,8 @@ import React from 'react';
 import './GridViewAgath.css';
 import swathayayam from '../images/swathayayam.png'; // Update with your image path
 const GridViewAgath = () => {
-    const spiritualText = `
-      Swadhyayam
-      Reading Spiritual Books
-  
+    const spiritualText1 = 'Reading Spiritual Books';
+    const spiritualText2 = `
       The more we understand our ‘Self’, the more we read spiritual books.
       A student of spirituality must read all the books of all spiritual masters.
       Reading spiritual books hastens our spiritual progress.
@@ -20,7 +18,8 @@ const GridViewAgath = () => {
             </div>
           </div>
           <div className="text-container">
-            <p>{spiritualText}</p>
+            <h3 style={{fontFamily: 'Raleway, sans-serif'}}>{spiritualText1}</h3>
+            <p style={{fontFamily: 'Raleway, sans-serif'}}>{spiritualText2}</p>
           </div>
         </div>
       </div>

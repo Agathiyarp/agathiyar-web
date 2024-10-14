@@ -102,17 +102,18 @@ const MenuBar = () => {
             color: "black",
             flexGrow: 1,
             textAlign: "left",
-            fontFamily: 'Raleway, sans-serif'
+            fontFamily: 'Raleway, sans-serif',
+            fontWeight: "600"
           } : {
             fontSize: "14px",
             color: "black",
             flexGrow: 1,
             textAlign: "left",
-            fontFamily: 'Raleway, sans-serif'
+            fontFamily: 'Raleway, sans-serif',
+            fontWeight: "600"
           }}
         >
-          Agathiyar Pyramid
-          Dhyanam Ashram
+          Agathiyar Pyramid Dhyanam Ashram
           <br />
         </Typography>
 

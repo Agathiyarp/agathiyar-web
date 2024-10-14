@@ -26,7 +26,7 @@ const Meditation = () => {
     return (
       <div className="outer-container">
         <div className="grid-container">
-          <div className="text-container">
+          <div className="text-container-meditation">
             {meditationGuide.map((section, index) => (
               <div key={index}>
                 <h3 className='section-title'>{section.title}</h3>

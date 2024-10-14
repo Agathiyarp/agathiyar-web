@@ -11,15 +11,22 @@
     align-items: flex-start; /* Align items to the top */
   }
   
-  .text-container {
+  .text-container-meditation {
     margin-top: 30px;
     flex: 1; /* Take equal space */
-    padding: 20px; /* Padding inside text section */
+    padding: 10px; /* Padding inside text section */
+    background-color: #e0f7fa;
+    text-align: left;
   }
   
   .bullet-points {
-    list-style-type: disc; /* Use disc style for bullets */
     padding-left: 20px; /* Indent bullets */
+  }
+
+  .bullet-points li {
+    list-style-type: disc; /* Use disc style for bullets */
+    font-family: 'Raleway, sans-serif';
+    padding: 3px;
   }
   
   .border {
@@ -42,6 +49,7 @@
   
   .section-title {
     margin-bottom: 10px;
+    font-family: 'Raleway, sans-serif';
   }
 
   .image {

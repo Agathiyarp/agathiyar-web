@@ -12,8 +12,8 @@ const GridViewVeg = () => {
     <div className="outer-container">
       <div className="grid-container">
         <div className="text-container">
-          <h3>Being a Vegetarian</h3>
-          <p>{vegetarianText}</p>
+          <h3 style={{fontFamily: 'Raleway, sans-serif'}}>Being a Vegetarian</h3>
+          <p style={{fontFamily: 'Raleway, sans-serif'}}>{vegetarianText}</p>
         </div>
         <div className="image-container">
           <div className="photo-frame">

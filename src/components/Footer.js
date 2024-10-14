@@ -6,15 +6,15 @@ const Footer = () => {
     <footer className="footer">
       <div className="footer-content">
         <div className="footer-info">
-          <p>
+          <p style={{fontFamily: 'Raleway, sans-serif'}}>
             Agathiyar Pyramid Dhyana Ashram, Near Ramanaickenpettai, Vaniyambadi,
             Tirupathur District, Tamilnadu - 635801
           </p>
-          <p>Mobile: +91 85250 44990</p>
+          <p style={{fontFamily: 'Raleway, sans-serif'}}>Mobile: +91 85250 44990</p>
         </div>
         <div className="footer-links">
-          <a href="#about">Click Here</a>
-          <a href="https://www.youtube.com" target="_blank" rel="noopener noreferrer">Subscribe us on YouTube</a>
+          <a href="#about" style={{fontFamily: 'Raleway, sans-serif'}}>Click Here</a>
+          <a href="https://www.youtube.com" style={{fontFamily: 'Raleway, sans-serif'}} target="_blank" rel="noopener noreferrer">Subscribe us on YouTube</a>
         </div>
       </div>
       <div className="footer-bottom">

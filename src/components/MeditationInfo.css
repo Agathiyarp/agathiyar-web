@@ -8,6 +8,7 @@
   }
   .meditation-heading {
     color: green !important;
+    font-family: 'Raleway, sans-serif';
   }
   h2 {
     color: #4CAF50; /* Title color */
@@ -21,9 +22,10 @@
     line-height: 1.6; /* Improve readability */
   }
   .benefit-list {
-    list-style-type: disc; /* Bullet points */
     padding-left: 20px; /* Indent the list */
+    font-family: 'Raleway, sans-serif';
   }
   .benefit-list li {
     margin-bottom: 10px; /* Space between list items */
+    list-style-type: disc;
   }
