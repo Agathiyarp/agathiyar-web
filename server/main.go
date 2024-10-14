@@ -31,13 +31,15 @@ type RegisterUser struct {
 	PhoneNumber     string `json:"phoneNumber"`
 	Country         string `json:"country"`
 	Username        string `json:"username"`
+	UserMemberID    string `json:"usermemberid"` //AGP202400001
 	Password        string `json:"password"`
 	ConfirmPassword string `json:"confirmPassword"`
 }
 
 type LoginResponse struct {
-	Name     string `json:"name"`
-	Username string `json:"username"`
+	Name         string `json:"name"`
+	Username     string `json:"username"`
+	UserMemberID string `json:"usermemberid"`
 }
 
 type Response struct {
@@ -54,7 +56,6 @@ type AllUserResponse struct {
 
 type EventRegisterUser struct {
 	EventName    string `json:"eventname"`
-	MemberID     string `json:"memberid"` //AGP202400001
 	Name         string `json:"name"`
 	Email        string `json:"email"`
 	PhoneNumber  string `json:"phoneNumber"`
@@ -125,11 +126,22 @@ func registerHandler(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	collection := client.Database("AgathiyarDB").Collection("Users")
+	// Generate a MemberID
+	registerUser.UserMemberID = GenerateUserID()
 
+	collection := client.Database("AgathiyarDB").Collection("Users")
 	// Check if user already exists
 	var existingUser RegisterUser
-	err = collection.FindOne(context.TODO(), bson.M{"email": registerUser.Email}).Decode(&existingUser)
+	// Define the query to find an existing user by either username or memberID
+	filter := bson.M{
+		"$or": []bson.M{
+			{"username": existingUser.Username},
+			{"usermemberid": existingUser.UserMemberID}, // Assuming you have MemberID in registerUser
+		},
+	}
+	// Attempt to find an existing user
+	err = collection.FindOne(context.TODO(), filter).Decode(&existingUser)
+
 	if err == nil {
 		http.Error(w, "User already exists", http.StatusConflict)
 		return
@@ -174,12 +186,19 @@ func loginHandler(w http.ResponseWriter, r *http.Request) {
 
 	collection := client.Database("AgathiyarDB").Collection("Users")
 
-	// Check if the user exists in the database
+	// Check if the user exists in the database by username or memberID
 	var existingUser RegisterUser
-	err = collection.FindOne(context.TODO(), bson.M{"username": registerUser.Username}).Decode(&existingUser)
+	filter := bson.M{
+		"$or": []bson.M{
+			{"username": registerUser.Username},
+			{"usermemberid": registerUser.Username},
+		},
+	}
+
+	err = collection.FindOne(context.TODO(), filter).Decode(&existingUser)
 	if err == mongo.ErrNoDocuments {
-		log.Printf("loginHandler: User not found: %s", registerUser.Username)
-		http.Error(w, "Invalid username or password", http.StatusUnauthorized)
+		log.Printf("loginHandler: User not found: %s or memberID: %s", registerUser.Username, registerUser.UserMemberID)
+		http.Error(w, "Invalid username, memberID, or password", http.StatusUnauthorized)
 		return
 	} else if err != nil {
 		log.Printf("loginHandler: Error finding user: %v", err)
@@ -190,7 +209,7 @@ func loginHandler(w http.ResponseWriter, r *http.Request) {
 	// Check if the provided password matches the stored password
 	if err := bcrypt.CompareHashAndPassword([]byte(existingUser.Password), []byte(registerUser.Password)); err != nil {
 		log.Printf("loginHandler: Invalid password for user: %s", registerUser.Username)
-		http.Error(w, "Invalid username or password", http.StatusUnauthorized)
+		http.Error(w, "Invalid username, memberID, or password", http.StatusUnauthorized)
 		return
 	}
 
@@ -203,6 +222,7 @@ func loginHandler(w http.ResponseWriter, r *http.Request) {
 	}
 	session.Values["authenticated"] = true
 	session.Values["username"] = registerUser.Username
+	session.Values["usermemberid"] = registerUser.UserMemberID
 
 	if err := session.Save(r, w); err != nil {
 		log.Printf("loginHandler: Error saving session: %v", err)
@@ -210,8 +230,11 @@ func loginHandler(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	// Send a successful response
-	response := LoginResponse{Username: registerUser.Username}
+	// Send a successful response with username and memberID
+	response := LoginResponse{
+		Username:     existingUser.Username,
+		UserMemberID: existingUser.UserMemberID,
+	}
 	w.WriteHeader(http.StatusOK)
 	if err := json.NewEncoder(w).Encode(response); err != nil {
 		log.Printf("loginHandler: Error encoding response: %v", err)
@@ -226,6 +249,7 @@ func logoutHandler(w http.ResponseWriter, r *http.Request) {
 	session, _ := store.Get(r, "session")
 	session.Values["authenticated"] = false
 	session.Values["username"] = ""
+	session.Values["usermemberid"] = ""
 	session.Save(r, w)
 
 	response := Response{Message: "Logout successful"}
@@ -383,7 +407,7 @@ func EventRegistrationHandler(w http.ResponseWriter, r *http.Request) {
 	}
 
 	// Generate a MemberID
-	registration.MemberID = GenerateUserID()
+	//registration.MemberID = GenerateUserID()
 
 	// Insert registration into the new collection
 	collection := client.Database("AgathiyarDB").Collection("Events")

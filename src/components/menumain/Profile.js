@@ -53,7 +53,10 @@ const ProfileMenu = ({ user, onLogout }) => {
           >
             <MenuItem disabled>
               <Typography variant="body1" style={{ whiteSpace: 'pre-line' }}>
-                {`${data && JSON.parse(data)?.username}\n${'Donar: premium'}\n${'Visited: 3'}`}
+                {`Username: ${data && JSON.parse(data)?.username}
+                ${`MemberId: ${JSON.parse(data)?.usermemberid}`}
+                ${'Donar: premium'}
+                ${'Visited: 3'}`}
               </Typography>
             </MenuItem>
             <MenuItem
