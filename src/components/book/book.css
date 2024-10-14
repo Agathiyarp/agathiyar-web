@@ -5,6 +5,11 @@
   margin-top: 80px;
 }
 
+.book-title {
+  text-align: center;
+  font-family: 'Raleway, sans-serif';
+}
+
 .book-grid-container {
   display: grid; /* Enable grid layout */
   grid-template-columns: repeat(auto-fill, minmax(250px, 1fr)); /* Responsive grid */

@@ -1,7 +1,7 @@
 import React from "react";
 import MenuBar from "../menumain/menubar";
 import Footer from "../Footer";
-import ScanImage from "../../images/scanimage.png";
+import ScanImage from "../../images/scan.png";
 import './donate.css';
 
 const Donate = () => {
@@ -14,11 +14,11 @@ const Donate = () => {
     <div className="outer-containers">
       <MenuBar />
       <div className="grid-containers">
-        <div className="text-containers">
+        <div className="text-containers-donate">
           <h2>“ Dharmo Rakshathi Rakshitaha ”</h2>
           <ul>
             {spiritualPoints.map((point, index) => (
-              <li key={index}>{point}</li>
+              <li className="spirtual-list" key={index}>{point}</li>
             ))}
           </ul>
         </div>
@@ -30,10 +30,10 @@ const Donate = () => {
           </div>
         </div>
         <div className="text-container">
-          <h2>Donate</h2>
+          <h2 style={{fontFamily: 'Raleway, sans-serif'}}>Donate</h2>
 
-          <h3>Pay Via QR code / Trust Account Details</h3>
-          <p>
+          <h3 style={{fontFamily: 'Raleway, sans-serif'}}>Pay Via QR code / Trust Account Details</h3>
+          <p style={{fontFamily: 'Raleway, sans-serif'}}>
             The Chennai Pyramid Spiritual Trust
             <br />
             Bank of Baroda, SB ACC.No: 69760100000309
