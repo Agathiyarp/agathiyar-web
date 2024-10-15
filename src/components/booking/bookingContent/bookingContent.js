@@ -5,10 +5,12 @@ import Footer from "../../Footer";
 import "./bookingContent.css";
 import mainlogo from "../../../images/mainlogo.png"; // Adjust the path as necessary
 import ConfirmModal from "../confirmModal";
+import { useNavigate } from "react-router-dom";
 const RoomBook = () => {
   const [selectedSeats, setSelectedSeats] = useState([]);
   const [donationAmount, setDonationAmount] = useState(0);
   const [openModal, setOpenModal] = useState(false);
+  const navigate = useNavigate();
 
   const rows = 6;
   const seatsPerRow = 5;
@@ -23,6 +25,9 @@ const RoomBook = () => {
     setOpenModal(false);
   };
 
+  const registerHandler = ()=> {
+    navigate("/eventregister");
+  }
   const toggleSeat = (seatNumber) => {
     if (selectedSeats.includes(seatNumber)) {
       setSelectedSeats(selectedSeats.filter((seat) => seat !== seatNumber));
@@ -45,7 +50,7 @@ const RoomBook = () => {
   const rooms = [
     {
       id: 1,
-      name: "Fortune Valley View, Manipal - Memb...",
+      name: "Spritual wisdom",
       type: "Rooms",
       description:
         "Travel Desk and Recreation, International Cuisine at Rangoli",
@@ -105,11 +110,6 @@ const RoomBook = () => {
                 <span className="room-card__image-counter absolute bottom-2 left-2 bg-black bg-opacity-50 text-white text-xs px-2 py-1 rounded">
                   1 / {room.id === 2 ? 3 : room.id === 3 ? 52 : 70}
                 </span>
-                {room.popularChoice && (
-                  <span className="room-card__popular-badge absolute top-2 left-2 bg-red-500 text-white text-xs px-2 py-1 rounded">
-                    Popular choice
-                  </span>
-                )}
               </div>
               <div className="room-card__content w-2/3 flex flex-col justify-between">
                 <div>
@@ -121,12 +121,12 @@ const RoomBook = () => {
                   <p className="room-card__description text-sm text-gray-600 mt-1">
                     {room.description}
                   </p>
-                  <p className="room-card__distance text-sm text-gray-600">
-                    {room.distance}
-                  </p>
                 </div>
 
                 <div className="room-card__booking text-right">
+                  <button onClick={registerHandler} className="room-card__view-deal bg-green-600 text-white px-4 py-2 rounded mt-2 flex items-center register">
+                    Registration
+                  </button>
                   <button className="room-card__view-deal bg-green-600 text-white px-4 py-2 rounded mt-2 flex items-center">
                     Booking{" "}
                     <ChevronRight className="room-card__view-deal-icon w-4 h-4 ml-1" />
@@ -141,8 +141,8 @@ const RoomBook = () => {
             <div className="room-search-results__map-placeholder h-full flex items-center justify-center text-gray-500">
               <div className="max-w-4xl mx-auto p-4 font-sans flex flex-col md:flex-row">
                 <div className="w-full md:w-2/3 pr-4">
-                  <h2 className="text-2xl font-bold mb-4">Select Your Rooms</h2>
-                  <div className="mb-4">
+                  <h3 className="text-2xl font-bold mb-4">Select Your Rooms</h3>
+                  <div className="mb-4 booking-rows">
                     {Array.from({ length: rows * seatsPerRow }, (_, index) => {
                       const seatNumber = index + 1;
                       return (
@@ -167,7 +167,7 @@ const RoomBook = () => {
                 </div>
                 <div className="w-full md:w-1/3">
                   <div className="bg-white rounded-lg shadow-md p-4">
-                    <h2 className="text-xl font-bold mb-4">BOOKING SUMMARY</h2>
+                    <h3 className="text-xl font-bold mb-4">BOOKING SUMMARY</h3>
                     <div className="mb-4">
                       <div className="flex justify-between mb-2">
                         <span>UserId: </span>
@@ -205,7 +205,7 @@ const RoomBook = () => {
                     </div>
                     <button
                       onClick={handleOpen}
-                      className="w-full bg-pink-500 text-white py-3 rounded-lg font-semibold"
+                      className="w-full bg-green-500 text-white py-3 rounded-lg font-semibold"
                     >
                       Proceed
                     </button>

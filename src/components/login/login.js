@@ -73,7 +73,7 @@ const LoginForm = () => {
       </div>
       <div className="form-container">
         <form onSubmit={handleSubmit}>
-          <h2 className="heading">Login</h2>
+          <h3 className="heading">User Login</h3>
           <div className="input-container">
             <input
               type="text"
@@ -98,12 +98,12 @@ const LoginForm = () => {
           <button
             type="submit"
             disabled={isLoading}
-            className={`button ${isLoading ? "disabled" : ""}`}
+            className={`button login-btn ${isLoading ? "disabled" : ""}`}
           >
             {isLoading ? "Logging in..." : "Continue"}
           </button>
           <p className="signup-link">
-            Don't have an account? <a href="/registration">Sign Up</a>
+            Don't have an account? <a href="/registration">Register</a>
           </p>
         </form>
       </div>
