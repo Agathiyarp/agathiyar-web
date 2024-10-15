@@ -12,6 +12,7 @@ import Donate from './components/donate/donate';
 import Book from './components/book/book';
 import Booking from './components/booking/booking';
 import Events from './components/events/events';
+import EventRegistrationForm from './components/eventregistration/eventregistration';
 
 const App = () => {
 
@@ -28,6 +29,7 @@ const App = () => {
           <Route path="/book" element={<Book />} />
           <Route path="/events" element={<Events />} />
           <Route path="/booking" element={<Booking />} />
+          <Route path="/eventregister" element={<EventRegistrationForm />} />
         </Routes>
       </Router>
     </div>
