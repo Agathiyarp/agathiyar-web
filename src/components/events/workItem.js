@@ -1,6 +1,6 @@
 import React from 'react';
+import { useNavigate } from "react-router-dom";
 import './workItem.css';
-import eventImage1 from '../../images/ActivityImage.png'
 
 const WorkshopItem = ({
   hostName,
@@ -15,6 +15,11 @@ const WorkshopItem = ({
   language,
   eventImage,
 }) => {
+  
+  const navigate = useNavigate();
+  const handleRegister = ()=> {
+    navigate("/eventregister"); 
+  }
   return (
     <div className="workshop-item">
       <div className="image-and-time">
@@ -62,7 +67,7 @@ const WorkshopItem = ({
         </div>
 
         <div className="register-button">
-          <a href="#" className="btn-register">Register Now</a>
+          <a className="btn-register" onClick={handleRegister}>Register Now</a>
         </div>
       </div>
     </div>

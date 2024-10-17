@@ -12,7 +12,7 @@ const UpcomingWorkshops = () => {
     {
       hostName: "Meditation",
       hostTitle: "Founder, Agathiyar",
-      workshopTitle: "Ultimate Health Challenge",
+      workshopTitle: "Agathiyar Event Program",
       price: 990,
       description:
         "If you want to reach your ultimate peak health, then this workshop is for you. Learn 7 revolutionary habits over a span of 21 days!",
@@ -26,7 +26,7 @@ const UpcomingWorkshops = () => {
     {
       hostName: "Event",
       hostTitle: "Founder, Agathiyar",
-      workshopTitle: "Ultimate Health Challenge",
+      workshopTitle: "Agathiyar Event Program",
       price: 990,
       description:
         "If you want to reach your ultimate peak health, then this workshop is for you. Learn 7 revolutionary habits over a span of 21 days!",

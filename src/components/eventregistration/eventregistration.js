@@ -1,162 +1,211 @@
-import React, { useState } from "react";
-import { ToastContainer, toast } from "react-toastify";
-import "react-toastify/dist/ReactToastify.css";
-import { useNavigate } from "react-router-dom";
-import "./eventregistration.css";
-import MenuBar from "../menumain/menubar";
+import React, { useState } from 'react';
+import { TextField, Button, IconButton, Typography } from '@mui/material';
+import { AddCircle, RemoveCircle } from '@mui/icons-material';
+import reg3 from '../../images/reg3.png';
 
-const EventRegistrationForm = () => {
-  const [formData, setFormData] = useState({
-    name: "Vignesh",
-    email: "vikasthu20@gmail.com",
-    phoneNumber: "9442235355",
-    country: "india",
-    username: "VigneshK",
-    memberid: "AGP202400001",
-    noOfUser: "3",
-    noOfDays: "",
-    amount: "",
-    eventName: "",
-    roomType: "",
-  });
+const EventRegistration = () => {
+  const [members, setMembers] = useState([{ name: '', phone: '', email: '' }]);
+  const [comments, setComments] = useState('');
+  const [errorMessage, setErrorMessage] = useState('');
+  const sessionData = sessionStorage.getItem('userDetails');
+  const memberId = sessionData?.memberid;
 
-  const [errors, setErrors] = useState({});
-  const navigate = useNavigate();
-
-  const handleChange = (e) => {
-    const { name, value } = e.target;
-    if (name === "phoneNumber") {
-      const phoneRegex = /^[0-9]{10}$/; // Adjust the pattern based on your requirement (e.g., country codes)
-
-      if (!phoneRegex.test(value)) {
-        errors.phoneNumber =
-          "Invalid phone number. Please enter a 10-digit number.";
-      } else {
-        errors.phoneNumber = "";
-      }
-    }
-    if (name === "username") {
-      const usernameRegex = /^[a-zA-Z0-9]{4,15}$/;
-
-      if (!usernameRegex.test(value)) {
-        errors.username =
-          "Username must be 4-15 characters long and can only contain letters and numbers.";
-      } else {
-        errors.username = "";
-      }
-    }
-    console.log(name, "testv1");
-    if (name === "name") {
-      const nameRegex = /^[a-zA-Z0-9]{4,15}$/;
-
-      if (!nameRegex.test(value)) {
-        console.log("testv2");
-        errors.name =
-          "Name must be 4-15 characters long and can only contain letters and numbers.";
-      } else {
-        errors.name = "";
-      }
-    }
-    setFormData({ ...formData, [name]: value });
+  const handleInputChange = (index, event) => {
+    const { name, value } = event.target;
+    const newMembers = [...members];
+    newMembers[index][name] = value;
+    setMembers(newMembers);
   };
 
-  const validateForm = () => {
-    const newErrors = {};
-    if (!formData.name) newErrors.name = "Name is required";
-    if (!formData.email) newErrors.email = "Email is required";
-    if (!formData.phoneNumber)
-      newErrors.phoneNumber = "Whatsapp Phone number is required";
-    if (!formData.country) newErrors.country = "Country is required";
-    if (!formData.username) newErrors.username = "Username is required";
-    if (!formData.password) newErrors.password = "Password is required";
-    if (!formData.confirmPassword)
-      newErrors.confirmPassword = "Confirm password is required";
-    if (formData.password !== formData.confirmPassword)
-      newErrors.confirmPassword = "Passwords do not match";
-
-    return newErrors;
+  const addMember = () => {
+    if (members.length < 3) {
+      setMembers([...members, { name: '', phone: '', email: '' }]);
+    }
   };
 
-  const handleSubmit = async (e) => {
-    e.preventDefault();
-    const formErrors = validateForm();
+  const removeMember = (index) => {
+    const newMembers = members.filter((_, i) => i !== index);
+    setMembers(newMembers);
+  };
 
-    if (Object.keys(formErrors).length > 0) {
-      setErrors(formErrors);
-      return;
+  const handleCommentsChange = (event) => {
+    if (event.target.value.length <= 250) {
+      setComments(event.target.value);
     }
+  };
 
-    try {
-      const response = await fetch(
-        "https://www.agathiyarpyramid.org/api/register",
-        {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-          },
-          body: JSON.stringify(formData),
-        }
-      );
-
-      if (!response.ok) {
-        throw new Error("Network response was not ok");
+  const validateFields = () => {
+    for (const member of members) {
+      if (!member.name || !/^[a-zA-Z\s]+$/.test(member.name)) {
+        setErrorMessage('Name must contain only letters and be non-empty.');
+        return false;
       }
-
-      const data = await response.json();
-      console.log("Success:", data);
-      toast.success("Registration successful!");
-      navigate("/login"); // Redirect to login on success
-    } catch (error) {
-      console.error("Error:", error);
-      toast.error("Registration failed. User Already Register");
+      if (!member.phone || !/^\d{10}$/.test(member.phone)) {
+        setErrorMessage('Phone number must be 10 digits.');
+        return false;
+      }
+      if (!member.email || !/\S+@\S+\.\S+/.test(member.email)) {
+        setErrorMessage('Invalid email format.');
+        return false;
+      }
     }
+    setErrorMessage('');
+    return true;
+  };
+
+  const handleSubmit = (event) => {
+    console.log(members, comments); // make api call here.
+    event.preventDefault();
   };
 
   return (
-    <div className="register-container">
-      <div>
-        <MenuBar />
-      </div>
-      <section className="container">
-        <header>Event Registration</header>
-        <form onSubmit={handleSubmit} className="form">
-          {/* <div className="input-box-event">
-            <label>Name: {formData.name}</label>
+    <div style={styles.backgroundContainer}>
+      <div style={styles.formContainer}>
+        <h3 style={styles.heading}>
+          Event Registration
+        </h3>
+        <form onSubmit={handleSubmit}>
+          {members.map((member, index) => (
+            <div key={index} style={styles.memberRow}>
+              <h3 style={styles.memberTitle}>
+                Member Id: {'AGP202410000'}
+              </h3>
+              <div>
+                <TextField
+                  fullWidth
+                  label="Name"
+                  name="name"
+                  value={member.name}
+                  onChange={(event) => handleInputChange(index, event)}
+                  required
+                  error={!/^[a-zA-Z\s]*$/.test(member.name) && member.name !== ''}
+                  helperText="Name must only contain letters."
+                  style={styles.textField}
+                />
+              </div>
+              <div>
+                <TextField
+                  fullWidth
+                  label="Phone Number"
+                  name="phone"
+                  value={member.phone}
+                  onChange={(event) => handleInputChange(index, event)}
+                  required
+                  error={!/^\d{10}$/.test(member.phone) && member.phone !== ''}
+                  helperText="Phone number must be 10 digits."
+                  style={styles.textField}
+                />
+              </div>
+              <div>
+                <TextField
+                  fullWidth
+                  label="Email"
+                  name="email"
+                  value={member.email}
+                  onChange={(event) => handleInputChange(index, event)}
+                  required
+                  error={!/\S+@\S+\.\S+/.test(member.email) && member.email !== ''}
+                  helperText="Please enter a valid email."
+                  style={styles.textField}
+                />
+              </div>
+              {members.length > 1 && (
+                <IconButton onClick={() => removeMember(index)} style={styles.removeButton}>
+                  <RemoveCircle />
+                </IconButton>
+              )}
+            </div>
+          ))}
+
+          {members.length < 3 && (
+            <div style={styles.addButtonContainer}>
+              <Button
+                variant="outlined"
+                color="primary"
+                startIcon={<AddCircle />}
+                onClick={addMember}
+              >
+                Add Member
+              </Button>
+            </div>
+          )}
+
+          <div style={styles.commentsContainer}>
+            <TextField
+              fullWidth
+              label="Comments"
+              multiline
+              rows={4}
+              value={comments}
+              onChange={handleCommentsChange}
+              helperText={`${comments.length}/250`}
+              inputProps={{ maxLength: 250 }}
+              style={styles.textField}
+            />
           </div>
 
-          <div className="input-box-event">
-            <label>Email ID: {formData.email}</label>
-          </div>
+          {errorMessage && (
+            <Typography color="error" align="center" style={{ marginBottom: '20px' }}>
+              {errorMessage}
+            </Typography>
+          )}
 
-          <div className="input-box-event">
-            <label>Phone Number: {formData.phoneNumber}</label>
-          </div>
-
-          <div className="input-box-event">
-            <label>Country: {formData.country}</label>
-          </div> */}
-
-          <div className="input-box-event">
-            <label>Username: {formData.username}</label>
-          </div>
-
-          <div className="input-box-event">
-            <label>Member ID: {formData.memberid}</label>
-          </div>
-
-          <button type="submit">Submit</button>
+          <Button type="submit" variant="contained" color="primary" style={styles.submitButton}>
+            Submit
+          </Button>
         </form>
-      </section>
-      <ToastContainer
-        position="top-right"
-        autoClose={3000}
-        hideProgressBar={false}
-        closeOnClick
-        pauseOnHover
-        draggable
-      />
+      </div>
     </div>
   );
 };
 
-export default EventRegistrationForm;
+const styles = {
+  backgroundContainer: {
+    backgroundImage: `url(${reg3})`, // Replace with your image URL
+    backgroundSize: 'cover',
+    backgroundPosition: 'center',
+    display: 'flex',
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+  heading: {
+    textAlign: 'center',
+    fontSize: '22px'
+  },
+  formContainer: {
+    backgroundColor: 'rgba(255, 255, 255, 0.85)',
+    padding: '30px',
+    borderRadius: '10px',
+    width: '100%',
+    maxWidth: '500px',
+    boxShadow: '0 4px 8px rgba(0, 0, 0, 0.1)',
+  },
+  memberRow: {
+    marginBottom: '20px',
+  },
+  memberTitle: {
+    marginBottom: '10px',
+    color: '#000',
+    fontWeight: '400'
+  },
+  textField: {
+    marginBottom: '15px',
+  },
+  addButtonContainer: {
+    display: 'flex',
+    justifyContent: 'center',
+    marginBottom: '20px',
+  },
+  commentsContainer: {
+    marginBottom: '20px',
+  },
+  submitButton: {
+    display: 'block',
+    width: '100%',
+  },
+  removeButton: {
+    marginTop: '10px',
+  },
+};
+
+export default EventRegistration;
