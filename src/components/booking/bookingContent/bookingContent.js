@@ -7,7 +7,17 @@ import ConfirmModal from "../confirmModal";
 import RoomSelection from "./roomSelection";
 const RoomBook = () => {
   const [openModal, setOpenModal] = useState(false);
-  const [selectedRoom, setSelectedRoom] = useState(null);
+  const [selectedRoom, setSelectedRoom] = useState({
+    id: 1,
+    name: "Room Type I(2 beds, A/C Room)",
+    type: "A/C Room",
+    description:
+      "Family Friendly Atmosphere, Explore Meditaiton, Food and Swadhyayam",
+    score: { value: 8.3, text: "Very good", ratings: 775 },
+    price: { value: 17532, nights: 26, total: 455825 },
+    image: mainlogo,
+    noOfAvailableRooms: 30
+  });
 
   const handleOpen = () => {
     setOpenModal(true);
@@ -31,7 +41,7 @@ const RoomBook = () => {
       score: { value: 8.3, text: "Very good", ratings: 775 },
       price: { value: 17532, nights: 26, total: 455825 },
       image: mainlogo,
-      noOfAvailableRooms: 10
+      noOfAvailableRooms: 30
     },
     {
       id: 2,
@@ -54,7 +64,7 @@ const RoomBook = () => {
       price: { value: 10541, nights: 26, total: 274070 },
       image: mainlogo,
       popularChoice: true,
-      noOfAvailableRooms: 30
+      noOfAvailableRooms: 10
     },
     {
       id: 4,
