@@ -54,8 +54,10 @@ const EventRegistration = () => {
   };
 
   const handleSubmit = (event) => {
-    console.log(members, comments); // make api call here.
     event.preventDefault();
+    if (validateFields()) {
+      alert('Form submitted successfully!', event.target);
+    }
   };
 
   return (

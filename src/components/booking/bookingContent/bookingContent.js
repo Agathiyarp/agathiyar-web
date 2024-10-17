@@ -124,9 +124,9 @@ const RoomBook = () => {
                 </div>
 
                 <div className="room-card__booking text-right">
-                  <button onClick={registerHandler} className="room-card__view-deal bg-green-600 text-white px-4 py-2 rounded mt-2 flex items-center register">
+                  {/* <button onClick={registerHandler} className="room-card__view-deal bg-green-600 text-white px-4 py-2 rounded mt-2 flex items-center register">
                     Registration
-                  </button>
+                  </button> */}
                   <button className="room-card__view-deal bg-green-600 text-white px-4 py-2 rounded mt-2 flex items-center">
                     Room Booking
                     <ChevronRight className="room-card__view-deal-icon w-4 h-4 ml-1" />
