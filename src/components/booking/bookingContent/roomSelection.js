@@ -133,7 +133,13 @@ const RoomSelection = ({selectedRoom, searchData}) => {
               </div>
             </div>
           </div>
-          {openModal && <ConfirmModal handleClose={handleClose} />}
+          {openModal && <ConfirmModal 
+          user={'manoj'}
+          roomDetails={{
+            id: 'TypeA-1', // Replace with your room ID logic
+            type: 'TypeA' // Room type from selectedRoom
+          }}
+          handleClose={handleClose}/>}
         </div>
   );
 };

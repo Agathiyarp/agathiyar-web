@@ -476,7 +476,7 @@ func validateRoomType(roomType string) bool {
 
 // Check how many rooms a user has booked
 func countBookedRooms(user string) (int, error) {
-	collection := client.Database("hotel").Collection("rooms")
+	collection := client.Database("AgathiyarDB").Collection("Rooms")
 	count, err := collection.CountDocuments(context.TODO(), bson.M{"user": user, "isBooked": true})
 	return int(count), err
 }

@@ -1,7 +1,8 @@
 import React, {useState} from 'react';
 import { Modal, Box, Button, Typography, Checkbox,FormControlLabel } from '@mui/material';
+import axios from 'axios';
 
-const ConfirmModal = ({handleClose}) => {
+const ConfirmModal = ({handleClose, user, roomDetails}) => {
 
   const [isChecked, setIsChecked] = useState(false);
 
@@ -10,8 +11,21 @@ const ConfirmModal = ({handleClose}) => {
   };
 
   // Handle the confirmation action
-  const handleConfirm = () => {
-    console.log('Proceed confirmed');
+  const handleConfirm = async () => {
+    const requestBody = {
+      user: user,
+      id: roomDetails.id, // Ensure roomDetails.id is passed as a prop
+      type: roomDetails.type, // Ensure roomDetails.type is passed as a prop
+    };
+
+    try {
+      const response = await axios.post('https://agathiyarpyramid.org/api/book', requestBody);
+      console.log('Booking confirmed:', response.data);
+      // You might want to do something after the booking is confirmed
+    } catch (error) {
+      console.error('Error confirming booking:', error);
+    }
+
     handleClose();
   };
 
