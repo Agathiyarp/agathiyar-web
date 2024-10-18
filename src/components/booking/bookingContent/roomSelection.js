@@ -1,7 +1,7 @@
 import React, { useState  } from "react"; // Ensure useState is imported
 import "./bookingContent.css";
 import ConfirmModal from "../confirmModal";
-const RoomSelection = ({selectedRoom}) => {
+const RoomSelection = ({selectedRoom, searchData}) => {
   const [selectedSeats, setSelectedSeats] = useState([]);
   const [donationAmount, setDonationAmount] = useState(0);
   const [openModal, setOpenModal] = useState(false);
@@ -39,8 +39,15 @@ const RoomSelection = ({selectedRoom}) => {
     return calculateSubtotal() + calculateConvenienceFee() + donationAmount;
   };
 
-  const handleRoomSelection = ()=> {
-    
+  const formatDate = (date) => {
+    if (date?.$d instanceof Date && !isNaN(date?.$d)) {
+      return date?.$d.toLocaleDateString('en-GB', {
+        day: '2-digit',
+        month: '2-digit',
+        year: '2-digit',
+      });
+    }
+    return 'Invalid Date';
   };
 
   return (
@@ -87,15 +94,15 @@ const RoomSelection = ({selectedRoom}) => {
                       </div>
                       <div className="flex justify-between mb-2">
                         <span>Destination: </span>
-                        <span>{"Agathiyar Bhavan"}</span>
+                        <span>{searchData?.destination}</span>
                       </div>
                       <div className="flex justify-between mb-4">
                         <span>CheckIn: </span>
-                        <span>{"10/11/2023"}</span>
+                        <span>{formatDate(searchData?.checkInDate)}</span>
                       </div>
                       <div className="flex justify-between mb-4">
                         <span>CheckOut: </span>
-                        <span>{"12/11/2023"}</span>
+                        <span>{formatDate(searchData?.checkOutDate)}</span>
                       </div>
                       <div className="text-gray-500 text-sm">
                         Type: {selectedRoom?.name}

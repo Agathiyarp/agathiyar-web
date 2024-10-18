@@ -8,10 +8,18 @@ import CalendarTodayIcon from '@mui/icons-material/CalendarToday';
 
 const destinations = ['Agathiyar Bhavan', 'Pathriji Bhavan'];
 
-const Searchbar = () => {
+const Searchbar = ({onSearch}) => {
   const [destination, setDestination] = useState('Agathiyar Bhavan');
   const [checkInDate, setCheckInDate] = useState(null);
   const [checkOutDate, setCheckOutDate] = useState(null);
+
+  const handleSearchClick = () => {
+    onSearch({
+      destination,
+      checkInDate,
+      checkOutDate
+    });
+  };
 
   return (
     <Box sx={{ display: 'flex', gap: 2, padding: 2, alignItems: 'center', backgroundColor: '#f1f1f1', borderRadius: 2 }}>
@@ -78,6 +86,7 @@ const Searchbar = () => {
         color="primary"
         startIcon={<Search />}
         sx={{ height: 56 }}
+        onClick={handleSearchClick}
       >
         Search
       </Button>
