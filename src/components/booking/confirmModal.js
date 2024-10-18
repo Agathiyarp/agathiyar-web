@@ -1,7 +1,13 @@
-import React from 'react';
-import { Modal, Box, Button, Typography } from '@mui/material';
+import React, {useState} from 'react';
+import { Modal, Box, Button, Typography, Checkbox,FormControlLabel } from '@mui/material';
 
 const ConfirmModal = ({handleClose}) => {
+
+  const [isChecked, setIsChecked] = useState(false);
+
+  const handleCheckboxChange = (event) => {
+    setIsChecked(event.target.checked);
+  };
 
   // Handle the confirmation action
   const handleConfirm = () => {
@@ -38,6 +44,18 @@ const ConfirmModal = ({handleClose}) => {
           <Typography id="modal-description" sx={{ mt: 2 }}>
             Are you sure you want to proceed with this booking?
           </Typography>
+          <Box mt={2}>
+          <FormControlLabel
+            control={
+              <Checkbox
+                checked={isChecked}
+                onChange={handleCheckboxChange}
+                color="primary"
+              />
+            }
+            label="I agree to the Terms and Conditions"
+          />
+        </Box>
           <Box mt={3}>
             <Button
               variant="contained"

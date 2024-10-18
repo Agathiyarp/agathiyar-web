@@ -3,10 +3,8 @@ import { ChevronRight } from "lucide-react";
 import MenuBar from "../../menumain/menubar"; // Import the MenuBar
 import "./bookingContent.css";
 import mainlogo from "../../../images/mainlogo.png"; // Adjust the path as necessary
-import ConfirmModal from "../confirmModal";
 import RoomSelection from "./roomSelection";
 const RoomBook = () => {
-  const [openModal, setOpenModal] = useState(false);
   const [selectedRoom, setSelectedRoom] = useState({
     id: 1,
     name: "Room Type I(2 beds, A/C Room)",
@@ -18,14 +16,6 @@ const RoomBook = () => {
     image: mainlogo,
     noOfAvailableRooms: 30
   });
-
-  const handleOpen = () => {
-    setOpenModal(true);
-  };
-
-  const handleClose = () => {
-    setOpenModal(false);
-  };
 
   const handleRoomSelect = (room) => {
     setSelectedRoom(room);
@@ -137,7 +127,6 @@ const RoomBook = () => {
         </div>
         <RoomSelection selectedRoom={selectedRoom}/>
       </div>
-      {openModal && <ConfirmModal handleClose={handleClose} />}
     </div>
   );
 };

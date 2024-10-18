@@ -1,5 +1,6 @@
 import React, { useState  } from "react"; // Ensure useState is imported
 import "./bookingContent.css";
+import ConfirmModal from "../confirmModal";
 const RoomSelection = ({selectedRoom}) => {
   const [selectedSeats, setSelectedSeats] = useState([]);
   const [donationAmount, setDonationAmount] = useState(0);
@@ -12,6 +13,10 @@ const RoomSelection = ({selectedRoom}) => {
 
   const handleOpen = () => {
     setOpenModal(true);
+  };
+
+  const handleClose = () => {
+    setOpenModal(false);
   };
 
   const toggleSeat = (seatNumber) => {
@@ -121,6 +126,7 @@ const RoomSelection = ({selectedRoom}) => {
               </div>
             </div>
           </div>
+          {openModal && <ConfirmModal handleClose={handleClose} />}
         </div>
   );
 };
