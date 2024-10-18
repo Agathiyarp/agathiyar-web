@@ -62,10 +62,11 @@ const ConfirmModal = ({handleClose}) => {
               color="primary"
               onClick={handleConfirm}
               sx={{ mr: 2 }}
+              disabled={!isChecked}
             >
               Yes, Proceed
             </Button>
-            <Button variant="outlined" color="secondary" onClick={handleClose}>
+            <Button variant="outlined" color="#38a169" onClick={handleClose}>
               Cancel
             </Button>
           </Box>
