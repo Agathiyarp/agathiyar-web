@@ -13,6 +13,7 @@ import Book from './components/book/book';
 import Booking from './components/booking/booking';
 import Events from './components/events/events';
 import EventRegistrationForm from './components/eventregistration/eventregistration';
+import MobileProfileMenu from './components/menumain/mobileProfileMenu';
 
 const App = () => {
 
@@ -30,6 +31,7 @@ const App = () => {
           <Route path="/events" element={<Events />} />
           <Route path="/booking" element={<Booking />} />
           <Route path="/eventregister" element={<EventRegistrationForm />} />
+          <Route path="/profile" element={<MobileProfileMenu />} />
         </Routes>
       </Router>
     </div>
