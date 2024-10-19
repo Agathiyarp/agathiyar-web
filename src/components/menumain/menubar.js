@@ -8,7 +8,6 @@ import {
   Menu,
   MenuItem,
 } from "@mui/material";
-import MobileProfileMenu from "./mobileProfileMenu";
 import MoreVertIcon from "@mui/icons-material/MoreVert"; // 3-dots icon for mobile
 import { useNavigate, useLocation } from "react-router-dom";
 import mainlogo from "../../images/mainlogo.png"; // Adjust the path as necessary

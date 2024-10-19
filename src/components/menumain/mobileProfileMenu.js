@@ -1,5 +1,5 @@
 import React from "react";
-import { MenuItem, Avatar, Typography, Box, Divider } from "@mui/material";
+import { MenuItem, Avatar, Typography, Box } from "@mui/material";
 import { useNavigate } from "react-router-dom";
 import "./mobileProfileMenu.css";
 import mainlogo from "../../images/mainlogo.png";
