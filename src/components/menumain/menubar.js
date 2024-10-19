@@ -71,13 +71,16 @@ const MenuBar = () => {
     Donate: "/donate",
     About: "/about",
     Books: "/book",
-    Login: "/login",
+    Login: "/login"
   };
 
   const data = sessionStorage.getItem("userDetails");
 
   if (data && data.length > 0 && JSON.parse(data)?.username) {
     delete routes.Login;
+    if(isMobile) {
+      routes.Profile = "/profile";
+    }
   }
 
   const handleButtonClick = async (text) => {
@@ -209,9 +212,6 @@ const MenuBar = () => {
                 {text}
               </MenuItem>
             ))}
-            {(
-              <MobileProfileMenu onLogout={handleLogout} />
-            )}
           </Menu>
         )}
       </Toolbar>

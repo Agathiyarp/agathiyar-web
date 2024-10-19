@@ -51,38 +51,32 @@ const MobileProfileMenu = ({ onLogout }) => {
           <Avatar
             src={user.profilePicture}
             alt={user.name}
-            sx={{ marginRight: "10px" }}
+            sx={{ marginRight: "10px", width: '150px', height: '150px' }}
           />
           <Box>
-            <Typography variant="subtitle1">{user.name}</Typography>
-            <Typography variant="body2" color="textSecondary">
+            <Typography variant="h5" color="info" sx={{marginBottom: '10px'}}>{user.name}</Typography>
+            <Typography variant="body2" color="success">
               Member ID: {user.memberId}
             </Typography>
-            <Typography variant="body2" color="textSecondary">
+            <Typography variant="body2" color="success">
               Visited: {user.visited} times
             </Typography>
-            <Typography variant="body2" color="textSecondary">
+            <Typography variant="body2" color="success">
               Donor: {user.donartype}
             </Typography>
           </Box>
         </MenuItem>
       )}
-      <Divider />
-      <MenuItem
-        sx={{
-          color: "#38a169", // Change the text color
-          fontWeight: "bold", // Make the font bold
-          "&:hover": {
-            backgroundColor: "#8bedb8", // Light red background on hover
-          },
-          justifyContent: "center",
-          margin: "20px",
-        }}
-        onClick={handleLogout}
-      >
-        Logout
-      </MenuItem>
-      <Divider />
+      <Box sx={{ display: 'flex', justifyContent: 'center', mt: 2, color: "#38a169"}}>
+        <Button
+          variant="outlined"
+          onClick={handleLogout}
+          fullWidth={true} // Full width button for mobile view
+          color={"#38a169"}
+        >
+          Logout
+        </Button>
+      </Box>
       <Box sx={{ display: 'flex', justifyContent: 'center', mt: 2 }}>
         <Button
           variant="outlined"
