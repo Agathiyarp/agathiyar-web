@@ -14,6 +14,7 @@ import Booking from './components/booking/booking';
 import Events from './components/events/events';
 import EventRegistrationForm from './components/eventregistration/eventregistration';
 import MobileProfileMenu from './components/menumain/mobileProfileMenu';
+import VideoList from './components/videos/VideoList';
 
 const App = () => {
 
@@ -32,6 +33,7 @@ const App = () => {
           <Route path="/booking" element={<Booking />} />
           <Route path="/eventregister" element={<EventRegistrationForm />} />
           <Route path="/profile" element={<MobileProfileMenu />} />
+          <Route path="/videos" element={<VideoList />} />
         </Routes>
       </Router>
     </div>

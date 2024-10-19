@@ -4,6 +4,7 @@ import { useNavigate } from "react-router-dom";
 import "./mobileProfileMenu.css";
 import mainlogo from "../../images/mainlogo.png";
 import { toast } from 'react-toastify';
+import Button from '@mui/material/Button';
 
 const MobileProfileMenu = ({ onLogout }) => {
   const navigate = useNavigate();
@@ -38,6 +39,9 @@ const MobileProfileMenu = ({ onLogout }) => {
     } catch (err) {
       toast.error("Logout failed");
     }
+  };
+  const handleGoBack = () => {
+    navigate('/'); // Navigate to the home page
   };
 
   return (
@@ -79,6 +83,15 @@ const MobileProfileMenu = ({ onLogout }) => {
         Logout
       </MenuItem>
       <Divider />
+      <Box sx={{ display: 'flex', justifyContent: 'center', mt: 2 }}>
+        <Button
+          variant="outlined"
+          onClick={handleGoBack}
+          fullWidth={true} // Full width button for mobile view
+        >
+          Back to Home
+        </Button>
+      </Box>
     </>
   );
 };
