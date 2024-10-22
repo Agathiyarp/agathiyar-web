@@ -2,7 +2,7 @@ import React from "react";
 import { MenuItem, Avatar, Typography, Box } from "@mui/material";
 import { useNavigate } from "react-router-dom";
 import "./mobileProfileMenu.css";
-import mainlogo from "../../images/mainlogo.png";
+import profile from "../../images/profileImage.png";
 import { toast } from 'react-toastify';
 import Button from '@mui/material/Button';
 
@@ -14,7 +14,7 @@ const MobileProfileMenu = ({ onLogout }) => {
     memberId: "AGP202400001",
     visited: 10,
     donartype: "Premium",
-    profilePicture: mainlogo,
+    profilePicture: profile,
   };
 
   const handleLogout = async () => {

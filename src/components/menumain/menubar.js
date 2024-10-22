@@ -8,9 +8,10 @@ import {
   Menu,
   MenuItem,
 } from "@mui/material";
-import MoreVertIcon from "@mui/icons-material/MoreVert"; // 3-dots icon for mobile
+import MoreVertIcon from "@mui/icons-material/MoreVert";
 import { useNavigate, useLocation } from "react-router-dom";
-import mainlogo from "../../images/mainlogo.png"; // Adjust the path as necessary
+import mainlogo from "../../images/mainlogo.png";
+import profile from "../../images/profileImage.png";
 import "./menubar.css";
 import { ToastContainer, toast } from "react-toastify";
 import ProfileMenu from "./Profile";
@@ -24,7 +25,7 @@ const MenuBar = () => {
 
   const [user, setUser] = useState({
     name: "",
-    profilePicture: mainlogo,
+    profilePicture: profile,
   });
 
   const handleLogout = async () => {

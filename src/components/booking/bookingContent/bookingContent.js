@@ -1,8 +1,11 @@
-import React, { useState } from "react"; // Ensure useState is imported
+import React, { useState } from "react";
 import { ChevronRight } from "lucide-react";
-import MenuBar from "../../menumain/menubar"; // Import the MenuBar
+import MenuBar from "../../menumain/menubar";
 import "./bookingContent.css";
-import mainlogo from "../../../images/mainlogo.png"; // Adjust the path as necessary
+import Room1 from "../../../images/Room1.png";
+import Room2 from "../../../images/Room2.png";  
+import Room3 from "../../../images/Room3.png"; 
+import Room4 from "../../../images/Room4.png"; 
 import RoomSelection from "./roomSelection";
 const RoomBook = ({data}) => {
   const [selectedRoom, setSelectedRoom] = useState({
@@ -13,7 +16,7 @@ const RoomBook = ({data}) => {
       "Family Friendly Atmosphere, Explore Meditaiton, Food and Swadhyayam",
     score: { value: 8.3, text: "Very good", ratings: 775 },
     price: { value: 17532, nights: 26, total: 455825 },
-    image: mainlogo,
+    image: Room1,
     noOfAvailableRooms: 30
   });
 
@@ -30,7 +33,7 @@ const RoomBook = ({data}) => {
         "Family Friendly Atmosphere, Explore Meditaiton, Food and Swadhyayam",
       score: { value: 8.3, text: "Very good", ratings: 775 },
       price: { value: 17532, nights: 26, total: 455825 },
-      image: mainlogo,
+      image: Room1,
       noOfAvailableRooms: 30
     },
     {
@@ -41,7 +44,7 @@ const RoomBook = ({data}) => {
         "Family Friendly Atmosphere, Explore Meditaiton, Food and Swadhyayam",
       score: { value: 5.5, text: "", ratings: 6 },
       price: { value: 23320, nights: 26, total: 606314 },
-      image: mainlogo,
+      image: Room2,
       noOfAvailableRooms: 20
     },
     {
@@ -52,7 +55,7 @@ const RoomBook = ({data}) => {
         "Family Friendly Atmosphere, Explore Meditaiton, Food and Swadhyayam",
       score: { value: 6.4, text: "", ratings: 351 },
       price: { value: 10541, nights: 26, total: 274070 },
-      image: mainlogo,
+      image: Room3,
       popularChoice: true,
       noOfAvailableRooms: 10
     },
@@ -64,7 +67,7 @@ const RoomBook = ({data}) => {
         "Family Friendly Atmosphere, Explore Meditaiton, Food and Swadhyayam",
       score: { value: 6.4, text: "", ratings: 351 },
       price: { value: 10541, nights: 26, total: 274070 },
-      image: mainlogo,
+      image: Room4,
       popularChoice: true,
       noOfAvailableRooms: 15
     },

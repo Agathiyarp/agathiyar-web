@@ -10,9 +10,18 @@
   margin: 20px 0;
 }
 
+.border-room {
+  border: 1px solid #ccc;
+}
+
+.m-p-10 {
+  margin-bottom: 10px;
+  padding: 10px;
+}
+
 /* room List Styles */
 .room-search-results__list {
-  width: 50%; /* Restore full width for desktop */
+  width: 60%; /* Restore full width for desktop */
   padding-right: 20px;
 }
 
@@ -41,12 +50,19 @@
 .room-card__image-container {
   width: 33%; /* Restore image container size for desktop */
   position: relative;
+  margin-right: 10px;
+}
+
+.room-search-results__map {
+  display: flex;
+  width: 40%;
 }
 
 .room-card__image {
   border-radius: 8px;
   width: 100%; /* Full width for image */
-  height: auto;
+  height: 150px;
+  margin-right: 10px;
 }
 
 .room-card__content {
@@ -164,7 +180,7 @@ button.p-2 {
     width: 100%; /* Full width on tablet */
     padding-right: 0; /* Remove right padding */
   }
-
+  
   .room-card {
     flex-direction: column; /* Stack image and content vertically */
   }
