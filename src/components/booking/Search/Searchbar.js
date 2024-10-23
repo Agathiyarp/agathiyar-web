@@ -23,11 +23,6 @@ const Searchbar = ({onSearch}) => {
 
   const handleSearchClick = () => {
 
-    onSearch({
-      destination,
-      checkInDate,
-      checkOutDate
-    });
     // Clear previous error
     setError('');
 
@@ -40,6 +35,13 @@ const Searchbar = ({onSearch}) => {
     // Calculate the difference in days
     const daysDifference = dayjs(checkOutDate).diff(dayjs(checkInDate), 'day');
 
+    onSearch({
+      destination,
+      checkInDate,
+      checkOutDate,
+      noOfDays: daysDifference
+    });
+    
      // Check for future dates
      if (dayjs(checkInDate).isBefore(dayjs(), 'day') || dayjs(checkOutDate).isBefore(dayjs(), 'day')) {
       setError('Both check-in and check-out dates must be in the future.');

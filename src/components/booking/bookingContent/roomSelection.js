@@ -5,8 +5,8 @@ import { TextField, MenuItem } from "@mui/material";
 const RoomSelection = ({ selectedRoom, searchData }) => {
   const [noOfRooms, setNoOfRooms] = useState(1);
   const [openModal, setOpenModal] = useState(false);
-  const roomPrice = 100; // Rs. 100 per seat
-  const noOfDays = 2;
+  const roomPrice = 100; // Rs. 100 per Room
+  const noOfDays = searchData?.noOfDays;
   const maintenanceCharge = 500; // 500 per day
   const userDetails = sessionStorage.getItem('userDetails');
   const userName = userDetails?.username

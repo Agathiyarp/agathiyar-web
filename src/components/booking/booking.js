@@ -11,10 +11,13 @@ const Booking = () => {
     destination: '',
     checkInDate: null,
     checkOutDate: null,
+    noOfDays: null
   });
+  const [showContent, setShowContent] = useState(false);
 
   const handleSearch = (data) => {
     setSearchData(data);
+    setShowContent(true);
   };
 
   return (
@@ -24,7 +27,9 @@ const Booking = () => {
         <SearchBar onSearch={handleSearch} />
       </div>
       <div>
-      <BookingContent data={searchData}/>
+      {showContent ? <BookingContent data={searchData}/> : <div className="empty-content">
+        No Search Results
+      </div> }
       </div>
       <div>
         <Footer />
