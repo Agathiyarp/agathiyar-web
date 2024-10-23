@@ -8,6 +8,8 @@ const RoomSelection = ({ selectedRoom, searchData }) => {
   const roomPrice = 100; // Rs. 100 per seat
   const noOfDays = 2;
   const maintenanceCharge = 500; // 500 per day
+  const userDetails = sessionStorage.getItem('userDetails');
+  const userName = userDetails?.username
   
   var rooms = [1, 2, 3];
   const noOfAvailableRooms = selectedRoom?.noOfAvailableRooms;
@@ -129,10 +131,10 @@ const RoomSelection = ({ selectedRoom, searchData }) => {
       </div>
       {openModal && (
         <ConfirmModal
-          user={"manoj"}
+          user={userName}
           roomDetails={{
-            id: "TypeA-1", // Replace with your room ID logic
-            type: "TypeA", // Room type from selectedRoom
+            id: "TypeA-1", 
+            type: "TypeA"
           }}
           handleClose={handleClose}
         />

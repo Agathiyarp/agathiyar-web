@@ -125,6 +125,7 @@ func hashPassword(password string) (string, error) {
 func registerHandler(w http.ResponseWriter, r *http.Request) {
 	var registerUser RegisterUser
 	err := json.NewDecoder(r.Body).Decode(&registerUser)
+	registerUser.UserType = "donor"
 	if err != nil || registerUser.Password == "" || registerUser.ConfirmPassword == "" ||
 		!validatePhoneNumber(registerUser.PhoneNumber) {
 		http.Error(w, "Invalid input", http.StatusBadRequest)

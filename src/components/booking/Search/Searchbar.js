@@ -17,10 +17,9 @@ const Searchbar = ({onSearch}) => {
   const [daysBetween, setDaysBetween] = useState(null);
   const [isSingleOccupancy, setIsSingleOccupancy] = useState(false);
 
-  const roomCost = 100;
-  const maintenanceCharge = 500;
-
-  const user = {role: 'donor'};
+  const userDetails = sessionStorage.getItem('userDetails');
+  const usertype = JSON.parse(userDetails)?.usertype
+  const user = {role: usertype};
 
   const handleSearchClick = () => {
 
@@ -179,7 +178,7 @@ const Searchbar = ({onSearch}) => {
       {error && <div style={{ color: 'red' }}>{error}</div>}
 
       {/* Display number of days */}
-      {daysBetween && <div>{`Number of days: ${daysBetween}`}</div>}
+      {daysBetween && <div>{`No of days: ${daysBetween}`}</div>}
     </Box>
   );
 };
