@@ -31,15 +31,17 @@ type RegisterUser struct {
 	PhoneNumber     string `json:"phoneNumber"`
 	Country         string `json:"country"`
 	Username        string `json:"username"`
-	UserMemberID    string `json:"usermemberid"` //AGP202400001
+	UserMemberID    string `json:"usermemberid"` //AGP202410000
 	Password        string `json:"password"`
 	ConfirmPassword string `json:"confirmPassword"`
+	UserType        string `json:"usertype"`
 }
 
 type LoginResponse struct {
 	Name         string `json:"name"`
 	Username     string `json:"username"`
 	UserMemberID string `json:"usermemberid"`
+	UserType     string `json:"usertype"`
 }
 
 type Response struct {
@@ -231,6 +233,7 @@ func loginHandler(w http.ResponseWriter, r *http.Request) {
 	session.Values["authenticated"] = true
 	session.Values["username"] = registerUser.Username
 	session.Values["usermemberid"] = registerUser.UserMemberID
+	session.Values["usertype"] = registerUser.UserType
 
 	if err := session.Save(r, w); err != nil {
 		log.Printf("loginHandler: Error saving session: %v", err)
@@ -242,6 +245,7 @@ func loginHandler(w http.ResponseWriter, r *http.Request) {
 	response := LoginResponse{
 		Username:     existingUser.Username,
 		UserMemberID: existingUser.UserMemberID,
+		UserType:     existingUser.UserType,
 	}
 	w.WriteHeader(http.StatusOK)
 	if err := json.NewEncoder(w).Encode(response); err != nil {
