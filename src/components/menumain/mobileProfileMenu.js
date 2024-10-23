@@ -9,11 +9,13 @@ import Button from '@mui/material/Button';
 const MobileProfileMenu = ({ onLogout }) => {
   const navigate = useNavigate();
 
+  const data = sessionStorage.getItem('userDetails');
+
   const user = {
-    name: "manoj",
-    memberId: "AGP202400001",
+    name: `${data && JSON.parse(data)?.username}`,
+    memberId: `${JSON.parse(data)?.usermemberid}`,
     visited: 10,
-    donartype: "Premium",
+    usertype: `${JSON.parse(data)?.usertype}`,
     profilePicture: profile,
   };
 
@@ -62,7 +64,7 @@ const MobileProfileMenu = ({ onLogout }) => {
               Visited: {user.visited} times
             </Typography>
             <Typography variant="body2" color="success">
-              Donor: {user.donartype}
+              Type: {user.usertype}
             </Typography>
           </Box>
         </MenuItem>
