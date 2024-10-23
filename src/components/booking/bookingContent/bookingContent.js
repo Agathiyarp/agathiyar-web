@@ -78,12 +78,6 @@ const RoomBook = ({data}) => {
       <MenuBar /> {/* Use MenuBar here */}
       <div className="room-search-results__content flex">
         <div className="room-search-results__list w-2/3 pr-4">
-          <div className="room-search-results__header flex justify-between items-center mb-4">
-            <div className="room-search-results__stats text-sm text-gray-600">
-              We Found {"4"} Available Room types
-            </div>
-          </div>
-
           {rooms.map((room) => (
             <div
               key={room.id}

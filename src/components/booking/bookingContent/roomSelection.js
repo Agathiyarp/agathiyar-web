@@ -3,18 +3,13 @@ import "./bookingContent.css";
 import ConfirmModal from "../confirmModal";
 import { TextField, MenuItem } from "@mui/material";
 const RoomSelection = ({ selectedRoom, searchData }) => {
-  const [selectedSeats, setSelectedSeats] = useState([]);
-  const [donationAmount, setDonationAmount] = useState(0);
   const [noOfRooms, setNoOfRooms] = useState(1);
   const [openModal, setOpenModal] = useState(false);
-  const seatPrice = 200; // Rs. 200 per seat
-  const convenienceFeePercentage = 0.1296; // 12.96%
-
+  const roomPrice = 100; // Rs. 100 per seat
+  const noOfDays = 2;
+  const maintenanceCharge = 500; // 500 per day
+  
   var rooms = [1, 2, 3];
-  // for (let i = 1; i <= 20; i++) {
-  //   rooms.push(i);
-  // }
-
   const noOfAvailableRooms = selectedRoom?.noOfAvailableRooms;
 
   const handleOpen = () => {
@@ -25,17 +20,19 @@ const RoomSelection = ({ selectedRoom, searchData }) => {
     setOpenModal(false);
   };
 
-  const calculateSubtotal = () => {
-    return noOfRooms * seatPrice;
+  const calculateRoomCost = () => {
+    return noOfRooms * noOfDays * roomPrice;
   };
 
-  const calculateConvenienceFee = () => {
-    return Math.round(calculateSubtotal() * convenienceFeePercentage);
-  };
+  const calculateMaintenance = ()=> {
+    return maintenanceCharge * noOfDays
+  }
 
   const calculateTotal = () => {
-    return calculateSubtotal() + calculateConvenienceFee() + donationAmount;
+    return calculateRoomCost() + calculateMaintenance();
   };
+
+
 
   const formatDate = (date) => {
     if (date?.$d instanceof Date && !isNaN(date?.$d)) {
@@ -54,6 +51,9 @@ const RoomSelection = ({ selectedRoom, searchData }) => {
         <div className="room-search-results__map-placeholder h-full flex items-center justify-center text-gray-500">
           <div className="max-w-4xl mx-auto p-4 font-sans flex flex-col md:flex-row">
             <div className="w-full md:w-3/4 pr-4 border-room m-p-10">
+              <div className="avail-rooms">
+                Available Rooms: {"4"}
+              </div>
               <h4 className="text-2xl font-bold mb-4">Select Rooms</h4>
               <TextField
                 select
@@ -71,7 +71,7 @@ const RoomSelection = ({ selectedRoom, searchData }) => {
             </div>
             <div className="w-full md:w-1/4 border-room">
               <div className="bg-white rounded-lg shadow-md p-4">
-                <h4 className="text-xl font-bold mb-4">ROOM BOOKING SUMMARY</h4>
+                <h4 className="text-xl font-bold mb-4">BOOKING SUMMARY</h4>
                 <div className="mb-4 align-center-booking">
                   <div className="flex justify-between mb-2">
                     <span>MemberId: </span>
@@ -97,13 +97,17 @@ const RoomSelection = ({ selectedRoom, searchData }) => {
                     Type: {selectedRoom?.name}
                   </div>
                   <div className="flex justify-between mb-4">
-                    <span>Maintenance fees: </span>
-                    <span>Rs. {calculateConvenienceFee().toFixed(2)}</span>
+                    <span>Room Cost: </span>
+                    <span>Rs. {calculateRoomCost()}</span>
+                  </div>
+                  <div className="flex justify-between mb-4">
+                    <span>Maintenance: </span>
+                    <span>Rs. {calculateMaintenance()}</span>
                   </div>
                   <div className="bg-yellow-100 p-3 rounded-lg mb-4">
                     <div className="flex justify-between font-semibold">
                       <span>Amount Payable: </span>
-                      <span>Rs. {calculateTotal().toFixed(2)}</span>
+                      <span>Rs. {calculateTotal()}</span>
                     </div>
                   </div>
                 </div>
