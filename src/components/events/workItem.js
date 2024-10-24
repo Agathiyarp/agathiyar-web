@@ -11,7 +11,6 @@ const WorkshopItem = ({
   timeLeft,
   startDate,
   duration,
-  timing,
   language,
   eventImage,
 }) => {
@@ -50,15 +49,6 @@ const WorkshopItem = ({
           <div className="info-item">
             <i style={{ fontSize: '35px' }} className="icon-clock"></i>
             <span className="text-item"><b>Duration</b><br/> {duration}</span>
-          </div>
-          <div className="info-item">
-            <i style={{ fontSize: '35px' }} className="icon-time"></i>
-            <span className="text-item"><b>Timing</b><br/></span>
-            <ul className="time-list">
-              {timing.map((time, index) => (
-                <li key={index}>{time}</li>
-              ))}
-            </ul>
           </div>
           <div className="info-item">
             <i style={{ fontSize: '35px' }} className="icon-language"></i>

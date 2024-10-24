@@ -8,8 +8,9 @@ const RoomSelection = ({ selectedRoom, searchData }) => {
   const roomPrice = 100; // Rs. 100 per Room
   const noOfDays = searchData?.noOfDays;
   const maintenanceCharge = 500; // 500 per day
-  const userDetails = sessionStorage.getItem('userDetails');
-  const userName = userDetails?.username
+  const userDetails = JSON.parse(sessionStorage.getItem('userDetails'));
+  const userName = userDetails?.username;
+  const MemberId = userDetails?.usermemberid;
   
   var rooms = [1, 2, 3];
   const noOfAvailableRooms = selectedRoom?.noOfAvailableRooms;
@@ -77,11 +78,11 @@ const RoomSelection = ({ selectedRoom, searchData }) => {
                 <div className="mb-4 align-center-booking">
                   <div className="flex justify-between mb-2">
                     <span>MemberId: </span>
-                    <span>{"test1"}</span>
+                    <span>{MemberId}</span>
                   </div>
                   <div className="flex justify-between mb-2">
                     <span>UserName: </span>
-                    <span>{"test2"}</span>
+                    <span>{userName}</span>
                   </div>
                   <div className="flex justify-between mb-2">
                     <span>Destination: </span>
