@@ -18,7 +18,7 @@ const Searchbar = ({onSearch}) => {
   const [isSingleOccupancy, setIsSingleOccupancy] = useState(false);
 
   const userDetails = sessionStorage.getItem('userDetails');
-  const usertype = JSON.parse(userDetails)?.usertype
+  const usertype = userDetails && JSON.parse(userDetails)?.usertype ? JSON.parse(userDetails)?.usertype : 'non-donor';
   const user = {role: usertype};
 
   const handleSearchClick = () => {

@@ -227,6 +227,24 @@ button.p-2 {
     padding: 0 10px; /* Add padding for mobile */
   }
 
+  .align-center-booking {
+    text-align: center;
+    margin: 0;
+  }
+
+  .text-center {
+    margin: 15px 0;
+  }
+
+  .room-card__image  {
+    height: 100px;
+    margin-top: 15px;
+  }
+
+  .border-room {
+    width: 350px;
+  }
+
   .room-search-results__header {
     flex-direction: column; /* Stack header elements vertically */
     align-items: flex-start; /* Align items to the start */
