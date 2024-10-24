@@ -31,7 +31,7 @@ type RegisterUser struct {
 	PhoneNumber     string `json:"phoneNumber"`
 	Country         string `json:"country"`
 	Username        string `json:"username"`
-	UserMemberID    string `json:"usermemberid"` //AGP202410000
+	UserMemberID    string `json:"usermemberid"`
 	Password        string `json:"password"`
 	ConfirmPassword string `json:"confirmPassword"`
 	UserType        string `json:"usertype"`
@@ -49,11 +49,13 @@ type Response struct {
 }
 
 type AllUserResponse struct {
-	Name        string `json:"name"`
-	Email       string `json:"email"`
-	PhoneNumber string `json:"phoneNumber"`
-	Country     string `json:"country"`
-	Username    string `json:"username"`
+	Name         string `json:"name"`
+	Email        string `json:"email"`
+	PhoneNumber  string `json:"phoneNumber"`
+	Country      string `json:"country"`
+	Username     string `json:"username"`
+	UserMemberID string `json:"usermemberid"`
+	UserType     string `json:"usertype"`
 }
 
 type EventRegisterUser struct {
@@ -588,6 +590,28 @@ func toBSON(rooms []Room) []interface{} {
 	return interfaces
 }
 
+func deleteDatabase(w http.ResponseWriter, r *http.Request) {
+	vars := mux.Vars(r)
+	dbName := vars["AgathiyarDB"]
+
+	if dbName == "" {
+		http.Error(w, "Database name is required", http.StatusBadRequest)
+		return
+	}
+
+	ctx, cancel := context.WithTimeout(context.Background(), 10*time.Second)
+	defer cancel()
+
+	err := client.Database(dbName).Drop(ctx)
+	if err != nil {
+		http.Error(w, fmt.Sprintf("Failed to delete database: %v", err), http.StatusInternalServerError)
+		return
+	}
+
+	w.WriteHeader(http.StatusOK)
+	fmt.Fprintf(w, "Database %s deleted successfully", dbName)
+}
+
 // Main function start
 func main() {
 	connectMongo()
@@ -602,6 +626,7 @@ func main() {
 	router.HandleFunc("api/users/{id:[0-9]+}", userByIDHandler) // Only matches numeric user IDs
 	router.HandleFunc("/api/event/register", EventRegistrationHandler).Methods("POST")
 	router.HandleFunc("/api/allevents", GetAllEventRegistrations).Methods("GET")
+	//	router.HandleFunc("/api/database/{DBname}", deleteDatabase).Methods("DELETE")
 
 	//Room
 	// Routes
