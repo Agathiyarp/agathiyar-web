@@ -312,11 +312,13 @@ func GetAllUsersHandler(w http.ResponseWriter, r *http.Request) {
 			return
 		}
 		allUsers = append(allUsers, AllUserResponse{
-			Name:        responseuser.Name,
-			Email:       responseuser.Email,
-			PhoneNumber: responseuser.PhoneNumber,
-			Country:     responseuser.Country,
-			Username:    responseuser.Username,
+			Name:         responseuser.Name,
+			Email:        responseuser.Email,
+			PhoneNumber:  responseuser.PhoneNumber,
+			Country:      responseuser.Country,
+			Username:     responseuser.Username,
+			UserMemberID: responseuser.UserMemberID,
+			UserType:     responseuser.UserType,
 		})
 	}
 
@@ -590,6 +592,39 @@ func toBSON(rooms []Room) []interface{} {
 	return interfaces
 }
 
+func deleteUserByMemberID(w http.ResponseWriter, r *http.Request) {
+	vars := mux.Vars(r)
+	memberID := vars["memberID"]
+
+	if memberID == "" {
+		http.Error(w, "memberID is required", http.StatusBadRequest)
+		return
+	}
+
+	collection := client.Database("AgathiyarDB").Collection("Users")
+
+	ctx, cancel := context.WithTimeout(context.Background(), 10*time.Second)
+	defer cancel()
+
+	// Define the filter to find the user by memberID
+	filter := bson.M{"usermemberid": memberID}
+
+	// Delete the user document from MongoDB
+	result, err := collection.DeleteOne(ctx, filter)
+	if err != nil {
+		http.Error(w, fmt.Sprintf("Failed to delete user: %v", err), http.StatusInternalServerError)
+		return
+	}
+
+	if result.DeletedCount == 0 {
+		http.Error(w, "No user found with the specified memberID", http.StatusNotFound)
+		return
+	}
+
+	w.WriteHeader(http.StatusOK)
+	fmt.Fprintf(w, "User with memberID %s deleted successfully", memberID)
+}
+
 func deleteDatabase(w http.ResponseWriter, r *http.Request) {
 	vars := mux.Vars(r)
 	dbName := vars["AgathiyarDB"]
@@ -626,6 +661,7 @@ func main() {
 	router.HandleFunc("api/users/{id:[0-9]+}", userByIDHandler) // Only matches numeric user IDs
 	router.HandleFunc("/api/event/register", EventRegistrationHandler).Methods("POST")
 	router.HandleFunc("/api/allevents", GetAllEventRegistrations).Methods("GET")
+	router.HandleFunc("/api/users/{memberID}", deleteUserByMemberID).Methods("DELETE")
 	//	router.HandleFunc("/api/database/{DBname}", deleteDatabase).Methods("DELETE")
 
 	//Room
