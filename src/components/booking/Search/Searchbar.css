@@ -1,0 +1,8 @@
+@media (max-width: 767px) {
+  .checkbox-roombooking {
+    width: 100%;
+  }
+  .MuiCheckbox-root {
+    width: 20% !important;
+  }
+}

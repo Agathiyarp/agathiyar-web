@@ -4,7 +4,7 @@ import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import Home from './components/home/home';
-import About from './components/about/about';
+// import About from './components/about/about';
 import AppRegistration from './components/register/register';
 import Login from './components/login/login';
 import Contact from './components/contactus/contactinfo';
@@ -23,7 +23,7 @@ const App = () => {
       <Router>
         <Routes>
           <Route path="/" element={<Home />} />
-          <Route path="/about" element={<About />} />
+          {/* <Route path="/about" element={<About />} /> */}
           <Route path="/registration" element={<AppRegistration />} />
           <Route path="/login" element={<Login />} />
           <Route path="/contact" element={<Contact />} />

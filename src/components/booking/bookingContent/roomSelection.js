@@ -54,9 +54,10 @@ const RoomSelection = ({ selectedRoom, searchData }) => {
         <div className="room-search-results__map-placeholder h-full flex items-center justify-center text-gray-500">
           <div className="max-w-4xl mx-auto p-4 font-sans flex flex-col md:flex-row">
             <div className="w-full md:w-3/4 pr-4 border-room m-p-10">
-              <div className="avail-rooms">
+              <h5>{`${selectedRoom?.name}`}</h5>
+              <h5>
                 Available Rooms: {"4"}
-              </div>
+              </h5>
               <h4 className="text-2xl font-bold mb-4">Select Rooms</h4>
               <TextField
                 select

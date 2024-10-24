@@ -6,6 +6,7 @@ import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
 import CalendarTodayIcon from '@mui/icons-material/CalendarToday';
 import SearchIcon from '@mui/icons-material/Search';
 import dayjs from 'dayjs';
+import './Searchbar.css';
 
 const destinations = ['Agathiyar Bhavan', 'Pathriji Bhavan'];
 
@@ -162,6 +163,7 @@ const Searchbar = ({onSearch}) => {
         <FormControlLabel
           control={<Checkbox checked={isSingleOccupancy} onChange={(e) => setIsSingleOccupancy(e.target.checked)} />}
           label="Single occupancy"
+          className="checkbox-roombooking"
         />
       )}
 

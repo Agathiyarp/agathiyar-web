@@ -69,7 +69,6 @@ const MenuBar = () => {
     Booking: "/booking",
     ContactUs: "/contact",
     Donate: "/donate",
-    About: "/about",
     Books: "/book",
     Login: "/login"
   };

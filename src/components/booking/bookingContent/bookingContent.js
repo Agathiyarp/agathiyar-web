@@ -8,6 +8,7 @@ import Room3 from "../../../images/Room3.png";
 import Room4 from "../../../images/Room4.png"; 
 import RoomSelection from "./roomSelection";
 const RoomBook = ({data}) => {
+  const [showSummary, setShowSummary] = useState(false);
   const [selectedRoom, setSelectedRoom] = useState({
     id: 1,
     name: "Room Type I(2 beds, A/C Room)",
@@ -22,6 +23,7 @@ const RoomBook = ({data}) => {
 
   const handleRoomSelect = (room) => {
     setSelectedRoom(room);
+    setShowSummary(true);
   };
 
   const rooms = [
@@ -114,15 +116,14 @@ const RoomBook = ({data}) => {
                     Registration
                   </button> */}
                   <button onClick={() => handleRoomSelect(room)} className="room-card__view-deal bg-green-600 text-white px-4 py-2 rounded mt-2 flex items-center">
-                    Room Booking
-                    <ChevronRight className="room-card__view-deal-icon w-4 h-4 ml-1" />
+                    SELECT
                   </button>
                 </div>
               </div>
             </div>
           ))}
         </div>
-        <RoomSelection selectedRoom={selectedRoom} searchData={data}/>
+        {showSummary && <RoomSelection selectedRoom={selectedRoom} searchData={data}/>}
       </div>
     </div>
   );
