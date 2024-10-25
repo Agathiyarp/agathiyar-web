@@ -14,8 +14,8 @@ const ConfirmModal = ({handleClose, user, roomDetails}) => {
   const handleConfirm = async () => {
     const requestBody = {
       user: user,
-      id: roomDetails.id, // Ensure roomDetails.id is passed as a prop
-      type: roomDetails.type, // Ensure roomDetails.type is passed as a prop
+      id: roomDetails?.id,
+      type: roomDetails?.type
     };
 
     try {
