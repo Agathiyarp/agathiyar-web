@@ -183,3 +183,17 @@
     content: "🌐";
   }
   
+  @media only screen and (max-width: 600px) {
+    .workshop-list {
+      flex-direction: column;
+    }
+
+    .workshop-item {
+      width: 100%;
+    }
+
+    .image-and-time {
+      width: 50%;
+    }
+
+  }

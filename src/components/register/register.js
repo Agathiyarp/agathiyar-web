@@ -92,7 +92,9 @@ const RegistrationForm = () => {
       const data = await response.json();
       console.log("Success:", data);
       toast.success("Registration successful!");
-      navigate("/login"); // Redirect to login on success
+      setTimeout(()=> {
+        navigate("/login"); 
+      }, 3000)
     } catch (error) {
       console.error("Error:", error);
       toast.error("Registration failed. User Already Register");
@@ -103,7 +105,7 @@ const RegistrationForm = () => {
     <div className='register-container'>
       <div><MenuBar /></div>
       <section className="container">
-        <header>New user registration</header>
+        <header className="heading">New User Registration</header>
         <form onSubmit={handleSubmit} className="form">
           <div className="input-box">
             <label>Name</label>
