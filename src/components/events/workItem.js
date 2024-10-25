@@ -57,7 +57,7 @@ const WorkshopItem = ({
         </div>
 
         <div className="register-button">
-          <a className="btn-register" onClick={handleRegister}>Register Now</a>
+          <a className="btn-register" onClick={handleRegister}>Register</a>
         </div>
       </div>
     </div>

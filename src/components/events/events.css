@@ -104,7 +104,7 @@
   }
   
   .price {
-    font-size: 15px;
+    font-size: 18px;
     font-weight: 700;
   }
   
@@ -163,7 +163,8 @@
   }
   
   .btn-register:hover {
-    background-color: #388e3c; /* Darker Green on hover */
+    background-color: #388e3c;
+    cursor: pointer;
   }
   
   /* Icon Styles (You can replace these with actual icon libraries like Font Awesome) */
