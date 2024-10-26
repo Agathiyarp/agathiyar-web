@@ -1,24 +1,51 @@
-import React from 'react';
+import React from "react";
 import { useNavigate } from "react-router-dom";
-import './workItem.css';
+import "./workItem.css";
+import PhoneIcon from "@mui/icons-material/Phone";
+import BedIcon from "@mui/icons-material/Bed";
+import CalendarTodayIcon from "@mui/icons-material/CalendarToday";
+import AccessTimeIcon from "@mui/icons-material/AccessTime";
+import LanguageIcon from "@mui/icons-material/Language";
+import { Box, Typography } from "@mui/material";
 
 const WorkshopItem = ({
-  hostName,
-  hostTitle,
-  workshopTitle,
-  price,
-  description,
-  timeLeft,
-  startDate,
-  duration,
+  mastername,
+  eventname,
+  retreatcost,
+  eventdescription,
+  startdate,
+  numberofdays,
   language,
-  eventImage,
+  imageurl,
+  roomtype,
+  contactdetails,
 }) => {
-  
   const navigate = useNavigate();
-  const handleRegister = ()=> {
-    navigate("/eventregister"); 
-  }
+  const handleRegister = () => {
+    navigate("/eventregister");
+  };
+
+  const calculateTimeLeft = (date) => {
+    const currentDate = new Date();
+    const eventDate = new Date(date);
+    const timeDifference = eventDate - currentDate;
+
+    if (timeDifference <= 0) {
+      return "Event started or past";
+    }
+
+    const daysLeft = Math.floor(timeDifference / (1000 * 60 * 60 * 24));
+    const hoursLeft = Math.floor(
+      (timeDifference % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60)
+    );
+
+    return `${daysLeft} DAYS ${hoursLeft} HRS`;
+  };
+
+  const timeLeft = calculateTimeLeft(startdate);
+
+  const descriptionSentences = eventdescription.split(". ").filter(Boolean);
+
   return (
     <div className="workshop-item">
       <div className="image-and-time">
@@ -27,42 +54,75 @@ const WorkshopItem = ({
           <strong>{timeLeft}</strong>
         </div>
         <div className="image-placeholder">
-          <img class="event-image" src={eventImage} alt="event-image"/>
+          <img className="event-image" src={imageurl} alt="event-image" />
         </div>
         <p className="workshop-host">
-          {hostName} <br /> {hostTitle}
+          {mastername} <br /> {eventname}
         </p>
+        <div className="workshop-info">
+          <div className="register-button">
+            <button className="btn-register" onClick={handleRegister}>
+              Register
+            </button>
+          </div>
+        </div>
       </div>
 
       <div className="workshop-details">
         <div className="workshop-header">
-          <h2 className="event-title">{workshopTitle}</h2>
-          <span className="price">₹ {price}</span>
+          <h2 className="event-title">{eventname}</h2>
+          <span className="price">₹ {retreatcost}</span>
         </div>
-        <p className="description">{description}</p>
+        <div className="description-container">
+          {descriptionSentences.map((sentence, index) => (
+            <p key={index} className="description">
+              {sentence}.
+            </p>
+          ))}
+        </div>
 
         <div className="workshop-info">
-          <div className="info-item">
-            <i style={{ fontSize: '35px' }} className="icon-calendar"></i>
-            <span className="text-item"><b>Start Date</b><br/> {startDate}</span>
-          </div>
-          <div className="info-item">
-            <i style={{ fontSize: '35px' }} className="icon-clock"></i>
-            <span className="text-item"><b>Duration</b><br/> {duration}</span>
-          </div>
-          <div className="info-item">
-            <i style={{ fontSize: '35px' }} className="icon-language"></i>
-            <span className="text-item"><b>Language</b><br/> {language}</span>
-          </div>
+          <Box className="info-item" display="flex" alignItems="center">
+            <CalendarTodayIcon style={{ fontSize: "35px", marginRight: "8px" }} />
+            <Typography variant="body1" className="text-item">
+              <b>Start Date</b>
+              <br /> {startdate}
+            </Typography>
+          </Box>
+          <Box className="info-item" display="flex" alignItems="center">
+            <AccessTimeIcon style={{ fontSize: "35px", marginRight: "8px" }} />
+            <Typography variant="body1" className="text-item">
+              <b>Duration</b>
+              <br /> {numberofdays}
+            </Typography>
+          </Box>
+          <Box className="info-item" display="flex" alignItems="center">
+            <LanguageIcon style={{ fontSize: "35px", marginRight: "8px" }} />
+            <Typography variant="body1" className="text-item">
+              <b>Language</b>
+              <br /> {language}
+            </Typography>
+          </Box>
+          <Box className="info-item" display="flex" alignItems="center">
+            <BedIcon style={{ fontSize: "35px", marginRight: "8px" }} />
+            <Typography variant="body1" className="text-item">
+              <b>Available Room</b>
+              <br /> {roomtype}
+            </Typography>
+          </Box>
+          <Box className="info-item" display="flex" alignItems="center">
+            <PhoneIcon style={{ fontSize: "35px", marginRight: "8px" }} />
+            <Typography variant="body1" className="text-item">
+              <b>Contact</b>
+              <br /> {contactdetails}
+            </Typography>
+          </Box>
         </div>
 
-        <div className="register-button">
-          <a className="btn-register" onClick={handleRegister}>Register</a>
-        </div>
+        
       </div>
     </div>
   );
 };
-
 
 export default WorkshopItem;

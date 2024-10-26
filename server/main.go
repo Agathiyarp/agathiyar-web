@@ -149,7 +149,8 @@ type EventAdd struct {
 	RetreatCost          string             `json:"retreatcost" bson:"retreatcost"`
 	ReserveDeposit       string             `json:"reservedeposit" bson:"reservedeposit"`
 	ContactDetails       string             `json:"contactdetails" bson:"contactdetails"`
-	Image                string             `json:"image" bson:"image"`
+	Image                string             `json:"imageurl" bson:"imageurl"`
+	Language             string             `json:"language" bson:"language"`
 }
 
 var (
