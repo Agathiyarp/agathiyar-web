@@ -81,6 +81,22 @@ type Room struct {
 	User     string `json:"user,omitempty" bson:"user,omitempty"`
 }
 
+type EventAdd struct {
+	EventID              primitive.ObjectID `json:"eventid,omitempty" bson:"_id,omitempty"`
+	EventName            string             `json:"eventname" bson:"eventname"`
+	MasterName           string             `json:"mastername" bson:"mastername"`
+	StartDate            string             `json:"startdate" bson:"startdate"`
+	EndDate              string             `json:"enddate" bson:"enddate"`
+	NumberOfDays         string             `json:"numberofdays" bson:"numberofdays"`
+	EventDescription     string             `json:"eventdescription" bson:"eventdescription"`
+	Destination          string             `json:"destination" bson:"destination"`
+	RoomType             string             `json:"roomtype" bson:"roomtype"`
+	NumberOfParticipants string             `json:"numberofparticipants" bson:"numberofparticipants"`
+	RetreatCost          string             `json:"retreatcost" bson:"retreatcost"`
+	ReserveDeposit       string             `json:"reservedeposit" bson:"reservedeposit"`
+	ContactDetails       string             `json:"contactdetails" bson:"contactdetails"`
+}
+
 var (
 	currentID int
 	mu        sync.Mutex
@@ -592,6 +608,58 @@ func toBSON(rooms []Room) []interface{} {
 	return interfaces
 }
 
+func addEventHandler(w http.ResponseWriter, r *http.Request) {
+	var event EventAdd
+	err := json.NewDecoder(r.Body).Decode(&event)
+	if err != nil {
+		http.Error(w, "Invalid request payload", http.StatusBadRequest)
+		return
+	}
+
+	connectMongo()
+
+	collection := client.Database("AgathiyarDB").Collection("eventdetails")
+
+	result, err := collection.InsertOne(context.TODO(), event)
+	if err != nil {
+		http.Error(w, "Failed to create event", http.StatusInternalServerError)
+		return
+	}
+
+	response := map[string]interface{}{
+		"status":  "success",
+		"message": "Event added successfully",
+		"eventId": result.InsertedID,
+	}
+	w.Header().Set("Content-Type", "application/json")
+	json.NewEncoder(w).Encode(response)
+}
+
+// Handler to get an event by ID
+func getEventHandler(w http.ResponseWriter, r *http.Request) {
+	params := mux.Vars(r)
+	eventID, err := primitive.ObjectIDFromHex(params["id"])
+	if err != nil {
+		http.Error(w, "Invalid event ID", http.StatusBadRequest)
+		return
+	}
+
+	connectMongo()
+
+	collection := client.Database("AgathiyarDB").Collection("eventdetails")
+	var event EventAdd
+
+	filter := bson.M{"_id": eventID}
+	err = collection.FindOne(context.TODO(), filter).Decode(&event)
+	if err != nil {
+		http.Error(w, "Event not found", http.StatusNotFound)
+		return
+	}
+
+	w.Header().Set("Content-Type", "application/json")
+	json.NewEncoder(w).Encode(event)
+}
+
 func deleteUserByMemberID(w http.ResponseWriter, r *http.Request) {
 	vars := mux.Vars(r)
 	memberID := vars["memberID"]
@@ -662,6 +730,10 @@ func main() {
 	router.HandleFunc("/api/event/register", EventRegistrationHandler).Methods("POST")
 	router.HandleFunc("/api/allevents", GetAllEventRegistrations).Methods("GET")
 	router.HandleFunc("/api/users/{memberID}", deleteUserByMemberID).Methods("DELETE")
+
+	//adding new events and get event based on id
+	router.HandleFunc("/add-event", addEventHandler).Methods("POST")
+	router.HandleFunc("/get-event/{id}", getEventHandler).Methods("GET")
 	//	router.HandleFunc("/api/database/{DBname}", deleteDatabase).Methods("DELETE")
 
 	//Room
