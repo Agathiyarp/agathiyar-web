@@ -153,6 +153,22 @@ type EventAdd struct {
 	Language             string             `json:"language" bson:"language"`
 }
 
+type BookingAdd struct {
+	ID              primitive.ObjectID `json:"id,omitempty" bson:"_id,omitempty"`
+	Destination     string             `json:"destination"`
+	StartDate       time.Time          `json:"startdate" bson:"startdate"`
+	EndDate         time.Time          `json:"enddate" bson:"enddate"`
+	SingleOccupy    string             `json:"singleoccupy"`
+	RoomDiscription string             `json:"roomdiscription"`
+	RoomType        string             `json:"roomtype"`
+	TotalRooms      string             `json:"totalrooms"`
+	RoomVariation   string             `json:"roomvariation"`
+	RoomCost        string             `json:"roomcost"`
+	MaintananceCost string             `json:"maintanancecost"`
+	SingleImage     string             `json:"image" bson:"image"`
+	MultipleImage   []string           `json:"multipleimage" bson:"multipleimage"` // Slice for multiple images
+}
+
 var (
 	currentID int
 	mu        sync.Mutex
@@ -837,6 +853,139 @@ func getAllEventsHandler(w http.ResponseWriter, r *http.Request) {
 	json.NewEncoder(w).Encode(events)
 }
 
+// Handler to add a booking
+func addBooking(w http.ResponseWriter, r *http.Request) {
+	w.Header().Set("Content-Type", "application/json")
+	var booking BookingAdd
+	err := json.NewDecoder(r.Body).Decode(&booking)
+	if err != nil {
+		http.Error(w, err.Error(), http.StatusBadRequest)
+		return
+	}
+
+	// Parse dates from "YYYY-MM-DD" format
+	start, err := time.Parse("2006-01-02", booking.StartDate.Format("2006-01-02"))
+	if err != nil {
+		http.Error(w, "Invalid start date format. Use YYYY-MM-DD.", http.StatusBadRequest)
+		return
+	}
+	end, err := time.Parse("2006-01-02", booking.EndDate.Format("2006-01-02"))
+	if err != nil {
+		http.Error(w, "Invalid end date format. Use YYYY-MM-DD.", http.StatusBadRequest)
+		return
+	}
+
+	booking.StartDate = start
+	booking.EndDate = end
+
+	booking.ID = primitive.NewObjectID()
+	collection := client.Database("AgathiyarDB").Collection("BookingDetails")
+	_, err = collection.InsertOne(context.TODO(), booking)
+	if err != nil {
+		http.Error(w, "Error inserting booking: "+err.Error(), http.StatusInternalServerError)
+		return
+	}
+
+	json.NewEncoder(w).Encode(booking)
+}
+
+// Handler to get a booking by ID
+func getBookingByID(w http.ResponseWriter, r *http.Request) {
+	w.Header().Set("Content-Type", "application/json")
+	params := mux.Vars(r)
+	id, err := primitive.ObjectIDFromHex(params["id"])
+	if err != nil {
+		http.Error(w, "Invalid booking ID", http.StatusBadRequest)
+		return
+	}
+
+	var booking BookingAdd
+	collection := client.Database("AgathiyarDB").Collection("BookingDetails")
+	err = collection.FindOne(context.TODO(), bson.M{"_id": id}).Decode(&booking)
+	if err != nil {
+		http.Error(w, "Booking not found", http.StatusNotFound)
+		return
+	}
+
+	json.NewEncoder(w).Encode(booking)
+}
+
+// Handler to get all bookings
+// func getAllBookings(w http.ResponseWriter, r *http.Request) {
+// 	w.Header().Set("Content-Type", "application/json")
+// 	var bookings []BookingAdd
+// 	collection := client.Database("AgathiyarDB").Collection("BookingDetails")
+// 	cursor, err := collection.Find(context.TODO(), bson.M{})
+// 	if err != nil {
+// 		http.Error(w, "Error retrieving bookings: "+err.Error(), http.StatusInternalServerError)
+// 		return
+// 	}
+// 	defer cursor.Close(context.TODO())
+
+// 	for cursor.Next(context.TODO()) {
+// 		var booking BookingAdd
+// 		cursor.Decode(&booking)
+// 		bookings = append(bookings, booking)
+// 	}
+// 	if err := cursor.Err(); err != nil {
+// 		http.Error(w, "Cursor error: "+err.Error(), http.StatusInternalServerError)
+// 		return
+// 	}
+
+// 	json.NewEncoder(w).Encode(bookings)
+// }
+
+func getAllBookings(w http.ResponseWriter, r *http.Request) {
+	w.Header().Set("Content-Type", "application/json")
+
+	destination := r.URL.Query().Get("destination")
+	startDate := r.URL.Query().Get("startdate")
+	endDate := r.URL.Query().Get("enddate")
+
+	filter := bson.M{}
+	if destination != "" {
+		filter["destination"] = destination
+	}
+
+	if startDate != "" && endDate != "" {
+		start, err := time.Parse("2006-01-02", startDate)
+		if err != nil {
+			http.Error(w, "Invalid start date format. Use YYYY-MM-DD.", http.StatusBadRequest)
+			return
+		}
+
+		end, err := time.Parse("2006-01-02", endDate)
+		if err != nil {
+			http.Error(w, "Invalid end date format. Use YYYY-MM-DD.", http.StatusBadRequest)
+			return
+		}
+
+		filter["startdate"] = bson.M{"$gte": start}
+		filter["enddate"] = bson.M{"$lte": end}
+	}
+
+	var bookings []BookingAdd
+	collection := client.Database("AgathiyarDB").Collection("BookingDetails")
+	cursor, err := collection.Find(context.TODO(), filter)
+	if err != nil {
+		http.Error(w, "Error retrieving bookings: "+err.Error(), http.StatusInternalServerError)
+		return
+	}
+	defer cursor.Close(context.TODO())
+
+	for cursor.Next(context.TODO()) {
+		var booking BookingAdd
+		cursor.Decode(&booking)
+		bookings = append(bookings, booking)
+	}
+	if err := cursor.Err(); err != nil {
+		http.Error(w, "Cursor error: "+err.Error(), http.StatusInternalServerError)
+		return
+	}
+
+	json.NewEncoder(w).Encode(bookings)
+}
+
 func deleteUserByMemberID(w http.ResponseWriter, r *http.Request) {
 	vars := mux.Vars(r)
 	memberID := vars["memberID"]
@@ -919,6 +1068,11 @@ func main() {
 	// router.HandleFunc("/api/book", bookRoom).Methods("POST")
 	// router.HandleFunc("/api/init", initRooms).Methods("POST")
 	// router.HandleFunc("/api/available", availableRooms).Methods("GET")
+
+	router.HandleFunc("/api/booking", addBooking).Methods("POST")         // Add a new booking
+	router.HandleFunc("/api/booking/{id}", getBookingByID).Methods("GET") // Get booking by ID
+	// router.HandleFunc("/api/bookings", getAllBookings).Methods("GET")     // Get all bookings
+	router.HandleFunc("/api/bookings", getAllBookings).Methods("GET")
 
 	router.HandleFunc("/api/book", bookRoom).Methods("POST")
 	router.HandleFunc("/availability", getAvailability).Methods("GET")
