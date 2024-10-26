@@ -149,6 +149,7 @@ type EventAdd struct {
 	RetreatCost          string             `json:"retreatcost" bson:"retreatcost"`
 	ReserveDeposit       string             `json:"reservedeposit" bson:"reservedeposit"`
 	ContactDetails       string             `json:"contactdetails" bson:"contactdetails"`
+	Image                string             `json:"image" bson:"image"`
 }
 
 var (
@@ -806,6 +807,35 @@ func getEventHandler(w http.ResponseWriter, r *http.Request) {
 	json.NewEncoder(w).Encode(event)
 }
 
+func getAllEventsHandler(w http.ResponseWriter, r *http.Request) {
+
+	collection := client.Database("AgathiyarDB").Collection("eventdetails")
+	cursor, err := collection.Find(context.TODO(), bson.M{})
+	if err != nil {
+		http.Error(w, "Failed to retrieve events", http.StatusInternalServerError)
+		return
+	}
+	defer cursor.Close(context.TODO())
+
+	var events []EventAdd
+	for cursor.Next(context.TODO()) {
+		var event EventAdd
+		if err := cursor.Decode(&event); err != nil {
+			http.Error(w, "Error decoding event", http.StatusInternalServerError)
+			return
+		}
+		events = append(events, event)
+	}
+
+	if err := cursor.Err(); err != nil {
+		http.Error(w, "Cursor error", http.StatusInternalServerError)
+		return
+	}
+
+	w.Header().Set("Content-Type", "application/json")
+	json.NewEncoder(w).Encode(events)
+}
+
 func deleteUserByMemberID(w http.ResponseWriter, r *http.Request) {
 	vars := mux.Vars(r)
 	memberID := vars["memberID"]
@@ -878,8 +908,9 @@ func main() {
 	router.HandleFunc("/api/users/{memberID}", deleteUserByMemberID).Methods("DELETE")
 
 	//adding new events and get event based on id
-	router.HandleFunc("/add-event", addEventHandler).Methods("POST")
-	router.HandleFunc("/get-event/{id}", getEventHandler).Methods("GET")
+	router.HandleFunc("/api/add-event", addEventHandler).Methods("POST")
+	router.HandleFunc("/api/get-event/{id}", getEventHandler).Methods("GET")
+	router.HandleFunc("/api/get-events", getAllEventsHandler).Methods("GET")
 	//	router.HandleFunc("/api/database/{DBname}", deleteDatabase).Methods("DELETE")
 
 	//Room
