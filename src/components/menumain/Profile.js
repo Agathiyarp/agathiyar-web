@@ -5,10 +5,12 @@ import Menu from '@mui/material/Menu';
 import MenuItem from '@mui/material/MenuItem';
 import Typography from '@mui/material/Typography';
 import Box from '@mui/material/Box';
+import { useNavigate } from "react-router-dom";
 
 const ProfileMenu = ({ user, onLogout }) => {
   const [anchorEl, setAnchorEl] = useState(null);
   const isMenuOpen = Boolean(anchorEl);
+  const navigate = useNavigate();
 
   const handleMenuOpen = (event) => {
     setAnchorEl(event.currentTarget);
@@ -19,6 +21,10 @@ const ProfileMenu = ({ user, onLogout }) => {
   };
 
   const data = sessionStorage.getItem('userDetails');
+
+  const handleProfileClick = ()=> {
+    navigate('/profileview');
+  }
 
   return (
     <Box>
@@ -51,13 +57,16 @@ const ProfileMenu = ({ user, onLogout }) => {
               horizontal: 'right',
             }}
           >
-            <MenuItem disabled>
-              <Typography variant="body1" style={{ whiteSpace: 'pre-line' }}>
+            <MenuItem  onClick={() => {
+                handleProfileClick();
+              }}>{"profile"}
+              {/* <Typography variant="body1" style={{ whiteSpace: 'pre-line' }}>
                 {`Username: ${data && JSON.parse(data)?.username}
                 ${`MemberId: ${JSON.parse(data)?.usermemberid}`}
                 ${`Type: ${JSON.parse(data)?.usertype}`}
                 ${'Visited: 3'}`}
-              </Typography>
+              </Typography> */}
+
             </MenuItem>
             <MenuItem
               onClick={() => {

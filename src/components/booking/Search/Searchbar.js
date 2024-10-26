@@ -6,6 +6,7 @@ import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
 import CalendarTodayIcon from '@mui/icons-material/CalendarToday';
 import SearchIcon from '@mui/icons-material/Search';
 import dayjs from 'dayjs';
+// import axios from 'axios';
 import './Searchbar.css';
 
 const destinations = ['Agathiyar Bhavan', 'Pathriji Bhavan'];
@@ -21,6 +22,21 @@ const Searchbar = ({onSearch}) => {
   const userDetails = sessionStorage.getItem('userDetails');
   const usertype = userDetails && JSON.parse(userDetails)?.usertype ? JSON.parse(userDetails)?.usertype : 'non-donor';
   const user = {role: usertype};
+
+  // const getSeachResults = async (destination, checkInDate, checkOutDate, daysDifference) => {
+  //   const requestBody = {
+
+  //   };
+  //   try {
+  //     const response = await axios.post(
+  //       "https://agathiyarpyramid.org/api/init",
+  //       requestBody
+  //     );
+  //     console.log("Booking initialized:", response.data);
+  //   } catch (error) {
+  //     console.error("Error initializing booking", error);
+  //   }
+  // };
 
   const handleSearchClick = () => {
 
@@ -97,6 +113,8 @@ const Searchbar = ({onSearch}) => {
       }
       setDaysBetween(daysDifference);
     }
+
+    // getSeachResults(destination, checkInDate, checkOutDate, daysDifference);
   };
 
   return (

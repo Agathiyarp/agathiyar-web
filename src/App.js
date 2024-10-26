@@ -15,6 +15,7 @@ import Events from './components/events/events';
 import EventRegistrationForm from './components/eventregistration/eventregistration';
 import MobileProfileMenu from './components/menumain/mobileProfileMenu';
 import VideoList from './components/videos/VideoList';
+import ProfilePage from './components/menumain/Profilepage';
 
 const App = () => {
 
@@ -33,6 +34,7 @@ const App = () => {
           <Route path="/booking" element={<Booking />} />
           <Route path="/eventregister" element={<EventRegistrationForm />} />
           <Route path="/profile" element={<MobileProfileMenu />} />
+          <Route path="/profileview" element={<ProfilePage />} />
           <Route path="/videos" element={<VideoList />} />
         </Routes>
       </Router>

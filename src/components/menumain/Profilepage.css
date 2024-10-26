@@ -1,0 +1,30 @@
+.menu-item {
+  cursor: pointer;
+}
+
+/* Profilepage.css */
+
+/* General styling adjustments for mobile screens */
+@media (max-width: 600px) {
+    .menu-item {
+      padding-left: 10px;
+      padding-right: 10px;
+    }
+  
+    /* Reduce avatar size for mobile */
+    .MuiAvatar-root {
+      width: 60px !important;
+      height: 60px !important;
+    }
+  
+    /* Typography adjustments for mobile */
+    .MuiTypography-h6 {
+      font-size: 1rem;
+    }
+  
+    /* Adjust card layout and padding on mobile */
+    .MuiCard-root {
+      margin: 8px !important;
+    }
+  }
+  
