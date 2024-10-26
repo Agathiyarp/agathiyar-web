@@ -159,12 +159,12 @@ type BookingAdd struct {
 	StartDate       time.Time          `json:"startdate" bson:"startdate"`
 	EndDate         time.Time          `json:"enddate" bson:"enddate"`
 	SingleOccupy    string             `json:"singleoccupy"`
-	RoomDiscription string             `json:"roomdiscription"`
+	RoomDescription string             `json:"roomdescription" bson:"roomdescription"`
 	RoomType        string             `json:"roomtype"`
 	TotalRooms      string             `json:"totalrooms"`
 	RoomVariation   string             `json:"roomvariation"`
 	RoomCost        string             `json:"roomcost"`
-	MaintananceCost string             `json:"maintanancecost"`
+	MaintenanceCost string             `json:"maintanancecost"`
 	SingleImage     string             `json:"image" bson:"image"`
 	MultipleImage   []string           `json:"multipleimage" bson:"multipleimage"` // Slice for multiple images
 }
@@ -586,29 +586,29 @@ func countBookedRooms(user string) (int, error) {
 
 // 	// Validate room type
 // 	if !validateRoomType(room.Type) {
-// 		http.Error(w, "Invalid room type", http.StatusBadRequest)
-// 		return
+// 	http.Error(w, "Invalid room type", http.StatusBadRequest)
+// 	return
 // 	}
 
 // 	// Check how many rooms the user has already booked
 // 	roomsBooked, err := countBookedRooms(room.User)
 // 	if err != nil {
-// 		http.Error(w, "Error checking booked rooms", http.StatusInternalServerError)
-// 		return
+// 	http.Error(w, "Error checking booked rooms", http.StatusInternalServerError)
+// 	return
 // 	}
 
 // 	// Check if the room is already booked by the user
 // 	existingRoom := Room{}
 // 	err = client.Database("hotel").Collection("rooms").FindOne(context.TODO(), bson.M{"user": room.User, "id": room.ID}).Decode(&existingRoom)
 // 	if err == nil && existingRoom.IsBooked {
-// 		http.Error(w, "Room already booked by this user", http.StatusConflict)
-// 		return
+// 	http.Error(w, "Room already booked by this user", http.StatusConflict)
+// 	return
 // 	}
 
 // 	// Limit: max rooms per user
 // 	if roomsBooked+1 > maxRooms { // +1 for the current booking
-// 		http.Error(w, fmt.Sprintf("User can only book a maximum of %d rooms", maxRooms), http.StatusForbidden)
-// 		return
+// 	http.Error(w, fmt.Sprintf("User can only book a maximum of %d rooms", maxRooms), http.StatusForbidden)
+// 	return
 // 	}
 
 // 	// Check for available rooms of the requested type
@@ -618,8 +618,8 @@ func countBookedRooms(user string) (int, error) {
 
 // 	// If no available room is found, return an error
 // 	if err != nil {
-// 		http.Error(w, "No rooms available for this type", http.StatusNotFound)
-// 		return
+// 	http.Error(w, "No rooms available for this type", http.StatusNotFound)
+// 	return
 // 	}
 
 // 	// Return the booked room information
@@ -853,136 +853,82 @@ func getAllEventsHandler(w http.ResponseWriter, r *http.Request) {
 	json.NewEncoder(w).Encode(events)
 }
 
-// Handler to add a booking
+// Adds a new booking
 func addBooking(w http.ResponseWriter, r *http.Request) {
-	w.Header().Set("Content-Type", "application/json")
 	var booking BookingAdd
 	err := json.NewDecoder(r.Body).Decode(&booking)
 	if err != nil {
-		http.Error(w, err.Error(), http.StatusBadRequest)
+		http.Error(w, "Invalid input", http.StatusBadRequest)
 		return
 	}
 
-	// Parse dates from "YYYY-MM-DD" format
-	start, err := time.Parse("2006-01-02", booking.StartDate.Format("2006-01-02"))
-	if err != nil {
-		http.Error(w, "Invalid start date format. Use YYYY-MM-DD.", http.StatusBadRequest)
-		return
-	}
-	end, err := time.Parse("2006-01-02", booking.EndDate.Format("2006-01-02"))
-	if err != nil {
-		http.Error(w, "Invalid end date format. Use YYYY-MM-DD.", http.StatusBadRequest)
-		return
+	// Check for existing booking in the specified date range
+	filter := bson.M{
+		"destination": booking.Destination,
+		"startdate":   bson.M{"$lte": booking.EndDate},
+		"enddate":     bson.M{"$gte": booking.StartDate},
 	}
 
-	booking.StartDate = start
-	booking.EndDate = end
+	var existingBooking BookingAdd
+	collection := client.Database("AgathiyarDB").Collection("BookingDetails")
+	err = collection.FindOne(context.TODO(), filter).Decode(&existingBooking)
+	if err == nil {
+		http.Error(w, "Booking already exists for the specified date range", http.StatusConflict)
+		return
+	}
 
 	booking.ID = primitive.NewObjectID()
-	collection := client.Database("AgathiyarDB").Collection("BookingDetails")
 	_, err = collection.InsertOne(context.TODO(), booking)
 	if err != nil {
-		http.Error(w, "Error inserting booking: "+err.Error(), http.StatusInternalServerError)
+		http.Error(w, "Failed to add booking", http.StatusInternalServerError)
 		return
 	}
 
-	json.NewEncoder(w).Encode(booking)
+	w.WriteHeader(http.StatusCreated)
+	json.NewEncoder(w).Encode(map[string]string{"message": "Booking added successfully"})
 }
 
-// Handler to get a booking by ID
-func getBookingByID(w http.ResponseWriter, r *http.Request) {
-	w.Header().Set("Content-Type", "application/json")
-	params := mux.Vars(r)
-	id, err := primitive.ObjectIDFromHex(params["id"])
-	if err != nil {
-		http.Error(w, "Invalid booking ID", http.StatusBadRequest)
-		return
-	}
-
-	var booking BookingAdd
-	collection := client.Database("AgathiyarDB").Collection("BookingDetails")
-	err = collection.FindOne(context.TODO(), bson.M{"_id": id}).Decode(&booking)
-	if err != nil {
-		http.Error(w, "Booking not found", http.StatusNotFound)
-		return
-	}
-
-	json.NewEncoder(w).Encode(booking)
-}
-
-// Handler to get all bookings
-// func getAllBookings(w http.ResponseWriter, r *http.Request) {
-// 	w.Header().Set("Content-Type", "application/json")
-// 	var bookings []BookingAdd
-// 	collection := client.Database("AgathiyarDB").Collection("BookingDetails")
-// 	cursor, err := collection.Find(context.TODO(), bson.M{})
-// 	if err != nil {
-// 		http.Error(w, "Error retrieving bookings: "+err.Error(), http.StatusInternalServerError)
-// 		return
-// 	}
-// 	defer cursor.Close(context.TODO())
-
-// 	for cursor.Next(context.TODO()) {
-// 		var booking BookingAdd
-// 		cursor.Decode(&booking)
-// 		bookings = append(bookings, booking)
-// 	}
-// 	if err := cursor.Err(); err != nil {
-// 		http.Error(w, "Cursor error: "+err.Error(), http.StatusInternalServerError)
-// 		return
-// 	}
-
-// 	json.NewEncoder(w).Encode(bookings)
-// }
-
-func getAllBookings(w http.ResponseWriter, r *http.Request) {
-	w.Header().Set("Content-Type", "application/json")
-
+// Filters bookings by destination and date range
+func filterBookings(w http.ResponseWriter, r *http.Request) {
 	destination := r.URL.Query().Get("destination")
-	startDate := r.URL.Query().Get("startdate")
-	endDate := r.URL.Query().Get("enddate")
+	startDateStr := r.URL.Query().Get("startdate")
+	endDateStr := r.URL.Query().Get("enddate")
 
-	filter := bson.M{}
-	if destination != "" {
-		filter["destination"] = destination
+	// Parse start and end dates
+	startDate, err := time.Parse(time.RFC3339, startDateStr)
+	if err != nil {
+		http.Error(w, fmt.Sprintf("Invalid start date format: %s", startDateStr), http.StatusBadRequest)
+		return
+	}
+	endDate, err := time.Parse(time.RFC3339, endDateStr)
+	if err != nil {
+		http.Error(w, fmt.Sprintf("Invalid end date format: %s", endDateStr), http.StatusBadRequest)
+		return
 	}
 
-	if startDate != "" && endDate != "" {
-		start, err := time.Parse("2006-01-02", startDate)
-		if err != nil {
-			http.Error(w, "Invalid start date format. Use YYYY-MM-DD.", http.StatusBadRequest)
-			return
-		}
-
-		end, err := time.Parse("2006-01-02", endDate)
-		if err != nil {
-			http.Error(w, "Invalid end date format. Use YYYY-MM-DD.", http.StatusBadRequest)
-			return
-		}
-
-		filter["startdate"] = bson.M{"$gte": start}
-		filter["enddate"] = bson.M{"$lte": end}
+	// Define filter for MongoDB query
+	filter := bson.M{
+		"destination": destination,
+		"startdate":   bson.M{"$gte": startDate},
+		"enddate":     bson.M{"$lte": endDate},
 	}
 
-	var bookings []BookingAdd
+	// Find matching bookings
 	collection := client.Database("AgathiyarDB").Collection("BookingDetails")
 	cursor, err := collection.Find(context.TODO(), filter)
 	if err != nil {
-		http.Error(w, "Error retrieving bookings: "+err.Error(), http.StatusInternalServerError)
+		http.Error(w, "Failed to retrieve bookings", http.StatusInternalServerError)
 		return
 	}
 	defer cursor.Close(context.TODO())
 
-	for cursor.Next(context.TODO()) {
-		var booking BookingAdd
-		cursor.Decode(&booking)
-		bookings = append(bookings, booking)
-	}
-	if err := cursor.Err(); err != nil {
-		http.Error(w, "Cursor error: "+err.Error(), http.StatusInternalServerError)
+	var bookings []BookingAdd
+	if err = cursor.All(context.TODO(), &bookings); err != nil {
+		http.Error(w, "Failed to decode bookings", http.StatusInternalServerError)
 		return
 	}
 
+	w.WriteHeader(http.StatusOK)
 	json.NewEncoder(w).Encode(bookings)
 }
 
@@ -1069,10 +1015,11 @@ func main() {
 	// router.HandleFunc("/api/init", initRooms).Methods("POST")
 	// router.HandleFunc("/api/available", availableRooms).Methods("GET")
 
-	router.HandleFunc("/api/booking", addBooking).Methods("POST")         // Add a new booking
-	router.HandleFunc("/api/booking/{id}", getBookingByID).Methods("GET") // Get booking by ID
-	// router.HandleFunc("/api/bookings", getAllBookings).Methods("GET")     // Get all bookings
-	router.HandleFunc("/api/bookings", getAllBookings).Methods("GET")
+	// Route for adding bookings
+	router.HandleFunc("/api/addbooking", addBooking).Methods("POST")
+
+	// Route for filtering bookings
+	router.HandleFunc("/api/filterbookings", filterBookings).Methods("GET")
 
 	router.HandleFunc("/api/book", bookRoom).Methods("POST")
 	router.HandleFunc("/availability", getAvailability).Methods("GET")
