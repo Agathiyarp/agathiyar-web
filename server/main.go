@@ -81,6 +81,60 @@ type Room struct {
 	User     string `json:"user,omitempty" bson:"user,omitempty"`
 }
 
+type RoomType struct {
+	Name        string `json:"name"`
+	Capacity    int    `json:"capacity"`
+	ACAvailable bool   `json:"ac_available"`
+	Description string `json:"description"`
+	Count       int    `json:"count"` // Available rooms count
+}
+
+type Destination struct {
+	Name      string     `json:"name"`
+	RoomTypes []RoomType `json:"room_types"`
+}
+
+var (
+	destinations = map[string]Destination{
+		"Agathiyar Bhavan": {
+			Name: "Agathiyar Bhavan",
+			RoomTypes: []RoomType{
+				{"Single Room (Max 1 person)", 1, true, "A cozy single room perfect for one.", 10},
+				{"Single Room (Non A/C)", 1, false, "A comfortable non-AC single room for one.", 5},
+			},
+		},
+		"Patriji Bavan": {
+			Name: "Patriji Bavan",
+			RoomTypes: []RoomType{
+				{"Double Room (Max 2-4 people)", 4, true, "A spacious room suitable for up to four.", 8},
+				{"Double Room (Non A/C)", 4, false, "A well-furnished non-AC room for up to four.", 3},
+			},
+		},
+		"Dormitory": {
+			Name: "Dormitory",
+			RoomTypes: []RoomType{
+				{"Resting Area (Max 20 people)", 20, true, "A large dormitory accommodating up to 20 people.", 2},
+			},
+		},
+	}
+
+	muxBooking sync.Mutex
+)
+
+type BookingRequest struct {
+	Destination  string `json:"destination"`
+	RoomType     string `json:"room_type"`
+	CheckInDate  string `json:"checkindate"`
+	CheckOutDate string `json:"checkoutdate"`
+	PeopleCount  int    `json:"people_count"`
+	ACRequired   bool   `json:"ac_required"`
+}
+
+type AvailabilityResponse struct {
+	Destination string     `json:"destination"`
+	Rooms       []RoomType `json:"rooms"`
+}
+
 type EventAdd struct {
 	EventID              primitive.ObjectID `json:"eventid,omitempty" bson:"_id,omitempty"`
 	EventName            string             `json:"eventname" bson:"eventname"`
@@ -506,53 +560,53 @@ func countBookedRooms(user string) (int, error) {
 	return int(count), err
 }
 
-// API to book a room
-func bookRoom(w http.ResponseWriter, r *http.Request) {
-	w.Header().Set("Content-Type", "application/json")
-	var room Room
-	_ = json.NewDecoder(r.Body).Decode(&room)
+// // API to book a room
+// func bookRoom(w http.ResponseWriter, r *http.Request) {
+// 	w.Header().Set("Content-Type", "application/json")
+// 	var room Room
+// 	_ = json.NewDecoder(r.Body).Decode(&room)
 
-	// Validate room type
-	if !validateRoomType(room.Type) {
-		http.Error(w, "Invalid room type", http.StatusBadRequest)
-		return
-	}
+// 	// Validate room type
+// 	if !validateRoomType(room.Type) {
+// 		http.Error(w, "Invalid room type", http.StatusBadRequest)
+// 		return
+// 	}
 
-	// Check how many rooms the user has already booked
-	roomsBooked, err := countBookedRooms(room.User)
-	if err != nil {
-		http.Error(w, "Error checking booked rooms", http.StatusInternalServerError)
-		return
-	}
+// 	// Check how many rooms the user has already booked
+// 	roomsBooked, err := countBookedRooms(room.User)
+// 	if err != nil {
+// 		http.Error(w, "Error checking booked rooms", http.StatusInternalServerError)
+// 		return
+// 	}
 
-	// Check if the room is already booked by the user
-	existingRoom := Room{}
-	err = client.Database("hotel").Collection("rooms").FindOne(context.TODO(), bson.M{"user": room.User, "id": room.ID}).Decode(&existingRoom)
-	if err == nil && existingRoom.IsBooked {
-		http.Error(w, "Room already booked by this user", http.StatusConflict)
-		return
-	}
+// 	// Check if the room is already booked by the user
+// 	existingRoom := Room{}
+// 	err = client.Database("hotel").Collection("rooms").FindOne(context.TODO(), bson.M{"user": room.User, "id": room.ID}).Decode(&existingRoom)
+// 	if err == nil && existingRoom.IsBooked {
+// 		http.Error(w, "Room already booked by this user", http.StatusConflict)
+// 		return
+// 	}
 
-	// Limit: max rooms per user
-	if roomsBooked+1 > maxRooms { // +1 for the current booking
-		http.Error(w, fmt.Sprintf("User can only book a maximum of %d rooms", maxRooms), http.StatusForbidden)
-		return
-	}
+// 	// Limit: max rooms per user
+// 	if roomsBooked+1 > maxRooms { // +1 for the current booking
+// 		http.Error(w, fmt.Sprintf("User can only book a maximum of %d rooms", maxRooms), http.StatusForbidden)
+// 		return
+// 	}
 
-	// Check for available rooms of the requested type
-	filter := bson.M{"type": room.Type, "isBooked": false}
-	update := bson.M{"$set": bson.M{"isBooked": true, "user": room.User}}
-	err = client.Database("hotel").Collection("rooms").FindOneAndUpdate(context.TODO(), filter, update).Decode(&room)
+// 	// Check for available rooms of the requested type
+// 	filter := bson.M{"type": room.Type, "isBooked": false}
+// 	update := bson.M{"$set": bson.M{"isBooked": true, "user": room.User}}
+// 	err = client.Database("hotel").Collection("rooms").FindOneAndUpdate(context.TODO(), filter, update).Decode(&room)
 
-	// If no available room is found, return an error
-	if err != nil {
-		http.Error(w, "No rooms available for this type", http.StatusNotFound)
-		return
-	}
+// 	// If no available room is found, return an error
+// 	if err != nil {
+// 		http.Error(w, "No rooms available for this type", http.StatusNotFound)
+// 		return
+// 	}
 
-	// Return the booked room information
-	json.NewEncoder(w).Encode(room)
-}
+// 	// Return the booked room information
+// 	json.NewEncoder(w).Encode(room)
+// }
 
 // API to initialize rooms
 func initRooms(w http.ResponseWriter, r *http.Request) {
@@ -598,6 +652,98 @@ func availableRooms(w http.ResponseWriter, r *http.Request) {
 	}
 
 	json.NewEncoder(w).Encode(map[string]int{"availableRooms": int(availableRooms)})
+}
+
+func getAvailability(w http.ResponseWriter, r *http.Request) {
+	destination := r.URL.Query().Get("destination")
+
+	dest, ok := destinations[destination]
+	if !ok {
+		http.Error(w, "Invalid destination", http.StatusBadRequest)
+		return
+	}
+
+	response := AvailabilityResponse{
+		Destination: dest.Name,
+		Rooms:       dest.RoomTypes,
+	}
+
+	w.Header().Set("Content-Type", "application/json")
+	json.NewEncoder(w).Encode(response)
+}
+
+func bookRoom(w http.ResponseWriter, r *http.Request) {
+	var bookingRequest BookingRequest
+	if err := json.NewDecoder(r.Body).Decode(&bookingRequest); err != nil {
+		http.Error(w, "Invalid request", http.StatusBadRequest)
+		return
+	}
+
+	// Validate booking request
+	muxBooking.Lock() // Lock for concurrent access
+	defer muxBooking.Unlock()
+
+	dest, ok := destinations[bookingRequest.Destination]
+	if !ok {
+		http.Error(w, "Invalid destination", http.StatusBadRequest)
+		return
+	}
+
+	// Validate dates
+	checkIn, err := time.Parse("02/01/2006", bookingRequest.CheckInDate)
+	if err != nil {
+		http.Error(w, "Invalid check-in date format", http.StatusBadRequest)
+		return
+	}
+	checkOut, err := time.Parse("02/01/2006", bookingRequest.CheckOutDate)
+	if err != nil {
+		http.Error(w, "Invalid check-out date format", http.StatusBadRequest)
+		return
+	}
+	if checkOut.Before(checkIn) {
+		http.Error(w, "Check-out date must be after check-in date", http.StatusBadRequest)
+		return
+	}
+
+	var roomFound bool
+	for i, room := range dest.RoomTypes {
+		if room.Name == bookingRequest.RoomType {
+			if bookingRequest.PeopleCount > room.Capacity {
+				http.Error(w, "People count exceeds room capacity", http.StatusBadRequest)
+				return
+			}
+			if bookingRequest.ACRequired && !room.ACAvailable {
+				http.Error(w, "AC not available for the selected room type", http.StatusBadRequest)
+				return
+			}
+			if room.Count <= 0 {
+				http.Error(w, "No rooms available", http.StatusBadRequest)
+				return
+			}
+
+			// Decrease the available room count
+			destinations[bookingRequest.Destination].RoomTypes[i].Count--
+			roomFound = true
+			break
+		}
+	}
+
+	if !roomFound {
+		http.Error(w, "Room type not found", http.StatusBadRequest)
+		return
+	}
+
+	response := map[string]interface{}{
+		"message":       "Room booked successfully",
+		"destination":   bookingRequest.Destination,
+		"room_type":     bookingRequest.RoomType,
+		"checkin_date":  bookingRequest.CheckInDate,
+		"checkout_date": bookingRequest.CheckOutDate,
+		"people_count":  bookingRequest.PeopleCount,
+	}
+
+	w.Header().Set("Content-Type", "application/json")
+	json.NewEncoder(w).Encode(response)
 }
 
 func toBSON(rooms []Room) []interface{} {
@@ -738,9 +884,12 @@ func main() {
 
 	//Room
 	// Routes
+	// router.HandleFunc("/api/book", bookRoom).Methods("POST")
+	// router.HandleFunc("/api/init", initRooms).Methods("POST")
+	// router.HandleFunc("/api/available", availableRooms).Methods("GET")
+
 	router.HandleFunc("/api/book", bookRoom).Methods("POST")
-	router.HandleFunc("/api/init", initRooms).Methods("POST")
-	router.HandleFunc("/api/available", availableRooms).Methods("GET")
+	router.HandleFunc("/availability", getAvailability).Methods("GET")
 
 	// allowedOrigins := handlers.AllowedOrigins([]string{"https://213.210.37.35:3000", "https://213.210.37.35:8080", "https://www.agathiyarpyramid.org", "http://www.agathiyarpyramid.org", "http://localhost:3000", "http://localhost:8080"})
 	allowedOrigins := handlers.AllowedOrigins([]string{"*"})
