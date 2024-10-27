@@ -973,6 +973,94 @@ func registerEvent(w http.ResponseWriter, r *http.Request) {
 	json.NewEncoder(w).Encode(map[string]string{"message": "Data inserted successfully!"})
 }
 
+func eventUpdateHandler(w http.ResponseWriter, r *http.Request) {
+	eventIDParam := mux.Vars(r)["id"]
+	eventID, err := primitive.ObjectIDFromHex(eventIDParam)
+	if err != nil {
+		http.Error(w, "Invalid event ID", http.StatusBadRequest)
+		return
+	}
+
+	var updateData EventAdd
+	err = json.NewDecoder(r.Body).Decode(&updateData)
+	if err != nil {
+		http.Error(w, "Invalid request payload", http.StatusBadRequest)
+		return
+	}
+
+	connectMongo()
+	collection := client.Database("AgathiyarDB").Collection("eventdetails")
+
+	// Build the update document
+	update := bson.M{}
+	if updateData.EventName != "" {
+		update["eventname"] = updateData.EventName
+	}
+	if updateData.MasterName != "" {
+		update["mastername"] = updateData.MasterName
+	}
+	if updateData.StartDate != "" {
+		update["startdate"] = updateData.StartDate
+	}
+	if updateData.EndDate != "" {
+		update["enddate"] = updateData.EndDate
+	}
+	if updateData.NumberOfDays != "" {
+		update["numberofdays"] = updateData.NumberOfDays
+	}
+	if updateData.EventDescription != "" {
+		update["eventdescription"] = updateData.EventDescription
+	}
+	if updateData.Destination != "" {
+		update["destination"] = updateData.Destination
+	}
+	if updateData.RoomType != "" {
+		update["roomtype"] = updateData.RoomType
+	}
+	if updateData.NumberOfParticipants != "" {
+		update["numberofparticipants"] = updateData.NumberOfParticipants
+	}
+	if updateData.RetreatCost != "" {
+		update["retreatcost"] = updateData.RetreatCost
+	}
+	if updateData.ReserveDeposit != "" {
+		update["reservedeposit"] = updateData.ReserveDeposit
+	}
+	if updateData.ContactDetails != "" {
+		update["contactdetails"] = updateData.ContactDetails
+	}
+	if updateData.Image != "" {
+		update["imageurl"] = updateData.Image
+	}
+	if updateData.Language != "" {
+		update["language"] = updateData.Language
+	}
+
+	// Perform the update
+	if len(update) == 0 {
+		http.Error(w, "No fields to update", http.StatusBadRequest)
+		return
+	}
+
+	result, err := collection.UpdateOne(context.TODO(), bson.M{"_id": eventID}, bson.M{"$set": update})
+	if err != nil {
+		http.Error(w, "Failed to update event", http.StatusInternalServerError)
+		return
+	}
+
+	if result.MatchedCount == 0 {
+		http.Error(w, "No event found with the given ID", http.StatusNotFound)
+		return
+	}
+
+	response := map[string]interface{}{
+		"status":  "success",
+		"message": "Event updated successfully",
+	}
+	w.Header().Set("Content-Type", "application/json")
+	json.NewEncoder(w).Encode(response)
+}
+
 func deleteUserByMemberID(w http.ResponseWriter, r *http.Request) {
 	vars := mux.Vars(r)
 	memberID := vars["memberID"]
@@ -1096,6 +1184,7 @@ func main() {
 	router.HandleFunc("/api/get-event/{id}", getEventHandler).Methods("GET")
 	router.HandleFunc("/api/get-events", getAllEventsHandler).Methods("GET")
 	router.HandleFunc("/api/event/user/register", registerEvent).Methods("POST")
+	router.HandleFunc("/api/event/update/{id}", eventUpdateHandler).Methods("PUT")
 	//	router.HandleFunc("/api/database/{DBname}", deleteDatabase).Methods("DELETE")
 
 	//Room
