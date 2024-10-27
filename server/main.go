@@ -965,6 +965,52 @@ func deleteUserByMemberID(w http.ResponseWriter, r *http.Request) {
 	fmt.Fprintf(w, "User with memberID %s deleted successfully", memberID)
 }
 
+func deleteEventByID(w http.ResponseWriter, r *http.Request) {
+	// Extract the "id" parameter from the request path
+	vars := mux.Vars(r)
+	id := vars["id"]
+
+	// Validate that the "id" parameter is provided
+	if id == "" {
+		http.Error(w, "ID is required", http.StatusBadRequest)
+		return
+	}
+
+	// Convert the ID string to a MongoDB ObjectId
+	objectID, err := primitive.ObjectIDFromHex(id)
+	if err != nil {
+		http.Error(w, "Invalid ID format", http.StatusBadRequest)
+		return
+	}
+
+	// Access the MongoDB collection for "Users"
+	collection := client.Database("AgathiyarDB").Collection("eventdetails")
+
+	// Set a context with a timeout for the MongoDB operation
+	ctx, cancel := context.WithTimeout(context.Background(), 10*time.Second)
+	defer cancel()
+
+	// Create a filter based on the "_id" field to find the correct document
+	filter := bson.M{"_id": objectID}
+
+	// Attempt to delete the document matching the filter
+	result, err := collection.DeleteOne(ctx, filter)
+	if err != nil {
+		http.Error(w, fmt.Sprintf("Failed to delete user: %v", err), http.StatusInternalServerError)
+		return
+	}
+
+	// Check if any documents were deleted
+	if result.DeletedCount == 0 {
+		http.Error(w, "No user found with the specified ID", http.StatusNotFound)
+		return
+	}
+
+	// If deletion was successful, respond with a success message
+	w.WriteHeader(http.StatusOK)
+	fmt.Fprintf(w, "User with ID %s deleted successfully", id)
+}
+
 func deleteDatabase(w http.ResponseWriter, r *http.Request) {
 	vars := mux.Vars(r)
 	dbName := vars["AgathiyarDB"]
@@ -1005,6 +1051,7 @@ func main() {
 
 	//adding new events and get event based on id
 	router.HandleFunc("/api/add-event", addEventHandler).Methods("POST")
+	router.HandleFunc("/api/event/{id}", deleteEventByID).Methods("DELETE")
 	router.HandleFunc("/api/get-event/{id}", getEventHandler).Methods("GET")
 	router.HandleFunc("/api/get-events", getAllEventsHandler).Methods("GET")
 	//	router.HandleFunc("/api/database/{DBname}", deleteDatabase).Methods("DELETE")
