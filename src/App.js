@@ -32,7 +32,7 @@ const App = () => {
           <Route path="/book" element={<Book />} />
           <Route path="/events" element={<Events />} />
           <Route path="/booking" element={<Booking />} />
-          <Route path="/eventregister" element={<EventRegistrationForm />} />
+          <Route path="/eventregister/:eventId" element={<EventRegistrationForm />} />
           <Route path="/profile" element={<MobileProfileMenu />} />
           <Route path="/profileview" element={<ProfilePage />} />
           <Route path="/videos" element={<VideoList />} />

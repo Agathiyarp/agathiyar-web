@@ -3,9 +3,12 @@ import { TextField, Button, IconButton, Typography, MenuItem } from "@mui/materi
 import { AddCircle, RemoveCircle } from "@mui/icons-material";
 import reg3 from "../../images/reg3.png";
 import { toast, ToastContainer } from "react-toastify";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useParams   } from "react-router-dom";
+import axios from 'axios';
 
 const EventRegistration = () => {
+
+  const { eventId } = useParams();
   const navigate = useNavigate();
   const [members, setMembers] = useState([{ name: "", phone: "", email: "", age: "", gender: "" }]);
   const [comments, setComments] = useState("");
@@ -66,14 +69,30 @@ const EventRegistration = () => {
 
   const handleSubmit = (event) => {
     event.preventDefault();
-    console.log(members, 'testv1');
-    console.log(comments, 'testcomments');
+
+      const requestBody = {
+        eventid: eventId,
+        memberid: memberId,
+        comments: comments,
+        data: members
+      };
+      
     if (validateFields()) {
       toast.success("Event registration submitted successfully!", event.target);
-      setTimeout(()=> {
-        navigate('/events');
-      })
-      
+      try {
+        const response = axios.post(
+          "https://agathiyarpyramid.org/api/event/user/register",
+          requestBody
+        );
+        if(response.data) {
+          setTimeout(()=> {
+            navigate('/events');
+          })
+        }
+        console.log("User Event Registration successful:", response.data);
+      } catch (error) {
+        console.error("Error Registration user events", error);
+      }
     }
   };
 

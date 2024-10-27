@@ -25,6 +25,20 @@ var (
 	store  = sessions.NewCookieStore([]byte("super-secret-key"))
 )
 
+// Data structure to match your JSON input
+type EventRegistration struct {
+	Comments string `json:"comments"`
+	MemberId string `json:"memberId"`
+	Data     []struct {
+		Name   string `json:"name"`
+		Phone  string `json:"phone"`
+		Email  string `json:"email"`
+		Age    int    `json:"age"`
+		Gender string `json:"gender"`
+	} `json:"data"`
+	EventID string `json: "eventId"`
+}
+
 type RegisterUser struct {
 	Name            string `json:"name"`
 	Email           string `json:"email"`
@@ -932,6 +946,33 @@ func filterBookings(w http.ResponseWriter, r *http.Request) {
 	json.NewEncoder(w).Encode(bookings)
 }
 
+func registerEvent(w http.ResponseWriter, r *http.Request) {
+	var memberData EventRegistration
+
+	// Decode the JSON body
+	err := json.NewDecoder(r.Body).Decode(&memberData)
+	if err != nil {
+		http.Error(w, err.Error(), http.StatusBadRequest)
+		return
+	}
+
+	subCollection := memberData.EventID
+
+	// Define the subcollection
+	subCollectionRef := client.Database("AgathiyarDB").Collection("eventregister" + "." + subCollection)
+
+	// Insert the data into MongoDB
+	_, err = subCollectionRef.InsertOne(context.TODO(), memberData)
+	if err != nil {
+		http.Error(w, err.Error(), http.StatusInternalServerError)
+		return
+	}
+
+	// Respond with success
+	w.WriteHeader(http.StatusCreated)
+	json.NewEncoder(w).Encode(map[string]string{"message": "Data inserted successfully!"})
+}
+
 func deleteUserByMemberID(w http.ResponseWriter, r *http.Request) {
 	vars := mux.Vars(r)
 	memberID := vars["memberID"]
@@ -1054,6 +1095,7 @@ func main() {
 	router.HandleFunc("/api/event/{id}", deleteEventByID).Methods("DELETE")
 	router.HandleFunc("/api/get-event/{id}", getEventHandler).Methods("GET")
 	router.HandleFunc("/api/get-events", getAllEventsHandler).Methods("GET")
+	router.HandleFunc("/api/event/user/register", registerEvent).Methods("POST")
 	//	router.HandleFunc("/api/database/{DBname}", deleteDatabase).Methods("DELETE")
 
 	//Room

@@ -19,10 +19,12 @@ const WorkshopItem = ({
   imageurl,
   roomtype,
   contactdetails,
+  eventid
 }) => {
   const navigate = useNavigate();
-  const handleRegister = () => {
-    navigate("/eventregister");
+
+  const handleRegister = (id) => {
+    navigate(`/eventregister/${id}`);
   };
 
   const calculateTimeLeft = (date) => {
@@ -61,7 +63,7 @@ const WorkshopItem = ({
         </p>
         <div className="workshop-info">
           <div className="register-button">
-            <button className="btn-register" onClick={handleRegister}>
+            <button className="btn-register" onClick={()=>handleRegister(eventid)}>
               Register
             </button>
           </div>
