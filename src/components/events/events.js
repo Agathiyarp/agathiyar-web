@@ -8,7 +8,6 @@ import axios from 'axios';
 const UpcomingWorkshops = () => {
 
   const [eventData, setEventData] = useState([]); 
-  console.log(eventData, 'testv1');
 
   const getEvents = async () => {
     const requestBody = {};

@@ -2,11 +2,13 @@ package main
 
 import (
 	"context"
+	"encoding/base64"
 	"encoding/json"
 	"fmt"
 	"log"
 	"net/http"
 	"regexp"
+	"strings"
 	"sync"
 	"time"
 
@@ -49,6 +51,7 @@ type RegisterUser struct {
 	Password        string `json:"password"`
 	ConfirmPassword string `json:"confirmPassword"`
 	UserType        string `json:"usertype"`
+	ProfileImage    string `json:"profileImage"`
 }
 
 type LoginResponse struct {
@@ -226,26 +229,66 @@ func hashPassword(password string) (string, error) {
 	return string(bytes), err
 }
 
+func validateProfileImage(image string) bool {
+	// Define a regular expression to match the data URI pattern
+	dataURIPattern := `^data:image/(jpeg|jpg|png|gif);base64,`
+
+	// Check if the image matches the data URI pattern
+	matched, _ := regexp.MatchString(dataURIPattern, image)
+	if !matched {
+		return false
+	}
+
+	// Separate the base64 portion from the data URI
+	base64Data := strings.Split(image, ",")[1]
+
+	// Validate the base64 data
+	return isBase64(base64Data)
+}
+
+func isBase64(s string) bool {
+	_, err := base64.StdEncoding.DecodeString(s)
+	return err == nil
+}
+
 func registerHandler(w http.ResponseWriter, r *http.Request) {
 	var registerUser RegisterUser
 	err := json.NewDecoder(r.Body).Decode(&registerUser)
 	registerUser.UserType = "donor"
-	if err != nil || registerUser.Password == "" || registerUser.ConfirmPassword == "" ||
-		!validatePhoneNumber(registerUser.PhoneNumber) {
+
+	if err != nil {
+		log.Printf("Error decoding JSON: %v", err)
+		http.Error(w, "Invalid input", http.StatusBadRequest)
+		return
+	}
+
+	if registerUser.Password == "" || registerUser.ConfirmPassword == "" {
+		log.Println("Error: Password or ConfirmPassword is empty")
+		http.Error(w, "Invalid input", http.StatusBadRequest)
+		return
+	}
+
+	if !validatePhoneNumber(registerUser.PhoneNumber) {
+		log.Println("Error: Invalid phone number")
+		http.Error(w, "Invalid input", http.StatusBadRequest)
+		return
+	}
+
+	if !validateProfileImage(registerUser.ProfileImage) {
+		log.Println("Error: Invalid profile image")
 		http.Error(w, "Invalid input", http.StatusBadRequest)
 		return
 	}
 
 	if registerUser.Password != registerUser.ConfirmPassword {
+		log.Println("Error: Passwords do not match")
 		http.Error(w, "Passwords do not match", http.StatusBadRequest)
 		return
 	}
 
-	// Generate a MemberID
 	registerUser.UserMemberID = GenerateUserID()
-
 	collection := client.Database("AgathiyarDB").Collection("Users")
-	// Check if user already exists
+
 	var existingUser RegisterUser
 	// Define the query to find an existing user by either username or memberID
 	filter := bson.M{
@@ -256,7 +299,6 @@ func registerHandler(w http.ResponseWriter, r *http.Request) {
 	}
 	// Attempt to find an existing user
 	err = collection.FindOne(context.TODO(), filter).Decode(&existingUser)
-
 	if err == nil {
 		http.Error(w, "User already exists", http.StatusConflict)
 		return
@@ -268,13 +310,7 @@ func registerHandler(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 	registerUser.Password = hashedPassword
-
-	hashedPasswordconfirm, err := hashPassword(registerUser.ConfirmPassword)
-	if err != nil {
-		http.Error(w, "Could not hash password", http.StatusInternalServerError)
-		return
-	}
-	registerUser.ConfirmPassword = hashedPasswordconfirm
+	registerUser.ConfirmPassword = hashedPassword
 
 	_, err = collection.InsertOne(context.TODO(), registerUser)
 	if err != nil {

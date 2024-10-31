@@ -1,4 +1,5 @@
 import React from 'react';
+import profile from "../../images/profileImage.png";
 import {
   Avatar,
   Box,
@@ -18,8 +19,7 @@ import './Profilepage.css'
 import { ToastContainer, toast } from "react-toastify";
 import { 
   Home, 
-  Logout as LogOut,
-  Person as User
+  Logout as LogOut
 } from '@mui/icons-material';
 import { useNavigate } from "react-router-dom";
 
@@ -42,7 +42,6 @@ const ProfilePage = () => {
   const handleNavigate = (name)=> {
     console.log('testv2', name)
     if(name === 'Home'){
-        console.log('testv1')
         navigate('/');
     } else if(name === 'Logout') {
         const handleLogout = async () => {
@@ -88,9 +87,10 @@ const ProfilePage = () => {
       >
         <Box sx={{ display: 'flex', flexDirection: 'column', alignItems: 'center', p: 2 }}>
           <Avatar sx={{ width: { xs: 60, sm: 80 }, height: { xs: 60, sm: 80 }, bgcolor: 'primary.main' }}>
-            <User sx={{ fontSize: { xs: 30, sm: 40 } }} />
+            {/* <User sx={{ fontSize: { xs: 30, sm: 40 } }} /> */}
+            <img className='profile-image' src={profile} alt="manoj"/>
           </Avatar>
-          <Typography variant="h6" sx={{ mt: 2, fontSize: { xs: '1rem', sm: '1.25rem' } }}>
+          <Typography variant="h6" sx={{ fontSize: { xs: '2rem', sm: '2rem' } }}>
             {userDetails.fullName}
           </Typography>
         </Box>

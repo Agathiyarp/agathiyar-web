@@ -14,10 +14,17 @@ const RegistrationForm = () => {
     username: "",
     password: "",
     confirmPassword: "",
+    profileImage: ""
   });
 
   const [errors, setErrors] = useState({});
   const navigate = useNavigate();
+  const [imageFile, setImageFile] = useState(null); 
+
+  const handleImageChange = (e) => {
+    const file = e.target.files[0];
+    setImageFile(file);
+  };
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -39,12 +46,10 @@ const RegistrationForm = () => {
         errors.username = '';
       }
     }
-    console.log(name, 'testv1')
     if(name === 'name') {
       const nameRegex = /^[a-zA-Z0-9]{4,15}$/;
 
       if (!nameRegex.test(value)) {
-        console.log('testv2')
         errors.name = 'Name must be 4-15 characters long and can only contain letters and numbers.';
       } else {
         errors.name = '';
@@ -76,28 +81,42 @@ const RegistrationForm = () => {
       return;
     }
 
-    try {
-      const response = await fetch("https://www.agathiyarpyramid.org/api/register", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify(formData),
-      });
+    // Convert image file to Base64 and add to formData before submission
+    if (imageFile) {
+      const reader = new FileReader();
+      reader.onloadend = async () => {
+        const base64Image = reader.result;
+        console.log(base64Image);
+        setFormData((prevFormData) => ({
+          ...prevFormData,
+          profileImage: base64Image,
+        }));
 
-      if (!response.ok) {
-        throw new Error("Network response was not ok");
-      }
+        // Proceed with form submission
+        try {
+          const response = await fetch("https://www.agathiyarpyramid.org/api/register", {
+            method: "POST",
+            headers: {
+              "Content-Type": "application/json",
+            },
+            body: JSON.stringify({ ...formData, profileImage: base64Image }),
+          });
 
-      const data = await response.json();
-      console.log("Success:", data);
-      toast.success("Registration successful!");
-      setTimeout(()=> {
-        navigate("/login"); 
-      }, 3000)
-    } catch (error) {
-      console.error("Error:", error);
-      toast.error("Registration failed. User Already Register");
+          if (!response.ok) {
+            throw new Error("Network response was not ok");
+          }
+
+          const data = await response.json();
+          toast.success("Registration successful!");
+          setTimeout(() => {
+            navigate("/login");
+          }, 3000);
+        } catch (error) {
+          console.error("Error:", error);
+          toast.error("Registration failed. User already registered.");
+        }
+      };
+      reader.readAsDataURL(imageFile);
     }
   };
 
@@ -173,6 +192,17 @@ const RegistrationForm = () => {
             />
             {errors.username && <p className="error-text">{errors.username}</p>}
           </div>
+
+          <div className="input-box">
+          <label>Profile Picture</label>
+          <input
+            type="file"
+            name="image"
+            onChange={handleImageChange}
+            accept="image/jpeg, image/jpg, image/png, image/gif"
+          />
+          {errors.image && <p className="error-text">{errors.image}</p>}
+        </div>
 
           <div className="input-box">
             <label>Password</label>
