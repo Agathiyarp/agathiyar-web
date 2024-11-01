@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useRef } from "react";
+import React, { useState } from "react";
 import Footer from "../Footer";
 import "./booking.css";
 import MenuBar from "../menumain/menubar";
@@ -14,30 +14,45 @@ const Booking = () => {
     noOfDays: null,
   });
   const [showContent, setShowContent] = useState(false);
-  const initCalled = useRef(false);
+  const [searchResult, setSearchResult] = useState([]);
+
+  const getSeachResults = async (destination, checkInDate, checkOutDate) => {
+
+    const formatDate = (date) => {
+      const d = new Date(date);
+      const year = d.getFullYear();
+      const month = String(d.getMonth() + 1).padStart(2, '0');
+      const day = String(d.getDate()).padStart(2, '0');
+      return `${year}-${month}-${day}T00:00:00Z`; // RFC3339 format with UTC time
+  };
+  
+    const formattedCheckInDate = formatDate(checkInDate);
+    const formattedCheckOutDate = formatDate(checkOutDate);
+    try {
+      const response = await axios.get(
+        "https://agathiyarpyramid.org/api/bookings/filter",
+        {
+          params: {
+            destination: destination,
+            startdate: formattedCheckInDate,
+            enddate: formattedCheckOutDate,
+          },
+        }
+      );
+      console.log("Filter Booking results:", response.data);
+      if(response && response?.data){
+        setSearchResult(response?.data)
+      }
+    } catch (error) {
+      console.error("Error Filter Booking results", error);
+    }
+  };
 
   const handleSearch = (data) => {
     setSearchData(data);
     setShowContent(true);
-  };
-
-  useEffect(()=> {
-    if (!initCalled.current) {
-      initRoomBooking();
-      initCalled.current = true;
-    }
-  }, [])
-
-  const initRoomBooking = async () => {
-    const requestBody = {};
-    try {
-      const response = await axios.post(
-        "https://agathiyarpyramid.org/api/init",
-        requestBody
-      );
-      console.log("Booking initialized:", response.data);
-    } catch (error) {
-      console.error("Error initializing booking", error);
+    if(data) {
+      getSeachResults(data?.destination, data?.checkInDate, data?.checkOutDate);
     }
   };
 
@@ -49,7 +64,7 @@ const Booking = () => {
       </div>
       <div>
         {showContent ? (
-          <BookingContent data={searchData} />
+          <BookingContent data={searchData} searchResult={searchResult}/>
         ) : (
           <div className="empty-content">No Search Results</div>
         )}

@@ -4,16 +4,18 @@ import ConfirmModal from "../confirmModal";
 import { TextField, MenuItem } from "@mui/material";
 const RoomSelection = ({ selectedRoom, searchData }) => {
   const [noOfRooms, setNoOfRooms] = useState(1);
+  const [roomTypeSelected, setRoomTypeSelected] = useState('');
   const [openModal, setOpenModal] = useState(false);
-  const roomPrice = 100; // Rs. 100 per Room
+  const roomPrice = selectedRoom?.roomcost;
   const noOfDays = searchData?.noOfDays;
-  const maintenanceCharge = 500; // 500 per day
+  const maintenanceCharge = selectedRoom?.maintanancecost;
   const userDetails = JSON.parse(sessionStorage.getItem('userDetails'));
   const userName = userDetails?.username;
   const MemberId = userDetails?.usermemberid;
   
-  var rooms = [1, 2, 3];
-  const noOfAvailableRooms = selectedRoom?.noOfAvailableRooms;
+  var rooms = [1];
+  var roomType = ['A/C', 'Non A/C']
+  const noOfAvailableRooms = selectedRoom?.totalrooms;
 
   const handleOpen = () => {
     setOpenModal(true);
@@ -54,19 +56,31 @@ const RoomSelection = ({ selectedRoom, searchData }) => {
         <div className="room-search-results__map-placeholder h-full flex items-center justify-center text-gray-500">
           <div className="max-w-4xl mx-auto p-4 font-sans flex flex-col md:flex-row">
             <div className="w-full md:w-3/4 pr-4 border-room m-p-10">
-              <h5>{`${selectedRoom?.name}`}</h5>
+              <h5>{selectedRoom.destination} - {selectedRoom.roomtype} {`[${selectedRoom.roomvariation}]`}</h5>
               <h5>
-                Available Rooms: {"4"}
+                Available Rooms: {noOfAvailableRooms}
               </h5>
-              <h4 className="text-2xl font-bold mb-4">Select Rooms</h4>
               <TextField
                 select
-                label="No of Rooms"
+                label="Select No of Rooms"
                 value={noOfRooms}
                 onChange={(e) => setNoOfRooms(e.target.value)}
                 sx={{ minWidth: 150 }}
               >
                 {rooms.map((option) => (
+                  <MenuItem key={option} value={option}>
+                    {option}
+                  </MenuItem>
+                ))}
+              </TextField>
+              <TextField
+                select
+                label="Select Room Type"
+                value={roomTypeSelected}
+                onChange={(e) => setRoomTypeSelected(e.target.value)}
+                sx={{ minWidth: 150, marginLeft: 5 }}
+              >
+                {roomType.map((option) => (
                   <MenuItem key={option} value={option}>
                     {option}
                   </MenuItem>
@@ -98,7 +112,7 @@ const RoomSelection = ({ selectedRoom, searchData }) => {
                     <span>{formatDate(searchData?.checkOutDate)}</span>
                   </div>
                   <div className="text-gray-500 text-sm">
-                    Type: {selectedRoom?.name}
+                    Type: {selectedRoom?.roomvariation}
                   </div>
                   <div className="flex justify-between mb-4">
                     <span>Room Cost: </span>

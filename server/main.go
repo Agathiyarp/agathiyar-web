@@ -912,21 +912,24 @@ func addBooking(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
+	// Define the subcollection based on the destination name
+	collection := client.Database("AgathiyarDB").
+		Collection("BookingDetails" + "." + booking.Destination + "." + booking.RoomType)
+
 	// Check for existing booking in the specified date range
 	filter := bson.M{
-		"destination": booking.Destination,
-		"startdate":   bson.M{"$lte": booking.EndDate},
-		"enddate":     bson.M{"$gte": booking.StartDate},
+		"startdate": bson.M{"$lte": booking.EndDate},
+		"enddate":   bson.M{"$gte": booking.StartDate},
 	}
 
 	var existingBooking BookingAdd
-	collection := client.Database("AgathiyarDB").Collection("BookingDetails")
 	err = collection.FindOne(context.TODO(), filter).Decode(&existingBooking)
 	if err == nil {
 		http.Error(w, "Booking already exists for the specified date range", http.StatusConflict)
 		return
 	}
 
+	// Insert the new booking
 	booking.ID = primitive.NewObjectID()
 	_, err = collection.InsertOne(context.TODO(), booking)
 	if err != nil {
@@ -943,6 +946,7 @@ func filterBookings(w http.ResponseWriter, r *http.Request) {
 	destination := r.URL.Query().Get("destination")
 	startDateStr := r.URL.Query().Get("startdate")
 	endDateStr := r.URL.Query().Get("enddate")
+	var RoomType string = ""
 
 	// Parse start and end dates
 	startDate, err := time.Parse(time.RFC3339, startDateStr)
@@ -964,7 +968,13 @@ func filterBookings(w http.ResponseWriter, r *http.Request) {
 	}
 
 	// Find matching bookings
-	collection := client.Database("AgathiyarDB").Collection("BookingDetails")
+	if destination == "Agathiyar Bhavan" {
+		RoomType = "single"
+	} else {
+		RoomType = "double"
+	}
+	collection := client.Database("AgathiyarDB").
+		Collection("BookingDetails" + "." + destination + "." + RoomType)
 	cursor, err := collection.Find(context.TODO(), filter)
 	if err != nil {
 		http.Error(w, "Failed to retrieve bookings", http.StatusInternalServerError)
@@ -1233,7 +1243,8 @@ func main() {
 	router.HandleFunc("/api/addbooking", addBooking).Methods("POST")
 
 	// Route for filtering bookings
-	router.HandleFunc("/api/filterbookings", filterBookings).Methods("GET")
+	// router.HandleFunc("/api/filterbookings", filterBookings).Methods("GET")
+	router.HandleFunc("/api/bookings/filter", filterBookings).Methods("GET")
 
 	router.HandleFunc("/api/book", bookRoom).Methods("POST")
 	router.HandleFunc("/availability", getAvailability).Methods("GET")

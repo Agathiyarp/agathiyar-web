@@ -1,86 +1,22 @@
 import React, { useState } from "react";
-import { ChevronRight } from "lucide-react";
 import MenuBar from "../../menumain/menubar";
 import "./bookingContent.css";
-import Room1 from "../../../images/Room1.png";
-import Room2 from "../../../images/Room2.png";  
-import Room3 from "../../../images/Room3.png"; 
-import Room4 from "../../../images/Room4.png"; 
 import RoomSelection from "./roomSelection";
-const RoomBook = ({data}) => {
+const RoomBook = ({data, searchResult}) => {
   const [showSummary, setShowSummary] = useState(false);
-  const [selectedRoom, setSelectedRoom] = useState({
-    id: 1,
-    name: "Room Type I(2 beds, A/C Room)",
-    type: "A/C Room",
-    description:
-      "Family Friendly Atmosphere, Explore Meditaiton, Food and Swadhyayam",
-    score: { value: 8.3, text: "Very good", ratings: 775 },
-    price: { value: 17532, nights: 26, total: 455825 },
-    image: Room1,
-    noOfAvailableRooms: 30
-  });
+  const [selectedRoom, setSelectedRoom] = useState({});
 
   const handleRoomSelect = (room) => {
     setSelectedRoom(room);
     setShowSummary(true);
   };
 
-  const rooms = [
-    {
-      id: 1,
-      name: "Room Type I(2 beds, A/C Room)",
-      type: "A/C Room",
-      description:
-        "Family Friendly Atmosphere, Explore Meditaiton, Food and Swadhyayam",
-      score: { value: 8.3, text: "Very good", ratings: 775 },
-      price: { value: 17532, nights: 26, total: 455825 },
-      image: Room1,
-      noOfAvailableRooms: 30
-    },
-    {
-      id: 2,
-      name: "Room Type II(2 beds, Non A/C Room)",
-      type: "Non A/C Room",
-      description:
-        "Family Friendly Atmosphere, Explore Meditaiton, Food and Swadhyayam",
-      score: { value: 5.5, text: "", ratings: 6 },
-      price: { value: 23320, nights: 26, total: 606314 },
-      image: Room2,
-      noOfAvailableRooms: 20
-    },
-    {
-      id: 3,
-      name: "Room Type III(3 beds, A/C Room)",
-      type: "A/C Room",
-      description:
-        "Family Friendly Atmosphere, Explore Meditaiton, Food and Swadhyayam",
-      score: { value: 6.4, text: "", ratings: 351 },
-      price: { value: 10541, nights: 26, total: 274070 },
-      image: Room3,
-      popularChoice: true,
-      noOfAvailableRooms: 10
-    },
-    {
-      id: 4,
-      name: "Room Type IV(3 beds, Non A/C Room)",
-      type: "Non A/C Room",
-      description:
-        "Family Friendly Atmosphere, Explore Meditaiton, Food and Swadhyayam",
-      score: { value: 6.4, text: "", ratings: 351 },
-      price: { value: 10541, nights: 26, total: 274070 },
-      image: Room4,
-      popularChoice: true,
-      noOfAvailableRooms: 15
-    },
-  ];
-
   return (
     <div className="room-search-results max-w-7xl mx-auto p-4 font-sans">
       <MenuBar /> {/* Use MenuBar here */}
       <div className="room-search-results__content flex">
         <div className="room-search-results__list w-2/3 pr-4">
-          {rooms.map((room) => (
+          {searchResult && searchResult.map((room) => (
             <div
               key={room.id}
               className="room-card bg-white rounded-lg shadow-md p-4 mb-4 flex"
@@ -89,7 +25,7 @@ const RoomBook = ({data}) => {
                 <div className="relative">
                   <img
                     src={room.image}
-                    alt={room.name}
+                    alt={room.roomtype}
                     className="room-card__image w-full h-48 object-cover rounded-lg shadow-lg"
                   />
                   <div className="absolute inset-0 z-[-1] rounded-lg transform translate-x-2 translate-y-2 bg-gray-200 shadow-md"></div>
@@ -103,11 +39,11 @@ const RoomBook = ({data}) => {
                 <div>
                   <div className="room-card__header flex justify-between items-start">
                     <h2 className="room-card__name text-xl font-semibold">
-                      {room.name}
+                      {room.destination} - {room.roomtype} {`[${room.roomvariation}]`}
                     </h2>
                   </div>
                   <p className="room-card__description text-sm text-gray-600 mt-1">
-                    {room.description}
+                    {room.roomdescription}
                   </p>
                 </div>
 
