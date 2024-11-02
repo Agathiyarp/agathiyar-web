@@ -52,6 +52,9 @@ type RegisterUser struct {
 	ConfirmPassword string `json:"confirmPassword"`
 	UserType        string `json:"usertype"`
 	ProfileImage    string `json:"profileImage"`
+	Address         string `json:"address"`
+	DateOfBirth     string `json:"dob"`
+	Gender          string `json:"gender"`
 }
 
 type LoginResponse struct {
@@ -257,7 +260,10 @@ func isBase64(s string) bool {
 func registerHandler(w http.ResponseWriter, r *http.Request) {
 	var registerUser RegisterUser
 	err := json.NewDecoder(r.Body).Decode(&registerUser)
-	registerUser.UserType = "donor"
+	registerUser.UserType = ""
+	registerUser.DateOfBirth = ""
+	registerUser.Gender = ""
+	registerUser.Address = ""
 
 	if err != nil {
 		log.Printf("Error decoding JSON: %v", err)
@@ -487,6 +493,33 @@ func GetAllUsersHandler(w http.ResponseWriter, r *http.Request) {
 	}
 
 	fmt.Println("GetAllUsersHandler: Response sent successfully")
+}
+
+func modifyUserHandler(w http.ResponseWriter, r *http.Request) {
+	userMemberID := mux.Vars(r)["usermemberid"]
+
+	var updateData map[string]interface{}
+	err := json.NewDecoder(r.Body).Decode(&updateData)
+	if err != nil {
+		http.Error(w, "Invalid input", http.StatusBadRequest)
+		return
+	}
+
+	// You may want to validate fields here depending on the application logic
+
+	collection := client.Database("AgathiyarDB").Collection("Users")
+
+	// Prepare the update query
+	update := bson.M{"$set": updateData}
+	_, err = collection.UpdateOne(context.TODO(), bson.M{"usermemberid": userMemberID}, update)
+	if err != nil {
+		http.Error(w, "Could not update user", http.StatusInternalServerError)
+		return
+	}
+
+	response := Response{Message: "User updated successfully"}
+	w.WriteHeader(http.StatusOK)
+	json.NewEncoder(w).Encode(response)
 }
 
 // userByIDHandler retrieves a single user from the database based on user ID
@@ -1232,6 +1265,7 @@ func main() {
 	router.HandleFunc("/api/event/register", EventRegistrationHandler).Methods("POST")
 	router.HandleFunc("/api/allevents", GetAllEventRegistrations).Methods("GET")
 	router.HandleFunc("/api/users/{memberID}", deleteUserByMemberID).Methods("DELETE")
+	router.HandleFunc("/api/user/{usermemberid}", modifyUserHandler).Methods("PUT")
 
 	//adding new events and get event based on id
 	router.HandleFunc("/api/add-event", addEventHandler).Methods("POST")
