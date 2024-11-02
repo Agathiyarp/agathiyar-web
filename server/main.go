@@ -193,7 +193,7 @@ type BookingAdd struct {
 }
 
 var (
-	currentID int
+	currentID int = 100000
 	mu        sync.Mutex
 )
 
@@ -586,9 +586,9 @@ func GenerateUserID() string {
 	mu.Lock()
 	defer mu.Unlock()
 
-	currentID++
+	currentID++ // Increment currentID
 	year := time.Now().Year()
-	userID := fmt.Sprintf("AGP%d%06d", year, currentID)
+	userID := fmt.Sprintf("AGP%d%06d", year, currentID) // Format the user ID
 	return userID
 }
 
