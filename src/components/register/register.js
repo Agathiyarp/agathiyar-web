@@ -38,19 +38,19 @@ const RegistrationForm = () => {
       }
     }
     if(name === 'username') {
-      const usernameRegex = /^[a-zA-Z0-9]{4,15}$/;
+      const usernameRegex = /^[a-zA-Z0-9 .]{4,30}$/;
 
       if (!usernameRegex.test(value)) {
-        errors.username = 'Username must be 4-15 characters long and can only contain letters and numbers.';
+        errors.username = 'Username must be 4-30 characters long and can only contain letters and numbers.';
       } else {
         errors.username = '';
       }
     }
     if(name === 'name') {
-      const nameRegex = /^[a-zA-Z0-9]{4,15}$/;
+      const nameRegex = /^[a-zA-Z0-9 .]{4,30}$/;
 
       if (!nameRegex.test(value)) {
-        errors.name = 'Name must be 4-15 characters long and can only contain letters and numbers.';
+        errors.name = 'Name must be 4-30 characters long and can only contain letters and numbers.';
       } else {
         errors.name = '';
       }

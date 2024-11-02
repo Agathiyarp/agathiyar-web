@@ -59,6 +59,9 @@ type LoginResponse struct {
 	Username     string `json:"username"`
 	UserMemberID string `json:"usermemberid"`
 	UserType     string `json:"usertype"`
+	UserImage    string `json:"profileImage"`
+	UserPhone    string `json:"phoneNumber"`
+	UserEmail    string `json:"email"`
 }
 
 type Response struct {
@@ -375,6 +378,9 @@ func loginHandler(w http.ResponseWriter, r *http.Request) {
 	session.Values["username"] = registerUser.Username
 	session.Values["usermemberid"] = registerUser.UserMemberID
 	session.Values["usertype"] = registerUser.UserType
+	session.Values["image"] = registerUser.ProfileImage
+	session.Values["email"] = registerUser.Email
+	session.Values["phone"] = registerUser.PhoneNumber
 
 	if err := session.Save(r, w); err != nil {
 		log.Printf("loginHandler: Error saving session: %v", err)
@@ -387,6 +393,9 @@ func loginHandler(w http.ResponseWriter, r *http.Request) {
 		Username:     existingUser.Username,
 		UserMemberID: existingUser.UserMemberID,
 		UserType:     existingUser.UserType,
+		UserImage:    existingUser.ProfileImage,
+		UserPhone:    existingUser.PhoneNumber,
+		UserEmail:    existingUser.Email,
 	}
 	w.WriteHeader(http.StatusOK)
 	if err := json.NewEncoder(w).Encode(response); err != nil {

@@ -25,7 +25,7 @@ const MenuBar = () => {
 
   const [user, setUser] = useState({
     name: "",
-    profilePicture: profile,
+    profilePicture: JSON.parse(sessionStorage.getItem("userDetails"))?.profileImage,
   });
 
   const handleLogout = async () => {

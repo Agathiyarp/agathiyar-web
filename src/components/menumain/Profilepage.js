@@ -30,17 +30,17 @@ const ProfilePage = () => {
     { title: 'Logout', icon: <LogOut /> }
   ];
   const data = sessionStorage.getItem('userDetails');
+  const profileImg = JSON.parse(data)?.profileImage
 
   const userDetails = {
     fullName:  `${JSON.parse(data)?.username}`,
     memberId: `${JSON.parse(data)?.usermemberid}`,
     userType: `${JSON.parse(data)?.usertype}`,
-    email: 'manoj@gmail.com',
-    phone: '9234698746',
+    email: `${JSON.parse(data)?.email}`,
+    phone: `${JSON.parse(data)?.phoneNumber}`
   };
 
   const handleNavigate = (name)=> {
-    console.log('testv2', name)
     if(name === 'Home'){
         navigate('/');
     } else if(name === 'Logout') {
@@ -88,9 +88,9 @@ const ProfilePage = () => {
         <Box sx={{ display: 'flex', flexDirection: 'column', alignItems: 'center', p: 2 }}>
           <Avatar sx={{ width: { xs: 60, sm: 80 }, height: { xs: 60, sm: 80 }, bgcolor: 'primary.main' }}>
             {/* <User sx={{ fontSize: { xs: 30, sm: 40 } }} /> */}
-            <img className='profile-image' src={profile} alt="manoj"/>
+            <img className='profile-image' src={profileImg} alt="profileImage"/>
           </Avatar>
-          <Typography variant="h6" sx={{ fontSize: { xs: '2rem', sm: '2rem' } }}>
+          <Typography variant="h6" sx={{ fontSize: { xs: '1rem', sm: '1rem' }, fontWeight: 500, marginTop: '1rem' }}>
             {userDetails.fullName}
           </Typography>
         </Box>
