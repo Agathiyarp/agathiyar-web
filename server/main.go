@@ -79,6 +79,9 @@ type AllUserResponse struct {
 	Username     string `json:"username"`
 	UserMemberID string `json:"usermemberid"`
 	UserType     string `json:"usertype"`
+	Address      string `json:"address"`
+	DateOfBirth  string `json:"dob"`
+	Gender       string `json:"gender"`
 }
 
 type EventRegisterUser struct {
