@@ -86,7 +86,7 @@ const ProfilePage = () => {
         }}
       >
         <Box sx={{ display: 'flex', flexDirection: 'column', alignItems: 'center', p: 2 }}>
-          <Avatar sx={{ width: { xs: 60, sm: 80 }, height: { xs: 60, sm: 80 }, bgcolor: 'primary.main' }}>
+          <Avatar sx={{ width: { xs: 200, sm: 200 }, height: { xs: 200, sm: 200 }, bgcolor: 'primary.main' }}>
             {/* <User sx={{ fontSize: { xs: 30, sm: 40 } }} /> */}
             <img className='profile-image' src={profileImg} alt="profileImage"/>
           </Avatar>

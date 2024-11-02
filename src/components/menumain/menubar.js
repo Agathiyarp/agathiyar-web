@@ -22,10 +22,11 @@ const MenuBar = () => {
   const isMenuOpen = Boolean(anchorEl);
   const navigate = useNavigate();
   const location = useLocation(); // Get the current location for active link highlighting
+  const sessionData = sessionStorage.getItem("userDetails");
 
   const [user, setUser] = useState({
     name: "",
-    profilePicture: JSON.parse(sessionStorage.getItem("userDetails"))?.profileImage,
+    profilePicture: sessionData ? JSON.parse(sessionData)?.profileImage: ""
   });
 
   const handleLogout = async () => {
