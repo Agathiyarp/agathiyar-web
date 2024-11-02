@@ -53,7 +53,7 @@ type RegisterUser struct {
 	UserType        string `json:"usertype"`
 	ProfileImage    string `json:"profileImage"`
 	Address         string `json:"address"`
-	DateOfBirth     string `json:"dob"`
+	DateOfBirth     string `json:"dateofbirth"`
 	Gender          string `json:"gender"`
 }
 
@@ -65,6 +65,7 @@ type LoginResponse struct {
 	UserImage    string `json:"profileImage"`
 	UserPhone    string `json:"phoneNumber"`
 	UserEmail    string `json:"email"`
+	Gender       string `json:"gender"`
 }
 
 type Response struct {
@@ -80,7 +81,7 @@ type AllUserResponse struct {
 	UserMemberID string `json:"usermemberid"`
 	UserType     string `json:"usertype"`
 	Address      string `json:"address"`
-	DateOfBirth  string `json:"dob"`
+	DateOfBirth  string `json:"dateofbirth"`
 	Gender       string `json:"gender"`
 }
 
@@ -390,6 +391,7 @@ func loginHandler(w http.ResponseWriter, r *http.Request) {
 	session.Values["image"] = registerUser.ProfileImage
 	session.Values["email"] = registerUser.Email
 	session.Values["phone"] = registerUser.PhoneNumber
+	session.Values["gender"] = registerUser.Gender
 
 	if err := session.Save(r, w); err != nil {
 		log.Printf("loginHandler: Error saving session: %v", err)
@@ -405,6 +407,7 @@ func loginHandler(w http.ResponseWriter, r *http.Request) {
 		UserImage:    existingUser.ProfileImage,
 		UserPhone:    existingUser.PhoneNumber,
 		UserEmail:    existingUser.Email,
+		Gender:       existingUser.Gender,
 	}
 	w.WriteHeader(http.StatusOK)
 	if err := json.NewEncoder(w).Encode(response); err != nil {
@@ -475,6 +478,9 @@ func GetAllUsersHandler(w http.ResponseWriter, r *http.Request) {
 			Username:     responseuser.Username,
 			UserMemberID: responseuser.UserMemberID,
 			UserType:     responseuser.UserType,
+			Gender:       responseuser.Gender,
+			DateOfBirth:  responseuser.DateOfBirth,
+			Address:      responseuser.Address,
 		})
 	}
 
@@ -499,27 +505,53 @@ func GetAllUsersHandler(w http.ResponseWriter, r *http.Request) {
 }
 
 func modifyUserHandler(w http.ResponseWriter, r *http.Request) {
+	// Extract userMemberID from the URL
 	userMemberID := mux.Vars(r)["usermemberid"]
 
+	// Parse the JSON body for update data
 	var updateData map[string]interface{}
-	err := json.NewDecoder(r.Body).Decode(&updateData)
-	if err != nil {
+	if err := json.NewDecoder(r.Body).Decode(&updateData); err != nil {
 		http.Error(w, "Invalid input", http.StatusBadRequest)
 		return
 	}
 
-	// You may want to validate fields here depending on the application logic
+	// Log the received update data
+	log.Printf("Updating users with userMemberID: %v with data: %v", userMemberID, updateData)
 
+	// Connect to the "Users" collection
 	collection := client.Database("AgathiyarDB").Collection("Users")
 
-	// Prepare the update query
-	update := bson.M{"$set": updateData}
-	_, err = collection.UpdateOne(context.TODO(), bson.M{"usermemberid": userMemberID}, update)
+	// Filter to match `usermemberid`
+	filter := bson.M{"usermemberid": userMemberID}
+
+	// Retrieve and log the existing document data for verification
+	var existingDoc map[string]interface{}
+	err := collection.FindOne(context.TODO(), filter).Decode(&existingDoc)
 	if err != nil {
+		log.Printf("Error retrieving document for userMemberID %v: %v", userMemberID, err)
+		http.Error(w, "User not found", http.StatusNotFound)
+		return
+	}
+	log.Printf("Existing document for userMemberID %v: %v", userMemberID, existingDoc)
+
+	// Prepare the update document with `$set` and `$currentDate`
+	update := bson.M{
+		"$set":         updateData,
+		"$currentDate": bson.M{"lastModified": true}, // Force document modification
+	}
+
+	// Perform the UpdateMany operation
+	result, err := collection.UpdateMany(context.TODO(), filter, update)
+	if err != nil {
+		log.Printf("Error updating user with userMemberID %v: %v", userMemberID, err)
 		http.Error(w, "Could not update user", http.StatusInternalServerError)
 		return
 	}
 
+	// Log the number of documents modified
+	log.Printf("Modified %v document(s) for userMemberID: %v", result.ModifiedCount, userMemberID)
+
+	// Send a successful response
 	response := Response{Message: "User updated successfully"}
 	w.WriteHeader(http.StatusOK)
 	json.NewEncoder(w).Encode(response)
