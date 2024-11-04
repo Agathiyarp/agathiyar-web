@@ -3,8 +3,17 @@ import "./bookingContent.css";
 import ConfirmModal from "../confirmModal";
 import { TextField, MenuItem } from "@mui/material";
 const RoomSelection = ({ selectedRoom, searchData }) => {
+  const formatDateYYYYMMDD = (date) => {
+    const today = date ? new Date(date) : new Date();
+    const year = today.getFullYear();
+    const month = String(today.getMonth() + 1).padStart(2, '0');
+    const day = String(today.getDate()).padStart(2, '0');
+    return `${year}-${month}-${day}`;
+  };
   const [noOfRooms, setNoOfRooms] = useState(1);
-  const [roomTypeSelected, setRoomTypeSelected] = useState('');
+  const [roomTypeSelected, setRoomTypeSelected] = useState('A/C');
+  const [checkinDate, setCheckinDate] = useState(searchData.checkInDate ? formatDateYYYYMMDD(searchData.checkInDate) : formatDateYYYYMMDD());
+  const [checkoutDate, setCheckoutDate] = useState(searchData.checkOutDate ? formatDateYYYYMMDD(searchData.checkOutDate) : formatDateYYYYMMDD());
   const [openModal, setOpenModal] = useState(false);
   const roomPrice = selectedRoom?.roomcost;
   const noOfDays = searchData?.noOfDays;
@@ -37,17 +46,9 @@ const RoomSelection = ({ selectedRoom, searchData }) => {
     return calculateRoomCost() + calculateMaintenance();
   };
 
-
-
-  const formatDate = (date) => {
-    if (date?.$d instanceof Date && !isNaN(date?.$d)) {
-      return date?.$d.toLocaleDateString("en-GB", {
-        day: "2-digit",
-        month: "2-digit",
-        year: "2-digit",
-      });
-    }
-    return "Nil";
+  const formatDateToDDMMYYYY = (dateString) => {
+    const [year, month, day] = dateString.split("-");
+    return `${day}-${month}-${year}`;
   };
 
   return (
@@ -66,6 +67,7 @@ const RoomSelection = ({ selectedRoom, searchData }) => {
                 value={noOfRooms}
                 onChange={(e) => setNoOfRooms(e.target.value)}
                 sx={{ minWidth: 150 }}
+                required
               >
                 {rooms.map((option) => (
                   <MenuItem key={option} value={option}>
@@ -79,6 +81,7 @@ const RoomSelection = ({ selectedRoom, searchData }) => {
                 value={roomTypeSelected}
                 onChange={(e) => setRoomTypeSelected(e.target.value)}
                 sx={{ minWidth: 150, marginLeft: 5 }}
+                required
               >
                 {roomType.map((option) => (
                   <MenuItem key={option} value={option}>
@@ -86,30 +89,55 @@ const RoomSelection = ({ selectedRoom, searchData }) => {
                   </MenuItem>
                 ))}
               </TextField>
+              {/* Check-in Date Field */}
+              <TextField
+                label="Check-in Date"
+                type="date"
+                value={checkinDate}
+                onChange={(e) => setCheckinDate(e.target.value)}
+                sx={{ minWidth: 150, marginLeft: 0, marginTop: 2 }}
+                InputLabelProps={{
+                  shrink: true,
+                }}
+                required
+              />
+
+              {/* Check-out Date Field */}
+              <TextField
+                label="Check-out Date"
+                type="date"
+                value={checkoutDate}
+                onChange={(e) => setCheckoutDate(e.target.value)}
+                sx={{ minWidth: 150, marginLeft: 3, marginTop: 2 }}
+                InputLabelProps={{
+                  shrink: true,
+                }}
+                required
+              />
             </div>
             <div className="w-full md:w-1/4 border-room">
               <div className="bg-white rounded-lg shadow-md p-4">
                 <h4 className="text-xl font-bold mb-4">BOOKING SUMMARY</h4>
                 <div className="mb-4 align-center-booking">
-                  <div className="flex justify-between mb-2">
+                  {MemberId && MemberId.length > 0 && <div className="flex justify-between mb-2">
                     <span>MemberId: </span>
                     <span>{MemberId}</span>
-                  </div>
-                  <div className="flex justify-between mb-2">
+                  </div>}
+                  {userName && userName.length > 0 && <div className="flex justify-between mb-2">
                     <span>UserName: </span>
                     <span>{userName}</span>
-                  </div>
+                  </div>}
                   <div className="flex justify-between mb-2">
                     <span>Destination: </span>
                     <span>{searchData?.destination}</span>
                   </div>
                   <div className="flex justify-between mb-4">
                     <span>CheckIn: </span>
-                    <span>{formatDate(searchData?.checkInDate)}</span>
+                    <span>{checkinDate && formatDateToDDMMYYYY(checkinDate)}</span>
                   </div>
                   <div className="flex justify-between mb-4">
                     <span>CheckOut: </span>
-                    <span>{formatDate(searchData?.checkOutDate)}</span>
+                    <span>{checkoutDate && formatDateToDDMMYYYY(checkoutDate)}</span>
                   </div>
                   <div className="text-gray-500 text-sm">
                     Type: {selectedRoom?.roomvariation}

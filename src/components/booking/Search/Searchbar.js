@@ -8,7 +8,7 @@ import SearchIcon from '@mui/icons-material/Search';
 import dayjs from 'dayjs';
 import './Searchbar.css';
 
-const destinations = ['Agathiyar Bhavan', 'Pathriji Bhavan'];
+const destinations = ['Agathiyar Bhavan', 'Pathriji Bhavan', 'Dormitory'];
 
 const Searchbar = ({onSearch}) => {
   const [destination, setDestination] = useState('Agathiyar Bhavan');
