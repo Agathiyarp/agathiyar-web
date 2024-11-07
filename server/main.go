@@ -196,6 +196,24 @@ type BookingAdd struct {
 	MultipleImage   []string           `json:"multipleimage" bson:"multipleimage"` // Slice for multiple images
 }
 
+type BookingSummary struct {
+	ID              primitive.ObjectID `json:"id,omitempty" bson:"_id,omitempty"`
+	MemberId        string             `json:"memberid"`
+	UserName        string             `json:"username"`
+	RoomId          int                `json:"roomid"`
+	Destination     string             `json:"destination"`
+	StartDate       string             `json:"startdate"`
+	EndDate         string             `json:"enddate"`
+	SingleOccupy    string             `json:"singleoccupy"`
+	RoomDescription string             `json:"roomdescription" bson:"roomdescription"`
+	RoomType        string             `json:"roomtype"`
+	TotalRooms      int                `json:"totalrooms"`
+	RoomVariation   string             `json:"roomvariation"`
+	RoomCost        int                `json:"roomcost"`
+	MaintenanceCost int                `json:"maintanancecost"`
+	TotalAmount     int                `json:"totalamount"`
+}
+
 var (
 	currentID int = 100000
 	mu        sync.Mutex
@@ -1018,6 +1036,30 @@ func addBooking(w http.ResponseWriter, r *http.Request) {
 	json.NewEncoder(w).Encode(map[string]string{"message": "Booking added successfully"})
 }
 
+func bookingSummary(w http.ResponseWriter, r *http.Request) {
+	var bookingSummary BookingSummary
+	err := json.NewDecoder(r.Body).Decode(&bookingSummary)
+	if err != nil {
+		http.Error(w, "Invalid input", http.StatusBadRequest)
+		return
+	}
+
+	// Define the subcollection based on the destination name
+	collection := client.Database("AgathiyarDB").
+		Collection("RoomBooking" + "." + bookingSummary.Destination + "." + bookingSummary.RoomType)
+
+	// Insert the new booking
+	bookingSummary.ID = primitive.NewObjectID()
+	_, err = collection.InsertOne(context.TODO(), bookingSummary)
+	if err != nil {
+		http.Error(w, "Failed to add booking", http.StatusInternalServerError)
+		return
+	}
+
+	w.WriteHeader(http.StatusCreated)
+	json.NewEncoder(w).Encode(map[string]string{"message": "Room booked successfully"})
+}
+
 // Filters bookings by destination and date range
 func filterBookings(w http.ResponseWriter, r *http.Request) {
 	destination := r.URL.Query().Get("destination")
@@ -1047,8 +1089,10 @@ func filterBookings(w http.ResponseWriter, r *http.Request) {
 	// Find matching bookings
 	if destination == "Agathiyar Bhavan" {
 		RoomType = "single"
-	} else {
+	} else if destination == "Pathriji Bhavan" {
 		RoomType = "double"
+	} else {
+		RoomType = "common"
 	}
 	collection := client.Database("AgathiyarDB").
 		Collection("BookingDetails" + "." + destination + "." + RoomType)
@@ -1319,6 +1363,7 @@ func main() {
 
 	// Route for adding bookings
 	router.HandleFunc("/api/addbooking", addBooking).Methods("POST")
+	router.HandleFunc("/api/roombooking", bookingSummary).Methods("POST")
 
 	// Route for filtering bookings
 	// router.HandleFunc("/api/filterbookings", filterBookings).Methods("GET")

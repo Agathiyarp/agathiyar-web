@@ -2,7 +2,7 @@ import React, {useState} from 'react';
 import { Modal, Box, Button, Typography, Checkbox,FormControlLabel } from '@mui/material';
 import axios from 'axios';
 
-const ConfirmModal = ({handleClose, user, roomDetails}) => {
+const ConfirmModal = ({handleClose, userDetails, searchData, selectedRoom, checkInDate, checkOutDate, roomCost, maintananceCost,totalCost, totalRooms}) => {
 
   const [isChecked, setIsChecked] = useState(false);
 
@@ -13,20 +13,31 @@ const ConfirmModal = ({handleClose, user, roomDetails}) => {
   // Handle the confirmation action
   const handleConfirm = async () => {
     const requestBody = {
-      user: user,
-      id: roomDetails?.id,
-      type: roomDetails?.type
+      memberid: userDetails && userDetails.usermemberid,
+      username: userDetails && userDetails.username,
+      roomid: 1,
+      destination: selectedRoom && selectedRoom.destination,
+      startdate: checkInDate,
+      enddate: checkOutDate,
+      singleoccupy: selectedRoom && selectedRoom.singleoccupy,
+      roomdescription: selectedRoom && selectedRoom.roomdescription,
+      roomtype: selectedRoom && selectedRoom.roomtype,
+      totalrooms: totalRooms,
+      roomvariation: selectedRoom && selectedRoom.roomvariation,
+      roomcost: roomCost,
+      maintanancecost: maintananceCost,
+      totalamount: totalCost
     };
 
     try {
-      const response = await axios.post('https://agathiyarpyramid.org/api/book', requestBody);
+      const response = await axios.post('https://agathiyarpyramid.org/api/roombooking', requestBody);
       console.log('Booking confirmed:', response.data);
       // You might want to do something after the booking is confirmed
     } catch (error) {
       console.error('Error confirming booking:', error);
     }
 
-    handleClose();
+   handleClose();
   };
 
   // Modal styling

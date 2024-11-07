@@ -120,39 +120,44 @@ const RoomSelection = ({ selectedRoom, searchData }) => {
                 <h4 className="text-xl font-bold mb-4">BOOKING SUMMARY</h4>
                 <div className="mb-4 align-center-booking">
                   {MemberId && MemberId.length > 0 && <div className="flex justify-between mb-2">
-                    <span>MemberId: </span>
+                    <span className="font-bold">MemberId: </span>
                     <span>{MemberId}</span>
                   </div>}
                   {userName && userName.length > 0 && <div className="flex justify-between mb-2">
-                    <span>UserName: </span>
+                    <span className="font-bold">UserName: </span>
                     <span>{userName}</span>
                   </div>}
                   <div className="flex justify-between mb-2">
-                    <span>Destination: </span>
+                    <span className="font-bold">Destination: </span>
                     <span>{searchData?.destination}</span>
                   </div>
                   <div className="flex justify-between mb-4">
-                    <span>CheckIn: </span>
+                    <span className="font-bold">CheckIn: </span>
                     <span>{checkinDate && formatDateToDDMMYYYY(checkinDate)}</span>
                   </div>
                   <div className="flex justify-between mb-4">
-                    <span>CheckOut: </span>
+                    <span className="font-bold">CheckOut: </span>
                     <span>{checkoutDate && formatDateToDDMMYYYY(checkoutDate)}</span>
                   </div>
-                  <div className="text-gray-500 text-sm">
-                    Type: {selectedRoom?.roomvariation}
+                  <div className="flex justify-between mb-4">
+                    <span className="font-bold">Selected Rooms:</span>
+                    <span>{noOfRooms}</span>
                   </div>
                   <div className="flex justify-between mb-4">
-                    <span>Room Cost: </span>
+                    <span className="font-bold">Type:</span>
+                    <span>{selectedRoom?.roomvariation}</span>
+                  </div>
+                  <div className="flex justify-between mb-4">
+                    <span className="font-bold">Room Cost: </span>
                     <span>Rs. {calculateRoomCost()}</span>
                   </div>
                   <div className="flex justify-between mb-4">
-                    <span>Maintenance: </span>
+                    <span className="font-bold">Maintenance: </span>
                     <span>Rs. {calculateMaintenance()}</span>
                   </div>
                   <div className="bg-yellow-100 p-3 rounded-lg mb-4">
                     <div className="flex justify-between font-semibold">
-                      <span>Amount Payable: </span>
+                      <span className="font-bold">Amount Payable: </span>
                       <span>Rs. {calculateTotal()}</span>
                     </div>
                   </div>
@@ -175,12 +180,16 @@ const RoomSelection = ({ selectedRoom, searchData }) => {
       </div>
       {openModal && (
         <ConfirmModal
-          user={userName}
-          roomDetails={{
-            id: "TypeA-1", 
-            type: "TypeA"
-          }}
+          userDetails={userDetails}
+          searchData={searchData}
+          selectedRoom={selectedRoom}
+          checkInDate={checkinDate}
+          checkOutDate={checkoutDate}
           handleClose={handleClose}
+          roomCost={calculateRoomCost()}
+          maintananceCost={calculateMaintenance()}
+          totalCost={calculateTotal()}
+          totalRooms={noOfRooms}
         />
       )}
     </div>

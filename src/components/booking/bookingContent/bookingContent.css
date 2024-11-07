@@ -32,6 +32,10 @@
   padding: 10px;
 }
 
+.font-bold {
+  font-weight: 600;
+}
+
 /* room List Styles */
 .room-search-results__list {
   width: 60%; /* Restore full width for desktop */
