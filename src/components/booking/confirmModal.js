@@ -15,6 +15,7 @@ const ConfirmModal = ({handleClose, userDetails, searchData, selectedRoom, check
     const requestBody = {
       memberid: userDetails && userDetails.usermemberid,
       username: userDetails && userDetails.username,
+      email: userDetails && userDetails.email,
       roomid: 1,
       destination: selectedRoom && selectedRoom.destination,
       startdate: checkInDate,

@@ -7,6 +7,7 @@ import (
 	"fmt"
 	"log"
 	"net/http"
+	"path/filepath"
 	"regexp"
 	"strings"
 	"sync"
@@ -15,11 +16,13 @@ import (
 	"github.com/gorilla/handlers"
 	"github.com/gorilla/mux"
 	"github.com/gorilla/sessions"
+	"github.com/jung-kurt/gofpdf"
 	"go.mongodb.org/mongo-driver/bson"
 	"go.mongodb.org/mongo-driver/bson/primitive"
 	"go.mongodb.org/mongo-driver/mongo"
 	"go.mongodb.org/mongo-driver/mongo/options"
 	"golang.org/x/crypto/bcrypt"
+	"gopkg.in/gomail.v2"
 )
 
 var (
@@ -199,6 +202,7 @@ type BookingAdd struct {
 type BookingSummary struct {
 	ID              primitive.ObjectID `json:"id,omitempty" bson:"_id,omitempty"`
 	MemberId        string             `json:"memberid"`
+	Email           string             `json:"email"`
 	UserName        string             `json:"username"`
 	RoomId          int                `json:"roomid"`
 	Destination     string             `json:"destination"`
@@ -212,6 +216,7 @@ type BookingSummary struct {
 	RoomCost        int                `json:"roomcost"`
 	MaintenanceCost int                `json:"maintanancecost"`
 	TotalAmount     int                `json:"totalamount"`
+	BookingStatus   string             `json:"bookingstatus"`
 }
 
 var (
@@ -1053,11 +1058,101 @@ func bookingSummary(w http.ResponseWriter, r *http.Request) {
 	_, err = collection.InsertOne(context.TODO(), bookingSummary)
 	if err != nil {
 		http.Error(w, "Failed to add booking", http.StatusInternalServerError)
+		bookingSummary.BookingStatus = "failure"
+		return
+	} else {
+		bookingSummary.BookingStatus = "success"
+	}
+
+	// Generate PDF
+	pdfFileName, err := generateBookingPDF(bookingSummary)
+	if err != nil {
+		http.Error(w, "Failed to generate PDF", http.StatusInternalServerError)
+		return
+	}
+
+	// Send Email
+	err = sendBookingEmail(bookingSummary, pdfFileName)
+	if err != nil {
+		http.Error(w, "Failed to send email", http.StatusInternalServerError)
 		return
 	}
 
 	w.WriteHeader(http.StatusCreated)
 	json.NewEncoder(w).Encode(map[string]string{"message": "Room booked successfully"})
+}
+
+// generateBookingPDF creates a PDF with booking details
+func generateBookingPDF(booking BookingSummary) (string, error) {
+	pdf := gofpdf.New("P", "mm", "A4", "")
+	pdf.AddPage()
+	pdf.SetFont("Arial", "B", 16)
+	pdf.Cell(40, 10, "Booking Confirmation")
+
+	// Add booking details
+	pdf.SetFont("Arial", "", 12)
+	pdf.Ln(10)
+	pdf.Cell(40, 10, fmt.Sprintf("Booking ID: %s", booking.ID.Hex()))
+	pdf.Ln(10)
+	pdf.Cell(40, 10, fmt.Sprintf("Member ID: %s", booking.MemberId))
+	pdf.Ln(10)
+	pdf.Cell(40, 10, fmt.Sprintf("User Name: %s", booking.UserName))
+	pdf.Ln(10)
+	pdf.Cell(40, 10, fmt.Sprintf("Room ID: %d", booking.RoomId))
+	pdf.Ln(10)
+	pdf.Cell(40, 10, fmt.Sprintf("Destination: %s", booking.Destination))
+	pdf.Ln(10)
+	pdf.Cell(40, 10, fmt.Sprintf("Room Type: %s", booking.RoomType))
+	pdf.Ln(10)
+	pdf.Cell(40, 10, fmt.Sprintf("Start Date: %s", booking.StartDate))
+	pdf.Ln(10)
+	pdf.Cell(40, 10, fmt.Sprintf("End Date: %s", booking.EndDate))
+	pdf.Ln(10)
+	pdf.Cell(40, 10, fmt.Sprintf("Single Occupancy: %s", booking.SingleOccupy))
+	pdf.Ln(10)
+	pdf.Cell(40, 10, fmt.Sprintf("Room Description: %s", booking.RoomDescription))
+	pdf.Ln(10)
+	pdf.Cell(40, 10, fmt.Sprintf("Total Rooms: %d", booking.TotalRooms))
+	pdf.Ln(10)
+	pdf.Cell(40, 10, fmt.Sprintf("Room Variation: %s", booking.RoomVariation))
+	pdf.Ln(10)
+	pdf.Cell(40, 10, fmt.Sprintf("Room Cost: %d", booking.RoomCost))
+	pdf.Ln(10)
+	pdf.Cell(40, 10, fmt.Sprintf("Maintenance Cost: %d", booking.MaintenanceCost))
+	pdf.Ln(10)
+	pdf.Cell(40, 10, fmt.Sprintf("Total Amount: %d", booking.TotalAmount))
+	pdf.Ln(10)
+	pdf.Cell(40, 10, fmt.Sprintf("Booking Status: %s", booking.BookingStatus))
+
+	// Define file path and save PDF
+	pdfFilePath := filepath.Join("/pdf/file", fmt.Sprintf("%s.pdf", booking.MemberId))
+	err := pdf.OutputFileAndClose(pdfFilePath)
+	if err != nil {
+		return "", err
+	}
+	return pdfFilePath, nil
+}
+
+// sendBookingEmail sends an email with the booking confirmation PDF attached
+func sendBookingEmail(booking BookingSummary, pdfFilePath string) error {
+	mail := gomail.NewMessage()
+	mail.SetHeader("From", "agathiyarashram1@gmail.com")
+	mail.SetHeader("To", booking.Email)
+	mail.SetHeader("Subject", "Booking Confirmation")
+	mail.SetBody("text/plain", "Your booking has been confirmed. Please find the attached PDF for details.")
+
+	// Attach the PDF
+	mail.Attach(pdfFilePath)
+
+	// Set up the mail dialer (customize for your SMTP settings)
+	dialer := gomail.NewDialer("smtp.hostinger.com", 587, "agathiyarashram1@gmail.com", "Test@12345678")
+
+	// Send the email
+	if err := dialer.DialAndSend(mail); err != nil {
+		return err
+	}
+
+	return nil
 }
 
 // Filters bookings by destination and date range
