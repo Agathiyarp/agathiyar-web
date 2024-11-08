@@ -7,6 +7,7 @@ import (
 	"fmt"
 	"log"
 	"net/http"
+	"net/smtp"
 	"path/filepath"
 	"regexp"
 	"strings"
@@ -22,7 +23,6 @@ import (
 	"go.mongodb.org/mongo-driver/mongo"
 	"go.mongodb.org/mongo-driver/mongo/options"
 	"golang.org/x/crypto/bcrypt"
-	"gopkg.in/gomail.v2"
 )
 
 var (
@@ -1134,24 +1134,39 @@ func generateBookingPDF(booking BookingSummary) (string, error) {
 }
 
 // sendBookingEmail sends an email with the booking confirmation PDF attached
+
 func sendBookingEmail(booking BookingSummary, pdfFilePath string) error {
-	mail := gomail.NewMessage()
-	mail.SetHeader("From", "agathiyarashram1@gmail.com")
-	mail.SetHeader("To", booking.Email)
-	mail.SetHeader("Subject", "Booking Confirmation")
-	mail.SetBody("text/plain", "Your booking has been confirmed. Please find the attached PDF for details.")
+	// Sender's email and credentials
+	sender := "agathiyarashram1@gmail.com"
+	password := "Test@1234" // Replace with your Gmail password
 
-	// Attach the PDF
-	mail.Attach(pdfFilePath)
+	// Receiver's email
+	receiver := booking.Email
 
-	// Set up the mail dialer (customize for your SMTP settings)
-	dialer := gomail.NewDialer("smtp.hostinger.com", 587, "agathiyarashram1@gmail.com", "Test@1234")
+	// Email subject and body
+	subject := "Booking Confirmation"
+	body := "Your booking has been confirmed. Please find the attached PDF for details."
+
+	// Set up the SMTP server address and port
+	smtpServer := "smtp.hostinger.com"
+	port := "587"
+
+	// Set up authentication
+	auth := smtp.PlainAuth("", sender, password, smtpServer)
+
+	fmt.Println(receiver)
+
+	// Create the email message
+	message := []byte("Subject: " + subject + "\r\n" + "To: " + receiver + "\r\n" + "From: " + sender + "\r\n\r\n" + body)
 
 	// Send the email
-	if err := dialer.DialAndSend(mail); err != nil {
+	err := smtp.SendMail(smtpServer+":"+port, auth, sender, []string{receiver}, message)
+	if err != nil {
+		log.Println("Failed to send email:", err)
 		return err
 	}
 
+	log.Println("Booking email sent successfully!")
 	return nil
 }
 
