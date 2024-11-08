@@ -1125,7 +1125,7 @@ func generateBookingPDF(booking BookingSummary) (string, error) {
 	pdf.Cell(40, 10, fmt.Sprintf("Booking Status: %s", booking.BookingStatus))
 
 	// Define file path and save PDF
-	pdfFilePath := filepath.Join("/pdf/file", fmt.Sprintf("%s.pdf", booking.MemberId))
+	pdfFilePath := filepath.Join("pdf/file", fmt.Sprintf("%s.pdf", booking.MemberId))
 	err := pdf.OutputFileAndClose(pdfFilePath)
 	if err != nil {
 		return "", err
@@ -1145,7 +1145,7 @@ func sendBookingEmail(booking BookingSummary, pdfFilePath string) error {
 	mail.Attach(pdfFilePath)
 
 	// Set up the mail dialer (customize for your SMTP settings)
-	dialer := gomail.NewDialer("smtp.hostinger.com", 587, "agathiyarashram1@gmail.com", "Test@12345678")
+	dialer := gomail.NewDialer("smtp.hostinger.com", 587, "agathiyarashram1@gmail.com", "Test@1234")
 
 	// Send the email
 	if err := dialer.DialAndSend(mail); err != nil {
