@@ -39,9 +39,10 @@ const Booking = () => {
           },
         }
       );
-      console.log("Filter Booking results:", response.data);
       if(response && response?.data){
-        setSearchResult(response?.data)
+        setSearchResult(response?.data);
+      } else {
+        setSearchResult([]);
       }
     } catch (error) {
       console.error("Error Filter Booking results", error);
