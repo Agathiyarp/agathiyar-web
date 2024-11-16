@@ -232,8 +232,8 @@ func validatePhoneNumber(phone string) bool {
 
 func connectMongo() {
 	var err error
-	clientOptions := options.Client().ApplyURI("mongodb://localhost:27017")
-	//clientOptions := options.Client().ApplyURI("mongodb://root:Test12345678@localhost:27017")
+	//clientOptions := options.Client().ApplyURI("mongodb://localhost:27017")
+	clientOptions := options.Client().ApplyURI("mongodb://root:Test12345678@localhost:27017")
 	client, err = mongo.Connect(context.TODO(), clientOptions)
 	if err != nil {
 		panic(err)
