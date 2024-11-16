@@ -232,7 +232,8 @@ func validatePhoneNumber(phone string) bool {
 
 func connectMongo() {
 	var err error
-	clientOptions := options.Client().ApplyURI("mongodb://localhost:27017") // Change as needed
+	clientOptions := options.Client().ApplyURI("mongodb://localhost:27017")
+	//clientOptions := options.Client().ApplyURI("mongodb://root:Test12345678@localhost:27017")
 	client, err = mongo.Connect(context.TODO(), clientOptions)
 	if err != nil {
 		panic(err)
@@ -675,8 +676,6 @@ func addEventHandler(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	connectMongo()
-
 	collection := client.Database("AgathiyarDB").Collection("eventdetails")
 
 	result, err := collection.InsertOne(context.TODO(), event)
@@ -702,8 +701,6 @@ func getEventHandler(w http.ResponseWriter, r *http.Request) {
 		http.Error(w, "Invalid event ID", http.StatusBadRequest)
 		return
 	}
-
-	connectMongo()
 
 	collection := client.Database("AgathiyarDB").Collection("eventdetails")
 	var event EventAdd
@@ -759,7 +756,7 @@ func addBooking(w http.ResponseWriter, r *http.Request) {
 
 	// Define the subcollection based on the destination name
 	collection := client.Database("AgathiyarDB").
-		Collection("BookingDetails" + "." + booking.Destination + "." + booking.RoomType)
+		Collection("BookingDetails" + booking.Destination + booking.RoomType)
 
 	// Check for existing booking in the specified date range
 	filter := bson.M{
@@ -796,7 +793,7 @@ func bookingSummary(w http.ResponseWriter, r *http.Request) {
 
 	// Define the subcollection based on the destination name
 	collection := client.Database("AgathiyarDB").
-		Collection("RoomBooking" + "." + bookingSummary.Destination + "." + bookingSummary.RoomType)
+		Collection("RoomBooking" + bookingSummary.Destination + bookingSummary.RoomType)
 
 	// Insert the new booking
 	bookingSummary.ID = primitive.NewObjectID()
@@ -950,7 +947,7 @@ func filterBookings(w http.ResponseWriter, r *http.Request) {
 		RoomType = "common"
 	}
 	collection := client.Database("AgathiyarDB").
-		Collection("BookingDetails" + "." + destination + "." + RoomType)
+		Collection("BookingDetails" + destination + RoomType)
 	cursor, err := collection.Find(context.TODO(), filter)
 	if err != nil {
 		http.Error(w, "Failed to retrieve bookings", http.StatusInternalServerError)
@@ -981,7 +978,7 @@ func registerEvent(w http.ResponseWriter, r *http.Request) {
 	subCollection := memberData.EventID
 
 	// Define the subcollection
-	subCollectionRef := client.Database("AgathiyarDB").Collection("eventregister" + "." + subCollection)
+	subCollectionRef := client.Database("AgathiyarDB").Collection("eventregister" + subCollection)
 
 	// Insert the data into MongoDB
 	_, err = subCollectionRef.InsertOne(context.TODO(), memberData)
@@ -1010,7 +1007,6 @@ func eventUpdateHandler(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	connectMongo()
 	collection := client.Database("AgathiyarDB").Collection("eventdetails")
 
 	// Build the update document
