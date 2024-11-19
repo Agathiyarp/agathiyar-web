@@ -100,7 +100,7 @@ const EventRegistration = () => {
     <div style={styles.backgroundContainer}>
       <div style={styles.formContainer}>
         <h3 style={styles.heading}>Event Registration</h3>
-        <form onSubmit={handleSubmit}>
+        <form onSubmit={()=>handleSubmit()}>
           <h3 style={styles.memberTitle}>Member Id: {memberId}</h3>
           {members.map((member, index) => (
             <div key={index} style={styles.memberRow}>
