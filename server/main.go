@@ -7,7 +7,6 @@ import (
 	"fmt"
 	"log"
 	"net/http"
-	"net/smtp"
 	"path/filepath"
 	"regexp"
 	"strings"
@@ -23,6 +22,7 @@ import (
 	"go.mongodb.org/mongo-driver/mongo"
 	"go.mongodb.org/mongo-driver/mongo/options"
 	"golang.org/x/crypto/bcrypt"
+	"gopkg.in/gomail.v2"
 )
 
 var (
@@ -878,37 +878,39 @@ func generateBookingPDF(booking BookingSummary) (string, error) {
 // sendBookingEmail sends an email with the booking confirmation PDF attached
 
 func sendBookingEmail(booking BookingSummary, pdfFilePath string) error {
-	// Sender's email and credentials
-	sender := "agathiyarashram1@gmail.com"
-	password := "Test@1234" // Replace with your Gmail password
+	// Sender's email and credential
+	smtpHost := "smtp.gmail.com"
+	smtpPort := 587
+	email := "agathiyarashram1@gmail.com" // Replace with your Gmail address
+	password := "gupn qtcv dvbb jspl"     // Replace with your Gmail app-specific password
 
-	// Receiver's email
-	receiver := booking.Email
-
-	// Email subject and body
+	// Email details
+	to := "kvigneshece08@gmail.com" // Recipient
 	subject := "Booking Confirmation"
 	body := "Your booking has been confirmed. Please find the attached PDF for details."
 
-	// Set up the SMTP server address and port
-	smtpServer := "smtp.hostinger.com"
-	port := "587"
+	// Create a new email message
+	message := gomail.NewMessage()
+	message.SetHeader("From", email)
+	message.SetHeader("To", to)
+	message.SetHeader("Subject", subject)
+	message.SetBody("text/plain", body)
 
-	// Set up authentication
-	auth := smtp.PlainAuth("", sender, password, smtpServer)
+	// Attach the PDF file
+	//pdfFilePath := "path/to/your/file.pdf" // Replace with the full path to your PDF file
+	message.Attach(pdfFilePath)
+	fmt.Println(pdfFilePath)
 
-	fmt.Println(receiver)
-
-	// Create the email message
-	message := []byte("Subject: " + subject + "\r\n" + "To: " + receiver + "\r\n" + "From: " + sender + "\r\n\r\n" + body)
+	// Set up the SMTP dialer
+	dialer := gomail.NewDialer(smtpHost, smtpPort, email, password)
 
 	// Send the email
-	err := smtp.SendMail(smtpServer+":"+port, auth, sender, []string{receiver}, message)
-	if err != nil {
-		log.Println("Failed to send email:", err)
+	if err := dialer.DialAndSend(message); err != nil {
+		fmt.Println("Error sending email:", err)
 		return err
 	}
 
-	log.Println("Booking email sent successfully!")
+	fmt.Println("Email sent successfully!")
 	return nil
 }
 
