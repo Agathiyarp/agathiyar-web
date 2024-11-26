@@ -236,7 +236,7 @@ func validatePhoneNumber(phone string) bool {
 
 func connectMongo() {
 	var err error
-	clientOptions := options.Client().ApplyURI("mongodb://root:Test12345678@localhost:27017")
+	clientOptions := options.Client().ApplyURI("mongodb://root:**********@localhost:27017")
 	client, err = mongo.Connect(context.TODO(), clientOptions)
 	if err != nil {
 		panic(err)
@@ -450,8 +450,8 @@ func sendRegistrationEmail(registerUser RegisterUser, pdfFilePath string) error 
 	// Sender's email and credentials
 	smtpHost := "smtp.gmail.com"
 	smtpPort := 587
-	email := "agathiyarashram1@gmail.com" // Replace with your Gmail address
-	password := "gupn qtcv dvbb jspl"     // Replace with your Gmail app-specific password
+	email := "agathiyarashram1@gmail.com"
+	password := "*********"
 	// Email details
 	to := "kvigneshece08@gmail.com" // Recipient
 	subject := "Welcome to Agathiyar!"
@@ -1022,11 +1022,10 @@ func sendBookingEmail(booking BookingSummary, pdfFilePath string) error {
 	// Sender's email and credential
 	smtpHost := "smtp.gmail.com"
 	smtpPort := 587
-	email := "example@gmail.com"   // Replace with your Gmail address
-	password := "****************" // Replace with your Gmail app-specific password
-
+	email := "agathiyarashram1@gmail.com"
+	password := "*********"
 	// Email details
-	to := "example1@gmail.com" // Recipient
+	to := "kvigneshece08@gmail.com"
 	subject := "Booking Confirmation"
 	body := "Your booking has been confirmed. Please find the attached PDF for details."
 
