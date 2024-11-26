@@ -9,6 +9,7 @@ import (
 	"net/http"
 	"path/filepath"
 	"regexp"
+	"strconv"
 	"strings"
 	"sync"
 	"time"
@@ -218,9 +219,12 @@ type BookingSummary struct {
 	TotalAmount     int                `json:"totalamount"`
 	BookingStatus   string             `json:"bookingstatus"`
 }
+type CommonData struct {
+	UpdateUserID string `json:"updateuserid"`
+}
 
 var (
-	currentID int = 100000
+	currentID int = 10000
 	mu        sync.Mutex
 )
 
@@ -232,7 +236,7 @@ func validatePhoneNumber(phone string) bool {
 
 func connectMongo() {
 	var err error
-	clientOptions := options.Client().ApplyURI("mongodb://localhost:27017")
+	clientOptions := options.Client().ApplyURI("mongodb://root:Test12345678@localhost:27017")
 	client, err = mongo.Connect(context.TODO(), clientOptions)
 	if err != nil {
 		panic(err)
@@ -309,19 +313,65 @@ func registerHandler(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	registerUser.UserMemberID = GenerateUserID()
+	// MongoDB collection
+	collectionUserID := client.Database("AgathiyarDB").Collection("UsersCommon")
+
+	var userCommonData CommonData
+
+	// Define the prefix (AGP202410)
+	yearMonth := time.Now().Format("2006") // Current year and month, e.g., "202410"
+	prefix := "AGP" + yearMonth
+	numericLength := 4 // Numeric length to be padded to 3 digits
+
+	// Retrieve the current User ID
+	filter := bson.M{} // No filter, fetch any document
+	err = collectionUserID.FindOne(context.TODO(), filter).Decode(&userCommonData)
+	if err != nil {
+		if err == mongo.ErrNoDocuments {
+			// If no document exists, initialize it with the first ID
+			userCommonData.UpdateUserID = prefix + "1" + fmt.Sprintf("%0*d", numericLength, 1)
+		} else {
+			http.Error(w, "Failed to retrieve user", http.StatusInternalServerError)
+			return
+		}
+	} else {
+		// Extract the numeric part of the UpdateUserID (e.g., 001)
+		numericPart := strings.TrimPrefix(userCommonData.UpdateUserID, prefix)
+
+		// Convert the numeric part to an integer
+		currentID, convErr := strconv.Atoi(numericPart)
+		if convErr != nil {
+			http.Error(w, "Invalid user ID format", http.StatusInternalServerError)
+			return
+		}
+
+		// Increment the numeric part and format it back into the string
+		newNumericPart := strconv.Itoa(currentID + 1)
+		userCommonData.UpdateUserID = prefix + padLeft(newNumericPart, "0", numericLength) // Ensuring 3 digits
+	}
+
+	// Replace the document with the updated User ID
+	update := bson.M{"$set": bson.M{"updateUserID": userCommonData.UpdateUserID}}
+	_, err = collectionUserID.UpdateOne(context.TODO(), filter, update, options.Update().SetUpsert(true))
+	if err != nil {
+		http.Error(w, "Failed to update user ID", http.StatusInternalServerError)
+		return
+	}
+	// Assign the generated ID to the user
+	registerUser.UserMemberID = userCommonData.UpdateUserID
+
 	collection := client.Database("AgathiyarDB").Collection("Users")
 
 	var existingUser RegisterUser
 	// Define the query to find an existing user by either username or memberID
-	filter := bson.M{
+	filters := bson.M{
 		"$or": []bson.M{
 			{"username": existingUser.Username},
 			{"usermemberid": existingUser.UserMemberID}, // Assuming you have MemberID in registerUser
 		},
 	}
 	// Attempt to find an existing user
-	err = collection.FindOne(context.TODO(), filter).Decode(&existingUser)
+	err = collection.FindOne(context.TODO(), filters).Decode(&existingUser)
 	if err == nil {
 		http.Error(w, "User already exists", http.StatusConflict)
 		return
@@ -344,6 +394,14 @@ func registerHandler(w http.ResponseWriter, r *http.Request) {
 	response := Response{Message: "User registered successfully"}
 	w.WriteHeader(http.StatusCreated)
 	json.NewEncoder(w).Encode(response)
+}
+
+// PadLeft adds padding to the left of a string
+func padLeft(input, padStr string, length int) string {
+	for len(input) < length {
+		input = padStr + input
+	}
+	return input
 }
 
 func loginHandler(w http.ResponseWriter, r *http.Request) {
@@ -943,9 +1001,9 @@ func filterBookings(w http.ResponseWriter, r *http.Request) {
 	if destination == "Agathiyar Bhavan" {
 		RoomType = "single"
 	} else if destination == "Pathriji Bhavan" {
-		RoomType = "double"
+		RoomType = "family"
 	} else {
-		RoomType = "common"
+		RoomType = "shared"
 	}
 	collection := client.Database("AgathiyarDB").
 		Collection("BookingDetails" + destination + RoomType)
