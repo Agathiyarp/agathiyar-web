@@ -1,19 +1,11 @@
-import React, { useState } from "react";
+import React from "react";
 import MenuBar from "../../menumain/menubar";
 import "./bookingContent.css";
 import RoomSelection from "./roomSelection";
 const RoomBook = ({data, searchResult}) => {
-  const [showSummary, setShowSummary] = useState(false);
-  const [selectedRoom, setSelectedRoom] = useState({});
-
-  const handleRoomSelect = (room) => {
-    setSelectedRoom(room);
-    setShowSummary(true);
-  };
-
   return (
     <div className="room-search-results max-w-7xl mx-auto p-4 font-sans">
-      <MenuBar /> {/* Use MenuBar here */}
+      <MenuBar />
       <div className="room-search-results__content flex">
         <div className="room-search-results__list w-2/3 pr-4">
           {searchResult && searchResult.map((room) => (
@@ -39,27 +31,18 @@ const RoomBook = ({data, searchResult}) => {
                 <div>
                   <div className="room-card__header flex justify-between items-start">
                     <h2 className="room-card__name text-xl font-semibold">
-                      {room.destination} - {room.roomtype} {`[${room.roomvariation}]`}
+                      {room.destination} - {room.roomtype}
                     </h2>
                   </div>
                   <p className="room-card__description text-sm text-gray-600 mt-1">
                     {room.roomdescription}
                   </p>
                 </div>
-
-                <div className="room-card__booking text-right">
-                  {/* <button onClick={registerHandler} className="room-card__view-deal bg-green-600 text-white px-4 py-2 rounded mt-2 flex items-center register">
-                    Registration
-                  </button> */}
-                  <button onClick={() => handleRoomSelect(room)} className="room-card__view-deal bg-green-600 text-white px-4 py-2 rounded mt-2 flex items-center">
-                    SELECT
-                  </button>
-                </div>
               </div>
             </div>
           ))}
         </div>
-        {showSummary && <RoomSelection selectedRoom={selectedRoom} searchData={data}/>}
+        <RoomSelection selectedRoom={searchResult[0]} searchData={data}/>
       </div>
     </div>
   );

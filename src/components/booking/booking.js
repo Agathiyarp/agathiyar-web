@@ -67,7 +67,7 @@ const Booking = () => {
         {showContent ? (
           <BookingContent data={searchData} searchResult={searchResult}/>
         ) : (
-          <div className="empty-content">No Search Results</div>
+          <div className="empty-content">No Rooms Available</div>
         )}
       </div>
       <div>

@@ -11,7 +11,7 @@ const RoomSelection = ({ selectedRoom, searchData }) => {
     return `${year}-${month}-${day}`;
   };
   const [noOfRooms, setNoOfRooms] = useState(1);
-  const [roomTypeSelected, setRoomTypeSelected] = useState('A/C');
+  const [noOfBeds, setNoOfBeds] = useState(1);
   const [checkinDate, setCheckinDate] = useState(searchData.checkInDate ? formatDateYYYYMMDD(searchData.checkInDate) : formatDateYYYYMMDD());
   const [checkoutDate, setCheckoutDate] = useState(searchData.checkOutDate ? formatDateYYYYMMDD(searchData.checkOutDate) : formatDateYYYYMMDD());
   const [openModal, setOpenModal] = useState(false);
@@ -23,15 +23,16 @@ const RoomSelection = ({ selectedRoom, searchData }) => {
   const MemberId = userDetails?.usermemberid;
   
   var rooms = [];
-  var roomType = ['A/C', 'Non A/C']
+  var beds = [];
   const noOfAvailableRooms = selectedRoom?.totalrooms;
+  const noOfAvailableBeds = 10;
 
   if(searchData && searchData?.destination === 'Agathiyar Bhavan') {
     rooms = [1];
   } else if(searchData && searchData.destination === 'Pathriji Bhavan') {
     rooms = [1, 2];
   } else if(searchData && searchData.destination === 'Dormitory') {
-    rooms = [1, 2, 3];
+    beds = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10];
   } else {
     rooms = []
   }
@@ -67,63 +68,71 @@ const RoomSelection = ({ selectedRoom, searchData }) => {
         <div className="room-search-results__map-placeholder h-full flex items-center justify-center text-gray-500">
           <div className="max-w-4xl mx-auto p-4 font-sans flex flex-col md:flex-row">
             <div className="w-full md:w-3/4 pr-4 border-room m-p-10">
-              <h5>{searchData.destination} - {selectedRoom.roomtype} {`[${selectedRoom.roomvariation}]`}</h5>
-              <h5>
+              <h5>Destination: {searchData.destination}</h5>
+              {searchData.destination !== "Dormitory" &&<h5>
                 Available Rooms: {noOfAvailableRooms}
-              </h5>
-              <TextField
-                select
-                label="Select No of Rooms"
-                value={noOfRooms}
-                onChange={(e) => setNoOfRooms(e.target.value)}
-                sx={{ minWidth: 150 }}
-                required
-              >
-                {rooms.map((option) => (
-                  <MenuItem key={option} value={option}>
-                    {option}
-                  </MenuItem>
-                ))}
-              </TextField>
-              <TextField
-                select
-                label="Select Room Type"
-                value={roomTypeSelected}
-                onChange={(e) => setRoomTypeSelected(e.target.value)}
-                sx={{ minWidth: 150, marginLeft: 5 }}
-                required
-              >
-                {roomType.map((option) => (
-                  <MenuItem key={option} value={option}>
-                    {option}
-                  </MenuItem>
-                ))}
-              </TextField>
-              {/* Check-in Date Field */}
-              <TextField
-                label="Check-in Date"
-                type="date"
-                value={checkinDate}
-                onChange={(e) => setCheckinDate(e.target.value)}
-                sx={{ minWidth: 150, marginLeft: 0, marginTop: 2 }}
-                InputLabelProps={{
-                  shrink: true,
-                }}
-                required
-              />
+              </h5>}
+              {searchData.destination === "Dormitory" &&<h5>
+                Available Beds: {noOfAvailableBeds}
+              </h5>}
+              {(rooms && rooms.length > 0) && <div>
+                <TextField
+                  select
+                  label="Select No of Rooms"
+                  value={noOfRooms}
+                  onChange={(e) => setNoOfRooms(e.target.value)}
+                  sx={{ minWidth: 150 }}
+                  required
+                >
+                  {rooms.map((option) => (
+                    <MenuItem key={option} value={option}>
+                      {option}
+                    </MenuItem>
+                  ))}
+                </TextField>
+              </div>}
+              {(beds && beds.length > 0) && <div>
+                <TextField
+                  select
+                  label="Select No of beds"
+                  value={noOfBeds}
+                  onChange={(e) => setNoOfBeds(e.target.value)}
+                  sx={{ minWidth: 150 }}
+                  required
+                >
+                  {beds.map((option) => (
+                    <MenuItem key={option} value={option}>
+                      {option}
+                    </MenuItem>
+                  ))}
+                </TextField>
+              </div>}
+              <div>
+                <TextField
+                  label="Select Start Date"
+                  type="date"
+                  value={checkinDate}
+                  onChange={(e) => setCheckinDate(e.target.value)}
+                  sx={{ minWidth: 150, marginLeft: 0, marginTop: 2 }}
+                  InputLabelProps={{
+                    shrink: true,
+                  }}
+                  required
+                />
 
-              {/* Check-out Date Field */}
-              <TextField
-                label="Check-out Date"
-                type="date"
-                value={checkoutDate}
-                onChange={(e) => setCheckoutDate(e.target.value)}
-                sx={{ minWidth: 150, marginLeft: 3, marginTop: 2 }}
-                InputLabelProps={{
-                  shrink: true,
-                }}
-                required
-              />
+                {/* Check-out Date Field */}
+                <TextField
+                  label="Select End Date"
+                  type="date"
+                  value={checkoutDate}
+                  onChange={(e) => setCheckoutDate(e.target.value)}
+                  sx={{ minWidth: 150, marginLeft: 3, marginTop: 2 }}
+                  InputLabelProps={{
+                    shrink: true,
+                  }}
+                  required
+                />
+              </div>
             </div>
             <div className="w-full md:w-1/4 border-room">
               <div className="bg-white rounded-lg shadow-md p-4">
@@ -152,10 +161,6 @@ const RoomSelection = ({ selectedRoom, searchData }) => {
                   <div className="flex justify-between mb-4">
                     <span className="font-bold">Selected Rooms:</span>
                     <span>{noOfRooms}</span>
-                  </div>
-                  <div className="flex justify-between mb-4">
-                    <span className="font-bold">Type:</span>
-                    <span>{selectedRoom?.roomvariation}</span>
                   </div>
                   <div className="flex justify-between mb-4">
                     <span className="font-bold">Room Cost: </span>
