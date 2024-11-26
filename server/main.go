@@ -391,9 +391,93 @@ func registerHandler(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
+	pdfFilePath, err := generateRegistrationPDF(registerUser)
+	if err != nil {
+		http.Error(w, "Failed to generate PDF", http.StatusInternalServerError)
+		return
+	}
+
+	// Send the registration email with the PDF attachment
+	err = sendRegistrationEmail(registerUser, pdfFilePath)
+	if err != nil {
+		http.Error(w, "Failed to send email", http.StatusInternalServerError)
+		return
+	}
+
 	response := Response{Message: "User registered successfully"}
 	w.WriteHeader(http.StatusCreated)
 	json.NewEncoder(w).Encode(response)
+}
+
+func generateRegistrationPDF(registerUser RegisterUser) (string, error) {
+	pdf := gofpdf.New("P", "mm", "A4", "")
+	pdf.AddPage()
+	pdf.SetFont("Arial", "B", 16)
+	pdf.Cell(40, 10, "User Registration Confirmation")
+
+	// Add registration details to the PDF
+	pdf.SetFont("Arial", "", 12)
+	pdf.Ln(10)
+	pdf.Cell(40, 10, fmt.Sprintf("Name: %s", registerUser.Name))
+	pdf.Ln(10)
+	pdf.Cell(40, 10, fmt.Sprintf("Email: %s", registerUser.Email))
+	pdf.Ln(10)
+	pdf.Cell(40, 10, fmt.Sprintf("Phone Number: %s", registerUser.PhoneNumber))
+	pdf.Ln(10)
+	pdf.Cell(40, 10, fmt.Sprintf("Country: %s", registerUser.Country))
+	pdf.Ln(10)
+	pdf.Cell(40, 10, fmt.Sprintf("Username: %s", registerUser.Username))
+	pdf.Ln(10)
+	pdf.Cell(40, 10, fmt.Sprintf("User Member ID: %s", registerUser.UserMemberID))
+	pdf.Ln(10)
+	pdf.Cell(40, 10, fmt.Sprintf("Date of Birth: %s", registerUser.DateOfBirth))
+	pdf.Ln(10)
+	pdf.Cell(40, 10, fmt.Sprintf("Gender: %s", registerUser.Gender))
+	pdf.Ln(10)
+	pdf.Cell(40, 10, fmt.Sprintf("Address: %s", registerUser.Address))
+
+	// Define the file path and save the PDF
+	pdfFilePath := filepath.Join("pdf/userregistration", fmt.Sprintf("%s_registration.pdf", registerUser.UserMemberID))
+	err := pdf.OutputFileAndClose(pdfFilePath)
+	if err != nil {
+		return "", err
+	}
+
+	return pdfFilePath, nil
+}
+
+func sendRegistrationEmail(registerUser RegisterUser, pdfFilePath string) error {
+	// Sender's email and credentials
+	smtpHost := "smtp.gmail.com"
+	smtpPort := 587
+	email := "agathiyarashram1@gmail.com" // Replace with your Gmail address
+	password := "gupn qtcv dvbb jspl"     // Replace with your Gmail app-specific password
+	// Email details
+	to := "kvigneshece08@gmail.com" // Recipient
+	subject := "Welcome to Agathiyar!"
+	body := fmt.Sprintf("Hello %s,\n\nYour account has been successfully created. Please find the attached PDF for your registration details.\n\nYour Member ID: %s\n\nThank you for registering with us.\n\nBest regards,\nAgathiyar Team", registerUser.Name, registerUser.UserMemberID)
+
+	// Create a new email message
+	message := gomail.NewMessage()
+	message.SetHeader("From", email)
+	message.SetHeader("To", to)
+	message.SetHeader("Subject", subject)
+	message.SetBody("text/plain", body)
+
+	// Attach the PDF file
+	message.Attach(pdfFilePath)
+
+	// Set up the SMTP dialer
+	dialer := gomail.NewDialer(smtpHost, smtpPort, email, password)
+
+	// Send the email
+	if err := dialer.DialAndSend(message); err != nil {
+		fmt.Println("Error sending email:", err)
+		return err
+	}
+
+	fmt.Println("Registration email sent successfully!")
+	return nil
 }
 
 // PadLeft adds padding to the left of a string
