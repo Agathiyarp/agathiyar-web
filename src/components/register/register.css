@@ -28,6 +28,12 @@
   margin-top: 15px;
 }
 
+.group-container {
+  display: flex;
+}
+.m-r-10 {
+  margin-right: 10px;
+}
 .form .input-box {
   width: 100%;
   margin-top: 20px;
@@ -48,6 +54,7 @@
   border: 1px solid #ddd;
   border-radius: 6px;
   padding: 0 15px;
+  font-family: 'Raleway, sans-serif';
 }
 
 .input-box input:focus {
@@ -121,6 +128,39 @@
 
 .form button:hover {
   background: rgb(88, 56, 250);
+}
+
+.input-box select,
+.input-box textarea {
+  width: 100%;
+  padding: 10px;
+  font-size: 16px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  outline: none;
+  resize: none; /* Prevent textarea resizing by default */
+  background-color: #f9f9f9;
+  box-shadow: inset 0 1px 3px rgba(0, 0, 0, 0.1);
+  font-family: 'Raleway, sans-serif';
+}
+
+.input-box select:focus,
+.input-box textarea:focus {
+  border-color: #007bff;
+  box-shadow: 0 0 4px rgba(0, 123, 255, 0.5);
+}
+
+.input-box textarea {
+  min-height: 100px; /* Default height for the address box */
+  margin-top: 10px;
+}
+
+.input-box select {
+  appearance: none; /* Removes default browser styles for dropdowns */
+  background: url('data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIxNiIgaGVpZ2h0PSIxNiIgZmlsbD0iI2NjYyIgdmlld0JveD0iMCAwIDE2IDE2Ij48cGF0aCBkPSJNMTIgNkw4IDEyIDQgNmgxNmw0LTVMMTAgMTJsNC02ek0xMiAyTDggOFQwTDIgMXoiLz48L3N2Zz4=') no-repeat right 10px center;
+  background-size: 16px;
+  margin-top: 15px;
+  padding-right: 40px; /* Add space for the dropdown arrow */
 }
 
 /* Responsive */

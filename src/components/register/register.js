@@ -14,7 +14,10 @@ const RegistrationForm = () => {
     username: "",
     password: "",
     confirmPassword: "",
-    profileImage: ""
+    profileImage: "",
+    dob: "",
+    gender: "",
+    address: ""
   });
 
   const [errors, setErrors] = useState({});
@@ -68,6 +71,9 @@ const RegistrationForm = () => {
     if (!formData.password) newErrors.password = "Password is required";
     if (!formData.confirmPassword) newErrors.confirmPassword = "Confirm password is required";
     if (formData.password !== formData.confirmPassword) newErrors.confirmPassword = "Passwords do not match";
+    if (!formData.dob) newErrors.dob = "Date of Birth is required";
+    if (!formData.gender) newErrors.gender = "Gender is required";
+    if (!formData.address) newErrors.address = "Address is required";
 
     return newErrors;
   };
@@ -151,9 +157,8 @@ const RegistrationForm = () => {
             />
             {errors.email && <p className="error-text">{errors.email}</p>}
           </div>
-
-          <div className="column">
-            <div className="input-box">
+          <div className="group-container">
+            <div className="input-box m-r-10">
               <label>Phone Number</label>
               <input
                 type="tel"
@@ -165,19 +170,19 @@ const RegistrationForm = () => {
               />
               {errors.phoneNumber && <p className="error-text">{errors.phoneNumber}</p>}
             </div>
-          </div>
 
-          <div className="input-box">
-            <label>Country</label>
-            <input
-              type="text"
-              name="country"
-              placeholder="Enter Country"
-              value={formData.country}
-              onChange={handleChange}
-              required
-            />
-            {errors.country && <p className="error-text">{errors.country}</p>}
+            <div className="input-box">
+              <label>Country</label>
+              <input
+                type="text"
+                name="country"
+                placeholder="Enter Country"
+                value={formData.country}
+                onChange={handleChange}
+                required
+              />
+              {errors.country && <p className="error-text">{errors.country}</p>}
+            </div>
           </div>
 
           <div className="input-box">
@@ -203,31 +208,73 @@ const RegistrationForm = () => {
           />
           {errors.image && <p className="error-text">{errors.image}</p>}
         </div>
+          <div className="group-container">
+            <div className="input-box m-r-10">
+              <label>Password</label>
+              <input
+                type="password"
+                name="password"
+                placeholder="Enter password"
+                value={formData.password}
+                onChange={handleChange}
+                required
+              />
+              {errors.password && <p className="error-text">{errors.password}</p>}
+            </div>
 
-          <div className="input-box">
-            <label>Password</label>
-            <input
-              type="password"
-              name="password"
-              placeholder="Enter password"
-              value={formData.password}
-              onChange={handleChange}
-              required
-            />
-            {errors.password && <p className="error-text">{errors.password}</p>}
+            <div className="input-box">
+              <label>Confirm Password</label>
+              <input
+                type="password"
+                name="confirmPassword"
+                placeholder="Confirm password"
+                value={formData.confirmPassword}
+                onChange={handleChange}
+                required
+              />
+              {errors.confirmPassword && <p className="error-text">{errors.confirmPassword}</p>}
+            </div>
+          </div>
+          <div className="group-container">
+            <div className="input-box m-r-10">
+              <label>Date of Birth</label>
+              <input
+                type="date"
+                name="dob"
+                value={formData.dob}
+                onChange={handleChange}
+                required
+              />
+              {errors.dob && <p className="error-text">{errors.dob}</p>}
+            </div>
+
+            <div className="input-box">
+              <label>Gender</label>
+              <select
+                name="gender"
+                value={formData.gender}
+                onChange={handleChange}
+                required
+              >
+                <option value="" disabled>Select Gender</option>
+                <option value="male">Male</option>
+                <option value="female">Female</option>
+                <option value="other">Other</option>
+              </select>
+              {errors.gender && <p className="error-text">{errors.gender}</p>}
+            </div>
           </div>
 
           <div className="input-box">
-            <label>Confirm Password</label>
-            <input
-              type="password"
-              name="confirmPassword"
-              placeholder="Confirm password"
-              value={formData.confirmPassword}
+            <label>Address</label>
+            <textarea
+              name="address"
+              placeholder="Enter Address"
+              value={formData.address}
               onChange={handleChange}
               required
-            />
-            {errors.confirmPassword && <p className="error-text">{errors.confirmPassword}</p>}
+            ></textarea>
+            {errors.address && <p className="error-text">{errors.address}</p>}
           </div>
 
           <button type="submit">Submit</button>
