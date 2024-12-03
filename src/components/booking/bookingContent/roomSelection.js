@@ -30,7 +30,7 @@ const RoomSelection = ({ selectedRoom, searchData }) => {
   const noOfAvailableBeds = 10;
 
   if(searchData && searchData?.destination === 'Agathiyar Bhavan') {
-    rooms = [1];
+    rooms = [1, 2];
     guests = [];
     beds = [];
   } else if(searchData && searchData.destination === 'Pathriji Bhavan') {
@@ -38,7 +38,7 @@ const RoomSelection = ({ selectedRoom, searchData }) => {
     guests = [1, 2, 3, 4];
     beds = [];
   } else if(searchData && searchData.destination === 'Dormitory') {
-    beds = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10];
+    beds = [1];
     guests = [];
   } else {
     rooms = [];
