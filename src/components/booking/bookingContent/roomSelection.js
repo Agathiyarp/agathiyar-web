@@ -160,6 +160,9 @@ const RoomSelection = ({ selectedRoom, searchData }) => {
                   required
                 />
               </div>
+              <div className="notice-text">
+                *Select Start Date and End Date which is final booking dates.
+              </div>
             </div>
             <div className="w-full md:w-1/4 border-room">
               <div className="bg-white rounded-lg shadow-md p-4">
@@ -178,11 +181,11 @@ const RoomSelection = ({ selectedRoom, searchData }) => {
                     <span>{searchData?.destination}</span>
                   </div>
                   <div className="flex justify-between mb-4">
-                    <span className="font-bold">CheckIn: </span>
+                    <span className="font-bold">Start Date: </span>
                     <span>{checkinDate && formatDateToDDMMYYYY(checkinDate)}</span>
                   </div>
                   <div className="flex justify-between mb-4">
-                    <span className="font-bold">CheckOut: </span>
+                    <span className="font-bold">End Date: </span>
                     <span>{checkoutDate && formatDateToDDMMYYYY(checkoutDate)}</span>
                   </div>
                   <div className="flex justify-between mb-4">

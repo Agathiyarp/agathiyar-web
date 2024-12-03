@@ -319,3 +319,11 @@ button.p-2 {
   align-items: center;
   justify-content: space-around;
 }
+
+.notice-text {
+  margin-top: 12px;
+  color: #d32f2f; 
+  font-size: 14px;
+  text-align: center;
+  font-weight: bold;
+}
