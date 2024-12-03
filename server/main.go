@@ -2,9 +2,13 @@ package main
 
 import (
 	"context"
+	"crypto/aes"
+	"crypto/cipher"
+	"crypto/rand"
 	"encoding/base64"
 	"encoding/json"
 	"fmt"
+	"io"
 	"log"
 	"net/http"
 	"path/filepath"
@@ -105,27 +109,29 @@ type EventRegisterUser struct {
 	NumberOfDays string `json:"numberofdays"`
 }
 
-type Room struct {
-	ID       string `json:"id,omitempty" bson:"id,omitempty"`
-	Type     string `json:"type,omitempty" bson:"type,omitempty"`
-	IsBooked bool   `json:"isBooked" bson:"isBooked"`
-	User     string `json:"user,omitempty" bson:"user,omitempty"`
-}
+/*
+	type Room struct {
+		ID       string `json:"id,omitempty" bson:"id,omitempty"`
+		Type     string `json:"type,omitempty" bson:"type,omitempty"`
+		IsBooked bool   `json:"isBooked" bson:"isBooked"`
+		User     string `json:"user,omitempty" bson:"user,omitempty"`
+	}
 
-type RoomType struct {
-	Name        string `json:"name"`
-	Capacity    int    `json:"capacity"`
-	ACAvailable bool   `json:"ac_available"`
-	Description string `json:"description"`
-	Count       int    `json:"count"` // Available rooms count
-}
+	type RoomType struct {
+		Name        string `json:"name"`
+		Capacity    int    `json:"capacity"`
+		ACAvailable bool   `json:"ac_available"`
+		Description string `json:"description"`
+		Count       int    `json:"count"` // Available rooms count
+	}
 
-type Destination struct {
-	Name      string     `json:"name"`
-	RoomTypes []RoomType `json:"room_types"`
-}
+	type Destination struct {
+		Name      string     `json:"name"`
+		RoomTypes []RoomType `json:"room_types"`
+	}
 
 var (
+
 	destinations = map[string]Destination{
 		"Agathiyar Bhavan": {
 			Name: "Agathiyar Bhavan",
@@ -150,22 +156,23 @@ var (
 	}
 
 	muxBooking sync.Mutex
+
 )
 
-type BookingRequest struct {
-	Destination  string `json:"destination"`
-	RoomType     string `json:"room_type"`
-	CheckInDate  string `json:"checkindate"`
-	CheckOutDate string `json:"checkoutdate"`
-	PeopleCount  int    `json:"people_count"`
-	ACRequired   bool   `json:"ac_required"`
-}
+	type BookingRequest struct {
+		Destination  string `json:"destination"`
+		RoomType     string `json:"room_type"`
+		CheckInDate  string `json:"checkindate"`
+		CheckOutDate string `json:"checkoutdate"`
+		PeopleCount  int    `json:"people_count"`
+		ACRequired   bool   `json:"ac_required"`
+	}
 
-type AvailabilityResponse struct {
-	Destination string     `json:"destination"`
-	Rooms       []RoomType `json:"rooms"`
-}
-
+	type AvailabilityResponse struct {
+		Destination string     `json:"destination"`
+		Rooms       []RoomType `json:"rooms"`
+	}
+*/
 type EventAdd struct {
 	EventID              primitive.ObjectID `json:"eventid,omitempty" bson:"_id,omitempty"`
 	EventName            string             `json:"eventname" bson:"eventname"`
@@ -220,7 +227,10 @@ type BookingSummary struct {
 	BookingStatus   string             `json:"bookingstatus"`
 }
 type CommonData struct {
-	UpdateUserID string `json:"updateuserid"`
+	UpdateUserID           string `json:"updateuserid"`
+	AgathiyarAvailableRoom string `json:"agathiyaravailableroom"`
+	PathrijiAvailableRoom  string `json:"pathirijiavailableroom"`
+	DormitoryAvailableRoom string `json:"dormitoryavailableroom"`
 }
 
 var (
@@ -228,15 +238,98 @@ var (
 	mu        sync.Mutex
 )
 
+// Normalize key to the desired length (16, 24, or 32 bytes for AES)
+func normalizeKey(key []byte, desiredLength int) []byte {
+	if len(key) < desiredLength {
+		// Pad the key with zeroes if it's too short
+		paddedKey := make([]byte, desiredLength)
+		copy(paddedKey, key)
+		return paddedKey
+	}
+	// Truncate the key if it's too long
+	return key[:desiredLength]
+}
+
+// 32-byte key for AES-256 encryption
+var encryptionKey = normalizeKey([]byte("a-too-long-or-short-key-that-is-40-bytes"), 32)
+
+// Encrypt encrypts the plaintext string
+func Encrypt(plaintext string) (string, error) {
+	block, err := aes.NewCipher(encryptionKey)
+	if err != nil {
+		return "", err
+	}
+
+	// Generate a new IV
+	iv := make([]byte, aes.BlockSize)
+	if _, err := io.ReadFull(rand.Reader, iv); err != nil {
+		return "", err
+	}
+
+	// Encrypt the plaintext
+	ciphertext := make([]byte, len(plaintext))
+	stream := cipher.NewCFBEncrypter(block, iv)
+	stream.XORKeyStream(ciphertext, []byte(plaintext))
+
+	// Combine IV and ciphertext and encode in base64
+	finalCiphertext := append(iv, ciphertext...)
+	return base64.URLEncoding.EncodeToString(finalCiphertext), nil
+}
+
+// Decrypt decrypts the encrypted string
+func Decrypt(encrypted string) (string, error) {
+	cipherData, err := base64.URLEncoding.DecodeString(encrypted)
+	if err != nil {
+		return "", err
+	}
+
+	block, err := aes.NewCipher(encryptionKey)
+	if err != nil {
+		return "", err
+	}
+
+	// Extract the IV from the data
+	iv := cipherData[:aes.BlockSize]
+	ciphertext := cipherData[aes.BlockSize:]
+
+	// Decrypt the ciphertext
+	stream := cipher.NewCFBDecrypter(block, iv)
+	plaintext := make([]byte, len(ciphertext))
+	stream.XORKeyStream(plaintext, ciphertext)
+
+	return string(plaintext), nil
+}
+
 func validatePhoneNumber(phone string) bool {
 	regex := `^\+?[1-9]\d{1,14}$`
 	re := regexp.MustCompile(regex)
 	return re.MatchString(phone)
 }
 
-func connectMongo() {
+func init() {
 	var err error
-	clientOptions := options.Client().ApplyURI("mongodb://root:**********@localhost:27017")
+	connectionString := "gupn qtcv dvbb jspl"
+
+	// Encrypt the connection string
+	encrypted, err := Encrypt(connectionString)
+	if err != nil {
+		fmt.Println("Encryption error:", err)
+		return
+	}
+	fmt.Println("Encrypted:", encrypted)
+
+	// Decrypt the connection string
+	decrypted, err := Decrypt(MongoDB)
+	if err != nil {
+		fmt.Println("Decryption error:", err)
+		return
+	}
+	fmt.Println("Decrypted:", decrypted)
+
+	// Verify that the decrypted string matches the original
+	fmt.Println("Match:", decrypted == connectionString)
+
+	clientOptions := options.Client().ApplyURI(decrypted)
 	client, err = mongo.Connect(context.TODO(), clientOptions)
 	if err != nil {
 		panic(err)
@@ -279,9 +372,6 @@ func registerHandler(w http.ResponseWriter, r *http.Request) {
 	var registerUser RegisterUser
 	err := json.NewDecoder(r.Body).Decode(&registerUser)
 	registerUser.UserType = ""
-	registerUser.DateOfBirth = ""
-	registerUser.Gender = ""
-	registerUser.Address = ""
 
 	if err != nil {
 		log.Printf("Error decoding JSON: %v", err)
@@ -314,7 +404,7 @@ func registerHandler(w http.ResponseWriter, r *http.Request) {
 	}
 
 	// MongoDB collection
-	collectionUserID := client.Database("AgathiyarDB").Collection("UsersCommon")
+	collectionUserID := client.Database(DBName).Collection(UserCommon)
 
 	var userCommonData CommonData
 
@@ -360,7 +450,7 @@ func registerHandler(w http.ResponseWriter, r *http.Request) {
 	// Assign the generated ID to the user
 	registerUser.UserMemberID = userCommonData.UpdateUserID
 
-	collection := client.Database("AgathiyarDB").Collection("Users")
+	collection := client.Database(DBName).Collection(UserCollection)
 
 	var existingUser RegisterUser
 	// Define the query to find an existing user by either username or memberID
@@ -377,6 +467,7 @@ func registerHandler(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
+	userPassword := registerUser.Password
 	hashedPassword, err := hashPassword(registerUser.Password)
 	if err != nil {
 		http.Error(w, "Could not hash password", http.StatusInternalServerError)
@@ -391,14 +482,14 @@ func registerHandler(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	pdfFilePath, err := generateRegistrationPDF(registerUser)
+	pdfFilePath, err := generateRegistrationPDF(registerUser, userPassword)
 	if err != nil {
 		http.Error(w, "Failed to generate PDF", http.StatusInternalServerError)
 		return
 	}
 
 	// Send the registration email with the PDF attachment
-	err = sendRegistrationEmail(registerUser, pdfFilePath)
+	err = sendRegistrationEmail(registerUser, pdfFilePath, userPassword)
 	if err != nil {
 		http.Error(w, "Failed to send email", http.StatusInternalServerError)
 		return
@@ -409,11 +500,11 @@ func registerHandler(w http.ResponseWriter, r *http.Request) {
 	json.NewEncoder(w).Encode(response)
 }
 
-func generateRegistrationPDF(registerUser RegisterUser) (string, error) {
+func generateRegistrationPDF(registerUser RegisterUser, userPassword string) (string, error) {
 	pdf := gofpdf.New("P", "mm", "A4", "")
 	pdf.AddPage()
 	pdf.SetFont("Arial", "B", 16)
-	pdf.Cell(40, 10, "User Registration Confirmation")
+	pdf.Cell(40, 10, "User Registration Details")
 
 	// Add registration details to the PDF
 	pdf.SetFont("Arial", "", 12)
@@ -427,6 +518,8 @@ func generateRegistrationPDF(registerUser RegisterUser) (string, error) {
 	pdf.Cell(40, 10, fmt.Sprintf("Country: %s", registerUser.Country))
 	pdf.Ln(10)
 	pdf.Cell(40, 10, fmt.Sprintf("Username: %s", registerUser.Username))
+	pdf.Ln(10)
+	pdf.Cell(40, 10, fmt.Sprintf("Password: %s", userPassword))
 	pdf.Ln(10)
 	pdf.Cell(40, 10, fmt.Sprintf("User Member ID: %s", registerUser.UserMemberID))
 	pdf.Ln(10)
@@ -446,29 +539,29 @@ func generateRegistrationPDF(registerUser RegisterUser) (string, error) {
 	return pdfFilePath, nil
 }
 
-func sendRegistrationEmail(registerUser RegisterUser, pdfFilePath string) error {
-	// Sender's email and credentials
-	smtpHost := "smtp.gmail.com"
-	smtpPort := 587
-	email := "agathiyarashram1@gmail.com"
-	password := "*********"
-	// Email details
-	to := "kvigneshece08@gmail.com" // Recipient
+func sendRegistrationEmail(registerUser RegisterUser, pdfFilePath string, userPassword string) error {
 	subject := "Welcome to Agathiyar!"
-	body := fmt.Sprintf("Hello %s,\n\nYour account has been successfully created. Please find the attached PDF for your registration details.\n\nYour Member ID: %s\n\nThank you for registering with us.\n\nBest regards,\nAgathiyar Team", registerUser.Name, registerUser.UserMemberID)
+	body := fmt.Sprintf("Hello %s,\n\nYour account has been successfully created. Please find the attached PDF for your registration details.\n\nUser Login Details below,\nUserName: %s\nMemberID: %s\nPassword: %s\n\nThank you for registering with us.\n\nBest regards,\nAgathiyar Team", registerUser.Name, registerUser.Username, registerUser.UserMemberID, userPassword)
 
 	// Create a new email message
 	message := gomail.NewMessage()
-	message.SetHeader("From", email)
-	message.SetHeader("To", to)
+	message.SetHeader("From", AgathiyarEmail)
+	message.SetHeader("To", registerUser.Email)
 	message.SetHeader("Subject", subject)
 	message.SetBody("text/plain", body)
 
 	// Attach the PDF file
 	message.Attach(pdfFilePath)
 
+	// Decrypt the connection string
+	decrypted, err := Decrypt(RegisterPassword)
+	if err != nil {
+		fmt.Println("Decryption error:", err)
+		return nil
+	}
+	fmt.Println("Decrypted:", decrypted)
 	// Set up the SMTP dialer
-	dialer := gomail.NewDialer(smtpHost, smtpPort, email, password)
+	dialer := gomail.NewDialer(SmtpHost, SmtpPort, AgathiyarEmail, decrypted)
 
 	// Send the email
 	if err := dialer.DialAndSend(message); err != nil {
@@ -500,7 +593,7 @@ func loginHandler(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	collection := client.Database("AgathiyarDB").Collection("Users")
+	collection := client.Database(DBName).Collection(UserCollection)
 
 	// Check if the user exists in the database by username or memberID
 	var existingUser RegisterUser
@@ -585,7 +678,7 @@ func logoutHandler(w http.ResponseWriter, r *http.Request) {
 
 // GetAllUsersHandler retrieves all users from the database
 func GetAllUsersHandler(w http.ResponseWriter, r *http.Request) {
-	collection := client.Database("AgathiyarDB").Collection("Users")
+	collection := client.Database(DBName).Collection(UserCollection)
 	fmt.Println("GetAllUsersHandler: Starting")
 
 	// Ping the database to confirm connection
@@ -653,7 +746,7 @@ func userByIDHandler(w http.ResponseWriter, r *http.Request) {
 	vars := mux.Vars(r)
 	userID := vars["id"]
 
-	collection := client.Database("AgathiyarDB").Collection("Users")
+	collection := client.Database(DBName).Collection(UserCollection)
 	fmt.Println("userByIDHandler: Starting")
 
 	// Ping the database to confirm connection
@@ -717,6 +810,7 @@ func GenerateUserID() string {
 	return userID
 }
 
+/*
 func getAvailability(w http.ResponseWriter, r *http.Request) {
 	destination := r.URL.Query().Get("destination")
 
@@ -734,81 +828,82 @@ func getAvailability(w http.ResponseWriter, r *http.Request) {
 	w.Header().Set("Content-Type", "application/json")
 	json.NewEncoder(w).Encode(response)
 }
-
-func bookRoom(w http.ResponseWriter, r *http.Request) {
-	var bookingRequest BookingRequest
-	if err := json.NewDecoder(r.Body).Decode(&bookingRequest); err != nil {
-		http.Error(w, "Invalid request", http.StatusBadRequest)
-		return
-	}
-
-	// Validate booking request
-	muxBooking.Lock() // Lock for concurrent access
-	defer muxBooking.Unlock()
-
-	dest, ok := destinations[bookingRequest.Destination]
-	if !ok {
-		http.Error(w, "Invalid destination", http.StatusBadRequest)
-		return
-	}
-
-	// Validate dates
-	checkIn, err := time.Parse("02/01/2006", bookingRequest.CheckInDate)
-	if err != nil {
-		http.Error(w, "Invalid check-in date format", http.StatusBadRequest)
-		return
-	}
-	checkOut, err := time.Parse("02/01/2006", bookingRequest.CheckOutDate)
-	if err != nil {
-		http.Error(w, "Invalid check-out date format", http.StatusBadRequest)
-		return
-	}
-	if checkOut.Before(checkIn) {
-		http.Error(w, "Check-out date must be after check-in date", http.StatusBadRequest)
-		return
-	}
-
-	var roomFound bool
-	for i, room := range dest.RoomTypes {
-		if room.Name == bookingRequest.RoomType {
-			if bookingRequest.PeopleCount > room.Capacity {
-				http.Error(w, "People count exceeds room capacity", http.StatusBadRequest)
-				return
-			}
-			if bookingRequest.ACRequired && !room.ACAvailable {
-				http.Error(w, "AC not available for the selected room type", http.StatusBadRequest)
-				return
-			}
-			if room.Count <= 0 {
-				http.Error(w, "No rooms available", http.StatusBadRequest)
-				return
-			}
-
-			// Decrease the available room count
-			destinations[bookingRequest.Destination].RoomTypes[i].Count--
-			roomFound = true
-			break
+*/
+/*
+	func bookRoom(w http.ResponseWriter, r *http.Request) {
+		var bookingRequest BookingRequest
+		if err := json.NewDecoder(r.Body).Decode(&bookingRequest); err != nil {
+			http.Error(w, "Invalid request", http.StatusBadRequest)
+			return
 		}
+
+		// Validate booking request
+		muxBooking.Lock() // Lock for concurrent access
+		defer muxBooking.Unlock()
+
+		dest, ok := destinations[bookingRequest.Destination]
+		if !ok {
+			http.Error(w, "Invalid destination", http.StatusBadRequest)
+			return
+		}
+
+		// Validate dates
+		checkIn, err := time.Parse("02/01/2006", bookingRequest.CheckInDate)
+		if err != nil {
+			http.Error(w, "Invalid check-in date format", http.StatusBadRequest)
+			return
+		}
+		checkOut, err := time.Parse("02/01/2006", bookingRequest.CheckOutDate)
+		if err != nil {
+			http.Error(w, "Invalid check-out date format", http.StatusBadRequest)
+			return
+		}
+		if checkOut.Before(checkIn) {
+			http.Error(w, "Check-out date must be after check-in date", http.StatusBadRequest)
+			return
+		}
+
+		var roomFound bool
+		for i, room := range dest.RoomTypes {
+			if room.Name == bookingRequest.RoomType {
+				if bookingRequest.PeopleCount > room.Capacity {
+					http.Error(w, "People count exceeds room capacity", http.StatusBadRequest)
+					return
+				}
+				if bookingRequest.ACRequired && !room.ACAvailable {
+					http.Error(w, "AC not available for the selected room type", http.StatusBadRequest)
+					return
+				}
+				if room.Count <= 0 {
+					http.Error(w, "No rooms available", http.StatusBadRequest)
+					return
+				}
+
+				// Decrease the available room count
+				destinations[bookingRequest.Destination].RoomTypes[i].Count--
+				roomFound = true
+				break
+			}
+		}
+
+		if !roomFound {
+			http.Error(w, "Room type not found", http.StatusBadRequest)
+			return
+		}
+
+		response := map[string]interface{}{
+			"message":       "Room booked successfully",
+			"destination":   bookingRequest.Destination,
+			"room_type":     bookingRequest.RoomType,
+			"checkin_date":  bookingRequest.CheckInDate,
+			"checkout_date": bookingRequest.CheckOutDate,
+			"people_count":  bookingRequest.PeopleCount,
+		}
+
+		w.Header().Set("Content-Type", "application/json")
+		json.NewEncoder(w).Encode(response)
 	}
-
-	if !roomFound {
-		http.Error(w, "Room type not found", http.StatusBadRequest)
-		return
-	}
-
-	response := map[string]interface{}{
-		"message":       "Room booked successfully",
-		"destination":   bookingRequest.Destination,
-		"room_type":     bookingRequest.RoomType,
-		"checkin_date":  bookingRequest.CheckInDate,
-		"checkout_date": bookingRequest.CheckOutDate,
-		"people_count":  bookingRequest.PeopleCount,
-	}
-
-	w.Header().Set("Content-Type", "application/json")
-	json.NewEncoder(w).Encode(response)
-}
-
+*/
 func addEventHandler(w http.ResponseWriter, r *http.Request) {
 	var event EventAdd
 	err := json.NewDecoder(r.Body).Decode(&event)
@@ -817,7 +912,7 @@ func addEventHandler(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	collection := client.Database("AgathiyarDB").Collection("eventdetails")
+	collection := client.Database(DBName).Collection(EventCollection)
 
 	result, err := collection.InsertOne(context.TODO(), event)
 	if err != nil {
@@ -843,7 +938,7 @@ func getEventHandler(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	collection := client.Database("AgathiyarDB").Collection("eventdetails")
+	collection := client.Database(DBName).Collection(EventCollection)
 	var event EventAdd
 
 	filter := bson.M{"_id": eventID}
@@ -859,7 +954,7 @@ func getEventHandler(w http.ResponseWriter, r *http.Request) {
 
 func getAllEventsHandler(w http.ResponseWriter, r *http.Request) {
 
-	collection := client.Database("AgathiyarDB").Collection("eventdetails")
+	collection := client.Database("AgathiyarDB").Collection(EventCollection)
 	cursor, err := collection.Find(context.TODO(), bson.M{})
 	if err != nil {
 		http.Error(w, "Failed to retrieve events", http.StatusInternalServerError)
@@ -896,7 +991,7 @@ func addBooking(w http.ResponseWriter, r *http.Request) {
 	}
 
 	// Define the subcollection based on the destination name
-	collection := client.Database("AgathiyarDB").
+	collection := client.Database(DBName).
 		Collection("BookingDetails" + booking.Destination + booking.RoomType)
 
 	// Check for existing booking in the specified date range
@@ -919,7 +1014,35 @@ func addBooking(w http.ResponseWriter, r *http.Request) {
 		http.Error(w, "Failed to add booking", http.StatusInternalServerError)
 		return
 	}
+	/*
+		var userCommonData CommonData
+		if booking.Destination == "Agathiyar Bhavan" {
+			userCommonData.AgathiyarAvailableRoom = booking.AvailableRoom
+			collection = client.Database(DBName).Collection(UserCommon)
+			_, err = collection.InsertOne(context.TODO(), userCommonData.AgathiyarAvailableRoom)
+			if err != nil {
+				http.Error(w, "Failed to add booking", http.StatusInternalServerError)
+				return
+			}
 
+		} else if booking.Destination == "Pathriji Bhavan" {
+			collection = client.Database(DBName).Collection(UserCommon)
+			userCommonData.PathrijiAvailableRoom = booking.AvailableRoom
+			_, err = collection.InsertOne(context.TODO(), userCommonData.PathrijiAvailableRoom)
+			if err != nil {
+				http.Error(w, "Failed to add booking", http.StatusInternalServerError)
+				return
+			}
+		} else {
+			collection = client.Database(DBName).Collection(UserCommon)
+			userCommonData.DormitoryAvailableRoom = booking.AvailableRoom
+			_, err = collection.InsertOne(context.TODO(), userCommonData.DormitoryAvailableRoom)
+			if err != nil {
+				http.Error(w, "Failed to add booking", http.StatusInternalServerError)
+				return
+			}
+		}
+	*/
 	w.WriteHeader(http.StatusCreated)
 	json.NewEncoder(w).Encode(map[string]string{"message": "Booking added successfully"})
 }
@@ -932,8 +1055,14 @@ func bookingSummary(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
+	if bookingSummary.UserName != "admin" {
+		if bookingSummary.TotalRooms > 2 {
+			http.Error(w, "User can allowed to book max 2 room", http.StatusInternalServerError)
+			return
+		}
+	}
 	// Define the subcollection based on the destination name
-	collection := client.Database("AgathiyarDB").
+	collection := client.Database(DBName).
 		Collection("RoomBooking" + bookingSummary.Destination + bookingSummary.RoomType)
 
 	// Insert the new booking
@@ -946,7 +1075,65 @@ func bookingSummary(w http.ResponseWriter, r *http.Request) {
 	} else {
 		bookingSummary.BookingStatus = "success"
 	}
+	/*
+		var userCommonData CommonData
+		if bookingSummary.Destination == "Agathiyar Bhavan" {
+			collection = client.Database(DBName).Collection(UserCommon)
+			filters := bson.M{
+				"$or": []bson.M{
+					{"agathiyaravailableroom": userCommonData.AgathiyarAvailableRoom},
+				},
+			}
+			// Attempt to find an existing user
+			err = collection.FindOne(context.TODO(), filters).Decode(&userCommonData)
+			if err == nil {
+				http.Error(w, "Agathiyar Available Room exists", http.StatusConflict)
+				return
+			}
 
+			_, err = collection.InsertOne(context.TODO(), userCommonData.AgathiyarAvailableRoom)
+			if err != nil {
+				http.Error(w, "Failed to add booking", http.StatusInternalServerError)
+				return
+			}
+
+		} else if bookingSummary.Destination == "Pathriji Bhavan" {
+			collection = client.Database(DBName).Collection(UserCommon)
+			filters := bson.M{
+				"$or": []bson.M{
+					{"pathrijiavailableroom": userCommonData.PathrijiAvailableRoom},
+				},
+			}
+			// Attempt to find an existing user
+			err = collection.FindOne(context.TODO(), filters).Decode(&userCommonData)
+			if err == nil {
+				http.Error(w, "Pathriji Available Room exists", http.StatusConflict)
+				return
+			}
+			_, err = collection.InsertOne(context.TODO(), userCommonData.PathrijiAvailableRoom)
+			if err != nil {
+				http.Error(w, "Failed to add booking", http.StatusInternalServerError)
+				return
+			}
+		} else {
+			collection = client.Database(DBName).Collection(UserCommon)
+			filters := bson.M{
+				"$or": []bson.M{
+					{"dormitoryavailableroom": userCommonData.DormitoryAvailableRoom},
+				},
+			}
+			err = collection.FindOne(context.TODO(), filters).Decode(&userCommonData)
+			if err == nil {
+				http.Error(w, "Dormitory Available Room exists", http.StatusConflict)
+				return
+			}
+			_, err = collection.InsertOne(context.TODO(), userCommonData.DormitoryAvailableRoom)
+			if err != nil {
+				http.Error(w, "Failed to add booking", http.StatusInternalServerError)
+				return
+			}
+		}
+	*/
 	// Generate PDF
 	pdfFileName, err := generateBookingPDF(bookingSummary)
 	if err != nil {
@@ -1019,30 +1206,29 @@ func generateBookingPDF(booking BookingSummary) (string, error) {
 // sendBookingEmail sends an email with the booking confirmation PDF attached
 
 func sendBookingEmail(booking BookingSummary, pdfFilePath string) error {
-	// Sender's email and credential
-	smtpHost := "smtp.gmail.com"
-	smtpPort := 587
-	email := "agathiyarashram1@gmail.com"
-	password := "*********"
-	// Email details
-	to := "kvigneshece08@gmail.com"
 	subject := "Booking Confirmation"
 	body := "Your booking has been confirmed. Please find the attached PDF for details."
 
 	// Create a new email message
 	message := gomail.NewMessage()
-	message.SetHeader("From", email)
-	message.SetHeader("To", to)
+	message.SetHeader("From", AgathiyarEmail)
+	message.SetHeader("To", booking.Email)
 	message.SetHeader("Subject", subject)
 	message.SetBody("text/plain", body)
 
 	// Attach the PDF file
-	//pdfFilePath := "path/to/your/file.pdf" // Replace with the full path to your PDF file
 	message.Attach(pdfFilePath)
 	fmt.Println(pdfFilePath)
 
+	// Decrypt the connection string
+	decrypted, err := Decrypt(RegisterPassword)
+	if err != nil {
+		fmt.Println("Decryption error:", err)
+		return nil
+	}
+	fmt.Println("Decrypted:", decrypted)
 	// Set up the SMTP dialer
-	dialer := gomail.NewDialer(smtpHost, smtpPort, email, password)
+	dialer := gomail.NewDialer(SmtpHost, SmtpPort, AgathiyarEmail, decrypted)
 
 	// Send the email
 	if err := dialer.DialAndSend(message); err != nil {
@@ -1084,11 +1270,11 @@ func filterBookings(w http.ResponseWriter, r *http.Request) {
 	if destination == "Agathiyar Bhavan" {
 		RoomType = "single"
 	} else if destination == "Pathriji Bhavan" {
-		RoomType = "family"
+		RoomType = "Family Room"
 	} else {
-		RoomType = "shared"
+		RoomType = "common"
 	}
-	collection := client.Database("AgathiyarDB").
+	collection := client.Database(DBName).
 		Collection("BookingDetails" + destination + RoomType)
 	cursor, err := collection.Find(context.TODO(), filter)
 	if err != nil {
@@ -1120,7 +1306,7 @@ func registerEvent(w http.ResponseWriter, r *http.Request) {
 	subCollection := memberData.EventID
 
 	// Define the subcollection
-	subCollectionRef := client.Database("AgathiyarDB").Collection("eventregister" + subCollection)
+	subCollectionRef := client.Database(DBName).Collection("eventregister" + subCollection)
 
 	// Insert the data into MongoDB
 	_, err = subCollectionRef.InsertOne(context.TODO(), memberData)
@@ -1149,7 +1335,7 @@ func eventUpdateHandler(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	collection := client.Database("AgathiyarDB").Collection("eventdetails")
+	collection := client.Database(DBName).Collection(EventCollection)
 
 	// Build the update document
 	update := bson.M{}
@@ -1223,7 +1409,6 @@ func eventUpdateHandler(w http.ResponseWriter, r *http.Request) {
 
 // Main function start
 func main() {
-	connectMongo()
 	defer client.Disconnect(context.TODO())
 
 	router := mux.NewRouter()
@@ -1243,13 +1428,10 @@ func main() {
 	// Route for adding bookings
 	router.HandleFunc("/api/addbooking", addBooking).Methods("POST")
 	router.HandleFunc("/api/roombooking", bookingSummary).Methods("POST")
-
-	// Route for filtering bookings
-	// router.HandleFunc("/api/filterbookings", filterBookings).Methods("GET")
 	router.HandleFunc("/api/bookings/filter", filterBookings).Methods("GET")
 
-	router.HandleFunc("/api/book", bookRoom).Methods("POST")
-	router.HandleFunc("/availability", getAvailability).Methods("GET")
+	//router.HandleFunc("/api/book", bookRoom).Methods("POST")
+	//router.HandleFunc("/availability", getAvailability).Methods("GET")
 
 	// allowedOrigins := handlers.AllowedOrigins([]string{"https://213.210.37.35:3000", "https://213.210.37.35:8080", "https://www.agathiyarpyramid.org", "http://www.agathiyarpyramid.org", "http://localhost:3000", "http://localhost:8080"})
 	allowedOrigins := handlers.AllowedOrigins([]string{"*"})
