@@ -183,7 +183,7 @@ const Searchbar = ({onSearch}) => {
       {error && <div style={{ color: 'red' }}>{error}</div>}
 
       {/* Display number of days */}
-      {daysBetween && <div>{`No of days: ${daysBetween}`}</div>}
+      {daysBetween && <div className="noOfDays">{`No of days: ${daysBetween}`}</div>}
     </Box>
   );
 };

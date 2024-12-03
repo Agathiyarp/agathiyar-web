@@ -42,7 +42,7 @@ const RoomBook = ({data, searchResult}) => {
             </div>
           ))}
         </div>
-        <RoomSelection selectedRoom={searchResult[0]} searchData={data}/>
+        {searchResult && searchResult[0] && <RoomSelection selectedRoom={searchResult[0]} searchData={data}/>}
       </div>
     </div>
   );

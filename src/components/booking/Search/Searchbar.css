@@ -6,3 +6,8 @@
     width: 20% !important;
   }
 }
+
+.noOfDays {
+  font-weight: bold;
+  white-space: nowrap;
+}
