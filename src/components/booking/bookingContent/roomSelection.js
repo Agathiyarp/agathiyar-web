@@ -12,6 +12,7 @@ const RoomSelection = ({ selectedRoom, searchData }) => {
   };
   const [noOfRooms, setNoOfRooms] = useState(1);
   const [noOfBeds, setNoOfBeds] = useState(1);
+  const [noOfGuests, setNoOfGuests] = useState(1);
   const [checkinDate, setCheckinDate] = useState(searchData.checkInDate ? formatDateYYYYMMDD(searchData.checkInDate) : formatDateYYYYMMDD());
   const [checkoutDate, setCheckoutDate] = useState(searchData.checkOutDate ? formatDateYYYYMMDD(searchData.checkOutDate) : formatDateYYYYMMDD());
   const [openModal, setOpenModal] = useState(false);
@@ -24,17 +25,25 @@ const RoomSelection = ({ selectedRoom, searchData }) => {
   
   var rooms = [];
   var beds = [];
+  var guests = []
   const noOfAvailableRooms = selectedRoom?.totalrooms;
   const noOfAvailableBeds = 10;
 
   if(searchData && searchData?.destination === 'Agathiyar Bhavan') {
     rooms = [1];
+    guests = [];
+    beds = [];
   } else if(searchData && searchData.destination === 'Pathriji Bhavan') {
     rooms = [1, 2];
+    guests = [1, 2, 3, 4];
+    beds = [];
   } else if(searchData && searchData.destination === 'Dormitory') {
     beds = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10];
+    guests = [];
   } else {
-    rooms = []
+    rooms = [];
+    guests = [];
+    beds = [];
   }
 
   const handleOpen = () => {
@@ -75,6 +84,7 @@ const RoomSelection = ({ selectedRoom, searchData }) => {
               {searchData.destination === "Dormitory" &&<h5>
                 Available Beds: {noOfAvailableBeds}
               </h5>}
+              <div className="selction-container">
               {(rooms && rooms.length > 0) && <div>
                 <TextField
                   select
@@ -91,6 +101,23 @@ const RoomSelection = ({ selectedRoom, searchData }) => {
                   ))}
                 </TextField>
               </div>}
+              {(guests && guests.length > 0) && <div>
+                <TextField
+                  select
+                  label="Select No of Guests"
+                  value={noOfGuests}
+                  onChange={(e) => setNoOfGuests(e.target.value)}
+                  sx={{ minWidth: 150 }}
+                  required
+                >
+                  {guests.map((option) => (
+                    <MenuItem key={option} value={option}>
+                      {option}
+                    </MenuItem>
+                  ))}
+                </TextField>
+              </div>}
+              </div>
               {(beds && beds.length > 0) && <div>
                 <TextField
                   select
@@ -107,7 +134,7 @@ const RoomSelection = ({ selectedRoom, searchData }) => {
                   ))}
                 </TextField>
               </div>}
-              <div>
+              <div className="selction-container">
                 <TextField
                   label="Select Start Date"
                   type="date"

@@ -313,3 +313,9 @@ button.p-2 {
   width: 0.2px; /* Width of the border */
   height: 100%; /* Full height */
 }
+
+.selction-container {
+  display: flex;
+  align-items: center;
+  justify-content: space-around;
+}
