@@ -158,81 +158,29 @@ const RegistrationForm = () => {
             {errors.email && <p className="error-text">{errors.email}</p>}
           </div>
           <div className="group-container">
-            <div className="input-box m-r-10">
-              <label>Phone Number</label>
-              <input
-                type="tel"
-                name="phoneNumber"
-                placeholder="Enter Watsapp number"
-                value={formData.phoneNumber}
-                onChange={handleChange}
-                required
-              />
-              {errors.phoneNumber && <p className="error-text">{errors.phoneNumber}</p>}
-            </div>
-
-            <div className="input-box">
+          <div className="input-box m-r-10">
               <label>Country</label>
               <input
                 type="text"
                 name="country"
-                placeholder="Enter Country"
+                placeholder="Enter country"
                 value={formData.country}
                 onChange={handleChange}
                 required
               />
               {errors.country && <p className="error-text">{errors.country}</p>}
             </div>
-          </div>
-
-          <div className="input-box">
-            <label>Username</label>
-            <input
-              type="text"
-              name="username"
-              placeholder="Enter username"
-              value={formData.username}
-              onChange={handleChange}
-              required
-            />
-            {errors.username && <p className="error-text">{errors.username}</p>}
-          </div>
-
-          <div className="input-box">
-          <label>Profile Picture</label>
-          <input
-            type="file"
-            name="image"
-            onChange={handleImageChange}
-            accept="image/jpeg, image/jpg, image/png, image/gif"
-          />
-          {errors.image && <p className="error-text">{errors.image}</p>}
-        </div>
-          <div className="group-container">
-            <div className="input-box m-r-10">
-              <label>Password</label>
-              <input
-                type="password"
-                name="password"
-                placeholder="Enter password"
-                value={formData.password}
-                onChange={handleChange}
-                required
-              />
-              {errors.password && <p className="error-text">{errors.password}</p>}
-            </div>
-
             <div className="input-box">
-              <label>Confirm Password</label>
+              <label>Phone Number</label>
               <input
-                type="password"
-                name="confirmPassword"
-                placeholder="Confirm password"
-                value={formData.confirmPassword}
+                type="tel"
+                name="phoneNumber"
+                placeholder="Enter phone number"
+                value={formData.phoneNumber}
                 onChange={handleChange}
                 required
               />
-              {errors.confirmPassword && <p className="error-text">{errors.confirmPassword}</p>}
+              {errors.phoneNumber && <p className="error-text">{errors.phoneNumber}</p>}
             </div>
           </div>
           <div className="group-container">
@@ -269,12 +217,62 @@ const RegistrationForm = () => {
             <label>Address</label>
             <textarea
               name="address"
-              placeholder="Enter Address"
+              placeholder="Enter address"
               value={formData.address}
               onChange={handleChange}
               required
             ></textarea>
             {errors.address && <p className="error-text">{errors.address}</p>}
+          </div>
+
+          <div className="input-box">
+          <label>Profile Picture</label>
+          <input
+            type="file"
+            name="image"
+            onChange={handleImageChange}
+            accept="image/jpeg, image/jpg, image/png, image/gif"
+          />
+          {errors.image && <p className="error-text">{errors.image}</p>}
+        </div>
+          <div className="input-box">
+            <label>Username</label>
+            <input
+              type="text"
+              name="username"
+              placeholder="Enter username"
+              value={formData.username}
+              onChange={handleChange}
+              required
+            />
+            {errors.username && <p className="error-text">{errors.username}</p>}
+          </div>
+          <div className="group-container">
+            <div className="input-box m-r-10">
+              <label>Password</label>
+              <input
+                type="password"
+                name="password"
+                placeholder="Enter password"
+                value={formData.password}
+                onChange={handleChange}
+                required
+              />
+              {errors.password && <p className="error-text">{errors.password}</p>}
+            </div>
+
+            <div className="input-box">
+              <label>Confirm Password</label>
+              <input
+                type="password"
+                name="confirmPassword"
+                placeholder="Confirm password"
+                value={formData.confirmPassword}
+                onChange={handleChange}
+                required
+              />
+              {errors.confirmPassword && <p className="error-text">{errors.confirmPassword}</p>}
+            </div>
           </div>
 
           <button type="submit">Submit</button>
