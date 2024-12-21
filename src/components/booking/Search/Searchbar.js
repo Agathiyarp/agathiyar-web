@@ -8,10 +8,10 @@ import SearchIcon from '@mui/icons-material/Search';
 import dayjs from 'dayjs';
 import './Searchbar.css';
 
-const destinations = ['Agathiyar Bhavan', 'Pathriji Bhavan', 'Dormitory'];
+// const destinations = ['Agathiyar Bhavan', 'Pathriji Bhavan', 'Dormitory'];
 
 const Searchbar = ({onSearch}) => {
-  const [destination, setDestination] = useState('Agathiyar Bhavan');
+  // const [destination, setDestination] = useState('Agathiyar Bhavan');
   const [checkInDate, setCheckInDate] = useState(null);
   const [checkOutDate, setCheckOutDate] = useState(null);
   const [error, setError] = useState('');
@@ -37,7 +37,6 @@ const Searchbar = ({onSearch}) => {
     const daysDifference = dayjs(checkOutDate).diff(dayjs(checkInDate), 'day');
 
     onSearch({
-      destination,
       checkInDate,
       checkOutDate,
       noOfDays: daysDifference
@@ -78,10 +77,10 @@ const Searchbar = ({onSearch}) => {
         setError('Donors can only book single occupancy rooms.');
         return;
       }
-      if (destination !== 'Agathiyar Bhavan') {
-        setError('Donors can only book rooms at Agathiyar Bhavan.');
-        return;
-      }
+      // if (destination !== 'Agathiyar Bhavan') {
+      //   setError('Donors can only book rooms at Agathiyar Bhavan.');
+      //   return;
+      // }
       if (daysDifference > 10) {
         setError('Donors can book a maximum of 10 days per year.');
         return;
@@ -103,7 +102,7 @@ const Searchbar = ({onSearch}) => {
   return (
     <Box sx={{ display: 'flex', gap: 2, padding: 2, alignItems: 'center', backgroundColor: '#f1f1f1', borderRadius: 2 }}>
       {/* Destination Field */}
-      <TextField
+      {/* <TextField
         select
         label="Destination"
         value={destination}
@@ -115,7 +114,7 @@ const Searchbar = ({onSearch}) => {
             {option}
           </MenuItem>
         ))}
-      </TextField>
+      </TextField> */}
 
       {/* Check-in Date Picker */}
       <LocalizationProvider dateAdapter={AdapterDayjs}>
