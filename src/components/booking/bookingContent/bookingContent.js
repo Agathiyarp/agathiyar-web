@@ -1,8 +1,17 @@
-import React from "react";
+import React, {useState} from "react";
 import MenuBar from "../../menumain/menubar";
 import "./bookingContent.css";
 import RoomSelection from "./roomSelection";
 const RoomBook = ({data, searchResult}) => {
+  // const [showSummary, setShowSummary] = useState(false);
+  const [selectedRoom, setSelectedRoom] = useState({});
+
+  const handleRoomSelect = (room) => {
+    setSelectedRoom(room);
+    // setShowSummary(true);
+    console.log(selectedRoom, "selectedRoom")
+  };
+
   return (
     <div className="room-search-results max-w-7xl mx-auto p-4 font-sans">
       <MenuBar />
@@ -37,6 +46,18 @@ const RoomBook = ({data, searchResult}) => {
                   <p className="room-card__description text-sm text-gray-600 mt-1">
                     {room.roomdescription}
                   </p>
+                  <p className="room-card__date text-sm text-gray-600 mt-1">
+                    {"CheckIn:"}{room.checkinDate}
+                  </p>
+                  <p className="room-card__date text-sm text-gray-600 mt-1">
+                    {"CheckOut:"}{room.checkoutDate}
+                  </p>
+                </div>
+
+                <div className="room-card__booking text-right">
+                  <button onClick={() => handleRoomSelect(room)} className="room-card__view-deal bg-green-600 text-white px-4 py-2 rounded mt-2 flex items-center">
+                    SELECT ROOM
+                  </button>
                 </div>
               </div>
             </div>
