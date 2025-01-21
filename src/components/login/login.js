@@ -5,15 +5,17 @@ import MenuBar from "../menumain/menubar";
 import loginimage from '../../images/reg2.png';
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
+import { Visibility, VisibilityOff } from "@mui/icons-material";
 
 const LoginForm = () => {
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
+  const [showPassword, setShowPassword] = useState(false);
   const [errors, setErrors] = useState({});
   const [isLoading, setIsLoading] = useState(false);
   const [apiError, setApiError] = useState("");
 
-  const navigate = useNavigate(); // Initialize useNavigate
+  const navigate = useNavigate();
 
   const validateForm = () => {
     let formErrors = {};
@@ -45,18 +47,18 @@ const LoginForm = () => {
         const data = await response.json();
 
         if (response.ok) {
-          toast.success("Login successful!"); // Show success message
-          setTimeout(()=> {
-            navigate("/"); // Navigate to home page
+          toast.success("Login successful!");
+          setTimeout(() => {
+            navigate("/");
           }, 3000);
           sessionStorage.setItem('userDetails', JSON.stringify(data));
         } else if (response.status === 401) {
-          toast.error("Invalid email or password. Please try again."); // Show error message
+          toast.error("Invalid email or password. Please try again.");
         } else {
           toast.error(data.message || "Login failed. Please check your credentials.");
         }
       } catch (error) {
-        toast.error("An error occurred. Please try again."); // Show error message
+        toast.error("An error occurred. Please try again.");
       } finally {
         setIsLoading(false);
       }
@@ -84,14 +86,21 @@ const LoginForm = () => {
             />
             {errors.username && <p className="error-text">{errors.username}</p>}
           </div>
-          <div className="input-container">
+          <div className="input-container password-container">
             <input
-              type="password"
+              type={showPassword ? "text" : "password"} // Toggle input type
               placeholder="Enter Password"
               value={password}
               onChange={(e) => setPassword(e.target.value)}
               className={`input ${errors.password ? "error" : ""}`}
             />
+            <span
+              className="material-icons toggle-password"
+              onClick={() => setShowPassword(!showPassword)} // Toggle state
+              title={showPassword ? "Hide Password" : "Show Password"}
+            >
+              {showPassword ? <VisibilityOff /> : <Visibility />}
+            </span>
             {errors.password && <p className="error-text">{errors.password}</p>}
           </div>
           {apiError && <p className="api-error-text">{apiError}</p>}

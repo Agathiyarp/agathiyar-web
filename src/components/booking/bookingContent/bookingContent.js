@@ -1,13 +1,17 @@
 import React, {useState} from "react";
 import MenuBar from "../../menumain/menubar";
 import "./bookingContent.css";
+import { useNavigate } from "react-router-dom";
 import RoomSelection from "./roomSelection";
 const RoomBook = ({data, searchResult}) => {
+
   // const [showSummary, setShowSummary] = useState(false);
   const [selectedRoom, setSelectedRoom] = useState({});
+  const navigate = useNavigate();
 
   const handleRoomSelect = (room) => {
     setSelectedRoom(room);
+    navigate("/room-details", { state: { room } });
     // setShowSummary(true);
     console.log(selectedRoom, "selectedRoom")
   };
@@ -46,12 +50,20 @@ const RoomBook = ({data, searchResult}) => {
                   <p className="room-card__description text-sm text-gray-600 mt-1">
                     {room.roomdescription}
                   </p>
-                  <p className="room-card__date text-sm text-gray-600 mt-1">
-                    {"CheckIn:"}{room.checkinDate}
-                  </p>
-                  <p className="room-card__date text-sm text-gray-600 mt-1">
-                    {"CheckOut:"}{room.checkoutDate}
-                  </p>
+                  <div className="room_card_dates">
+                    <p className="room-card__date text-sm text-gray-600 mt-1 p-r-100">
+                      {"CheckIn:"}{room.checkinDate}
+                    </p>
+                    <p className="room-card__date text-sm text-gray-600 mt-1 p-r-100">
+                      {"CheckOut:"}{room.checkoutDate}
+                    </p>
+                    <p className="room-card__date text-sm text-gray-600 mt-1 p-r-100">
+                      {"Food Facility:"} {'No'}
+                    </p>
+                    <p className="room-card__date text-sm text-gray-600 mt-1">
+                      {"Parking:"} {'No'}
+                    </p>
+                  </div>
                 </div>
 
                 <div className="room-card__booking text-right">
@@ -63,7 +75,7 @@ const RoomBook = ({data, searchResult}) => {
             </div>
           ))}
         </div>
-        {searchResult && searchResult[0] && <RoomSelection selectedRoom={searchResult[0]} searchData={data}/>}
+        {/* {searchResult && searchResult[0] && <RoomSelection selectedRoom={searchResult[0]} searchData={data}/>} */}
       </div>
     </div>
   );

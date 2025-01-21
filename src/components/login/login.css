@@ -127,6 +127,25 @@
   height: 100px; /* Set an appropriate height */
 }
 
+.password-container {
+  position: relative;
+  display: flex;
+  align-items: center;
+}
+
+.toggle-password {
+  position: absolute;
+  right: 10px;
+  cursor: pointer;
+  font-size: 20px;
+  color: #555;
+}
+
+.toggle-password:hover {
+  color: #000;
+}
+
+
 
 /* Media query for tablets */
 @media (max-width: 768px) {

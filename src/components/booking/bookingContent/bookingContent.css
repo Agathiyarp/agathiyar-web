@@ -38,8 +38,12 @@
 
 /* room List Styles */
 .room-search-results__list {
-  width: 60%; /* Restore full width for desktop */
+  width: 100%; /* Restore full width for desktop */
   padding-right: 20px;
+}
+
+.p-r-100 {
+  padding-right: 100px;
 }
 
 .room-search-results__header {
@@ -326,4 +330,8 @@ button.p-2 {
   font-size: 14px;
   text-align: center;
   font-weight: bold;
+}
+
+.room_card_dates { 
+  display: flex;
 }
