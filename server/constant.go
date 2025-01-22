@@ -13,6 +13,6 @@ const (
 	UserCommon      = "UsersCommon"
 )
 const (
-	MongoDB = "mongodb://localhost:27017"
-	//MongoDB = "CMFLzlG_wZEWevVPmSSVT-eHaM--u_LJT6HnVCMcYffI7pbDeD4XJDCHxNfx_ctEPGoLPcJrcigQdso=" //MongoDB
+	//MongoDB = "mongodb://localhost:27017"
+	MongoDB = "CMFLzlG_wZEWevVPmSSVT-eHaM--u_LJT6HnVCMcYffI7pbDeD4XJDCHxNfx_ctEPGoLPcJrcigQdso=" //MongoDB
 )
