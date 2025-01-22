@@ -1,71 +1,44 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import Footer from "../Footer";
 import "./booking.css";
 import MenuBar from "../menumain/menubar";
-import SearchBar from "./Search/Searchbar";
 import BookingContent from "./bookingContent/bookingContent";
-import axios from 'axios';
+import axios from "axios";
 
 const Booking = () => {
-  const [searchData, setSearchData] = useState({
-    destination: "",
-    checkInDate: null,
-    checkOutDate: null,
-    noOfDays: null,
-  });
-  const [showContent, setShowContent] = useState(false);
   const [searchResult, setSearchResult] = useState([]);
+  const [loading, setLoading] = useState(true);
 
-  const getSeachResults = async (destination, checkInDate, checkOutDate) => {
-
-    const formatDate = (date) => {
-      const d = new Date(date);
-      const year = d.getFullYear();
-      const month = String(d.getMonth() + 1).padStart(2, '0');
-      const day = String(d.getDate()).padStart(2, '0');
-      return `${year}-${month}-${day}T00:00:00Z`; // RFC3339 format with UTC time
-  };
-  
-    const formattedCheckInDate = formatDate(checkInDate);
-    const formattedCheckOutDate = formatDate(checkOutDate);
-    try {
-      const response = await axios.get(
-        "https://agathiyarpyramid.org/api/bookings/filter",
-        {
-          params: {
-            destination: destination,
-            startdate: formattedCheckInDate,
-            enddate: formattedCheckOutDate,
-          },
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const response = await axios.get(
+          "https://agathiyarpyramid.org/api/getBookingRecords"
+        );
+        if (response && response?.data) {
+          setSearchResult(response.data);
+        } else {
+          setSearchResult([]);
         }
-      );
-      if(response && response?.data){
-        setSearchResult(response?.data);
-      } else {
+      } catch (error) {
+        console.error("Error loading booking data", error);
         setSearchResult([]);
+      } finally {
+        setLoading(false);
       }
-    } catch (error) {
-      console.error("Error Filter Booking results", error);
-    }
-  };
+    };
 
-  const handleSearch = (data) => {
-    setSearchData(data);
-    setShowContent(true);
-    if(data) {
-      getSeachResults(data?.destination, data?.checkInDate, data?.checkOutDate);
-    }
-  };
+    fetchData();
+  }, []);
 
   return (
     <div className="outer-containers">
       <MenuBar />
       <div>
-        <SearchBar onSearch={handleSearch} />
-      </div>
-      <div>
-        {showContent ? (
-          <BookingContent data={searchData} searchResult={searchResult}/>
+        {loading ? (
+          <div className="loading-content">Loading...</div>
+        ) : searchResult.length > 0 ? (
+          <BookingContent searchResult={searchResult} />
         ) : (
           <div className="empty-content">No Rooms Available</div>
         )}

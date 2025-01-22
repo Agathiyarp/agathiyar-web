@@ -1241,56 +1241,31 @@ func sendBookingEmail(booking BookingSummary, pdfFilePath string) error {
 }
 
 // Filters bookings by destination and date range
-func filterBookings(w http.ResponseWriter, r *http.Request) {
-	destination := r.URL.Query().Get("destination")
-	startDateStr := r.URL.Query().Get("startdate")
-	endDateStr := r.URL.Query().Get("enddate")
-	var RoomType string = ""
+func getBookingRecords(w http.ResponseWriter, r *http.Request) {
+	// Extract collection name from the request
 
-	// Parse start and end dates
-	startDate, err := time.Parse(time.RFC3339, startDateStr)
-	if err != nil {
-		http.Error(w, fmt.Sprintf("Invalid start date format: %s", startDateStr), http.StatusBadRequest)
-		return
-	}
-	endDate, err := time.Parse(time.RFC3339, endDateStr)
-	if err != nil {
-		http.Error(w, fmt.Sprintf("Invalid end date format: %s", endDateStr), http.StatusBadRequest)
-		return
-	}
+	// Access the collection dynamically
+	collection := client.Database(DBName).Collection("BookingDetails")
 
-	// Define filter for MongoDB query
-	filter := bson.M{
-		"destination": destination,
-		"startdate":   bson.M{"$gte": startDate},
-		"enddate":     bson.M{"$lte": endDate},
-	}
-
-	// Find matching bookings
-	if destination == "Agathiyar Bhavan" {
-		RoomType = "single"
-	} else if destination == "Pathriji Bhavan" {
-		RoomType = "Family Room"
-	} else {
-		RoomType = "common"
-	}
-	collection := client.Database(DBName).
-		Collection("BookingDetails" + destination + RoomType)
-	cursor, err := collection.Find(context.TODO(), filter)
+	// Retrieve all records
+	cursor, err := collection.Find(context.TODO(), bson.D{})
 	if err != nil {
-		http.Error(w, "Failed to retrieve bookings", http.StatusInternalServerError)
+		http.Error(w, "Failed to retrieve records", http.StatusInternalServerError)
 		return
 	}
 	defer cursor.Close(context.TODO())
 
-	var bookings []BookingAdd
-	if err = cursor.All(context.TODO(), &bookings); err != nil {
-		http.Error(w, "Failed to decode bookings", http.StatusInternalServerError)
+	// Decode all records into a generic slice
+	var records []bson.M
+	if err := cursor.All(context.TODO(), &records); err != nil {
+		http.Error(w, "Failed to decode records", http.StatusInternalServerError)
 		return
 	}
 
+	// Send response
+	w.Header().Set("Content-Type", "application/json")
 	w.WriteHeader(http.StatusOK)
-	json.NewEncoder(w).Encode(bookings)
+	json.NewEncoder(w).Encode(records)
 }
 
 func registerEvent(w http.ResponseWriter, r *http.Request) {
@@ -1428,7 +1403,7 @@ func main() {
 	// Route for adding bookings
 	router.HandleFunc("/api/addbooking", addBooking).Methods("POST")
 	router.HandleFunc("/api/roombooking", bookingSummary).Methods("POST")
-	router.HandleFunc("/api/bookings/filter", filterBookings).Methods("GET")
+	router.HandleFunc("/api/getBookingRecords", getBookingRecords).Methods("GET")
 
 	//router.HandleFunc("/api/book", bookRoom).Methods("POST")
 	//router.HandleFunc("/availability", getAvailability).Methods("GET")
