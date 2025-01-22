@@ -10,7 +10,7 @@ import ImageGallery from "../../components/ImageGallery";
 import MenuBar from "../menumain/menubar"; // Import the MenuBar
 import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
-import image0 from "../../images/image0.png";
+import image0 from "../../images/home-image.gif";
 // import image1 from "../../images/image1.png";
 // import image2 from "../../images/image2.png";
 // import image3 from "../../images/image3.png";
