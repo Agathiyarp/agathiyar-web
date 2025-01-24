@@ -52,10 +52,10 @@ const RoomBook = ({data, searchResult}) => {
                   </p>
                   <div className="room_card_dates">
                     <p className="room-card__date text-sm text-gray-600 mt-1 p-r-100">
-                      {"CheckIn:"}{room.checkinDate}
+                      {"CheckIn:"}12:00PM
                     </p>
                     <p className="room-card__date text-sm text-gray-600 mt-1 p-r-100">
-                      {"CheckOut:"}{room.checkoutDate}
+                      {"CheckOut:"}12:00PM
                     </p>
                     <p className="room-card__date text-sm text-gray-600 mt-1 p-r-100">
                       {"Food Facility:"} {'No'}

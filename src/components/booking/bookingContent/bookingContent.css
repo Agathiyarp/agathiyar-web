@@ -81,8 +81,8 @@
 
 .room-card__image {
   border-radius: 8px;
-  width: 100%; /* Full width for image */
-  height: 150px;
+  width: 380px;
+  height: 200px;
   margin-right: 10px;
 }
 
