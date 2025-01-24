@@ -19,6 +19,10 @@
   font-size: 14px;
 }
 
+.semi-bold {
+  font-weight: 600;
+}
+
 .avail-rooms {
   color: #38a169;
 }

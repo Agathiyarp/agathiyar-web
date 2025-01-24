@@ -60,7 +60,7 @@ const RoomBook = ({ data, searchResult }) => {
                   <div>
                     <div className="room-card__header flex justify-between items-start">
                       <h2 className="room-card__name text-xl font-semibold">
-                        {room.destination} - {room.roomtype}
+                        {room.destination}
                       </h2>
                     </div>
                     <p className="room-card__description text-sm text-gray-600 mt-1">
@@ -68,16 +68,16 @@ const RoomBook = ({ data, searchResult }) => {
                     </p>
                     <div className="room_card_dates">
                       <p className="room-card__date text-sm text-gray-600 mt-1 p-r-100">
-                        {"CheckIn: "}<br/>{checkInDate}{" 12 PM"}
+                        <span className="semi-bold">{"CheckIn: "}</span><br/>{checkInDate}{" 12 PM"}
                       </p>
                       <p className="room-card__date text-sm text-gray-600 mt-1 p-r-100">
-                        {"CheckOut: "}<br/>{checkOutDate}{" 12 PM"}
+                        <span className="semi-bold">{"CheckOut: "}</span><br/>{checkOutDate}{" 12 PM"}
                       </p>
                       <p className="room-card__date text-sm text-gray-600 mt-1 p-r-100">
-                        {"Food Facility:"} {"No"}
+                        <span className="semi-bold">{"Food Facility:"}</span><br/>{"No"}
                       </p>
                       <p className="room-card__date text-sm text-gray-600 mt-1">
-                        {"Parking:"} {"No"}
+                        <span className="semi-bold"> {"Parking:"}</span><br/>{"No"}
                       </p>
                     </div>
                   </div>
