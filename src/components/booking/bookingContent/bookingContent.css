@@ -15,6 +15,10 @@
   margin: 0 125px;
 }
 
+.text-sm {
+  font-size: 14px;
+}
+
 .avail-rooms {
   color: #38a169;
 }
