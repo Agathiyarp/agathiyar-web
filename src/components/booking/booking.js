@@ -35,6 +35,8 @@ const Booking = () => {
     <div className="outer-containers">
       <MenuBar />
       <div>
+        <h1 className="booking-title">Agathiyar Pyramid Accomodation</h1>
+        <h3 className="booking-subtitle">Destination: Agathiyar - Pathiriji - Dormitory</h3>
         {loading ? (
           <div className="loading-content">Loading...</div>
         ) : searchResult.length > 0 ? (
