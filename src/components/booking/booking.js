@@ -39,7 +39,7 @@ const Booking = () => {
         <h3 className="booking-subtitle">Destination: Agathiyar - Pathiriji - Dormitory</h3>
         <div className="info-section-booking">
           <p>*We provide 3 types of rooms. Please select the respective stay based on the number of persons accommodating:</p>
-          <ul>
+          <ul class="tick-list">
             <li>Pathriji Bhavan - for a maximum accommodation of 4 personnel.</li>
             <li>Agathiyar Bhavan - for a maximum accommodation of 1 personnel.</li>
           </ul>

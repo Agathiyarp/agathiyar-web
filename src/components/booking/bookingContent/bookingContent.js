@@ -2,7 +2,10 @@ import React, { useState, useEffect } from "react";
 import MenuBar from "../../menumain/menubar";
 import "./bookingContent.css";
 import { useNavigate } from "react-router-dom";
-import RoomSelection from "./roomSelection";
+import EventIcon from '@mui/icons-material/Event';
+import RestaurantIcon from '@mui/icons-material/Restaurant';
+import DirectionsCarIcon from '@mui/icons-material/DirectionsCar';
+
 const RoomBook = ({ data, searchResult }) => {
   const [checkInDate, setCheckInDate] = useState("");
   const [checkOutDate, setCheckOutDate] = useState("");
@@ -68,15 +71,19 @@ const RoomBook = ({ data, searchResult }) => {
                     </p>
                     <div className="room_card_dates">
                       <p className="room-card__date text-sm text-gray-600 mt-1 p-r-100">
+                        <EventIcon fontSize="small" className="text-gray-600 align-middle pr-1" />
                         <span className="semi-bold">{"CheckIn: "}</span><br/>{checkInDate}{" 12 PM"}
                       </p>
                       <p className="room-card__date text-sm text-gray-600 mt-1 p-r-100">
+                        <EventIcon fontSize="small" className="text-gray-600 align-middle pr-1" />
                         <span className="semi-bold">{"CheckOut: "}</span><br/>{checkOutDate}{" 12 PM"}
                       </p>
                       <p className="room-card__date text-sm text-gray-600 mt-1 p-r-100">
+                        <RestaurantIcon fontSize="small" className="text-gray-600 align-middle pr-1" />
                         <span className="semi-bold">{"Food Facility:"}</span><br/>{"No"}
                       </p>
                       <p className="room-card__date text-sm text-gray-600 mt-1">
+                        <DirectionsCarIcon fontSize="small" className="text-gray-600 align-middle pr-1" />
                         <span className="semi-bold"> {"Parking:"}</span><br/>{"No"}
                       </p>
                     </div>
