@@ -26,6 +26,7 @@ const RoomDetails = () => {
   const userDetails = JSON.parse(sessionStorage.getItem('userDetails'));
   const userName = userDetails?.username;
   const MemberId = userDetails?.usermemberid;
+  const perBedCost = 500;
   
   const amenities = [
     { text: "Check-In: 10:00 AM", icon: <EventIcon fontSize="small" className="text-gray-600 align-middle pr-1" /> },
@@ -44,6 +45,8 @@ const RoomDetails = () => {
       inclusion: "Double Bed, Western Attached, Let-Bath, 1st Floor, Toiletries, Wardrobe, Electric kettle, Table-Chair",
       additionalBeds: 0,
       price: 2000,
+      maintenance: 200,
+      rooms: 0,
     },
   ];
 
@@ -77,7 +80,11 @@ const RoomDetails = () => {
 
   const handleRoomChange = (index, value) => {
     const updatedData = [...data];
-    updatedData[index].rooms = parseInt(value, 10) || 0; // Ensure it’s a number
+    const rooms = parseInt(value, 10) || 0;
+    updatedData[index].rooms = rooms;
+    updatedData[index].price = rooms * initialData[index].price; 
+    updatedData[index].maintenance = rooms * initialData[index].maintenance;
+
     setData(updatedData);
   };
 
@@ -88,13 +95,13 @@ const RoomDetails = () => {
           ? {
               ...item,
               additionalBeds: item.additionalBeds + 1,
-              price: item.price + 500,
+              price: item.price + perBedCost
             }
           : item
       )
     );
   };
-
+  
   const handleRemoveBed = (index) => {
     setData((prevData) =>
       prevData.map((item, i) =>
@@ -102,7 +109,7 @@ const RoomDetails = () => {
           ? {
               ...item,
               additionalBeds: item.additionalBeds - 1,
-              price: item.price - 500,
+              price: item.price - perBedCost
             }
           : item
       )
