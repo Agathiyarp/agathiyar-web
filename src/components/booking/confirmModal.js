@@ -2,7 +2,7 @@ import React, {useState} from 'react';
 import { Modal, Box, Button, Typography, Checkbox,FormControlLabel } from '@mui/material';
 import axios from 'axios';
 
-const ConfirmModal = ({handleClose, userDetails, searchData, selectedRoom, checkInDate, checkOutDate, roomCost, maintananceCost,totalCost, totalRooms}) => {
+const ConfirmModal = ({handleClose, userDetails, selectedRoom, checkInDate, checkOutDate, roomCost, maintananceCost,totalCost, totalRooms}) => {
 
   const [isChecked, setIsChecked] = useState(false);
 

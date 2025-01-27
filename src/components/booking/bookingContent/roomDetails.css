@@ -50,10 +50,16 @@
   }
   
   .title {
+    display: flex;
     font-size: 1.875rem;
     font-weight: bold;
     color: #166534;
     margin-bottom: 1.5rem;
+    justify-content: center;
+  }
+
+  .select-dropdown {
+    width: 50px
   }
   
   .gallery {
@@ -252,4 +258,8 @@
     align-items: center;
     font-weight: bold;
     margin-top: 100px;
+  }
+  .text-gray-600 {
+    align-items: center;
+    justify-content: center;
   }

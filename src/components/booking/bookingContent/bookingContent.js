@@ -62,11 +62,11 @@ const RoomBook = ({ data, searchResult }) => {
                 <div className="room-card__content w-2/3 flex flex-col justify-between">
                   <div>
                     <div className="room-card__header flex justify-between items-start">
-                      <h2 className="room-card__name text-xl font-semibold">
+                      <h2 className="room-card__name text-xl font-semibold text-heading">
                         {room.destination}
                       </h2>
                     </div>
-                    <p className="room-card__description text-sm text-gray-600 mt-1">
+                    <p className="room-card__description text-sm text-gray-600 mt-1 text-subheading">
                       {room.roomdescription}
                     </p>
                     <div className="room_card_dates">

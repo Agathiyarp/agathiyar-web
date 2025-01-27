@@ -1,3 +1,17 @@
+@font-face {
+  font-family: 'SF Pro Display Regular';
+  src: url('../../../fonts/sf-pro-display-regular.woff2');
+  font-weight: 400;
+  font-style: normal;
+}
+
+@font-face {
+  font-family: 'SF Pro Display Semibold';
+  src: url('../../../fonts/sf-pro-display-semibold.woff2');
+  font-weight: 600;
+  font-style: normal;
+}
+
 .room-search-results {
   font-family: "Arial", sans-serif;
   color: #333;
@@ -20,6 +34,8 @@
 
 .semi-bold {
   font-weight: 600;
+  font-family: 'SF Pro Display Regular', sans-serif;
+  color: #38a169;
 }
 
 .pr-1{
@@ -44,6 +60,16 @@
   font-size: 1.2em; 
   margin-left: -25px;
   margin-top: -3px;
+}
+
+.text-heading {
+  color: #000;
+  font-family: 'SF Pro Display Semibold', sans-serif;
+}
+
+.text-subheading {
+  color: #000;
+  font-family: 'SF Pro Display Regular', sans-serif;
 }
 
 .avail-rooms {

@@ -36,7 +36,7 @@ const Booking = () => {
       <MenuBar />
       <div>
         <h1 className="booking-title">Agathiyar Pyramid Accomodation</h1>
-        <h3 className="booking-subtitle">Destination: Agathiyar - Pathiriji - Dormitory</h3>
+        <h3 className="booking-subtitle">Destination: Agathiyar - Pathriji - Dormitory</h3>
         <div className="info-section-booking">
           <p>*We provide 3 types of rooms. Please select the respective stay based on the number of persons accommodating:</p>
           <ul class="tick-list">

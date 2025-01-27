@@ -1,3 +1,10 @@
+@font-face {
+    font-family: 'SF Pro Display Regular';
+    src: url('../../fonts/sf-pro-display-regular.woff2');
+    font-weight: 400;
+    font-style: normal;
+  }
+
 .empty-content {
     height: 300px;
     text-align: center;
@@ -14,6 +21,7 @@
     color: #38a169;
     margin-top: 0;
     margin-bottom: 10px;
+    font-family: 'SF Pro Display Regular', sans-serif;
 }
 .booking-subtitle {
     font-size: 16px;
@@ -21,6 +29,7 @@
     color: black;
     text-align: center;
     margin-top: 0;
+    font-family: 'SF Pro Display Regular', sans-serif;
 }
 .info-section-booking {
     background-color: #f8f8f8;
@@ -29,4 +38,5 @@
     margin-top: 10px;
     text-align: center;
     font-size: 12px;
+    font-family: 'SF Pro Display Regular', sans-serif;
 }
