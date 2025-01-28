@@ -2,9 +2,11 @@ import React, {useState} from 'react';
 import { Modal, Box, Button, Typography, Checkbox,FormControlLabel } from '@mui/material';
 import axios from 'axios';
 
-const ConfirmModal = ({handleClose, userDetails, selectedRoom, checkInDate, checkOutDate, roomCost, maintananceCost,totalCost, totalRooms}) => {
+const ConfirmModal = ({handleClose, roomDetails, totalrooms, roomcost, maintanancecost, totalamount}) => {
 
   const [isChecked, setIsChecked] = useState(false);
+
+  const userDetails = JSON.parse(sessionStorage.getItem('userDetails'));
 
   const handleCheckboxChange = (event) => {
     setIsChecked(event.target.checked);
@@ -17,17 +19,17 @@ const ConfirmModal = ({handleClose, userDetails, selectedRoom, checkInDate, chec
       username: userDetails && userDetails.username,
       email: userDetails && userDetails.email,
       roomid: 1,
-      destination: selectedRoom && selectedRoom.destination,
-      startdate: checkInDate,
-      enddate: checkOutDate,
-      singleoccupy: selectedRoom && selectedRoom.singleoccupy,
-      roomdescription: selectedRoom && selectedRoom.roomdescription,
-      roomtype: selectedRoom && selectedRoom.roomtype,
-      totalrooms: totalRooms,
-      roomvariation: selectedRoom && selectedRoom.roomvariation,
-      roomcost: roomCost,
-      maintanancecost: maintananceCost,
-      totalamount: totalCost
+      destination: roomDetails && roomDetails.destination,
+      startdate:  roomDetails && roomDetails.startdate,
+      enddate:  roomDetails && roomDetails.enddate,
+      singleoccupy: roomDetails && roomDetails.singleoccupy,
+      roomdescription: roomDetails && roomDetails.roomdescription,
+      roomtype: roomDetails && roomDetails.roomtype,
+      totalrooms: totalrooms,
+      roomvariation: roomDetails && roomDetails.roomvariation,
+      roomcost: roomcost,
+      maintanancecost: maintanancecost,
+      totalamount: totalamount
     };
 
     try {

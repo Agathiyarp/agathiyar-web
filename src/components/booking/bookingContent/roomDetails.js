@@ -24,9 +24,10 @@ const RoomDetails = () => {
   const sideImages = [image2, image3];
 
   const userDetails = JSON.parse(sessionStorage.getItem('userDetails'));
-  const userName = userDetails?.username;
-  const MemberId = userDetails?.usermemberid;
+  
   const perBedCost = 500;
+  const maintanance = 200;
+  var totalRooms, totalAmount, totalMaintenanceCost;
   
   const amenities = [
     { text: "Check-In: 10:00 AM", icon: <EventIcon fontSize="small" className="text-gray-600 align-middle pr-1" /> },
@@ -117,6 +118,12 @@ const RoomDetails = () => {
   };
 
   const TableComponent = ({ data }) => {
+     totalRooms = data.reduce((sum, item) => sum + item.rooms, 0);
+     totalAmount = data.reduce((sum, item) => sum + item.price, 0);
+     totalMaintenanceCost = data.reduce(
+      (sum, item) => sum + item.maintenance,
+      0
+    );
     return (
       <div className="table-container">
         <table className="responsive-table">
@@ -150,7 +157,7 @@ const RoomDetails = () => {
                   </select>
                 </td>
                 <td>{item.price}</td>
-                <td>{"200"}</td>
+                <td>{maintanance}</td>
                 <td>
                   Qty: {item.additionalBeds}{" "}
                   <button
@@ -229,11 +236,15 @@ const RoomDetails = () => {
         </div>
         {openModal && (
         <ConfirmModal
-          userDetails={userDetails}
           // selectedRoom={selectedRoom}
           // checkInDate={checkinDate}
           // checkOutDate={checkoutDate}
           handleClose={handleClose}
+          roomDetails={room}
+          totalrooms={totalRooms}
+          roomcost={100}
+          maintanancecost={totalMaintenanceCost}
+          totalamount={totalAmount}
           // roomCost={calculateRoomCost()}
           // maintananceCost={calculateMaintenance()}
           // totalCost={calculateTotal()}
