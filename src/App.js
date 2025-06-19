@@ -18,7 +18,9 @@ import VideoList from './components/videos/VideoList';
 import RoomDetails from "./components/booking/bookingContent/roomDetails";
 import ProfilePage from './components/menumain/Profilepage';
 import AdminDashboard from './components/admin/admin';
-import Users from './components/users/users';
+import Users from './components/admin/users/users';
+import AddEvent from './components/admin/events/addevent';
+import AddBooking from './components/admin/booking/addbooking';
 
 const App = () => {
 
@@ -42,6 +44,8 @@ const App = () => {
           <Route path="/room-details" element={<RoomDetails />} />
           <Route path="/admin" element={<AdminDashboard />} />
           <Route path="/users" element={<Users />} />
+          <Route path="/addevent" element={<AddEvent />} />
+          <Route path="/addbooking" element={<AddBooking />} />
         </Routes>
       </Router>
     </div>

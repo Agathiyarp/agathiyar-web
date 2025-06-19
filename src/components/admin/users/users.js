@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import axios from "axios";
-import MenuBar from "../menumain/menubar";
+import MenuBar from "../../menumain/menubar";
 import "./users.css";
 
 function Users() {
@@ -42,7 +42,7 @@ function Users() {
   };
 
   return (
-    <div className="p-4 bg-gray-100 min-h-screen user-management">
+    <div className="p-4 bg-gray-100 min-h-screen users-container">
       <MenuBar />
       <h2 className="text-2xl font-bold mb-4">User Management</h2>
 

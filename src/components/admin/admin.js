@@ -6,9 +6,13 @@ import { useNavigate } from "react-router-dom";
 const Admin = () => {
   const navigate = useNavigate();
   const handleCardClick = (cardName) => {
-    console.log(`${cardName} clicked`);
-    // Add your navigation logic here
-    navigate('/users');
+    if(cardName === 'User Management') {
+      navigate('/users');
+    } else if(cardName === 'Events') {
+      navigate('/addevent');
+    } else if(cardName === 'Bookings') {
+      navigate('/addbooking');
+    }
   };
 
   return (
