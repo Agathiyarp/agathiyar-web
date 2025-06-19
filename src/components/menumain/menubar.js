@@ -71,7 +71,8 @@ const MenuBar = () => {
     ContactUs: "/contact",
     Donate: "/donate",
     Books: "/book",
-    Login: "/login"
+    Login: "/login",
+    Admin: "/admin"
   };
 
   const data = sessionStorage.getItem("userDetails");

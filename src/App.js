@@ -17,6 +17,8 @@ import MobileProfileMenu from './components/menumain/mobileProfileMenu';
 import VideoList from './components/videos/VideoList';
 import RoomDetails from "./components/booking/bookingContent/roomDetails";
 import ProfilePage from './components/menumain/Profilepage';
+import AdminDashboard from './components/admin/admin';
+import Users from './components/users/users';
 
 const App = () => {
 
@@ -38,6 +40,8 @@ const App = () => {
           <Route path="/profileview" element={<ProfilePage />} />
           <Route path="/videos" element={<VideoList />} />
           <Route path="/room-details" element={<RoomDetails />} />
+          <Route path="/admin" element={<AdminDashboard />} />
+          <Route path="/users" element={<Users />} />
         </Routes>
       </Router>
     </div>
