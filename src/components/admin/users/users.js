@@ -72,27 +72,30 @@ const UserManagement = () => {
       <div className="section">
         <h4>Search by User ID</h4>
         <input
+          className='input-user'
           type="text"
           placeholder="Enter User ID"
           value={userId}
           onChange={(e) => setUserId(e.target.value)}
         />
-        <button onClick={handleSearchByUserId}>Search</button>
+        <button className="btn-user" onClick={handleSearchByUserId}>Search</button>
       </div>
 
       <div className="section">
         <h4>Filter by Date</h4>
         <input
+          className='input-user'
           type="date"
           value={dateFilter.start}
           onChange={(e) => setDateFilter({ ...dateFilter, start: e.target.value })}
         />
         <input
+          className='input-user'
           type="date"
           value={dateFilter.end}
           onChange={(e) => setDateFilter({ ...dateFilter, end: e.target.value })}
         />
-        <button onClick={handleFilterByDate}>Filter</button>
+        <button className="btn-user" onClick={handleFilterByDate}>Filter</button>
       </div>
 
       {userDetails && (
@@ -124,8 +127,8 @@ const UserManagement = () => {
             </tbody>
           </table>
           <div className="export-buttons">
-            <button onClick={exportToPDF}>Export PDF</button>
-            <button onClick={exportToExcel}>Export Excel</button>
+            <button className="btn-user" onClick={exportToPDF}>Export PDF</button>
+            <button className="btn-user" onClick={exportToExcel}>Export Excel</button>
           </div>
         </div>
       )}
