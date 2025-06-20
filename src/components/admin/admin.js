@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useRef, useState} from 'react';
 import './admin.css';
 import MenuBar from "../menumain/menubar";
 import { useNavigate } from "react-router-dom";
@@ -15,6 +15,29 @@ const Admin = () => {
     }
   };
 
+  const [avatar, setAvatar] = useState(null);
+  const fileInputRef = useRef();
+
+  const handleAvatarClick = () => {
+    fileInputRef.current.click();
+  };
+
+  const handleFileChange = (e) => {
+    const file = e.target.files[0];
+    if (file && file.type.startsWith('image/')) {
+      const reader = new FileReader();
+      reader.onloadend = () => {
+        setAvatar(reader.result);
+      };
+      reader.readAsDataURL(file);
+    }
+  };
+
+  const handleRemove = (e) => {
+    e.stopPropagation(); // Prevent triggering file input
+    setAvatar(null);
+  };
+
   return (
     <div className="admin-container">
       {/* Header */}
@@ -27,7 +50,27 @@ const Admin = () => {
         <div className="dashboard-layout">
           {/* Admin Profile */}
           <div className="admin-profile">
-            <div className="profile-avatar">👤</div>
+            <div className="profile-avatar" onClick={handleAvatarClick}>
+              {avatar ? (
+                <>
+                  <img src={avatar} alt="Avatar" className="avatar-img" />
+                </>
+              ) : (
+                '👤'
+              )}
+              <input
+                type="file"
+                accept="image/*"
+                ref={fileInputRef}
+                style={{ display: 'none' }}
+                onChange={handleFileChange}
+              />
+            </div>
+            {avatar && (
+              <button className="remove-btn" onClick={handleRemove}>
+                Remove Image
+              </button>
+            )}
             <h2 className="profile-name">Administrator</h2>
             <p className="profile-role">Role: Admin</p>
             <p className="profile-details">Organizer, Event</p>
