@@ -123,3 +123,57 @@
 .carousel-image {
   animation: fadeIn 1.5s ease-out forwards;
 }
+
+.mission-vision-wrapper {
+  display: flex;
+  justify-content: center;
+  gap: 40px;
+  padding: 60px 20px;
+  flex-wrap: wrap;
+  background: linear-gradient(to right, #7cd1b8, #7dc4d6); /* Adjust gradient stops as needed */
+}
+
+.card1 {
+  background: white;
+  padding: 32px;
+  max-width: 400px;
+  border-radius: 12px;
+  box-shadow: 0 8px 16px rgba(0,0,0,0.1);
+  text-align: center;
+}
+
+.card-title1 {
+  font-size: 20px;
+  font-weight: 700;
+  letter-spacing: 1px;
+  margin-bottom: 20px;
+  font-family: Raleway, sans-serif;
+}
+
+.card-text {
+  font-size: 16px;
+  line-height: 1.7;
+  margin-bottom: 20px;
+  font-family: Raleway, sans-serif;
+}
+
+.more-info-button {
+  padding: 10px 24px;
+  border: none;
+  background-color: #1a9c93;
+  color: white;
+  font-weight: 600;
+  border-radius: 4px;
+  cursor: pointer;
+}
+
+.more-info-button:hover {
+  background-color: #157a74;
+}
+
+@media (max-width: 768px) {
+  .mission-vision-wrapper {
+    flex-direction: column;
+    align-items: center;
+  }
+}

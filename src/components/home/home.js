@@ -16,6 +16,7 @@ import image0 from "../../images/home-image.gif";
 // import image3 from "../../images/image3.png";
 // import image4 from "../../images/image4.png";
 // import image5 from "../../images/image5.png";
+// import MeditationVideo from "../../images/Meditation.mp4";
 
 const statements = [
   "To teach meditation and spiritual science to all seekers of the truth.",
@@ -47,32 +48,39 @@ const Home = () => {
       <MenuBar /> {/* Use MenuBar here */}
      
       <div className="carousel-container" style={{ marginTop: "64px" }}>
-        {/* <Slider {...settings}>
-          {images.map((image, index) => (
-            <div key={index}>
-              <img src={image.src} alt={image.alt} className="carousel-image" />
-            </div>
-          ))}
-        </Slider> */}
         <div key={0}>
-          <img src={image0} alt={image0.alt} className="carousel-image" />
+          <video controls autoPlay muted loop>
+            <source src="https://www.agathiyarpyramid.org/videos/Meditation.mp4" type="video/mp4" />
+            Your browser does not support the video tag.
+          </video>
         </div>
       </div>
 
       {/* Content Section */}
-      <div className="mission-statements-container">
-        <h2 className="vision-heading">Our Vision</h2>
-        {/* <div className="single-image-container">
-          <img src={image5} alt={"our vision"} className="single-image" />
-        </div> */}
-        <ul className="mission-list">
-          {statements.map((statement, index) => (
-            <li key={index} className="mission-item">
-              {statement}
-            </li>
-          ))}
-        </ul>
+      <div className="mission-vision-wrapper">
+        <div className="card1">
+          <h3 className="card-title1">VISION</h3>
+          <p className="card-text">
+            We envision a world awakened to inner peace, where individuals live in harmony with themselves,
+            others, and nature—guided by the principles of non-violence, silence, meditation, and lifelong
+            learning. Our Ashram aspires to be a beacon of stillness and spiritual nourishment, inspiring a
+            global community to embrace conscious living and compassionate wisdom.
+          </p>
+          <button className="more-info-button">More Info</button>
+        </div>
+
+        <div className="card1">
+          <h3 className="card-title1">MISSION</h3>
+          <p className="card-text">
+            At our Ashram, we are dedicated to nurturing a way of life rooted in vegetarian living, inner
+            silence, deep meditation, and the wisdom of books. We provide a sacred space for seekers to turn
+            inward, cultivate peace, and grow spiritually through mindful living, compassionate choices,
+            and the transformative power of knowledge.
+          </p>
+          <button className="more-info-button">More Info</button>
+        </div>
       </div>
+
 
       <MeditationInfo />
      
