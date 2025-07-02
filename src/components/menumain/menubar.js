@@ -67,6 +67,7 @@ const MenuBar = () => {
     Home: "/",
     Events: "/events",
     Videos: "/videos",
+    Gallery: "/gallery",
     Booking: "/booking",
     ContactUs: "/contact",
     Donate: "/donate",

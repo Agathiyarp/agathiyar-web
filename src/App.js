@@ -21,6 +21,7 @@ import AdminDashboard from './components/admin/admin';
 import Users from './components/admin/users/users';
 import AddEvent from './components/admin/events/addevent';
 import AddBooking from './components/admin/booking/addbooking';
+import Gallery from './components/gallery/gallery';
 
 const App = () => {
 
@@ -46,6 +47,7 @@ const App = () => {
           <Route path="/users" element={<Users />} />
           <Route path="/addevent" element={<AddEvent />} />
           <Route path="/addbooking" element={<AddBooking />} />
+          <Route path="/gallery" element={<Gallery />} />
         </Routes>
       </Router>
     </div>
