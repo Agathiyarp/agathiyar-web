@@ -12,6 +12,8 @@ const Admin = () => {
       navigate('/addevent');
     } else if(cardName === 'Bookings') {
       navigate('/addbooking');
+    } else if(cardName === 'Books') {
+      navigate('/uploadbook');
     }
   };
 

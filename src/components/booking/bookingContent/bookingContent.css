@@ -16,6 +16,29 @@
   font-family: "Arial", sans-serif;
   color: #333;
 }
+.mr-10 {
+  margin-right: 10px;
+}
+
+.green-date-picker label {
+  color: green;
+}
+
+.green-date-picker .MuiOutlinedInput-root fieldset {
+  border-color: green;
+}
+
+.green-date-picker .MuiOutlinedInput-root:hover fieldset {
+  border-color: green;
+}
+
+.green-date-picker .MuiOutlinedInput-root.Mui-focused fieldset {
+  border-color: green;
+}
+
+.green-date-picker .MuiSvgIcon-root {
+  color: green;
+}
 
 .room-search-results__content {
   display: flex;
