@@ -1,6 +1,5 @@
 import React, { useState } from 'react';
 import './users.css';
-import jsPDF from 'jspdf';
 import 'jspdf-autotable';
 import * as XLSX from 'xlsx';
 

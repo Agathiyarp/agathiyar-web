@@ -42,7 +42,7 @@ const RoomBook = ({ data, searchResult }) => {
           {searchResult &&
             searchResult.map((room) => (
               <div
-                key={room.id}
+                key={room.eventid}
                 className="room-card bg-white rounded-lg shadow-md p-4 mb-4 flex"
               >
                 <div className="room-card__image-container relative w-1/3 mr-4">

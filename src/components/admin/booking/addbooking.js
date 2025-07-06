@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import './addbooking.css';
+import { useNavigate } from 'react-router-dom';
 
 const AddBooking = () => {
   const [formData, setFormData] = useState({
@@ -16,6 +17,7 @@ const AddBooking = () => {
     image: '',
     multipleimage: ''
   });
+  const navigate = useNavigate();
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -33,7 +35,7 @@ const AddBooking = () => {
     };
 
     try {
-      const res = await fetch('http://localhost:8080/api/addbooking', {
+      const res = await fetch('https://www.agathiyarpyramid.org/api/addbooking', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(payload),
@@ -41,7 +43,6 @@ const AddBooking = () => {
 
       const result = await res.json();
       if (res.status === 201) {
-        alert('✅ Booking added successfully!');
         setFormData({
           destination: '',
           startdate: '',
@@ -56,6 +57,9 @@ const AddBooking = () => {
           image: '',
           multipleimage: ''
         });
+        setTimeout(() => {
+          navigate("/admin");
+        }, 3000);
       } else {
         console.error(result);
       }
