@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import './addevent.css';
+import { useNavigate } from 'react-router-dom';
 
 const AddEvent = () => {
   const [formData, setFormData] = useState({
@@ -19,6 +20,8 @@ const AddEvent = () => {
     language: '',
   });
 
+  const navigate = useNavigate();
+
   const handleChange = (e) => {
     const { name, value } = e.target;
     setFormData((prev) => ({ ...prev, [name]: value }));
@@ -27,7 +30,7 @@ const AddEvent = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-      const response = await fetch('http://localhost:8080/api/addevent', {
+      const response = await fetch('https://www.agathiyarpyramid.org/api/add-event', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(formData),
@@ -51,6 +54,9 @@ const AddEvent = () => {
           imageurl: '',
           language: '',
         });
+        setTimeout(() => {
+          navigate("/admin");
+        }, 3000);
       } else {
         alert(result.message || 'Failed to add event');
       }
@@ -80,8 +86,9 @@ const AddEvent = () => {
         <div className="row">
           <select name="roomtype" value={formData.roomtype} onChange={handleChange} required>
             <option value="">Select Room Type</option>
-            <option value="AC">AC</option>
-            <option value="Non-AC">Non-AC</option>
+            <option value="single">SINGLE</option>
+            <option value="family">FAMILY</option>
+            <option value="common">COMMON</option>
           </select>
           <input type="text" name="numberofparticipants" placeholder="Number of Participants" value={formData.numberofparticipants} onChange={handleChange} />
         </div>
