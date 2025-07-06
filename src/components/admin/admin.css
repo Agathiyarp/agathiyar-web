@@ -20,6 +20,12 @@
   z-index: 100;
 }
 
+.dashboard-card.disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+  pointer-events: none;
+}
+
 .nav-container {
   display: flex;
   align-items: center;
@@ -297,6 +303,7 @@
 
 /* Icon content */
 .icon-user::before { content: "👤"; }
+.icon-new-user::before { content: "🧑‍🦰➕"; }
 .icon-calendar::before { content: "📅"; }
 .icon-booking::before { content: "📋"; }
 .icon-content::before { content: "✅"; }
