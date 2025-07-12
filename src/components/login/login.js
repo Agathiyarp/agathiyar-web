@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import "./login.css";
 import MenuBar from "../menumain/menubar";
-import loginimage from '../../images/reg2.png';
+import loginimage from '../../images/login-bg.png';
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import { Visibility, VisibilityOff } from "@mui/icons-material";
