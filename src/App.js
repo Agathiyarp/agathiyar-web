@@ -23,6 +23,7 @@ import AddEvent from './components/admin/events/addevent';
 import AddBooking from './components/admin/booking/addbooking';
 import Gallery from './components/gallery/gallery';
 import UploadBooks from './components/admin/books/uploadbooks';
+import UpdateUser from './components/admin/users/updateuser';
 
 const App = () => {
 
@@ -50,6 +51,7 @@ const App = () => {
           <Route path="/addbooking" element={<AddBooking />} />
           <Route path="/gallery" element={<Gallery />} />
           <Route path="/uploadbook" element={<UploadBooks />} />
+          <Route path="/updateuser" element={<UpdateUser />} />
         </Routes>
       </Router>
     </div>

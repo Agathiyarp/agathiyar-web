@@ -44,7 +44,7 @@ const Admin = () => {
   // All cards definition
   const allCards = [
     { key: 'users', label: 'USERS', className: 'user-management', iconClass: 'icon-user', cardName: 'User Management' },
-     { key: 'userAdd', label: 'ADD NEW USER', className: 'user-management', iconClass: 'icon-new-user', cardName: 'Add New User' },
+     { key: 'userAdd', label: 'UPDATE USER ROLE', className: 'user-management', iconClass: 'icon-new-user', cardName: 'Update User Role' },
     { key: 'events', label: 'EVENTS', className: 'events', iconClass: 'icon-calendar', cardName: 'Events' },
     { key: 'bookings', label: 'BOOKINGS', className: 'bookings', iconClass: 'icon-booking', cardName: 'Bookings' },
     { key: 'content', label: 'CONTENTS', className: 'contents', iconClass: 'icon-content', cardName: 'Contents' },
@@ -74,6 +74,8 @@ const Admin = () => {
       navigate('/addbooking');
     } else if (cardName === 'Books') {
       navigate('/uploadbook');
+    } else if(cardName === 'Update User Role') {
+      navigate('/updateuser')
     }
   };
 

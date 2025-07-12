@@ -72,8 +72,7 @@ const MenuBar = () => {
     ContactUs: "/contact",
     Donate: "/donate",
     Books: "/book",
-    Login: "/login",
-    Admin: "/admin"
+    Login: "/login"
   };
 
   const data = sessionStorage.getItem("userDetails");
@@ -83,6 +82,11 @@ const MenuBar = () => {
     if(isMobile) {
       routes.Profile = "/profile";
     }
+  }
+
+
+  if (data && data.length > 0 && JSON.parse(data)?.userrole && (JSON.parse(data)?.userrole === "admin" || JSON.parse(data)?.userrole === "superadmin")) {
+    routes.Admin = "/admin";
   }
 
   const handleButtonClick = async (text) => {
