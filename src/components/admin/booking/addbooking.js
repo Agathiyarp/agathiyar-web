@@ -70,7 +70,7 @@ const AddBooking = () => {
 
   return (
     <div className="booking-form-container">
-      <h2>Add New Booking</h2>
+      <h2>Add New Room</h2>
       <form onSubmit={handleSubmit} className="booking-form">
         <div className="row">
           <input type="text" name="destination" placeholder="Destination" value={formData.destination} onChange={handleChange} required />
@@ -94,7 +94,7 @@ const AddBooking = () => {
         </div>
         <textarea name="roomdescription" placeholder="Room Description" value={formData.roomdescription} onChange={handleChange}></textarea>
         <textarea name="multipleimage" placeholder="Multiple Image URLs (comma-separated)" value={formData.multipleimage} onChange={handleChange}></textarea>
-        <button type="submit" className="submit-btn">Add Booking</button>
+        <button type="submit" className="submit-btn">Add Room</button>
       </form>
     </div>
   );

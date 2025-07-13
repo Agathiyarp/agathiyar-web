@@ -73,11 +73,11 @@ const UserManagement = () => {
       <h2>User Management</h2>
 
       <div className="section">
-        <h4>Search by User ID</h4>
+        <h4>Search Users</h4>
         <input
           className='input-user'
           type="text"
-          placeholder="Enter User ID"
+          placeholder="Search by Memberid, Phone or Username"
           value={userId}
           onChange={(e) => setUserId(e.target.value)}
         />

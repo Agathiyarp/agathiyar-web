@@ -44,13 +44,13 @@ const Admin = () => {
   // All cards definition
   const allCards = [
     { key: 'users', label: 'USERS', className: 'user-management', iconClass: 'icon-user', cardName: 'User Management' },
-     { key: 'userAdd', label: 'UPDATE USER ROLE', className: 'user-management', iconClass: 'icon-new-user', cardName: 'Update User Role' },
+     { key: 'userAdd', label: 'UPDATE USERS', className: 'user-management', iconClass: 'icon-new-user', cardName: 'Update Users' },
     { key: 'events', label: 'EVENTS', className: 'events', iconClass: 'icon-calendar', cardName: 'Events' },
-    { key: 'bookings', label: 'BOOKINGS', className: 'bookings', iconClass: 'icon-booking', cardName: 'Bookings' },
-    { key: 'content', label: 'CONTENTS', className: 'contents', iconClass: 'icon-content', cardName: 'Contents' },
+    { key: 'bookings', label: 'ADD ROOMS', className: 'bookings', iconClass: 'icon-booking', cardName: 'Add Rooms' },
+    // { key: 'content', label: 'CONTENTS', className: 'contents', iconClass: 'icon-content', cardName: 'Contents' },
     { key: 'video', label: 'VIDEOS', className: 'videos', iconClass: 'icon-video', cardName: 'Videos' },
     { key: 'books', label: 'BOOKS', className: 'books', iconClass: 'icon-book', cardName: 'Books' },
-    { key: 'settings', label: 'SETTINGS', className: 'settings', iconClass: 'icon-settings', cardName: 'Settings' },
+    // { key: 'settings', label: 'SETTINGS', className: 'settings', iconClass: 'icon-settings', cardName: 'Settings' },
   ];
 
   // Determine enabled/disabled per card
@@ -70,8 +70,8 @@ const Admin = () => {
       navigate('/users');
     } else if (cardName === 'Events') {
       navigate('/addevent');
-    } else if (cardName === 'Bookings') {
-      navigate('/addbooking');
+    } else if (cardName === 'Add Rooms') {
+      navigate('/addrooms');
     } else if (cardName === 'Books') {
       navigate('/uploadbook');
     } else if(cardName === 'Update User Role') {
