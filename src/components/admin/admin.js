@@ -74,7 +74,7 @@ const Admin = () => {
       navigate('/addrooms');
     } else if (cardName === 'Books') {
       navigate('/uploadbook');
-    } else if(cardName === 'Update User Role') {
+    } else if(cardName === 'Update Users') {
       navigate('/updateuser')
     }
   };
