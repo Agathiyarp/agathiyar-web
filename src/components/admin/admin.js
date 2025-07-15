@@ -76,6 +76,8 @@ const Admin = () => {
       navigate('/uploadbook');
     } else if(cardName === 'Update Users') {
       navigate('/updateuser')
+    } else if(cardName === 'Videos') {
+      navigate('/videoupload')
     }
   };
 

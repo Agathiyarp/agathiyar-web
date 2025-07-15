@@ -17,14 +17,14 @@
 
 .upload-button {
   padding: 10px;
-  background-color: #4CAF50;
+  background-color: #2196F3;
   color: white;
   border: none;
   cursor: pointer;
 }
 
 .upload-button:hover {
-  background-color: #45a049;
+  background-color: #1976D2;
 }
 
 .upload-message {
@@ -36,14 +36,21 @@
   margin-top: 20px;
 }
 
-.image-preview {
+.video-embed iframe {
   max-width: 100%;
-  height: auto;
   border: 1px solid #ccc;
   margin-top: 10px;
 }
 
-.upload-label {
+.clear-button {
   margin-top: 10px;
-  font-weight: bold;
+  padding: 8px;
+  background-color: #f44336;
+  color: white;
+  border: none;
+  cursor: pointer;
+}
+
+.clear-button:hover {
+  background-color: #d32f2f;
 }

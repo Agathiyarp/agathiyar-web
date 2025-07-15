@@ -14,7 +14,7 @@ const ACCESS_OPTIONS = [
   "settings",
 ];
 
-const USER_TYPE_OPTIONS = ["Sponsor", "Facility Sponsor"];
+const USER_TYPE_OPTIONS = ["Donar", "Sponsor", "Patron"];
 
 const UserCard = ({ user, onSave }) => {
   const [isEditing, setIsEditing] = useState(false);

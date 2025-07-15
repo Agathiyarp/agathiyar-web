@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import './users.css';
 import 'jspdf-autotable';
 import * as XLSX from 'xlsx';
+import MenuBar from "../../menumain/menubar";
 
 const UserManagement = () => {
   const [userId, setUserId] = useState('');
@@ -70,6 +71,7 @@ const UserManagement = () => {
 
   return (
     <div className="user-mgmt-container">
+      <MenuBar />
       <h2>User Management</h2>
 
       <div className="section">

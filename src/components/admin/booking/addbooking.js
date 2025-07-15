@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import './addbooking.css';
 import { useNavigate } from 'react-router-dom';
+import MenuBar from "../../menumain/menubar";
 
 const AddBooking = () => {
   const [formData, setFormData] = useState({
@@ -70,6 +71,7 @@ const AddBooking = () => {
 
   return (
     <div className="booking-form-container">
+      <MenuBar />
       <h2>Add New Room</h2>
       <form onSubmit={handleSubmit} className="booking-form">
         <div className="row">

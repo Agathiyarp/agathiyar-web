@@ -5,9 +5,11 @@ import MenuBar from '../../menumain/menubar';
 export default function UploadBooks() {
   const [filename, setFilename] = useState('');
   const [pdfFile, setPdfFile] = useState(null);
+  const [imageFile, setImageFile] = useState(null);
+  const [imagePreview, setImagePreview] = useState(null);
   const [message, setMessage] = useState('');
 
-  const handleFileChange = (e) => {
+  const handlePdfChange = (e) => {
     const file = e.target.files[0];
     if (file && file.type === 'application/pdf') {
       setPdfFile(file);
@@ -15,6 +17,19 @@ export default function UploadBooks() {
     } else {
       setPdfFile(null);
       setMessage('Please select a valid PDF file.');
+    }
+  };
+
+  const handleImageChange = (e) => {
+    const file = e.target.files[0];
+    if (file && file.type.startsWith('image/')) {
+      setImageFile(file);
+      setImagePreview(URL.createObjectURL(file));
+      setMessage('');
+    } else {
+      setImageFile(null);
+      setImagePreview(null);
+      setMessage('Please select a valid image file.');
     }
   };
 
@@ -31,23 +46,30 @@ export default function UploadBooks() {
       return;
     }
 
+    if (!imageFile) {
+      setMessage('Please select a cover image.');
+      return;
+    }
+
     // Simulate "upload"
     console.log('Uploading:');
     console.log('Custom Filename:', filename);
-    console.log('Selected File:', pdfFile);
+    console.log('Selected PDF:', pdfFile);
+    console.log('Selected Image:', imageFile);
 
-    // Here you would typically send the file to your server or API
-    setMessage(`Uploaded "${filename}" with file "${pdfFile.name}" successfully!`);
+    setMessage(`Uploaded "${filename}" with PDF "${pdfFile.name}" and image "${imageFile.name}" successfully!`);
 
     // Reset
     setFilename('');
     setPdfFile(null);
+    setImageFile(null);
+    setImagePreview(null);
   };
 
   return (
     <div className="upload-container">
       <MenuBar />
-      <h2>Upload PDF Book</h2>
+      <h2>Upload Book</h2>
       <form onSubmit={handleSubmit} className="upload-form">
         <input
           type="text"
@@ -57,10 +79,19 @@ export default function UploadBooks() {
           className="upload-input"
         />
 
+        <label className="upload-label">Select PDF File:</label>
         <input
           type="file"
           accept="application/pdf"
-          onChange={handleFileChange}
+          onChange={handlePdfChange}
+          className="upload-input"
+        />
+
+        <label className="upload-label">Select Cover Image:</label>
+        <input
+          type="file"
+          accept="image/*"
+          onChange={handleImageChange}
           className="upload-input"
         />
 
@@ -73,7 +104,14 @@ export default function UploadBooks() {
 
       {pdfFile && (
         <div className="upload-preview">
-          <p><strong>Selected File:</strong> {pdfFile.name}</p>
+          <p><strong>Selected PDF:</strong> {pdfFile.name}</p>
+        </div>
+      )}
+
+      {imagePreview && (
+        <div className="upload-preview">
+          <p><strong>Cover Image Preview:</strong></p>
+          <img src={imagePreview} alt="Cover Preview" className="image-preview" />
         </div>
       )}
     </div>

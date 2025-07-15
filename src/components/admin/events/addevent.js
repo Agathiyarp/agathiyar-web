@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import './addevent.css';
 import { useNavigate } from 'react-router-dom';
+import MenuBar from "../../menumain/menubar";
 
 const AddEvent = () => {
   const [formData, setFormData] = useState({
@@ -68,6 +69,7 @@ const AddEvent = () => {
 
   return (
     <div className="event-form-container">
+       <MenuBar />
       <h2>Add New Event</h2>
       <p className="subtitle">Create and manage your retreat events</p>
       <form onSubmit={handleSubmit} className="event-form">
