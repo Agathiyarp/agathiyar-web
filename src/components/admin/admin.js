@@ -11,6 +11,7 @@ const Admin = () => {
   // State for role and access
   const [userRole, setUserType] = useState('');
   const [userAccess, setUserAccess] = useState([]);
+  const [userName, setUserName] = useState('');
 
   // Load user details on mount
   useEffect(() => {
@@ -18,6 +19,7 @@ const Admin = () => {
     if (userDetails) {
       setUserType(userDetails.userrole);
       setUserAccess(userDetails.useraccess || []);
+      setUserName(userDetails.username || []);
     }
   }, []);
 
@@ -44,13 +46,13 @@ const Admin = () => {
   // All cards definition
   const allCards = [
     { key: 'users', label: 'USERS', className: 'user-management', iconClass: 'icon-user', cardName: 'User Management' },
-     { key: 'userAdd', label: 'UPDATE USERS', className: 'user-management', iconClass: 'icon-new-user', cardName: 'Update Users' },
-    { key: 'events', label: 'EVENTS', className: 'events', iconClass: 'icon-calendar', cardName: 'Events' },
-    { key: 'bookings', label: 'ADD ROOMS', className: 'bookings', iconClass: 'icon-booking', cardName: 'Add Rooms' },
-    // { key: 'content', label: 'CONTENTS', className: 'contents', iconClass: 'icon-content', cardName: 'Contents' },
+    { key: 'userAdd', label: 'UPDATE USERS', className: 'user-management', iconClass: 'icon-new-user', cardName: 'Update Users' },
+    { key: 'events', label: 'EVENTS', className: 'events', iconClass: 'icon-calendar', cardName: 'Add Events' },
+    { key: 'eventsAdd', label: 'ADD EVENTS', className: 'eventsAdd', iconClass: 'icon-calendar-add', cardName: 'Add Events' },
+    { key: 'bookings', label: 'ROOMS', className: 'bookings', iconClass: 'icon-booking', cardName: 'Rooms' },
+    { key: 'bookingsAdd', label: 'ADD ROOMS', className: 'bookings', iconClass: 'icon-booking-add', cardName: 'Add Rooms' },
     { key: 'video', label: 'VIDEOS', className: 'videos', iconClass: 'icon-video', cardName: 'Videos' },
     { key: 'books', label: 'BOOKS', className: 'books', iconClass: 'icon-book', cardName: 'Books' },
-    // { key: 'settings', label: 'SETTINGS', className: 'settings', iconClass: 'icon-settings', cardName: 'Settings' },
   ];
 
   // Determine enabled/disabled per card
@@ -68,7 +70,7 @@ const Admin = () => {
 
     if (cardName === 'User Management') {
       navigate('/users');
-    } else if (cardName === 'Events') {
+    } else if (cardName === 'Add Events') {
       navigate('/addevent');
     } else if (cardName === 'Add Rooms') {
       navigate('/addrooms');
@@ -108,9 +110,8 @@ const Admin = () => {
                 Remove Image
               </button>
             )}
-            <h2 className="profile-name">{userRole?.toUpperCase() || 'ADMINISTRATOR'}</h2>
-            <p className="profile-role">Role: {userRole}</p>
-            <p className="profile-details">Organizer, Event</p>
+            <h2 className="profile-name">{userName?.toUpperCase() || 'USER'}</h2>
+            <p className="profile-role">Role: {userRole?.toUpperCase()}</p>
           </div>
 
           {/* Cards */}

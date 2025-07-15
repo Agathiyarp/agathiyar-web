@@ -305,7 +305,9 @@
 .icon-user::before { content: "👤"; }
 .icon-new-user::before { content: "🧑‍🦰➕"; }
 .icon-calendar::before { content: "📅"; }
+.icon-calendar-add::before { content: "📅➕"; }
 .icon-booking::before { content: "📋"; }
+.icon-booking-add::before { content: "📋➕"; }
 .icon-content::before { content: "✅"; }
 .icon-folder::before { content: "💳"; }
 .icon-video::before { content: "🎬"; }

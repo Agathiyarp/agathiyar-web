@@ -106,13 +106,6 @@ const WorkshopItem = ({
             </Typography>
           </Box>
           <Box className="info-item" display="flex" alignItems="center">
-            <BedIcon style={{ fontSize: "35px", marginRight: "8px" }} />
-            <Typography variant="body1" className="text-item">
-              <b>Available Room</b>
-              <br /> {roomtype}
-            </Typography>
-          </Box>
-          <Box className="info-item" display="flex" alignItems="center">
             <PhoneIcon style={{ fontSize: "35px", marginRight: "8px" }} />
             <Typography variant="body1" className="text-item">
               <b>Contact</b>
