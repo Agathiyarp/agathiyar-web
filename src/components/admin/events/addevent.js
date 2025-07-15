@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import './addevent.css';
-import { useNavigate } from 'react-router-dom';
+// import { useNavigate } from 'react-router-dom';
 import MenuBar from "../../menumain/menubar";
 
 const AddEvent = () => {
@@ -22,7 +22,8 @@ const AddEvent = () => {
 
   const [events, setEvents] = useState([]);
   const [selectedImage, setSelectedImage] = useState(null);
-  const navigate = useNavigate();
+  // const navigate = useNavigate();
+  console.log(events);
 
   // Fetch all events on mount
   useEffect(() => {
