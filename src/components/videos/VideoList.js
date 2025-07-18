@@ -13,16 +13,19 @@ const VideoList = () => {
 
   const handleVideoClick = (videoId) => {
     setSelectedVideo(videoId);
-    setHoveredVideo(null); // Stop preview if clicked
+    setHoveredVideo(null);
   };
 
   const handleMouseEnter = (videoId) => {
     hoverTimeout = setTimeout(() => {
       setHoveredVideo(videoId);
-    }, 500); // Slight delay to show video after hover
+    }, 500);
   };
 
   const handleMouseLeave = () => {
+    if (videoRef.current) {
+      videoRef.current.src = "";
+    }
     setHoveredVideo(null);
     clearTimeout(hoverTimeout);
   };
@@ -30,16 +33,17 @@ const VideoList = () => {
   useEffect(() => {
     if (hoveredVideo && videoRef.current) {
       if (videoSource === "youtube") {
-        videoRef.current.src = `https://www.youtube.com/embed/${hoveredVideo}?autoplay=1&controls=0&mute=1`; // Autoplay the video muted for preview
+        videoRef.current.src = `https://www.youtube.com/embed/${hoveredVideo}?autoplay=1&controls=0&mute=1`;
       } else {
         const localVideo = localVideoData.find(video => video.videoId === hoveredVideo);
         if (localVideo) {
-          videoRef.current.src = localVideo.src; // Use local video source
+          videoRef.current.src = localVideo.src;
         }
       }
+
       setTimeout(() => {
         if (videoRef.current) {
-          videoRef.current.src = ""; // Pause video after 5 seconds
+          videoRef.current.src = ""; // Stop after 5s
         }
       }, 5000);
     }
@@ -48,26 +52,6 @@ const VideoList = () => {
   return (
     <div className="video-list-container">
       <MenuBar />
-      {/* <div className="video-source-selection">
-        <label>
-          <input
-            type="radio"
-            value="youtube"
-            checked={videoSource === "youtube"}
-            onChange={() => setVideoSource("youtube")}
-          />
-          YouTube
-        </label>
-        <label>
-          <input
-            type="radio"
-            value="local"
-            checked={videoSource === "local"}
-            onChange={() => setVideoSource("local")}
-          />
-          Local
-        </label>
-      </div> */}
 
       {selectedVideo ? (
         <div className="video-player">
@@ -101,23 +85,29 @@ const VideoList = () => {
               onMouseLeave={handleMouseLeave}
               onClick={() => handleVideoClick(video.videoId)}
             >
-              {hoveredVideo === video.videoId ? (
-                <iframe
-                  ref={videoRef}
-                  width="100%"
-                  height="150px"
-                  frameBorder="0"
-                  allow="autoplay; encrypted-media"
-                  allowFullScreen
-                  title={video.title}
-                ></iframe>
-              ) : (
-                <img
-                  src={videoSource === "youtube" ? `https://img.youtube.com/vi/${video.videoId}/hqdefault.jpg` : require(`${video.src}.jpg`)} // Placeholder for local thumbnail
-                  alt={video.title}
-                  className="video-thumbnail"
-                />
-              )}
+              <div className="video-preview">
+                {hoveredVideo === video.videoId ? (
+                  <iframe
+                    ref={videoRef}
+                    width="100%"
+                    height="100%"
+                    frameBorder="0"
+                    allow="autoplay; encrypted-media"
+                    allowFullScreen
+                    title={video.title}
+                  ></iframe>
+                ) : (
+                  <img
+                    src={
+                      videoSource === "youtube"
+                        ? `https://img.youtube.com/vi/${video.videoId}/hqdefault.jpg`
+                        : require(`${video.src}.jpg`)
+                    }
+                    alt={video.title}
+                    className="video-thumbnail"
+                  />
+                )}
+              </div>
               <h3 className="video-title">{video.title}</h3>
               <p className="video-description">{video.description}</p>
             </div>

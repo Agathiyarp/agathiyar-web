@@ -94,3 +94,19 @@
   color: #fff;
   transform: scale(1.1);
 }
+
+.gallery-grid {
+  grid-template-columns: repeat(3, 1fr);
+}
+
+@media (min-width: 400px) {
+  .gallery-grid {
+    grid-template-columns: repeat(1, 1fr);
+  }
+}
+
+@media (min-width: 768px) {
+  .gallery-grid {
+    grid-template-columns: repeat(3, 1fr);
+  }
+}
