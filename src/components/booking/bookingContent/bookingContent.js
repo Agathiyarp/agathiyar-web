@@ -144,9 +144,9 @@ const RoomBook = ({ searchResult }) => {
                       <button
                         onClick={() => handleRoomSelect(room)}
                         className={`room-card__view-deal ${
-                          isAvailable ? "" : "disabled"
+                          !isAvailable ? "" : "disabled"
                         }`}
-                        disabled={!isAvailable}
+                        disabled={isAvailable}
                       >
                         SELECT ROOM
                       </button>
