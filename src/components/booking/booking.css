@@ -1,42 +1,136 @@
 @font-face {
-    font-family: 'SF Pro Display Regular';
-    src: url('../../fonts/sf-pro-display-regular.woff2');
-    font-weight: 400;
-    font-style: normal;
-  }
-
-.empty-content {
-    height: 300px;
-    text-align: center;
-    margin-top: 20px;
+  font-family: 'SF Pro Display Regular';
+  src: url('../../fonts/sf-pro-display-regular.woff2');
+  font-weight: 400;
+  font-style: normal;
 }
 
 .outer-containers {
-    margin-top: 115px;
+  margin-top: 100px;
+  padding: 0 16px;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.booking-content-wrapper {
+  padding: 20px 0;
 }
 
 .booking-title {
-    font-size: 30px;
-    font-weight: bold;
-    color: #38a169;
-    margin-top: 0;
-    margin-bottom: 10px;
-    font-family: 'SF Pro Display Regular', sans-serif;
+  font-size: 30px;
+  font-weight: bold;
+  color: #38a169;
+  margin-top: 0;
+  margin-bottom: 10px;
+  text-align: center;
+  font-family: 'SF Pro Display Regular', sans-serif;
 }
+
 .booking-subtitle {
-    font-size: 16px;
-    font-weight: 400;
-    color: black;
-    text-align: center;
-    margin-top: 0;
-    font-family: 'SF Pro Display Regular', sans-serif;
+  font-size: 16px;
+  font-weight: 400;
+  color: black;
+  text-align: center;
+  margin-top: 0;
+  font-family: 'SF Pro Display Regular', sans-serif;
 }
+
 .info-section-booking {
-    background-color: #f8f8f8;
-    padding: 10px;
-    border-radius: 5px;
-    margin-top: 10px;
-    text-align: center;
+  background-color: #f8f8f8;
+  padding: 16px;
+  border-radius: 5px;
+  margin-top: 10px;
+  font-size: 14px;
+  font-family: 'SF Pro Display Regular', sans-serif;
+  text-align: left;
+}
+
+.tick-list {
+  padding-left: 20px;
+  text-align: left;
+}
+
+.date-filter {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  margin: 20px 0;
+  font-size: 16px;
+  max-width: 250px;
+  padding: 0 10px;
+}
+
+.date-filter label {
+  font-weight: bold;
+  margin-bottom: 5px;
+}
+
+.date-filter input {
+  width: 100%;
+  padding: 5px;
+  font-size: 14px;
+}
+
+.empty-content {
+  height: 300px;
+  text-align: center;
+  margin-top: 20px;
+  font-size: 16px;
+  color: #666;
+}
+
+.loading-content {
+  text-align: center;
+  font-size: 16px;
+  margin-top: 20px;
+}
+
+.room-card__view-deal:disabled {
+  opacity: 0.6;
+}
+
+/* Media Queries for Responsive Design */
+@media screen and (max-width: 768px) {
+  .booking-title {
+    font-size: 24px;
+  }
+
+  .booking-subtitle {
+    font-size: 14px;
+  }
+
+  .info-section-booking {
+    font-size: 13px;
+  }
+
+  .date-filter {
+    width: 100%;
+    align-items: stretch;
+  }
+}
+
+@media screen and (max-width: 480px) {
+  .booking-title {
+    font-size: 20px;
+  }
+
+  .booking-subtitle {
+    font-size: 13px;
+  }
+
+  .info-section-booking {
     font-size: 12px;
-    font-family: 'SF Pro Display Regular', sans-serif;
+  }
+}
+
+
+.date-filter {
+  margin: 20px 0;
+  font-size: 16px;
+  width: 200px;
+  margin-left: 20px;
+}
+
+.room-card__view-deal:disabled {
+  opacity: 0.6;
 }

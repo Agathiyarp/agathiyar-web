@@ -1,5 +1,5 @@
 .user-mgmt-container {
-  max-width: 800px;
+  max-width: 900px;
   margin: 50px auto;
   margin-top: 100px;
   background-color: #ffffff;
@@ -30,6 +30,10 @@
   margin: 0 auto;
   width: 50%;
   font-weight: bold;
+}
+
+.btn-user {
+  width: 200px;
 }
 
 .input-user {
@@ -98,4 +102,56 @@ table th {
   display: flex;
   justify-content: center;
   gap: 15px;
+}
+
+
+.user-list table {
+  width: 100%;
+  border-collapse: collapse;
+  overflow-x: auto;
+  display: block;
+  white-space: nowrap;
+}
+
+/* Table responsiveness on smaller screens */
+@media screen and (max-width: 768px) {
+  .user-mgmt-container {
+    padding: 20px 15px;
+    margin: 20px auto;
+    margin-top: 100px;
+  }
+
+  .input-user {
+    width: 100%;
+  }
+
+  .btn-user {
+    width: 200px;
+  }
+
+  .export-buttons {
+    flex-direction: column;
+    align-items: center;
+  }
+
+  .user-list table th,
+  .user-list table td {
+    font-size: 13px;
+    padding: 8px;
+  }
+
+  .user-details table,
+  .user-list table {
+    display: block;
+    overflow-x: auto;
+  }
+}
+
+/* Even tighter spacing for very small phones */
+@media screen and (max-width: 480px) {
+  .user-list table th,
+  .user-list table td {
+    font-size: 12px;
+    padding: 6px;
+  }
 }

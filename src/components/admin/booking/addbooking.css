@@ -47,13 +47,13 @@ textarea {
 .submit-btn {
   margin-top: 20px;
   padding: 14px 28px;
-  background: linear-gradient(to right, #667eea, #764ba2);
+  background: linear-gradient(to right, #28a745, #218838);
   color: white;
   font-size: 16px;
   border: none;
   border-radius: 25px;
   cursor: pointer;
-  width: 100%;
+  width: 300px;
   font-weight: bold;
   transition: background 0.3s ease;
 }

@@ -8,6 +8,10 @@ import axios from "axios";
 const Booking = () => {
   const [searchResult, setSearchResult] = useState([]);
   const [loading, setLoading] = useState(true);
+  const [selectedDate, setSelectedDate] = useState(() => {
+    const today = new Date();
+    return today.toISOString().split("T")[0];
+  });
 
   useEffect(() => {
     const fetchData = async () => {
@@ -34,15 +38,29 @@ const Booking = () => {
   return (
     <div className="outer-containers">
       <MenuBar />
-      <div>
+      <div className="booking-content-wrapper">
         <h1 className="booking-title">Agathiyar Pyramid Accomodation</h1>
-        <h3 className="booking-subtitle">Destination: Agathiyar - Pathriji - Dormitory</h3>
+        <h3 className="booking-subtitle">
+          Destination: Agathiyar - Pathriji - Dormitory
+        </h3>
         <div className="info-section-booking">
-          <p>*We provide 3 types of rooms. Please select the respective stay based on the number of persons accommodating:</p>
-          <ul class="tick-list">
+          <p>
+            *We provide 3 types of rooms. Please select the respective stay
+            based on the number of persons accommodating:
+          </p>
+          <ul className="tick-list">
             <li>Pathriji Bhavan - for a maximum accommodation of 4 personnel.</li>
             <li>Agathiyar Bhavan - for a maximum accommodation of 1 personnel.</li>
           </ul>
+        </div>
+        <div className="date-filter">
+          <label htmlFor="booking-date">Select Date:</label>
+          <input
+            type="date"
+            id="booking-date"
+            value={selectedDate}
+            onChange={(e) => setSelectedDate(e.target.value)}
+          />
         </div>
         {loading ? (
           <div className="loading-content">Loading...</div>
@@ -52,9 +70,7 @@ const Booking = () => {
           <div className="empty-content">No Rooms Available</div>
         )}
       </div>
-      <div>
-        <Footer />
-      </div>
+      <Footer />
     </div>
   );
 };

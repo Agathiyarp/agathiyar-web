@@ -47,7 +47,7 @@ const Admin = () => {
   const allCards = [
     { key: 'users', label: 'USERS', className: 'user-management', iconClass: 'icon-user', cardName: 'User Management' },
     { key: 'userAdd', label: 'UPDATE USERS', className: 'user-management', iconClass: 'icon-new-user', cardName: 'Update Users' },
-    { key: 'events', label: 'EVENTS', className: 'events', iconClass: 'icon-calendar', cardName: 'Add Events' },
+    { key: 'events', label: 'EVENTS', className: 'events', iconClass: 'icon-calendar', cardName: 'Events' },
     { key: 'eventsAdd', label: 'ADD EVENTS', className: 'eventsAdd', iconClass: 'icon-calendar-add', cardName: 'Add Events' },
     { key: 'bookings', label: 'ROOMS', className: 'bookings', iconClass: 'icon-booking', cardName: 'Rooms' },
     { key: 'bookingsAdd', label: 'ADD ROOMS', className: 'bookings', iconClass: 'icon-booking-add', cardName: 'Add Rooms' },
@@ -80,6 +80,10 @@ const Admin = () => {
       navigate('/updateuser')
     } else if(cardName === 'Videos') {
       navigate('/videoupload')
+    } else if(cardName === 'Rooms') {
+      navigate('/addrooms')
+    } else if(cardName === 'Events') {
+      navigate('/addevent')
     }
   };
 

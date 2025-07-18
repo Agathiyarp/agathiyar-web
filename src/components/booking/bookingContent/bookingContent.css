@@ -13,406 +13,269 @@
 }
 
 .room-search-results {
-  font-family: "Arial", sans-serif;
+  font-family: 'SF Pro Display Regular', sans-serif;
   color: #333;
-}
-.mr-10 {
-  margin-right: 10px;
-}
-
-.green-date-picker label {
-  color: green;
-}
-
-.green-date-picker .MuiOutlinedInput-root fieldset {
-  border-color: green;
-}
-
-.green-date-picker .MuiOutlinedInput-root:hover fieldset {
-  border-color: green;
-}
-
-.green-date-picker .MuiOutlinedInput-root.Mui-focused fieldset {
-  border-color: green;
-}
-
-.green-date-picker .MuiSvgIcon-root {
-  color: green;
+  padding: 0 16px;
+  margin-top: 100px;
 }
 
 .room-search-results__content {
   display: flex;
-  justify-content: space-between;
-  margin: 20px 0;
+  flex-direction: column;
 }
 
-.align-center-booking {
-  text-align: justify;
-  margin: 0 125px;
-}
-
-.text-sm {
-  font-size: 14px;
-}
-
-.semi-bold {
-  font-weight: 600;
-  font-family: 'SF Pro Display Regular', sans-serif;
-  color: #38a169;
-}
-
-.pr-1{
-  margin-bottom: -5px;
-  margin-right: 5px;
-}
-
-.tick-list {
-  list-style: none;
-  padding-left: 0;
-}
-
-.tick-list li {
-  position: relative;
-  padding-left: 25px;
-}
-
-.tick-list li::before {
-  content: '✔️';
-  position: absolute;
-  color: green; 
-  font-size: 1.2em; 
-  margin-left: -25px;
-  margin-top: -3px;
-}
-
-.text-heading {
-  color: #000;
-  font-family: 'SF Pro Display Semibold', sans-serif;
-}
-
-.text-subheading {
-  color: #000;
-  font-family: 'SF Pro Display Regular', sans-serif;
-}
-
-.avail-rooms {
-  color: #38a169;
-}
-
-.justify-between {
-  margin-bottom: 7px;
-}
-
-.border-room {
-  border: 1px solid #ccc;
-}
-
-.m-p-10 {
-  margin-bottom: 10px;
-  padding: 10px;
-}
-
-.font-bold {
-  font-weight: 600;
-}
-
-/* room List Styles */
 .room-search-results__list {
-  width: 100%; /* Restore full width for desktop */
-  padding-right: 20px;
-  padding-left: 20px;
-}
-
-.p-r-100 {
-  padding-right: 100px;
-}
-
-.room-search-results__header {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  margin-bottom: 20px;
-}
-
-.room-search-results__stats {
-  color: #718096;
-  font-size: 0.875rem;
+  width: 100%;
 }
 
 .room-card {
   background-color: #fff;
-  border-radius: 0.5rem;
-  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
-  padding: 1rem;
-  margin-bottom: 1rem;
+  border-radius: 8px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+  padding: 16px;
+  margin-bottom: 20px;
   display: flex;
-  height: 250px; /* Restore fixed height for desktop */
+  flex-direction: row;
+  gap: 16px;
+  flex-wrap: wrap;
 }
 
 .room-card__image-container {
-  width: 33%; /* Restore image container size for desktop */
+  flex: 1 1 250px;
   position: relative;
-  margin-right: 10px;
-}
-
-.room-search-results__map {
-  display: flex;
-  width: 40%;
 }
 
 .room-card__image {
-  border-radius: 8px;
   width: 380px;
-  height: 200px;
-  margin-right: 10px;
+  height: 180px;
+  object-fit: cover;
+  border-radius: 8px;
+}
+
+.room-card__image-counter {
+  position: absolute;
+  bottom: 8px;
+  left: 8px;
+  background: rgba(0, 0, 0, 0.6);
+  color: #fff;
+  font-size: 12px;
+  padding: 4px 8px;
+  border-radius: 4px;
 }
 
 .room-card__content {
+  flex: 2 1 10px;
   display: flex;
   flex-direction: column;
   justify-content: space-between;
-  width: 67%; /* Restore content width for desktop */
 }
 
 .room-card__name {
-  font-size: 1.25rem;
-  font-weight: bold;
+  font-family: 'SF Pro Display Semibold', sans-serif;
+  font-size: 1.2rem;
+  color: #000;
 }
 
 .room-card__description {
-  margin-top: 10px;
-  font-size: 0.9rem;
+  font-size: 0.95rem;
   color: #555;
+  margin: 8px 0;
 }
 
-.room-card__distance,
-.room-card__score-ratings {
-  font-size: 0.85rem;
-  color: #777;
-}
-
-.room-card__booking {
-  text-align: right;
-}
-
-.room-card__view-deal {
-  background: #38a169; /* Green */
-  color: white;
-  padding: 8px 12px;
-  border-radius: 4px;
-  display: inline-flex;
+.room-card__date {
+  font-size: 0.9rem;
+  color: #444;
+  margin: 4px 0;
+  display: flex;
   align-items: center;
+  gap: 8px;
+}
+
+.room_card_dates {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: left;
+  gap: 16px;
+}
+
+.room-dates-left,
+.room-dates-right {
+  flex: 1;
+  min-width: 250px;
+}
+
+.checkin-date,
+.checkout-date {
+  display: flex;
+  align-items: center;
+  margin: 8px 0;
+  gap: 10px;
+}
+
+.icon {
+  vertical-align: middle;
+  margin-right: 4px;
+}
+
+.semi-bold {
+  font-weight: 600;
+  color: #38a169;
+}
+
+.date-input {
+  width: 180px;
+  padding: 4px 8px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  font-size: 0.9rem;
+}
+
+.days-selected,
+.available-text,
+.unavailable-text {
+  font-size: 0.9rem;
+  margin-top: 8px;
+}
+
+.available-text {
+  color: #38a169;
   font-weight: bold;
 }
 
-.room-card__view-deal-icon {
-  margin-left: 6px;
-}
-
-/* Map Styles */
-.room-search-results__map-container {
-  background: #f7fafc;
-  border-radius: 8px;
-  height: 100%;
-  position: relative;
-}
-
-.room-search-results__map-controls button {
-  background: white;
-  border: none;
-  padding: 8px;
-  margin: 0;
-  border-radius: 4px;
-  cursor: pointer;
-}
-
-.room-search-results__map-zoom-control {
-  margin-top: 4px;
-}
-
-.room-search-results__map-placeholder {
-  text-align: center;
-  color: #777;
-  margin-bottom: 20px; /* Adds space below the placeholder */
-  padding: 10px; /* Adds padding inside the placeholder */
-}
-
-/* Seat Selection & Booking Summary */
-.grid-cols-15 {
-  display: grid;
-  grid-template-columns: repeat(15, 1fr); /* Restore 15-column grid for desktop */
-  gap: 5px;
-}
-
-button {
-  cursor: pointer;
-}
-
-button.p-2 {
-  padding: 20px;
-  text-align: center;
+.unavailable-text {
+  color: #e53e3e;
   font-weight: bold;
   margin: 5px;
 }
 
-.bg-green-500 {
-  background-color: #38a169; /* Seat selected */
+.room-card__booking {
+  text-align: right;
+  margin-top: 12px;
 }
 
-.text-green-500 {
-  color: #38a169; /* Seat not selected */
+.room-card__view-deal {
+  background-color: #38a169;
+  color: #fff;
+  padding: 8px 16px;
+  border: none;
+  border-radius: 4px;
+  font-weight: bold;
+  cursor: pointer;
 }
 
-.bg-green-500 {
-  background: #38a169;
-  color: white;
-  padding: 8px 12px;
-  margin: 5px 0;
+.room-card__view-deal.disabled {
+  background-color: #ccc;
+  cursor: not-allowed;
 }
 
-.register {
-  margin-right: 10px;
-  padding: 12px;
-  background: rgb(95, 95, 247);
+/* Center-align info section with better layout */
+.info-section-booking {
+  background-color: #f8f8f8;
+  text-align: center;
+  margin: 30px auto;
+  padding: 20px;
+  border-radius: 8px;
+  font-size: 0.95rem;
+  line-height: 1.6;
 }
 
-/* Responsive Styles for Tablets (width between 600px and 900px) */
-@media (max-width: 900px) and (min-width: 600px) {
-  .room-search-results__list {
-    width: 100%; /* Full width on tablet */
-    padding-right: 0; /* Remove right padding */
-  }
-  
+.info-section-booking p {
+  margin-bottom: 12px;
+  color: #444;
+}
+
+.info-section-booking .tick-list {
+  display: inline-block;
+  text-align: left;
+  padding-left: 0;
+  margin: 0 auto;
+  list-style: none;
+}
+
+.info-section-booking .tick-list li {
+  position: relative;
+  padding-left: 28px;
+  margin-bottom: 8px;
+  font-size: 14px;
+  color: #333;
+}
+
+.info-section-booking .tick-list li::before {
+  content: '\2714';
+  position: absolute;
+  left: 0;
+  top: 0;
+  color: #38a169;
+  font-size: 16px;
+}
+
+/* Responsive */
+@media (max-width: 768px) {
   .room-card {
-    flex-direction: column; /* Stack image and content vertically */
-  }
-
-  .room-card__image-container {
-    width: 100%; /* Full width for image on tablet */
-  }
-
-  .room-card__content {
-    width: 100%; /* Full width for content on tablet */
-  }
-}
-
-/* Responsive Styles for Mobile (width below 600px) */
-@media (max-width: 600px) {
-  .room-search-results__content {
-    display: flex;
     flex-direction: column;
   }
-  .room-search-results__list { 
-    width: 100%;
+
+  .room-card__image {
+    width: 320px;
   }
+
+  .room-card__image-container,
   .room-card__content {
     width: 100%;
   }
-  .room-card {
-    flex-direction: row !important;
-  }
+
   .room-search-results {
-    margin-top: 0; /* Adjust margin for mobile */
-    padding: 0 10px; /* Add padding for mobile */
-  }
-
-  .align-center-booking {
-    text-align: center;
-    margin: 0;
-  }
-
-  .text-center {
-    margin: 15px 0;
-  }
-
-  .room-card__image  {
-    height: 100px;
-    margin-top: 15px;
-  }
-
-  .border-room {
-    width: 350px;
-  }
-
-  .room-search-results__header {
-    flex-direction: column; /* Stack header elements vertically */
-    align-items: flex-start; /* Align items to the start */
-  }
-
-  .room-search-results__sort {
-    margin-bottom: 10px; /* Add margin for sort select on mobile */
-  }
-
-  .room-card {
-    padding: 10px; /* Reduce padding for room cards on mobile */
-    flex-direction: column; /* Stack image and content vertically */
-    height: 200px;
-  }
-
-  .room-card__image-counter {
-    font-size: 12px;
-  }
-
-  .booking-rows {
-    width: 80%;
-    margin: 0 auto;
-  }
-
-  .MuiBox-root {
-    display: flex;
-    flex-direction: column;
-  }
-
-  .MuiFormControl-root {
-    width: 100%;
-  }
-
-  .MuiButtonBase-root {
-    width: 90%;
+    padding: 0 8px;
+    margin-top: 0px;
   }
 
   .room-card__name {
-    font-size: 1.1rem; /* Smaller font size on mobile */
+    font-size: 1rem;
   }
 
-  .room-card__rating,
   .room-card__description,
-  .room-card__distance,
-  .room-card__score-ratings {
-    font-size: 0.8rem; /* Smaller font sizes on mobile */
-  }
-
-  .room-card__price {
-    font-size: 1.2rem; /* Smaller price font size on mobile */
+  .room-card__date,
+  .days-selected,
+  .available-text,
+  .unavailable-text {
+    font-size: 0.85rem;
   }
 
   .room-card__view-deal {
-    padding: 6px 10px; /* Reduce padding for view deal button */
+    width: 100%;
+    margin-top: 8px;
   }
 
-  .grid-cols-15 {
-    grid-template-columns: repeat(5, 1fr); /* Adjust grid for mobile */
+  .info-section-booking {
+    font-size: 0.9rem;
+    padding: 16px;
   }
-}
-.border {
-  width: 0.2px; /* Width of the border */
-  height: 100%; /* Full height */
-}
 
-.selction-container {
-  display: flex;
-  align-items: center;
-  justify-content: space-around;
-}
+  .info-section-booking .tick-list li {
+    font-size: 13px;
+  }
 
-.notice-text {
-  margin-top: 12px;
-  color: #d32f2f; 
-  font-size: 14px;
-  text-align: center;
-  font-weight: bold;
-}
+  .checkin-date,
+  .checkout-date {
+    flex-direction: column;
+    align-items: flex-start;
+  }
 
-.room_card_dates { 
-  display: flex;
+  .date-input {
+    width: 100%;
+  }
+
+  .room_card_dates {
+    flex-direction: column;
+    gap: 2px;
+  }
+  .checkin-date, .checkout-date {
+    margin: 0;
+  }
+  .available-text {
+    margin-top: 0px;
+  }
+  .room-card__booking {
+    margin-top: 0px;
+  }
 }
