@@ -54,7 +54,7 @@ const Booking = () => {
           </ul>
         </div>
         <div className="date-filter">
-          <label htmlFor="booking-date">Select Date:</label>
+          <label htmlFor="booking-date" style={{fontSize: "20px"}}>Select Date:</label>
           <input
             type="date"
             id="booking-date"

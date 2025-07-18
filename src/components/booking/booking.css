@@ -121,6 +121,12 @@
   .info-section-booking {
     font-size: 12px;
   }
+  .room-card__name {
+    margin: 0
+  }
+  .room-card__description {
+    margin: 0;
+  }
 }
 
 

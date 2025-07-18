@@ -85,9 +85,10 @@ const RoomBook = ({ searchResult }) => {
                         {!isAvailable ? (
                           <>
                             <div className="checkin-date">
-                              <label className="semi-bold">
-                                Check-In Date:
-                              </label>
+                             <label className="semi-bold">
+                              <span className="icon-date">🗓️</span>
+                              <span>Check-In Date:</span>
+                            </label>
                               <input
                                 type="date"
                                 value={checkInDate}
@@ -100,7 +101,8 @@ const RoomBook = ({ searchResult }) => {
 
                             <div className="checkout-date">
                               <label className="semi-bold">
-                                Check-Out Date:
+                                <span className="icon-date">🗓️</span>
+                                <span>Check-Out Date:</span>
                               </label>
                               <input
                                 type="date"
@@ -113,7 +115,8 @@ const RoomBook = ({ searchResult }) => {
                             </div>
 
                             <p className="days-selected">
-                              🗓️ <span className="semi-bold">Days Selected:</span>{" "}
+                              <span className="icon-date">🕒</span>
+                              <span className="semi-bold">Days Selected:</span>{" "}
                               {Math.max(
                                 1,
                                 Math.ceil(
@@ -125,6 +128,7 @@ const RoomBook = ({ searchResult }) => {
                             </p>
 
                             <p className="available-text">
+                              <span className="icon-date">🛏️</span>
                               Rooms Available: {room.availableRooms}
                             </p>
                           </>
