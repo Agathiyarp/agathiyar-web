@@ -25,6 +25,8 @@ import Gallery from './components/gallery/gallery';
 import UploadBooks from './components/admin/books/uploadbooks';
 import UpdateUser from './components/admin/users/updateuser';
 import VideoUpload from './components/admin/videos/videoupload'
+import EventList from './components/admin/events/eventlist';
+import RoomList from './components/admin/booking/roomlist';
 
 const App = () => {
 
@@ -54,6 +56,8 @@ const App = () => {
           <Route path="/uploadbook" element={<UploadBooks />} />
           <Route path="/updateuser" element={<UpdateUser />} />
           <Route path="/videoupload" element={<VideoUpload />}/>
+          <Route path="/eventlist" element={<EventList />}/>
+          <Route path="/roomlist" element={<RoomList />} />
         </Routes>
       </Router>
     </div>

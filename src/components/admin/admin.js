@@ -81,9 +81,9 @@ const Admin = () => {
     } else if(cardName === 'Videos') {
       navigate('/videoupload')
     } else if(cardName === 'Rooms') {
-      navigate('/addrooms')
+      navigate('/roomlist')
     } else if(cardName === 'Events') {
-      navigate('/addevent')
+      navigate('/eventlist')
     }
   };
 

@@ -8,6 +8,14 @@
   background: url('../../../images/bg-image.png') no-repeat center center;
 }
 
+.users-heading {
+  font-size: 2rem;
+  margin-bottom: 20px;
+  color: #000;
+  width: 100%;
+  text-align: center; 
+}
+
 .user-card {
   border: 1px solid #ccc;
   padding: 16px;

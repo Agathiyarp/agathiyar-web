@@ -44,6 +44,7 @@ const UserList = () => {
   return (
     <div className="users-container">
         <MenuBar/>
+      <h2 className="users-heading">Users List</h2>
       {users.map((user, index) => (
         <UserCard
           key={user.id || index}

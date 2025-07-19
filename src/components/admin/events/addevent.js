@@ -26,19 +26,19 @@ const AddEvent = () => {
   console.log(events);
 
   // Fetch all events on mount
-  useEffect(() => {
-    fetchEvents();
-  }, []);
+  // useEffect(() => {
+  //   fetchEvents();
+  // }, []);
 
-  const fetchEvents = async () => {
-    try {
-      const res = await fetch('https://www.agathiyarpyramid.org/api/events');
-      const data = await res.json();
-      setEvents(data);
-    } catch (error) {
-      console.error('Error fetching events:', error);
-    }
-  };
+  // const fetchEvents = async () => {
+  //   try {
+  //     const res = await fetch('https://www.agathiyarpyramid.org/api/events');
+  //     const data = await res.json();
+  //     setEvents(data);
+  //   } catch (error) {
+  //     console.error('Error fetching events:', error);
+  //   }
+  // };
 
   // Automatically calculate number of days when start or end date changes
   useEffect(() => {
@@ -65,23 +65,23 @@ const AddEvent = () => {
 
     try {
       let imageUrl = '';
-      if (selectedImage) {
-        // Upload the image first
-        const formDataImage = new FormData();
-        formDataImage.append('image', selectedImage);
+      // if (selectedImage) {
+      //   // Upload the image first
+      //   const formDataImage = new FormData();
+      //   formDataImage.append('image', selectedImage);
 
-        const imageUploadResponse = await fetch('https://www.agathiyarpyramid.org/api/upload-image', {
-          method: 'POST',
-          body: formDataImage,
-        });
+      //   const imageUploadResponse = await fetch('https://www.agathiyarpyramid.org/api/upload-image', {
+      //     method: 'POST',
+      //     body: formDataImage,
+      //   });
 
-        if (!imageUploadResponse.ok) {
-          throw new Error('Image upload failed');
-        }
+      //   if (!imageUploadResponse.ok) {
+      //     throw new Error('Image upload failed');
+      //   }
 
-        const imageResult = await imageUploadResponse.json();
-        imageUrl = imageResult.imageUrl;
-      }
+      //   const imageResult = await imageUploadResponse.json();
+      //   imageUrl = imageResult.imageUrl;
+      // }
 
       // Add imageUrl to formData
       const eventPayload = {
@@ -115,7 +115,7 @@ const AddEvent = () => {
           language: '',
         });
         setSelectedImage(null);
-        fetchEvents();
+        // fetchEvents();
       } else {
         alert(result.message || 'Failed to add event');
       }
