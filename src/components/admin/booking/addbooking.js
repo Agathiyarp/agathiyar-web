@@ -14,7 +14,7 @@ const AddBooking = () => {
     totalrooms: '',
     roomvariation: '',
     roomcost: '',
-    maintanancecost: '',
+    maintenancecost: '', // ✅ Use corrected key
   });
 
   const [singleImage, setSingleImage] = useState(null);
@@ -31,7 +31,7 @@ const AddBooking = () => {
   };
 
   const handleMultipleImageChange = (e) => {
-    const files = Array.from(e.target.files).slice(0, 5); // Limit to 5
+    const files = Array.from(e.target.files).slice(0, 5); // Max 5 files
     setMultipleImages(files);
   };
 
@@ -39,30 +39,40 @@ const AddBooking = () => {
     e.preventDefault();
 
     const payload = new FormData();
+
+    // Append form fields
     Object.entries(formData).forEach(([key, value]) => {
       payload.append(key, value);
     });
 
-    payload.append('startdate', new Date(formData.startdate).toISOString());
-    payload.append('enddate', new Date(formData.enddate).toISOString());
+    // Dates: already in yyyy-mm-dd format from <input type="date">
+    payload.set('startdate', formData.startdate);
+    payload.set('enddate', formData.enddate);
 
+    // Append images
     if (singleImage) {
       payload.append('image', singleImage);
     }
 
     multipleImages.forEach((file) => {
-      payload.append('multipleimage', file); // backend should handle array
+      payload.append('multipleimage[]', file); // ✅ Use array notation
     });
+
+    // Optional: Debug what’s being sent
+    for (let [key, value] of payload.entries()) {
+      console.log(key, value);
+    }
 
     try {
       const res = await fetch('https://www.agathiyarpyramid.org/api/addbooking', {
         method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(payload),
+        body: payload, // Do NOT set Content-Type when using FormData
       });
 
-      const result = await res.json();
+      const resultText = await res.text(); // Use .text() first for better debugging
+
       if (res.status === 201) {
+        alert('Booking added successfully!');
         setFormData({
           destination: '',
           startdate: '',
@@ -73,16 +83,18 @@ const AddBooking = () => {
           totalrooms: '',
           roomvariation: '',
           roomcost: '',
-          maintanancecost: '',
+          maintenancecost: '',
         });
         setSingleImage(null);
         setMultipleImages([]);
         setTimeout(() => navigate("/admin"), 3000);
       } else {
-        console.error(result);
+        console.error('Server responded with error:', resultText);
+        alert('Failed to submit: ' + resultText);
       }
     } catch (error) {
-      console.error(error);
+      console.error('Network error:', error);
+      alert('Network error occurred. See console for details.');
     }
   };
 
@@ -95,21 +107,26 @@ const AddBooking = () => {
           <input type="text" name="destination" placeholder="Destination" value={formData.destination} onChange={handleChange} required />
           <input type="text" name="roomtype" placeholder="Room Type" value={formData.roomtype} onChange={handleChange} required />
         </div>
+
         <div className="row">
           <input type="date" name="startdate" value={formData.startdate} onChange={handleChange} required />
           <input type="date" name="enddate" value={formData.enddate} onChange={handleChange} required />
         </div>
+
         <div className="row">
           <input type="text" name="totalrooms" placeholder="Total Rooms" value={formData.totalrooms} onChange={handleChange} required />
           <input type="text" name="roomvariation" placeholder="Room Variation" value={formData.roomvariation} onChange={handleChange} />
         </div>
+
         <div className="row">
           <input type="text" name="roomcost" placeholder="Room Cost" value={formData.roomcost} onChange={handleChange} />
-          <input type="text" name="maintanancecost" placeholder="Maintenance Cost" value={formData.maintanancecost} onChange={handleChange} />
+          <input type="text" name="maintenancecost" placeholder="Maintenance Cost" value={formData.maintenancecost} onChange={handleChange} />
         </div>
+
         <div className="row">
           <input type="text" name="singleoccupy" placeholder="Single Occupy (yes/no)" value={formData.singleoccupy} onChange={handleChange} />
         </div>
+
         <textarea name="roomdescription" placeholder="Room Description" value={formData.roomdescription} onChange={handleChange}></textarea>
 
         <div className="row">
@@ -118,9 +135,8 @@ const AddBooking = () => {
         </div>
 
         <div className="row">
-          <label>Upload Images:</label>
+          <label>Upload Images (Max 5):</label>
           <input type="file" accept="image/*" multiple onChange={handleMultipleImageChange} />
-          <p style={{ fontSize: '12px' }}>Max 5 images allowed</p>
         </div>
 
         <button type="submit" className="submit-btn">Add Room</button>

@@ -65,23 +65,23 @@ const AddEvent = () => {
 
     try {
       let imageUrl = '';
-      // if (selectedImage) {
-      //   // Upload the image first
-      //   const formDataImage = new FormData();
-      //   formDataImage.append('image', selectedImage);
+      if (selectedImage) {
+        // Upload the image first
+        const formDataImage = new FormData();
+        formDataImage.append('image', selectedImage);
 
-      //   const imageUploadResponse = await fetch('https://www.agathiyarpyramid.org/api/upload-image', {
-      //     method: 'POST',
-      //     body: formDataImage,
-      //   });
+        const imageUploadResponse = await fetch('https://www.agathiyarpyramid.org/api/upload-image', {
+          method: 'POST',
+          body: formDataImage,
+        });
 
-      //   if (!imageUploadResponse.ok) {
-      //     throw new Error('Image upload failed');
-      //   }
+        if (!imageUploadResponse.ok) {
+          throw new Error('Image upload failed');
+        }
 
-      //   const imageResult = await imageUploadResponse.json();
-      //   imageUrl = imageResult.imageUrl;
-      // }
+        const imageResult = await imageUploadResponse.json();
+        imageUrl = imageResult.imageUrl;
+      }
 
       // Add imageUrl to formData
       const eventPayload = {
@@ -125,26 +125,6 @@ const AddEvent = () => {
     }
   };
 
-
-  // const handleDelete = async (id) => {
-  //   if (!window.confirm('Are you sure you want to delete this event?')) return;
-  //   try {
-  //     const response = await fetch(`https://www.agathiyarpyramid.org/api/delete-event/${id}`, {
-  //       method: 'DELETE',
-  //     });
-  //     if (response.ok) {
-  //       alert('Event deleted successfully');
-  //       fetchEvents();
-  //     } else {
-  //       const result = await response.json();
-  //       alert(result.message || 'Failed to delete event');
-  //     }
-  //   } catch (error) {
-  //     console.error('Error deleting event:', error);
-  //     alert('Failed to connect to server');
-  //   }
-  // };
-
   return (
     <div className="event-form-container">
       <MenuBar />
@@ -185,21 +165,6 @@ const AddEvent = () => {
         <textarea name="contactdetails" placeholder="Phone, email, address..." value={formData.contactdetails} onChange={handleChange}></textarea>
         <button type="submit" className="submit-btn">CREATE EVENT</button>
       </form>
-
-      {/* <h3 className="subtitle">All Events</h3>
-      <div className="events-list">
-        {events.length === 0 && <p>No events found.</p>}
-        {events.map(event => (
-          <div key={event._id} className="event-card">
-            <h4>{event.eventname}</h4>
-            <p><strong>Master:</strong> {event.mastername}</p>
-            <p><strong>Dates:</strong> {event.startdate} - {event.enddate} ({event.numberofdays} days)</p>
-            <p><strong>Place:</strong> {event.place}</p>
-            <p><strong>Language:</strong> {event.language}</p>
-            <button onClick={() => handleDelete(event._id)} className="delete-btn">Delete</button>
-          </div>
-        ))}
-      </div> */}
     </div>
   );
 };
