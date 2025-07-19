@@ -20,9 +20,10 @@
 
 .event-list {
   list-style-type: none;
-  padding: 0;
   width: 100%;
   max-width: 600px;
+  background: #38a169;
+  padding: 50px;
 }
 
 .event-item {
