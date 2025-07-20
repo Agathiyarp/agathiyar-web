@@ -13,27 +13,31 @@ const Booking = () => {
     return today.toISOString().split("T")[0];
   });
 
-  useEffect(() => {
-    const fetchData = async () => {
-      try {
-        const response = await axios.get(
-          "https://agathiyarpyramid.org/api/getBookingRecords"
-        );
-        if (response && response?.data) {
-          setSearchResult(response.data);
-        } else {
-          setSearchResult([]);
+  const fetchData = async (date) => {
+    setLoading(true);
+    try {
+      const response = await axios.get(
+        `https://agathiyarpyramid.org/api/getBookingRecords`,
+        {
+          params: { date },
         }
-      } catch (error) {
-        console.error("Error loading booking data", error);
+      );
+      if (response?.data) {
+        setSearchResult(response.data);
+      } else {
         setSearchResult([]);
-      } finally {
-        setLoading(false);
       }
-    };
+    } catch (error) {
+      console.error("Error loading booking data", error);
+      setSearchResult([]);
+    } finally {
+      setLoading(false);
+    }
+  };
 
-    fetchData();
-  }, []);
+  useEffect(() => {
+    fetchData(selectedDate);
+  }, [selectedDate]);
 
   return (
     <div className="outer-containers">
@@ -54,7 +58,9 @@ const Booking = () => {
           </ul>
         </div>
         <div className="date-filter">
-          <label htmlFor="booking-date" style={{fontSize: "16px"}}>Select Date:</label>
+          <label htmlFor="booking-date" style={{ fontSize: "16px" }}>
+            Select Date:
+          </label>
           <input
             type="date"
             id="booking-date"

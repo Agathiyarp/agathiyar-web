@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+import moment from "moment";
 import { useLocation } from "react-router-dom";
 import './roomDetails.css';
 import MenuBar from "../../menumain/menubar";
@@ -26,12 +27,11 @@ const RoomDetails = () => {
   const userDetails = JSON.parse(sessionStorage.getItem('userDetails'));
   
   const perBedCost = 500;
-  const maintanance = 200;
-  var totalRooms, totalAmount, totalMaintenanceCost;
+  const maintanance = parseInt(room.maintenancecost, 10) || 0;
   
   const amenities = [
-    { text: "Check-In: 10:00 AM", icon: <EventIcon fontSize="small" className="text-gray-600 align-middle pr-1" /> },
-    { text: "Check-Out: 09:00 AM", icon: <EventIcon fontSize="small" className="text-gray-600 align-middle pr-1" /> },
+    { text: `Check-In: ${ moment(room.startdate).format("YYYY-MM-DD")}`, icon: <EventIcon fontSize="small" className="text-gray-600 align-middle pr-1" /> },
+    { text: `Check-Out: ${ moment(room.enddate).format("YYYY-MM-DD")}`, icon: <EventIcon fontSize="small" className="text-gray-600 align-middle pr-1" /> },
     { text: "Hot Water", icon: <OpacityIcon fontSize="small" className="text-gray-600 mr-2" /> },
     { text: "Lift",  icon: <ElevatorIcon fontSize="small" className="text-gray-600 mr-2" />},
     { text: "Food Facility: No",  icon: <RestaurantIcon fontSize="small" className="text-gray-600 mr-2" />},
@@ -45,14 +45,30 @@ const RoomDetails = () => {
       name: "2 Bed Deluxe Room",
       inclusion: "Double Bed, Western Attached, Let-Bath, 1st Floor, Toiletries, Wardrobe, Electric kettle, Table-Chair",
       additionalBeds: 0,
-      price: 2000,
-      maintenance: 200,
-      rooms: 0,
+      price: 0, // Initialize to 0 since no rooms selected initially
+      maintenance: 0, // Initialize to 0 since no rooms selected initially
+      rooms: 1, // Default to 1 room
+      basePrice: parseInt(room.roomcost, 10) || 0,
+      baseMaintenance: parseInt(room.maintenancecost, 10) || 0
     },
   ];
 
-  const [data, setData] = useState(initialData);
+  const [data, setData] = useState(() => {
+    // Initialize with proper calculations
+    const initializedData = [...initialData];
+    initializedData[0].price = initializedData[0].rooms * initializedData[0].basePrice;
+    initializedData[0].maintenance = initializedData[0].rooms * initializedData[0].baseMaintenance;
+    return initializedData;
+  });
 
+  // Calculate totals at component level
+  const totalRooms = data.reduce((sum, item) => sum + item.rooms, 0);
+  const totalAmount = data.reduce((sum, item) => sum + item.price, 0);
+  const totalMaintenanceCost = data.reduce((sum, item) => sum + item.maintenance, 0);
+
+  console.log("Total Rooms:", totalRooms);
+  console.log("Total Amount:", totalAmount);
+  console.log("Total Maintenance Cost:", totalMaintenanceCost);
   
   const handleOpen = () => {
     setOpenModal(true);
@@ -62,19 +78,6 @@ const RoomDetails = () => {
     setOpenModal(false);
   };
 
-  // const calculateRoomCost = () => {
-  //   return noOfRooms * noOfDays * roomPrice;
-  // };
-
-  // const calculateMaintenance = ()=> {
-  //   return maintenanceCharge * noOfDays
-  // }
-
-  // const calculateTotal = () => {
-  //   return calculateRoomCost() + calculateMaintenance();
-  // };
-
-
   const handleRoomBooking = ()=> {
     handleOpen();
   };
@@ -83,8 +86,9 @@ const RoomDetails = () => {
     const updatedData = [...data];
     const rooms = parseInt(value, 10) || 0;
     updatedData[index].rooms = rooms;
-    updatedData[index].price = rooms * initialData[index].price; 
-    updatedData[index].maintenance = rooms * initialData[index].maintenance;
+    // Use base prices instead of current prices
+    updatedData[index].price = rooms * updatedData[index].basePrice + (updatedData[index].additionalBeds * perBedCost);
+    updatedData[index].maintenance = rooms * updatedData[index].baseMaintenance;
 
     setData(updatedData);
   };
@@ -96,7 +100,7 @@ const RoomDetails = () => {
           ? {
               ...item,
               additionalBeds: item.additionalBeds + 1,
-              price: item.price + perBedCost
+              price: (item.rooms * item.basePrice) + ((item.additionalBeds + 1) * perBedCost)
             }
           : item
       )
@@ -110,7 +114,7 @@ const RoomDetails = () => {
           ? {
               ...item,
               additionalBeds: item.additionalBeds - 1,
-              price: item.price - perBedCost
+              price: (item.rooms * item.basePrice) + ((item.additionalBeds - 1) * perBedCost)
             }
           : item
       )
@@ -118,12 +122,6 @@ const RoomDetails = () => {
   };
 
   const TableComponent = ({ data }) => {
-     totalRooms = data.reduce((sum, item) => sum + item.rooms, 0);
-     totalAmount = data.reduce((sum, item) => sum + item.price, 0);
-     totalMaintenanceCost = data.reduce(
-      (sum, item) => sum + item.maintenance,
-      0
-    );
     return (
       <div className="table-container">
         <table className="responsive-table">
@@ -148,7 +146,6 @@ const RoomDetails = () => {
                     value={item.rooms}
                     onChange={(e) => handleRoomChange(index, e.target.value)}
                   >
-                    <option value="0">0</option>
                     <option value="1">1</option>
                     <option value="2">2</option>
                     <option value="3">3</option>
@@ -157,7 +154,7 @@ const RoomDetails = () => {
                   </select>
                 </td>
                 <td>{item.price}</td>
-                <td>{maintanance}</td>
+                <td>{item.maintenance}</td>
                 <td>
                   Qty: {item.additionalBeds}{" "}
                   <button
@@ -236,18 +233,12 @@ const RoomDetails = () => {
         </div>
         {openModal && (
         <ConfirmModal
-          // selectedRoom={selectedRoom}
-          // checkInDate={checkinDate}
-          // checkOutDate={checkoutDate}
           handleClose={handleClose}
           roomDetails={room}
           totalrooms={totalRooms}
-          roomcost={100}
+          roomcost={room.roomcost}
           maintanancecost={totalMaintenanceCost}
           totalamount={totalAmount}
-          // roomCost={calculateRoomCost()}
-          // maintananceCost={calculateMaintenance()}
-          // totalCost={calculateTotal()}
         />
       )}
       </div>

@@ -4,34 +4,81 @@ import "./bookingContent.css";
 import { useNavigate } from "react-router-dom";
 import RestaurantIcon from "@mui/icons-material/Restaurant";
 import DirectionsCarIcon from "@mui/icons-material/DirectionsCar";
+import axios from "axios";
 
 const RoomBook = ({ searchResult }) => {
   const [checkInDate, setCheckInDate] = useState("");
   const [checkOutDate, setCheckOutDate] = useState("");
   const [filteredRooms, setFilteredRooms] = useState([]);
+  const [roomAvailability, setRoomAvailability] = useState({});
   const navigate = useNavigate();
+
+  // Helper to format date
+  const formatDate = (date) => date.toISOString().split("T")[0];
+
+  // Fetch availability from API
+  const fetchRoomAvailability = async (rooms, checkIn, checkOut) => {
+    const availabilityMap = {};
+    await Promise.all(
+      rooms.map(async (room) => {
+        try {
+          const response = await axios.get(
+            "https://agathiyarpyramid.org/api/checkRoomAvailability",
+            {
+              params: {
+                roomId: room._id,
+                checkIn,
+                checkOut,
+              },
+            }
+          );
+          console.log("Room Availability Response:", response.data.totalRooms);
+          availabilityMap[room._id] = response?.data?.totalRooms || 0;
+        } catch (error) {
+          console.error("Error fetching room availability", error);
+          availabilityMap[room._id] = 0;
+        }
+      })
+    );
+    setRoomAvailability(availabilityMap);
+  };
 
   useEffect(() => {
     const today = new Date();
     const tomorrow = new Date();
     tomorrow.setDate(today.getDate() + 1);
 
-    const formatDate = (date) => date.toISOString().split("T")[0];
+    const ci = formatDate(today);
+    const co = formatDate(tomorrow);
 
-    setCheckInDate(formatDate(today));
-    setCheckOutDate(formatDate(tomorrow));
+    setCheckInDate(ci);
+    setCheckOutDate(co);
 
     const result =
-      searchResult?.filter((room) => {
-        if (!room.bookingDate) return true;
-        return room.bookingDate.startsWith(formatDate(today));
-      }) || [];
+      searchResult?.filter((room) => !room.bookingDate || room.bookingDate.startsWith(ci)) || [];
 
     setFilteredRooms(result);
+
+    if (result.length > 0) {
+      fetchRoomAvailability(result, ci, co);
+    }
   }, [searchResult]);
 
+  // Re-fetch availability when dates change
+  useEffect(() => {
+    if (filteredRooms.length > 0) {
+      fetchRoomAvailability(filteredRooms, checkInDate, checkOutDate);
+    }
+  }, [checkInDate, checkOutDate]);
+
   const handleRoomSelect = (room) => {
-    navigate("/room-details", { state: { room } });
+    navigate("/room-details", {
+      state: {
+        room,
+        checkInDate,
+        checkOutDate,
+      },
+    });
   };
 
   return (
@@ -41,18 +88,18 @@ const RoomBook = ({ searchResult }) => {
         <div className="room-search-results__list">
           {filteredRooms.length > 0 ? (
             filteredRooms.map((room) => {
-              const isAvailable = room.availableRooms > 0;
+              const roomKey = room._id;
+              const availableRooms = roomAvailability[roomKey] ?? 0;
+              const isAvailable = availableRooms > 0;
+
               return (
-                <div key={room.eventid} className="room-card">
+                <div key={roomKey} className="room-card">
                   <div className="room-card__image-container">
                     <img
                       src={room.image}
                       alt={room.roomtype}
                       className="room-card__image"
                     />
-                    {/* <span className="room-card__image-counter">
-                      1 / {room.id === 2 ? 3 : room.id === 3 ? 8 : 10}
-                    </span> */}
                   </div>
 
                   <div className="room-card__content">
@@ -70,67 +117,61 @@ const RoomBook = ({ searchResult }) => {
                             fontSize="small"
                             className="icon"
                           />
-                          <span className="semi-bold">Food Facility:</span>
-                          No
+                          <span className="semi-bold">Food Facility:</span> No
                         </p>
                         <p className="room-card__date">
                           <DirectionsCarIcon
                             fontSize="small"
                             className="icon"
                           />
-                          <span className="semi-bold">Parking:</span>
-                          No
+                          <span className="semi-bold">Parking:</span> No
                         </p>
 
-                        {!isAvailable ? (
+                        {isAvailable ? (
                           <>
-                            <div className="checkin-date">
-                             <label className="semi-bold">
-                              <span className="icon-date">🗓️</span>
-                              <span>Check-In Date:</span>
-                            </label>
-                              <input
-                                type="date"
-                                value={checkInDate}
-                                onChange={(e) =>
-                                  setCheckInDate(e.target.value)
-                                }
-                                className="date-input"
-                              />
-                            </div>
+                        <div className="checkin-date">
+                          <label className="semi-bold">
+                            <span className="icon-date">🗓️</span>
+                            <span>Check-In Date:</span>
+                          </label>
+                          <input
+                            type="date"
+                            value={checkInDate}
+                            onChange={(e) => setCheckInDate(e.target.value)}
+                            className="date-input"
+                          />
+                        </div>
 
-                            <div className="checkout-date">
-                              <label className="semi-bold">
-                                <span className="icon-date">🗓️</span>
-                                <span>Check-Out Date:</span>
-                              </label>
-                              <input
-                                type="date"
-                                value={checkOutDate}
-                                onChange={(e) =>
-                                  setCheckOutDate(e.target.value)
-                                }
-                                className="date-input"
-                              />
-                            </div>
+                        <div className="checkout-date">
+                          <label className="semi-bold">
+                            <span className="icon-date">🗓️</span>
+                            <span>Check-Out Date:</span>
+                          </label>
+                          <input
+                            type="date"
+                            value={checkOutDate}
+                            onChange={(e) => setCheckOutDate(e.target.value)}
+                            className="date-input"
+                          />
+                        </div>
 
-                            <p className="days-selected">
-                              <span className="icon-date">🕒</span>
-                              <span className="semi-bold">Days Selected:</span>{" "}
-                              {Math.max(
-                                1,
-                                Math.ceil(
-                                  (new Date(checkOutDate) -
-                                    new Date(checkInDate)) /
-                                    (1000 * 60 * 60 * 24)
-                                )
-                              )}
-                            </p>
+                        <p className="days-selected">
+                          <span className="icon-date">🕒</span>
+                          <span className="semi-bold">Days Selected:</span>{" "}
+                          {Math.max(
+                            1,
+                            Math.ceil(
+                              (new Date(checkOutDate) -
+                                new Date(checkInDate)) /
+                                (1000 * 60 * 60 * 24)
+                            )
+                          )}
+                        </p>
 
-                            <p className="available-text">
-                              <span className="icon-date">🛏️</span>
-                              Rooms Available: {room.availableRooms}
-                            </p>
+                        <p className="available-text">
+                          <span className="icon-date">🛏️</span>
+                          Rooms Available: {availableRooms}
+                        </p>
                           </>
                         ) : (
                           <p className="unavailable-text">
@@ -144,9 +185,9 @@ const RoomBook = ({ searchResult }) => {
                       <button
                         onClick={() => handleRoomSelect(room)}
                         className={`room-card__view-deal ${
-                          !isAvailable ? "" : "disabled"
+                          isAvailable ? "" : "disabled"
                         }`}
-                        disabled={isAvailable}
+                        disabled={!isAvailable}
                       >
                         SELECT ROOM
                       </button>

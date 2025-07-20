@@ -71,7 +71,7 @@ const AddBooking = () => {
 
       const resultText = await res.text(); // Use .text() first for better debugging
 
-      if (res.status === 201) {
+      if (res) {
         alert('Booking added successfully!');
         setFormData({
           destination: '',
