@@ -1,48 +1,59 @@
-import React from 'react';
-import './book.css'; // Ensure you have the correct styles
+import React, { useEffect, useState } from 'react';
+import './book.css';
 import MenuBar from '../menumain/menubar';
 import Footer from '../Footer';
-import book1 from '../../images/book1.png';
-
-const books = [
-  {
-    title: 'Meditation',
-    imageUrl: book1,
-    downloadUrl: '/books/Meditation_Agasthiyar_2024.pdf',
-  },
-  {
-    title: 'Agathiyar book',
-    imageUrl: book1,
-    downloadUrl: '/books/Meditation_Agasthiyar_2024.pdf',
-  },
-  {
-    title: 'Mediation agathiyar',
-    imageUrl: book1,
-    downloadUrl: '/books/Meditation_Agasthiyar_2024.pdf',
-  },
-  {
-    title: 'Vegetarian',
-    imageUrl: book1,
-    downloadUrl: '/books/Meditation_Agasthiyar_2024.pdf',
-  },
-];
+import defaultCover from '../../images/book1.png'; // fallback if image fails
 
 const BookGrid = () => {
+  const [books, setBooks] = useState([]);
+  const [error, setError] = useState(null);
+
+  useEffect(() => {
+    fetch('https://www.agathiyarpyramid.org/api/books')
+      .then((res) => res.json())
+      .then((data) => {
+        if (Array.isArray(data)) {
+          const formattedBooks = data.map((book) => ({
+            title: book.filename,
+            imageUrl: `https://www.agathiyarpyramid.org/images/${book.image}` || defaultCover,
+            downloadUrl: `https://www.agathiyarpyramid.org/books/${book.pdf}`,
+          }));
+          setBooks(formattedBooks);
+        } else {
+          throw new Error('Unexpected API response');
+        }
+      })
+      .catch((err) => {
+        console.error('Failed to load books:', err);
+        setError('Unable to fetch books at this time.');
+      });
+  }, []);
+
   return (
     <div className="book-grid">
       <MenuBar />
-      <h3 className='book-title'>READ THE SCIENCE OF MEDITATION</h3>
+      <h3 className="book-title">READ THE BOOKS</h3>
+
+      {error && <p style={{ color: 'red', textAlign: 'center' }}>{error}</p>}
+
       <div className="book-grid-container">
         {books.map((book, index) => (
           <div className="book-item" key={index}>
-            <img src={book.imageUrl} alt={book.title} />
-            <h3 style={{fontFamily: 'Raleway, sans-serif'}}>{book.title}</h3>
+            <img
+              src={book.imageUrl}
+              alt={book.title}
+              onError={(e) => (e.target.src = defaultCover)}
+            />
+            <h3 style={{ fontFamily: 'Raleway, sans-serif' }}>{book.title}</h3>
             <a href={book.downloadUrl} download>
-              <button style={{fontFamily: 'Raleway, sans-serif'}}>CLICK TO DOWNLOAD PDF</button>
+              <button style={{ fontFamily: 'Raleway, sans-serif' }}>
+                CLICK TO DOWNLOAD PDF
+              </button>
             </a>
           </div>
         ))}
       </div>
+
       <Footer />
     </div>
   );

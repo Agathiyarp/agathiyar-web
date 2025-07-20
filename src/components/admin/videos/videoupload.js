@@ -7,6 +7,7 @@ export default function VideoUpload() {
   const [videoLink, setVideoLink] = useState('');
   const [message, setMessage] = useState('');
   const [submittedLink, setSubmittedLink] = useState('');
+  const [isLoading, setIsLoading] = useState(false);
 
   const validateURL = (url) => {
     try {
@@ -17,7 +18,7 @@ export default function VideoUpload() {
     }
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
 
     if (!videoName.trim()) {
@@ -35,17 +36,37 @@ export default function VideoUpload() {
       return;
     }
 
-    // Simulate upload/save
-    console.log('Uploading:');
-    console.log('Video Name:', videoName);
-    console.log('Video Link:', videoLink);
+    setIsLoading(true);
+    setMessage('Uploading...');
 
-    setMessage(`Uploaded "${videoName}" with link successfully!`);
-    setSubmittedLink(videoLink);
+    try {
+      const response = await fetch('https://www.agathiyarpyramid.org/api/videos', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          name: videoName,
+          link: videoLink,
+        }),
+      });
 
-    // Reset form fields
-    setVideoName('');
-    setVideoLink('');
+      const result = await response.json();
+
+      if (!response.ok) {
+        throw new Error(result.message || 'Upload failed');
+      }
+
+      setMessage(`Uploaded "${videoName}" successfully!`);
+      setSubmittedLink(videoLink);
+      setVideoName('');
+      setVideoLink('');
+    } catch (error) {
+      console.error('Upload error:', error);
+      setMessage(`Error: ${error.message}`);
+    } finally {
+      setIsLoading(false);
+    }
   };
 
   const handleClear = () => {
@@ -74,8 +95,8 @@ export default function VideoUpload() {
           className="upload-input"
         />
 
-        <button type="submit" className="upload-button">
-          Add Video
+        <button type="submit" className="upload-button" disabled={isLoading}>
+          {isLoading ? 'Uploading...' : 'Add Video'}
         </button>
       </form>
 
@@ -101,7 +122,7 @@ export default function VideoUpload() {
           )}
 
           <button onClick={handleClear} className="clear-button">
-            Clear Preview
+            Clear All
           </button>
         </div>
       )}
