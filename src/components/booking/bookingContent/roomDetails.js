@@ -15,6 +15,7 @@ import DirectionsCarIcon from '@mui/icons-material/DirectionsCar'; // Parking
 import LocalDrinkIcon from '@mui/icons-material/LocalDrink'; // Drinking Water
 import WcIcon from '@mui/icons-material/Wc'; // Attached Toilet
 import ConfirmModal from "../confirmModal";
+import { ToastContainer } from 'react-toastify';
 
 const RoomDetails = () => {
   const [openModal, setOpenModal] = useState(false);
@@ -231,6 +232,7 @@ const RoomDetails = () => {
         <div>
           <TableComponent data={data} />
         </div>
+        <ToastContainer position="top-right" autoClose={3000} hideProgressBar={false} closeOnClick pauseOnHover draggable />
         {openModal && (
         <ConfirmModal
           handleClose={handleClose}

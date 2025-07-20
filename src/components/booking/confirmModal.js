@@ -1,9 +1,12 @@
 import React, {useState} from 'react';
 import { Modal, Box, Button, Typography, Checkbox,FormControlLabel } from '@mui/material';
 import axios from 'axios';
+import { useNavigate  } from "react-router-dom";
+import { toast } from 'react-toastify';
 
 const ConfirmModal = ({handleClose, roomDetails, totalrooms, roomcost, maintanancecost, totalamount}) => {
 
+  const navigate = useNavigate();
   const [isChecked, setIsChecked] = useState(false);
 
   const userDetails = JSON.parse(sessionStorage.getItem('userDetails'));
@@ -35,8 +38,14 @@ const ConfirmModal = ({handleClose, roomDetails, totalrooms, roomcost, maintanan
     try {
       const response = await axios.post('https://agathiyarpyramid.org/api/roombooking', requestBody);
       console.log('Booking confirmed:', response.data);
+      toast.success("Booking successful");
+      setTimeout(() => {
+        navigate('/booking');
+      }, 3000);
+      
       // You might want to do something after the booking is confirmed
     } catch (error) {
+      toast.success("Booking Failed");
       console.error('Error confirming booking:', error);
     }
 
@@ -100,6 +109,7 @@ const ConfirmModal = ({handleClose, roomDetails, totalrooms, roomcost, maintanan
           </Box>
         </Box>
       </Modal>
+      
     </div>
   );
 };
