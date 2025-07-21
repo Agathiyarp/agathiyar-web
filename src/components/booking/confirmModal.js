@@ -21,7 +21,7 @@ const ConfirmModal = ({handleClose, roomDetails, totalrooms, roomcost, maintanan
       memberid: userDetails && userDetails.usermemberid,
       username: userDetails && userDetails.username,
       email: userDetails && userDetails.email,
-      roomid: 1,
+      roomid: roomDetails && roomDetails._id,
       destination: roomDetails && roomDetails.destination,
       startdate:  roomDetails && roomDetails.startdate,
       enddate:  roomDetails && roomDetails.enddate,
