@@ -1,0 +1,157 @@
+.event-mgmt-container {
+  max-width: 900px;
+  margin: 50px auto;
+  margin-top: 100px;
+  background-color: #ffffff;
+  border-radius: 12px;
+  padding: 30px;
+  box-shadow: 0 0 15px rgba(0, 0, 0, 0.1);
+  font-family: 'Segoe UI', sans-serif;
+}
+
+.event-mgmt-container h2 {
+  text-align: center;
+  color: #2b8a3e;
+  margin-bottom: 30px;
+}
+
+.section {
+  margin-bottom: 25px;
+  text-align: center;
+}
+
+.section h4 {
+  margin-bottom: 10px;
+  color: #2b6777;
+}
+
+.no-results {
+  margin-top: 20px;
+  margin: 0 auto;
+  width: 50%;
+  font-weight: bold;
+}
+
+.btn-event {
+  width: 200px;
+}
+
+.input-event {
+  padding: 12px;
+  width: 80%;
+  max-width: 300px;
+  border-radius: 8px;
+  border: 1px solid #ccc;
+  margin: 8px 0;
+  font-size: 14px;
+  display: block;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.btn-event {
+  margin-top: 10px;
+  padding: 10px 20px;
+  background: linear-gradient(to right, #28a745, #218838);
+  color: white;
+  font-weight: 600;
+  border: none;
+  border-radius: 25px;
+  cursor: pointer;
+  transition: 0.3s;
+  align-items: center;
+  justify-content: center;
+}
+
+.btn-event:hover {
+  background: linear-gradient(to right, #218838, #1e7e34);
+}
+
+.event-details,
+.event-list {
+  margin-top: 30px;
+}
+
+pre {
+  background-color: #f4f4f4;
+  padding: 15px;
+  border-radius: 8px;
+  overflow-x: auto;
+}
+
+table {
+  width: 100%;
+  border-collapse: collapse;
+  margin-top: 20px;
+}
+
+table th,
+table td {
+  border: 1px solid #ddd;
+  padding: 10px;
+  text-align: left;
+}
+
+table th {
+  background-color: #28a745;
+  color: white;
+}
+
+.export-buttons {
+  margin-top: 20px;
+  display: flex;
+  justify-content: center;
+  gap: 15px;
+}
+
+
+.event-list table {
+  width: 100%;
+  border-collapse: collapse;
+  overflow-x: auto;
+  display: block;
+  white-space: nowrap;
+}
+
+/* Table responsiveness on smaller screens */
+@media screen and (max-width: 768px) {
+  .event-mgmt-container {
+    padding: 20px 15px;
+    margin: 20px auto;
+    margin-top: 100px;
+  }
+
+  .input-event {
+    width: 100%;
+  }
+
+  .btn-event {
+    width: 200px;
+  }
+
+  .export-buttons {
+    flex-direction: column;
+    align-items: center;
+  }
+
+  .event-list table th,
+  .event-list table td {
+    font-size: 13px;
+    padding: 8px;
+  }
+
+  .event-details table,
+  .event-list table {
+    display: block;
+    overflow-x: auto;
+  }
+}
+
+/* Even tighter spacing for very small phones */
+@media screen and (max-width: 480px) {
+  .event-list table th,
+  .event-list table td {
+    font-size: 12px;
+    padding: 6px;
+  }
+}

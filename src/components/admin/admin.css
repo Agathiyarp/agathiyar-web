@@ -294,6 +294,14 @@
   background: #ce93d8;
 }
 
+.eventDetails .card-icon {
+  background: #e91e63;;
+}
+
+.eventsAdd .card-icon {
+  background: #e91e63;;
+}
+
 .card-title {
   font-size: 16px;
   font-weight: 600;
@@ -313,6 +321,7 @@
 .icon-video::before { content: "🎬"; }
 .icon-book::before { content: "📚"; }
 .icon-settings::before { content: "⚙️"; }
+.icon-calendar-info::before { content: "📅ℹ️"; }
 
 /* Responsive Design */
 @media (max-width: 1200px) {

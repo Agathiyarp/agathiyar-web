@@ -27,6 +27,7 @@ import UpdateUser from './components/admin/users/updateuser';
 import VideoUpload from './components/admin/videos/videoupload'
 import EventList from './components/admin/events/eventlist';
 import RoomList from './components/admin/booking/roomlist';
+import EventDetails from './components/admin/events/eventdetails';
 
 const App = () => {
 
@@ -58,6 +59,7 @@ const App = () => {
           <Route path="/videoupload" element={<VideoUpload />}/>
           <Route path="/eventlist" element={<EventList />}/>
           <Route path="/roomlist" element={<RoomList />} />
+          <Route path="/eventdetails" element={<EventDetails />} />
         </Routes>
       </Router>
     </div>

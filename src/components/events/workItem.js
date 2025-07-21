@@ -1,4 +1,4 @@
-import React from "react";
+import React, {useState} from "react";
 import { useNavigate } from "react-router-dom";
 import "./workItem.css";
 import PhoneIcon from "@mui/icons-material/Phone";
@@ -13,6 +13,7 @@ const WorkshopItem = ({
   retreatcost,
   eventdescription,
   startdate,
+  enddate,
   numberofdays,
   language,
   imageurl,
@@ -21,9 +22,15 @@ const WorkshopItem = ({
   eventid
 }) => {
   const navigate = useNavigate();
+  const [showLoginModal, setShowLoginModal] = useState(false);
 
   const handleRegister = (id) => {
-    navigate(`/eventregister/${id}`);
+    const isLoggedIn = sessionStorage.getItem("userDetails");
+    if (!isLoggedIn) {
+      setShowLoginModal(true);
+      return;
+    }
+    navigate(`/eventregister/${id}${startdate ? `?startdate=${startdate}` : ""}${enddate ? `&enddate=${enddate}` : ""}`);
   };
 
   const calculateTimeLeft = (date) => {
@@ -115,6 +122,18 @@ const WorkshopItem = ({
 
         
       </div>
+      {showLoginModal && (
+        <div className="modal-overlay">
+          <div className="modal-content">
+            <h2>Please Login</h2>
+            <p>You need to log in to proceed with booking.</p>
+            <div className="modal-buttons">
+              <button className="gotologin" onClick={() => navigate("/login")}>Go to Login</button>
+              <button className="cancel-btn" onClick={() => setShowLoginModal(false)}>Cancel</button>
+            </div>
+          </div>
+        </div>
+      )}
     </div>
   );
 };

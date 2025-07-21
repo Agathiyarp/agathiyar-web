@@ -5,11 +5,18 @@ import reg3 from "../../images/reg3.png";
 import { toast, ToastContainer } from "react-toastify";
 import { useNavigate, useParams   } from "react-router-dom";
 import axios from 'axios';
+import MenuBar from '../menumain/menubar';
+import { useLocation } from "react-router-dom";
+
 
 const EventRegistration = () => {
 
   const { eventId } = useParams();
   const navigate = useNavigate();
+  const location = useLocation();
+  const queryParams = new URLSearchParams(location.search);
+  const startdate = queryParams.get("startdate");
+  const enddate = queryParams.get("enddate");
   const [members, setMembers] = useState([{ name: "", phone: "", email: "", age: "", gender: "" }]);
   const [comments, setComments] = useState("");
   const [errorMessage, setErrorMessage] = useState("");
@@ -67,40 +74,53 @@ const EventRegistration = () => {
     return true;
   };
 
-  const handleSubmit = (event) => {
+  const handleSubmit = async (event) => {
     event.preventDefault();
 
       const requestBody = {
         eventid: eventId,
         memberid: memberId,
         comments: comments,
-        data: members
+        data: members,
+        startdate: startdate,
+        enddate: enddate
       };
       
     if (validateFields()) {
-      toast.success("Event registration submitted successfully!", event.target);
       try {
-        const response = axios.post(
+        const response = await axios.post(
           "https://agathiyarpyramid.org/api/event/user/register",
           requestBody
         );
-        if(response.data) {
-          setTimeout(()=> {
+
+        if (response && response.data && response.status === 201) {
+          toast.success("Registration successful!");
+
+          // Reset form
+          setMembers([{ name: "", phone: "", email: "", age: "", gender: "" }]);
+          setComments("");
+
+          setTimeout(() => {
             navigate('/events');
-          })
+          }, 1000);
+        } else {
+          console.warn("⚠️ Unexpected response:", response);
+          toast.error("Something went wrong. Please try again.");
         }
-        console.log("User Event Registration successful:", response.data);
       } catch (error) {
-        console.error("Error Registration user events", error);
+        console.error("❌ Error registering user for event:", error);
+        toast.error("Registration failed. Please try again later.");
       }
+
     }
   };
 
   return (
     <div style={styles.backgroundContainer}>
+      <MenuBar/>
       <div style={styles.formContainer}>
         <h3 style={styles.heading}>Event Registration</h3>
-        <form onSubmit={()=>handleSubmit()}>
+        <form onSubmit={handleSubmit}>
           <h3 style={styles.memberTitle}>Member Id: {memberId}</h3>
           {members.map((member, index) => (
             <div key={index} style={styles.memberRow}>
@@ -255,6 +275,7 @@ const styles = {
     display: "flex",
     justifyContent: "center",
     alignItems: "center",
+    marginTop: "100px",
   },
   heading: {
     textAlign: "center",
