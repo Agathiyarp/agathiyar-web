@@ -71,7 +71,8 @@ const AddBooking = () => {
 
       const resultText = await res.text(); // Use .text() first for better debugging
 
-      if (res) {
+      if (res.status === 200) {
+
         alert('Booking added successfully!');
         setFormData({
           destination: '',
@@ -88,6 +89,8 @@ const AddBooking = () => {
         setSingleImage(null);
         setMultipleImages([]);
         setTimeout(() => navigate("/admin"), 3000);
+      } else if(res.status == '409'){
+        alert('Booking already exists for the specified date range');
       } else {
         console.error('Server responded with error:', resultText);
         alert('Failed to submit: ' + resultText);
