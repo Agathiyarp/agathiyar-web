@@ -11,6 +11,7 @@ const RoomBook = ({ searchResult }) => {
   const [checkOutDate, setCheckOutDate] = useState("");
   const [filteredRooms, setFilteredRooms] = useState([]);
   const [roomAvailability, setRoomAvailability] = useState({});
+  const [showLoginModal, setShowLoginModal] = useState(false);
   const navigate = useNavigate();
 
   // Helper to format date
@@ -72,6 +73,12 @@ const RoomBook = ({ searchResult }) => {
   }, [checkInDate, checkOutDate]);
 
   const handleRoomSelect = (room) => {
+    const isLoggedIn = sessionStorage.getItem("userDetails");
+    console.log("userDetails:", sessionStorage.getItem("userDetails"));
+    if (!isLoggedIn) {
+      setShowLoginModal(true);
+      return;
+    }
     navigate("/room-details", {
       state: {
         room,
@@ -89,7 +96,7 @@ const RoomBook = ({ searchResult }) => {
           {filteredRooms.length > 0 ? (
             filteredRooms.map((room) => {
               const roomKey = room._id;
-              const availableRooms = roomAvailability[roomKey] ?? 0;
+              const availableRooms = roomAvailability[roomKey] ? roomAvailability[roomKey] : (room?.totalrooms || 0);
               const isAvailable = availableRooms > 0;
 
               return (
@@ -203,6 +210,18 @@ const RoomBook = ({ searchResult }) => {
           )}
         </div>
       </div>
+      {showLoginModal && (
+        <div className="modal-overlay">
+          <div className="modal-content">
+            <h2>Please Login</h2>
+            <p>You need to log in to proceed with booking.</p>
+            <div className="modal-buttons">
+              <button className="gotologin" onClick={() => navigate("/login")}>Go to Login</button>
+              <button className="cancel-btn" onClick={() => setShowLoginModal(false)}>Cancel</button>
+            </div>
+          </div>
+        </div>
+      )}
     </div>
   );
 };
