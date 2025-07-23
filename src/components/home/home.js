@@ -49,8 +49,8 @@ const Home = () => {
       <MenuBar /> {/* Use MenuBar here */}
      
       <div className="carousel-container" style={{ marginTop: "64px" }}>
-        <div key={0}>
-          <video controls autoPlay muted loop style={{height: "100%"}}>
+        <div className="video-wrapper">
+          <video controls autoPlay muted loop>
             <source src="https://www.agathiyarpyramid.org/videos/Meditation.mp4" type="video/mp4" />
             Your browser does not support the video tag.
           </video>
