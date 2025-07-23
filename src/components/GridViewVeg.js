@@ -12,7 +12,7 @@ const GridViewVeg = () => {
     <div className="outer-container">
       <div className="grid-container">
         <div className="text-container">
-          <h3>Being a Vegetarian</h3>
+          <h3 style={{marginBottom: "10px"}}>Being a Vegetarian</h3>
           <p>{vegetarianText}</p>
         </div>
         <div className="image-container">

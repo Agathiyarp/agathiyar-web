@@ -13,7 +13,7 @@ const MeditationInfo = () => {
       <p >
         This leads to good health and absolute clarity in thought processes, leading to a joyous life.
       </p>
-      <h3 >Key Benefits of Meditation:</h3>
+      <h3 style={{marginBottom: "10px"}}>Key Benefits of Meditation:</h3>
       <ul className="benefit-list">
         <li>Tremendous capability of receiving cosmic energy and information.</li>
         <li>Promotes good health.</li>

@@ -18,7 +18,7 @@ const GridViewAgath = () => {
             </div>
           </div>
           <div className="text-container">
-            <h3>{spiritualText1}</h3>
+            <h3 style={{marginBottom: "10px"}}>{spiritualText1}</h3>
             <p>{spiritualText2}</p>
           </div>
         </div>
