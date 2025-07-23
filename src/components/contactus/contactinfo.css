@@ -1,15 +1,14 @@
 .outer-container-contact {
   padding: 20px;
-  max-width: 1200px; /* Updated max-width for larger screens */
   margin: auto;
-  background: linear-gradient(to right, #7cd1b8, #7dc4d6);  /* Light background color for the entire section */
+  background: #e0f7fa;  /* Light background color for the entire section */
   margin-top: 115px;
 }
 
 .grid-container-contact {
   display: flex;
   flex-wrap: wrap; /* Allow items to wrap in smaller screens */
-  justify-content: space-between;
+  justify-content: center;
   gap: 20px;
 }
 

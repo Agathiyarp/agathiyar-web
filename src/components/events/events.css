@@ -1,7 +1,7 @@
 
 .workshop-page {
     padding: 20px;
-    margin-top: 105px;
+    margin-top: 55px;
   }
   
   /* Banner Section Styles */
@@ -34,8 +34,23 @@
     display: flex;
     flex-direction: row;
     flex-wrap: wrap;
-    background: linear-gradient(to right, #7cd1b8, #7dc4d6);
+    justify-content: center;
+    background: #e0f7fa;
   }
+
+  .no-events-container {
+    text-align: center;
+    margin: 60px 0;
+    align-items: center;
+    min-height: 200px;
+  }
+
+  .event-status-message {
+    font-size: 1.2rem;
+    color: #666;
+    margin-top: 20px;
+  }
+
   
   .workshop-item {
     display: flex;

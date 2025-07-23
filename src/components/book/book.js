@@ -32,7 +32,7 @@ const BookGrid = () => {
   return (
     <div className="book-grid">
       <MenuBar />
-      <h3 className="book-title">READ THE BOOKS</h3>
+      {/* <h3 className="book-title">READ THE BOOKS</h3> */}
 
       {error && <p style={{ color: 'red', textAlign: 'center' }}>{error}</p>}
 

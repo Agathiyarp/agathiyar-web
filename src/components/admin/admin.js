@@ -1,6 +1,7 @@
 import React, { useRef, useState, useEffect } from "react";
 import "./admin.css";
 import MenuBar from "../menumain/menubar";
+import Footer from '../Footer';
 import { useNavigate } from "react-router-dom";
 
 const Admin = () => {
@@ -237,6 +238,7 @@ const Admin = () => {
           </div> */}
         </div>
       </main>
+      <Footer />
     </div>
   );
 };
