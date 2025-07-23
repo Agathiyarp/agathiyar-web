@@ -134,7 +134,6 @@ const MenuBar = () => {
                   color: "black",
                   flexGrow: 1,
                   textAlign: "left",
-                  fontFamily: "Raleway, sans-serif",
                   fontWeight: "600",
                 }
               : {
@@ -142,7 +141,6 @@ const MenuBar = () => {
                   color: "black",
                   flexGrow: 1,
                   textAlign: "left",
-                  fontFamily: "Raleway, sans-serif",
                   fontWeight: "600",
                 }
           }

@@ -30,10 +30,10 @@ const Donate = () => {
           </div>
         </div>
         <div className="text-container">
-          <h2 style={{fontFamily: 'Raleway, sans-serif'}}>Donate</h2>
+          <h2 >Donate</h2>
 
-          <h3 style={{fontFamily: 'Raleway, sans-serif'}}>Pay Via QR code / Trust Account Details</h3>
-          <p style={{fontFamily: 'Raleway, sans-serif'}}>
+          <h3 >Pay Via QR code / Trust Account Details</h3>
+          <p >
             The Chennai Pyramid Spiritual Trust
             <br />
             Bank of Baroda, SB ACC.No: 69760100000309

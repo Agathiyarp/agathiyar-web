@@ -102,10 +102,10 @@ const Home = () => {
         <GridViewAgath />
       </div>
 
-      <div>
+      {/* <div>
         <h1 className="meditation-heading">Image Gallery</h1>
         <ImageGallery />
-      </div>
+      </div> */}
       <Footer />
     </div>
   );

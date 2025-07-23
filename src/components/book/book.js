@@ -44,9 +44,9 @@ const BookGrid = () => {
               alt={book.title}
               onError={(e) => (e.target.src = defaultCover)}
             />
-            <h3 style={{ fontFamily: 'Raleway, sans-serif' }}>{book.title}</h3>
+            <h3 >{book.title}</h3>
             <a href={book.downloadUrl} download>
-              <button style={{ fontFamily: 'Raleway, sans-serif' }}>
+              <button >
                 CLICK TO DOWNLOAD PDF
               </button>
             </a>

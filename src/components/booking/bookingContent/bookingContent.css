@@ -1,4 +1,4 @@
-@font-face {
+/* @font-face {
   font-family: 'SF Pro Display Regular';
   src: url('../../../fonts/sf-pro-display-regular.woff2');
   font-weight: 400;
@@ -10,7 +10,7 @@
   src: url('../../../fonts/sf-pro-display-semibold.woff2');
   font-weight: 600;
   font-style: normal;
-}
+} */
 
 .modal-overlay {
   position: fixed;
@@ -63,7 +63,7 @@
 }
 
 .room-search-results {
-  font-family: 'SF Pro Display Regular', sans-serif;
+  /* font-family: 'SF Pro Display Regular', sans-serif; */
   color: #333;
   padding: 0 16px;
 }
@@ -120,7 +120,7 @@
 }
 
 .room-card__name {
-  font-family: 'SF Pro Display Semibold', sans-serif;
+  /* font-family: 'SF Pro Display Semibold', sans-serif; */
   font-size: 1.2rem;
   color: #000;
 }

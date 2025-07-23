@@ -6,7 +6,7 @@
 }
 
 .admin-container {
-  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+  /* font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif; */
   background: linear-gradient(135deg, #e8eaf6 0%, #f3e5f5 100%);
   min-height: 100vh;
 }
@@ -149,7 +149,7 @@
   margin-bottom: 3rem;
   letter-spacing: -0.5px;
   color: #38a169;
-  font-family: 'SF Pro Display Regular', sans-serif;
+  /* font-family: 'SF Pro Display Regular', sans-serif; */
 }
 
 .dashboard-layout {

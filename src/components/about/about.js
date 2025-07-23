@@ -24,10 +24,10 @@ const About = () => {
           </div>
         </div>
         <div className="text-containers">
-          <h3 style={{fontFamily: 'Raleway, sans-serif'}}>Activities of Agasthiyar Ashram</h3>
+          <h3 >Activities of Agasthiyar Ashram</h3>
           <ul>
             {spiritualPoints.map((point, index) => (
-              <li style={{fontFamily: 'Raleway, sans-serif'}} key={index}>{point}</li>
+              <li key={index}>{point}</li>
             ))}
           </ul>
         </div>

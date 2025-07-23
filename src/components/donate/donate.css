@@ -34,7 +34,7 @@ ul {
     flex: 1 1;
     background-color: #e0f7fa;
     padding: 10px;
-    font-family: 'Raleway, sans-serif';
+    /* font-family: 'Raleway, sans-serif'; */
 }
 
 .donate-image-container {

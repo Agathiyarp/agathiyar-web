@@ -9,8 +9,8 @@ const contactInfo = () => {
         <MenuBar/>
       <div className="grid-container-contact">
         <div className="text-container-contact">
-          <h2 style={{fontFamily: 'Raleway, sans-serif'}}>Address</h2>
-          <p style={{fontFamily: 'Raleway, sans-serif'}}>
+          <h2 >Address</h2>
+          <p >
             📍 <strong>Address:</strong>
             <br />
             Agasthiyar Pyramid Dhyana Ashram
@@ -25,11 +25,11 @@ const contactInfo = () => {
           </p>
         </div>
         <div className="text-container-contact">
-          <h2 style={{fontFamily: 'Raleway, sans-serif'}}>Contact</h2>
-          <p style={{fontFamily: 'Raleway, sans-serif'}}>
+          <h2 >Contact</h2>
+          <p >
             📞 <strong>Phone:</strong>   91 - 85250 44990
           </p>
-          <p style={{fontFamily: 'Raleway, sans-serif'}}>
+          <p >
             🌐 <strong>Website:</strong>{" "}
             <a
               href="http://agathiyarpyramid.com"
@@ -41,8 +41,8 @@ const contactInfo = () => {
           </p>
         </div>
         <div className="text-container-contact">
-          <h2 style={{fontFamily: 'Raleway, sans-serif'}}>Opening Hours</h2>
-          <p style={{fontFamily: 'Raleway, sans-serif'}}>
+          <h2 >Opening Hours</h2>
+          <p >
             Mon - Fri :  8:00 am – 8:00 pm
             <br />
             Saturday        :  9:00 am – 7:00 pm
@@ -53,9 +53,9 @@ const contactInfo = () => {
       </div>
       <div className="grid-container-route">
       <div className="text-container-route">
-        <h2 style={{fontFamily: 'Raleway, sans-serif'}}>How to Reach the Ashram</h2>
-        <h4 style={{fontFamily: 'Raleway, sans-serif'}}>From Chennai Airport (MAA) to Ashram (207 KM)</h4>
-        <p style={{fontFamily: 'Raleway, sans-serif'}}>
+        <h2 >How to Reach the Ashram</h2>
+        <h4 >From Chennai Airport (MAA) to Ashram (207 KM)</h4>
+        <p >
           📍 <strong>Train Route:</strong>
           <br />
           1. Airport to MGR Central (MAS) railway station - through Metro or Cab or Bus
@@ -67,7 +67,7 @@ const contactInfo = () => {
       </div>
       <hr /> {/* Line between sections */}
       <div className="text-container-route">
-        <p style={{fontFamily: 'Raleway, sans-serif'}}>
+        <p >
           📍 <strong>Bus Route:</strong>
           <br />
           1. Airport to Koyambedu Bus Station - through Metro or Cab or Bus
@@ -79,8 +79,8 @@ const contactInfo = () => {
       </div>
       <hr /> {/* Line between sections */}
       <div className="text-container-route">
-        <h4 style={{fontFamily: 'Raleway, sans-serif'}}>From Bangalore Airport (BLR) to Ashram (160 KM)</h4>
-        <p style={{fontFamily: 'Raleway, sans-serif'}}>
+        <h4 >From Bangalore Airport (BLR) to Ashram (160 KM)</h4>
+        <p >
           📍 <strong>Train Route:</strong>
           <br />
           1. Airport to KSR Railway Station (SBC) - through Cab or Bus
@@ -92,7 +92,7 @@ const contactInfo = () => {
       </div>
       <hr /> {/* Line between sections */}
       <div className="text-container-route">
-        <p style={{fontFamily: 'Raleway, sans-serif'}}>
+        <p >
           📍 <strong>Bus Route:</strong>
           <br />
           1. Airport to Santhi Nagar Bus Station - through Cab or Bus
@@ -105,7 +105,7 @@ const contactInfo = () => {
     </div>
     {/* Google Map Embed */}
     <div className="map-container">
-        <h2 style={{fontFamily: 'Raleway, sans-serif'}}>Agasthiyar Pyramid Dhyana Ashram Map Location</h2>
+        <h2 >Agasthiyar Pyramid Dhyana Ashram Map Location</h2>
         <iframe
           title="Agasthiyar Pyramid Dhyana Ashram Map"
           src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3171.992320171554!2d78.56666131503957!3d12.51049279087976!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x3badac2a9cfcf1f1%3A0xe2f41c3e99d1f77c!2sAgasthiyar%20Pyramid%20Dhyana%20Ashram!5e0!3m2!1sen!2sin!4v1632925147838!5m2!1sen!2sin"
@@ -117,13 +117,13 @@ const contactInfo = () => {
         ></iframe>
        
         {/* Directions Link */}
-        <p style={{fontFamily: 'Raleway, sans-serif'}}>
+        <p >
           📍 <strong>Get Directions:</strong>{" "}
           <a
             href="https://www.google.com/maps/dir/?api=1&destination=MG7G+G3H,%20Ramanaikenpet%20Road,%20Ambalur,%20Tamil%20Nadu%20635801,%20India"
             target="_blank"
             rel="noopener noreferrer"
-            style={{fontFamily: 'Raleway, sans-serif'}}
+            
           >
             Click here for directions
           </a>

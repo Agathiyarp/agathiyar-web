@@ -18,8 +18,8 @@ const GridViewAgath = () => {
             </div>
           </div>
           <div className="text-container">
-            <h3 style={{fontFamily: 'Raleway, sans-serif'}}>{spiritualText1}</h3>
-            <p style={{fontFamily: 'Raleway, sans-serif'}}>{spiritualText2}</p>
+            <h3>{spiritualText1}</h3>
+            <p>{spiritualText2}</p>
           </div>
         </div>
       </div>

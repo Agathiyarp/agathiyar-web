@@ -15,7 +15,7 @@
 
 .video-card {
   cursor: pointer;
-  background-color: #fef1f1;
+  background: linear-gradient(to right, #7cd1b8, #7dc4d6);
   border-radius: 10px;
   transition: transform 0.3s ease;
   overflow: hidden;

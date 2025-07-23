@@ -8,7 +8,7 @@
   }
   .meditation-heading {
     color: green !important;
-    font-family: 'Raleway, sans-serif';
+    /* font-family: 'Raleway, sans-serif'; */
   }
   h2 {
     color: #4CAF50; /* Title color */
@@ -23,7 +23,7 @@
   }
   .benefit-list {
     padding-left: 20px; /* Indent the list */
-    font-family: 'Raleway, sans-serif';
+    /* font-family: 'Raleway, sans-serif'; */
   }
   .benefit-list li {
     margin-bottom: 10px; /* Space between list items */

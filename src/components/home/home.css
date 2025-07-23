@@ -73,7 +73,7 @@
   border-radius: 8px; /* Rounded corners */
   box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1); /* Shadow for depth */
   transition: background-color 0.3s; /* Smooth transition for hover effect */
-  font-family: 'Raleway, sans-serif';
+  /* font-family: 'Raleway, sans-serif'; */
 }
 
 .mission-item:hover {
@@ -101,12 +101,12 @@
 
 .vision-heading {
   color: green !important;
-  font-family: 'Raleway, sans-serif';
+  /* font-family: 'Raleway, sans-serif'; */
 }
 .meditation-heading {
   color: green !important;
   text-align: center;
-  font-family: 'Raleway, sans-serif';
+  /* font-family: 'Raleway, sans-serif'; */
 }
 
 @keyframes fadeIn {
@@ -147,14 +147,14 @@
   font-weight: 700;
   letter-spacing: 1px;
   margin-bottom: 20px;
-  font-family: Raleway, sans-serif;
+  /* font-family: Raleway, sans-serif; */
 }
 
 .card-text {
   font-size: 16px;
   line-height: 1.7;
   margin-bottom: 20px;
-  font-family: Raleway, sans-serif;
+  /* font-family: Raleway, sans-serif; */
 }
 
 .more-info-button {

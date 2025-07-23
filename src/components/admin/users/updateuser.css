@@ -22,7 +22,7 @@
   width: 500px;
   border-radius: 8px;
   box-shadow: 2px 2px 8px rgba(0,0,0,0.1);
-  font-family: Arial, sans-serif;
+  /* font-family: Arial, sans-serif; */
   background-color: palegreen;
   transition: transform 0.2s;
 }
