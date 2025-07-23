@@ -29,7 +29,7 @@ const Donate = () => {
             <img className="image" src={ScanImage} alt="ScanImage" />
           </div>
         </div>
-        <div className="text-container">
+        <div className="text-container" style={{ minHeight: "400px", padding: "100px" }}>
           <h2 >Donate</h2>
 
           <h3 >Pay Via QR code / Trust Account Details</h3>
