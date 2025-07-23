@@ -7,13 +7,16 @@ const BookingConfirmation = () => {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState('');
 
+  const [showModal, setShowModal] = useState(false);
+  const [selectedBooking, setSelectedBooking] = useState(null);
+  const [actionType, setActionType] = useState('');
+
   useEffect(() => {
     const fetchBookings = async () => {
       try {
         const res = await fetch('https://www.agathiyarpyramid.org/api/bookings');
         if (!res.ok) throw new Error('Failed to fetch bookings');
         const data = await res.json();
-        console.log(data);
         setBookings(data);
       } catch (err) {
         console.error(err);
@@ -26,12 +29,26 @@ const BookingConfirmation = () => {
     fetchBookings();
   }, []);
 
-  const handleAction = async (booking, status) => {
+  const openConfirmationModal = (booking, status) => {
+    setSelectedBooking(booking);
+    setActionType(status);
+    setShowModal(true);
+  };
+
+  const closeModal = () => {
+    setShowModal(false);
+    setSelectedBooking(null);
+    setActionType('');
+  };
+
+  const confirmAction = async () => {
+    if (!selectedBooking || !actionType) return;
+
     const payload = {
-      memberid: booking.memberid,
-      userid: booking.userid,
-      bookingid: booking.id,
-      bookingstatus: status,
+      memberid: selectedBooking.memberid,
+      userid: selectedBooking.userid,
+      bookingid: selectedBooking.id,
+      bookingstatus: actionType,
     };
 
     try {
@@ -45,17 +62,19 @@ const BookingConfirmation = () => {
 
       if (!res.ok) throw new Error('Failed to update status');
 
-      alert(`Booking ID ${booking.id} has been ${status}.`);
+      alert(`Booking ID ${selectedBooking.id} has been ${actionType}.`);
 
-      // Optionally: remove it from list or refresh
+      // Update local status
       setBookings((prev) =>
         prev.map((b) =>
-          b.id === booking.id ? { ...b, status: status } : b
+          b.id === selectedBooking.id ? { ...b, status: actionType } : b
         )
       );
     } catch (err) {
       console.error(err);
-      alert(`Error updating status for Booking ID ${booking.id}`);
+      alert(`Error updating status for Booking ID ${selectedBooking.id}`);
+    } finally {
+      closeModal();
     }
   };
 
@@ -82,6 +101,7 @@ const BookingConfirmation = () => {
               <th>Destination</th>
               <th>Amount</th>
               <th>Rooms</th>
+              <th>Status</th>
               <th>Actions</th>
             </tr>
           </thead>
@@ -96,24 +116,44 @@ const BookingConfirmation = () => {
                 <td>{item.destination || '-'}</td>
                 <td>{item.totalamount || '0'}</td>
                 <td>{item.totalrooms || '0'}</td>
+                <td>{item.bookingstatus || '-'}</td>
                 <td style={{ display: 'flex', flexDirection: 'column', gap: '10px' }}>
-                  <button
-                    className="approve-btn"
-                    onClick={() => handleAction(item, 'approved')}
-                  >
-                    Approve
-                  </button>
-                  <button
-                    className="reject-btn"
-                    onClick={() => handleAction(item, 'rejected')}
-                  >
-                    Reject
-                  </button>
+                   {item.bookingstatus === 'pending-approval' ? (
+                      <>
+                        <button
+                          className="approve-btn"
+                          onClick={() => openConfirmationModal(item, 'approved')}
+                        >
+                          Approve
+                        </button>
+                        <button
+                          className="reject-btn"
+                          onClick={() => openConfirmationModal(item, 'rejected')}
+                        >
+                          Reject
+                        </button>
+                      </>
+                    ) : (
+                      <span style={{ fontStyle: 'italic', color: 'gray' }}>No Actions</span>
+                    )}
                 </td>
               </tr>
             ))}
           </tbody>
         </table>
+      )}
+
+      {showModal && selectedBooking && (
+        <div className="modal-overlay">
+          <div className="modal">
+            <h3 className='confirm-header-text'>Confirm {actionType === 'approved' ? 'Approval' : 'Rejection'}</h3>
+            <p>Are you sure you want to <strong>{actionType}</strong> booking ID <strong>{selectedBooking.id}</strong>?</p>
+            <div className="modal-actions">
+              <button onClick={confirmAction} className="save-btn">Yes, Confirm</button>
+              <button onClick={closeModal} className="cancel-btn">Cancel</button>
+            </div>
+          </div>
+        </div>
       )}
     </div>
   );
