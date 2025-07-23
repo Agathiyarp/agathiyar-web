@@ -159,6 +159,17 @@
   align-items: start;
 }
 
+.card-group {
+  margin-top: 30px;
+}
+
+.group-title {
+  font-size: 1.5rem;
+  color: #2e7d32;
+  margin-bottom: 10px;
+}
+
+
 .admin-profile {
   background: white;
   padding: 2rem;
@@ -267,7 +278,7 @@
 }
 
 .events .card-icon {
-  background: #e91e63;
+  background: #4de91e;
 }
 
 .bookings .card-icon {
@@ -295,11 +306,11 @@
 }
 
 .eventDetails .card-icon {
-  background: #e91e63;;
+  background: #4de91e;
 }
 
 .eventsAdd .card-icon {
-  background: #e91e63;;
+  background: #4de91e;
 }
 
 .card-title {

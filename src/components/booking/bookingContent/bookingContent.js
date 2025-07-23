@@ -56,7 +56,9 @@ const RoomBook = ({ searchResult }) => {
     setCheckOutDate(co);
 
     const result =
-      searchResult?.filter((room) => !room.bookingDate || room.bookingDate.startsWith(ci)) || [];
+      searchResult?.filter(
+        (room) => !room.bookingDate || room.bookingDate.startsWith(ci)
+      ) || [];
 
     setFilteredRooms(result);
 
@@ -75,6 +77,20 @@ const RoomBook = ({ searchResult }) => {
   const handleRoomSelect = (room) => {
     const isLoggedIn = sessionStorage.getItem("userDetails");
     console.log("userDetails:", sessionStorage.getItem("userDetails"));
+
+    const checkIn = new Date(checkInDate);
+    const checkOut = new Date(checkOutDate);
+    const diffDays = (checkOut - checkIn) / (1000 * 60 * 60 * 24);
+
+    if (checkOut <= checkIn) {
+      alert("Check-out date must be after the check-in date.");
+      return;
+    }
+
+    if (diffDays > 2) {
+      alert("Check-in and check-out difference cannot exceed 2 days.");
+      return;
+    }
     if (!isLoggedIn) {
       setShowLoginModal(true);
       return;
@@ -96,7 +112,9 @@ const RoomBook = ({ searchResult }) => {
           {filteredRooms.length > 0 ? (
             filteredRooms.map((room) => {
               const roomKey = room._id;
-              const availableRooms = roomAvailability[roomKey] ? roomAvailability[roomKey] : (room?.totalrooms || 0);
+              const availableRooms = roomAvailability[roomKey]
+                ? roomAvailability[roomKey]
+                : room?.totalrooms || 0;
               const isAvailable = availableRooms > 0;
 
               return (
@@ -120,10 +138,7 @@ const RoomBook = ({ searchResult }) => {
 
                       <div className="room_card_dates">
                         <p className="room-card__date">
-                          <RestaurantIcon
-                            fontSize="small"
-                            className="icon"
-                          />
+                          <RestaurantIcon fontSize="small" className="icon" />
                           <span className="semi-bold">Food Facility:</span> No
                         </p>
                         <p className="room-card__date">
@@ -136,54 +151,82 @@ const RoomBook = ({ searchResult }) => {
 
                         {isAvailable ? (
                           <>
-                        <div className="checkin-date">
-                          <label className="semi-bold">
-                            <span className="icon-date">🗓️</span>
-                            <span>Check-In Date:</span>
-                          </label>
-                          <input
-                            type="date"
-                            value={checkInDate}
-                            onChange={(e) => setCheckInDate(e.target.value)}
-                            className="date-input"
-                          />
-                        </div>
+                            <div className="checkin-date">
+                              <label className="semi-bold">
+                                <span className="icon-date">🗓️</span>
+                                <span>Check-In Date:</span>
+                              </label>
+                              <input
+                                type="date"
+                                value={checkInDate}
+                                onChange={(e) => {
+                                  const newCheckIn = e.target.value;
+                                  const diffDays =
+                                    (new Date(checkOutDate) -
+                                      new Date(newCheckIn)) /
+                                    (1000 * 60 * 60 * 24);
+                                  if (diffDays > 2) {
+                                    alert(
+                                      "Check-in and Check-out difference cannot exceed 2 days."
+                                    );
+                                  } else {
+                                    setCheckInDate(newCheckIn);
+                                  }
+                                }}
+                                className="date-input"
+                                min={formatDate(new Date())}
+                              />
+                            </div>
 
-                        <div className="checkout-date">
-                          <label className="semi-bold">
-                            <span className="icon-date">🗓️</span>
-                            <span>Check-Out Date:</span>
-                          </label>
-                          <input
-                            type="date"
-                            value={checkOutDate}
-                            onChange={(e) => setCheckOutDate(e.target.value)}
-                            className="date-input"
-                          />
-                        </div>
+                            <div className="checkout-date">
+                              <label className="semi-bold">
+                                <span className="icon-date">🗓️</span>
+                                <span>Check-Out Date:</span>
+                              </label>
+                              <input
+                                type="date"
+                                value={checkOutDate}
+                                onChange={(e) => {
+                                  const newCheckOut = e.target.value;
+                                  const diffDays =
+                                    (new Date(newCheckOut) -
+                                      new Date(checkInDate)) /
+                                    (1000 * 60 * 60 * 24);
+                                  if (diffDays > 2) {
+                                    alert(
+                                      "Check-in and Check-out difference cannot exceed 2 days."
+                                    );
+                                  } else {
+                                    setCheckOutDate(newCheckOut);
+                                  }
+                                }}
+                                className="date-input"
+                                min={formatDate(new Date())}
+                              />
+                            </div>
 
-                        <p className="days-selected">
-                          <span className="icon-date">🕒</span>
-                          <span className="semi-bold">Days Selected:</span>{" "}
-                          {Math.max(
-                            1,
-                            Math.ceil(
-                              (new Date(checkOutDate) -
-                                new Date(checkInDate)) /
-                                (1000 * 60 * 60 * 24)
-                            )
-                          )}
-                        </p>
+                            <p className="days-selected">
+                              <span className="icon-date">🕒</span>
+                              <span className="semi-bold">
+                                Days Selected:
+                              </span>{" "}
+                              {Math.max(
+                                1,
+                                Math.ceil(
+                                  (new Date(checkOutDate) -
+                                    new Date(checkInDate)) /
+                                    (1000 * 60 * 60 * 24)
+                                )
+                              )}
+                            </p>
 
-                        <p className="available-text">
-                          <span className="icon-date">🛏️</span>
-                          Rooms Available: {availableRooms}
-                        </p>
+                            <p className="available-text">
+                              <span className="icon-date">🛏️</span>
+                              Rooms Available: {availableRooms}
+                            </p>
                           </>
                         ) : (
-                          <p className="unavailable-text">
-                            No Rooms Available
-                          </p>
+                          <p className="unavailable-text">No Rooms Available</p>
                         )}
                       </div>
                     </div>
@@ -216,8 +259,15 @@ const RoomBook = ({ searchResult }) => {
             <h2>Please Login</h2>
             <p>You need to log in to proceed with booking.</p>
             <div className="modal-buttons">
-              <button className="gotologin" onClick={() => navigate("/login")}>Go to Login</button>
-              <button className="cancel-btn" onClick={() => setShowLoginModal(false)}>Cancel</button>
+              <button className="gotologin" onClick={() => navigate("/login")}>
+                Go to Login
+              </button>
+              <button
+                className="cancel-btn"
+                onClick={() => setShowLoginModal(false)}
+              >
+                Cancel
+              </button>
             </div>
           </div>
         </div>

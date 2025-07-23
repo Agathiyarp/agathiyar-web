@@ -1,13 +1,14 @@
-import React, {useState} from 'react';
-import { Modal, Box, Button, Typography, Checkbox,FormControlLabel } from '@mui/material';
+import React, { useState } from 'react';
+import { Modal, Box, Button, Typography, Checkbox, FormControlLabel } from '@mui/material';
 import axios from 'axios';
-import { useNavigate  } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import { toast } from 'react-toastify';
 
-const ConfirmModal = ({handleClose, roomDetails, totalrooms, roomcost, maintanancecost, totalamount}) => {
-
+const ConfirmModal = ({ handleClose, roomDetails, totalrooms, roomcost, maintanancecost, totalamount }) => {
   const navigate = useNavigate();
   const [isChecked, setIsChecked] = useState(false);
+  const [showSuccessModal, setShowSuccessModal] = useState(false);
+  const [showErrorModal, setShowErrorModal] = useState(false);
 
   const userDetails = JSON.parse(sessionStorage.getItem('userDetails'));
 
@@ -15,44 +16,48 @@ const ConfirmModal = ({handleClose, roomDetails, totalrooms, roomcost, maintanan
     setIsChecked(event.target.checked);
   };
 
-  // Handle the confirmation action
   const handleConfirm = async () => {
     const requestBody = {
-      memberid: userDetails && userDetails.usermemberid,
-      username: userDetails && userDetails.username,
-      email: userDetails && userDetails.email,
-      roomid: roomDetails && roomDetails._id,
-      destination: roomDetails && roomDetails.destination,
-      startdate:  roomDetails && roomDetails.startdate,
-      enddate:  roomDetails && roomDetails.enddate,
-      singleoccupy: roomDetails && roomDetails.singleoccupy,
-      roomdescription: roomDetails && roomDetails.roomdescription,
-      roomtype: roomDetails && roomDetails.roomtype,
-      totalrooms: totalrooms,
-      roomvariation: roomDetails && roomDetails.roomvariation,
-      roomcost: roomcost,
-      maintanancecost: maintanancecost,
-      totalamount: totalamount
+      memberid: userDetails?.usermemberid,
+      username: userDetails?.username,
+      email: userDetails?.email,
+      roomid: roomDetails?._id,
+      destination: roomDetails?.destination,
+      startdate: roomDetails?.startdate,
+      enddate: roomDetails?.enddate,
+      singleoccupy: roomDetails?.singleoccupy,
+      roomdescription: roomDetails?.roomdescription,
+      roomtype: roomDetails?.roomtype,
+      totalrooms,
+      roomvariation: roomDetails?.roomvariation,
+      roomcost,
+      maintanancecost,
+      totalamount
     };
 
     try {
       const response = await axios.post('https://agathiyarpyramid.org/api/roombooking', requestBody);
       console.log('Booking confirmed:', response.data);
       toast.success("Booking successful");
-      setTimeout(() => {
-        navigate('/booking');
-      }, 3000);
-      
-      // You might want to do something after the booking is confirmed
+      setShowSuccessModal(true);
     } catch (error) {
-      toast.success("Booking Failed");
       console.error('Error confirming booking:', error);
+      toast.error("Booking Failed");
+      setShowErrorModal(true);
     }
-
-   handleClose();
   };
 
-  // Modal styling
+  const handleSuccessClose = () => {
+    setShowSuccessModal(false);
+    handleClose();
+    navigate('/booking');
+  };
+
+  const handleErrorClose = () => {
+    setShowErrorModal(false);
+    handleClose();
+  };
+
   const modalStyle = {
     position: 'absolute',
     top: '50%',
@@ -67,32 +72,33 @@ const ConfirmModal = ({handleClose, roomDetails, totalrooms, roomcost, maintanan
   };
 
   return (
-    <div>
+    <>
+      {/* Confirmation Modal */}
       <Modal
-        open={true}
+        open={!showSuccessModal && !showErrorModal}
         onClose={handleClose}
         aria-labelledby="modal-title"
         aria-describedby="modal-description"
       >
         <Box sx={modalStyle}>
-          <Typography id="modal-title" variant="h6" component="h2">
+          <Typography id="modal-title" variant="h6">
             Confirm Proceed
           </Typography>
           <Typography id="modal-description" sx={{ mt: 2 }}>
             Are you sure you want to proceed with this booking?
           </Typography>
           <Box mt={2}>
-          <FormControlLabel
-            control={
-              <Checkbox
-                checked={isChecked}
-                onChange={handleCheckboxChange}
-                color="primary"
-              />
-            }
-            label="I agree to the Terms and Conditions"
-          />
-        </Box>
+            <FormControlLabel
+              control={
+                <Checkbox
+                  checked={isChecked}
+                  onChange={handleCheckboxChange}
+                  color="primary"
+                />
+              }
+              label="I agree to the Terms and Conditions"
+            />
+          </Box>
           <Box mt={3}>
             <Button
               variant="contained"
@@ -103,14 +109,57 @@ const ConfirmModal = ({handleClose, roomDetails, totalrooms, roomcost, maintanan
             >
               Yes, Proceed
             </Button>
-            <Button variant="outlined" color="#38a169" onClick={handleClose}>
+            <Button variant="outlined" onClick={handleClose}>
               Cancel
             </Button>
           </Box>
         </Box>
       </Modal>
-      
-    </div>
+
+      {/* Success Modal */}
+      <Modal
+        open={showSuccessModal}
+        onClose={handleSuccessClose}
+        aria-labelledby="success-title"
+        aria-describedby="success-description"
+      >
+        <Box sx={modalStyle}>
+          <Typography id="success-title" variant="h6">
+            Booking Forwarded
+          </Typography>
+          <Typography id="success-description" sx={{ mt: 2 }}>
+            Your booking has been forwarded to the booking admin. You will receive an email to your registered mail ID once the booking is confirmed. For more details, please visit the Contact Us section.
+          </Typography>
+          <Box mt={3}>
+            <Button variant="contained" onClick={handleSuccessClose}>
+              OK
+            </Button>
+          </Box>
+        </Box>
+      </Modal>
+
+      {/* Error Modal */}
+      <Modal
+        open={showErrorModal}
+        onClose={handleErrorClose}
+        aria-labelledby="error-title"
+        aria-describedby="error-description"
+      >
+        <Box sx={modalStyle}>
+          <Typography id="error-title" variant="h6" color="error">
+            Booking Failed
+          </Typography>
+          <Typography id="error-description" sx={{ mt: 2 }}>
+            Something went wrong. Please try again later or contact support if the issue persists.
+          </Typography>
+          <Box mt={3}>
+            <Button variant="contained" color="error" onClick={handleErrorClose}>
+              Close
+            </Button>
+          </Box>
+        </Box>
+      </Modal>
+    </>
   );
 };
 

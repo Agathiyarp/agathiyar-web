@@ -6,6 +6,8 @@ const EventList = () => {
   const [events, setEvents] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
+  const [showModal, setShowModal] = useState(false);
+  const [eventToDelete, setEventToDelete] = useState(null);
 
   const fetchEvents = async () => {
     try {
@@ -22,17 +24,30 @@ const EventList = () => {
     }
   };
 
-  const handleDelete = async (id) => {
+  const confirmDelete = (event) => {
+    setEventToDelete(event);
+    setShowModal(true);
+  };
+
+  const handleDeleteConfirmed = async () => {
     try {
-      const res = await fetch(`https://agathiyarpyramid.org/api/delete-event/${id}`, {
+      const res = await fetch(`https://agathiyarpyramid.org/api/delete-event/${eventToDelete.eventid}`, {
         method: 'DELETE',
       });
-      fetchEvents();
       if (!res.ok) throw new Error('Failed to delete event');
+      fetchEvents();
     } catch (err) {
       console.error(err);
       alert('Could not delete the event. Please try again.');
+    } finally {
+      setShowModal(false);
+      setEventToDelete(null);
     }
+  };
+
+  const handleCancel = () => {
+    setShowModal(false);
+    setEventToDelete(null);
   };
 
   useEffect(() => {
@@ -58,12 +73,25 @@ const EventList = () => {
                 <span className="event-name">{event.eventname}</span>
                 <span className="event-place">{event.destination}</span>
               </div>
-              <button className="delete-button" onClick={() => handleDelete(event.eventid)}>
+              <button className="delete-button" onClick={() => confirmDelete(event)}>
                 Delete
               </button>
             </li>
           ))}
         </ul>
+      )}
+
+      {/* Confirmation Modal */}
+      {showModal && (
+        <div className="modal-overlay">
+          <div className="modal-content">
+            <p>Are you sure you want to delete the event?</p>
+            <div className="modal-actions">
+              <button className="confirm-button" onClick={handleDeleteConfirmed}>Yes, Delete</button>
+              <button className="cancel-button" onClick={handleCancel}>Cancel</button>
+            </div>
+          </div>
+        </div>
       )}
     </div>
   );

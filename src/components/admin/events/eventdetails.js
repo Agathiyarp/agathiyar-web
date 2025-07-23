@@ -71,7 +71,7 @@ const EventDetails = () => {
       </div>
 
       {userDetails && (
-        <div className="event-details">
+        <div className="event-details-list">
           <h4>User Details</h4>
           <table>
             <tbody>

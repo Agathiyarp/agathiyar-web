@@ -14,7 +14,8 @@ const AddBooking = () => {
     totalrooms: '',
     roomvariation: '',
     roomcost: '',
-    maintenancecost: '', // ✅ Use corrected key
+    maintenancecost: '', 
+    maintenancecostsponsor: ''
   });
 
   const [singleImage, setSingleImage] = useState(null);
@@ -55,7 +56,7 @@ const AddBooking = () => {
     }
 
     multipleImages.forEach((file) => {
-      payload.append('multipleimage[]', file); // ✅ Use array notation
+      payload.append('multipleimage', file);
     });
 
     // Optional: Debug what’s being sent
@@ -71,9 +72,8 @@ const AddBooking = () => {
 
       const resultText = await res.text(); // Use .text() first for better debugging
 
-      if (res.status === 200) {
+      if (res.status === 201) {
 
-        alert('Booking added successfully!');
         setFormData({
           destination: '',
           startdate: '',
@@ -85,6 +85,7 @@ const AddBooking = () => {
           roomvariation: '',
           roomcost: '',
           maintenancecost: '',
+          maintenancecostsponsor: ''
         });
         setSingleImage(null);
         setMultipleImages([]);
@@ -123,10 +124,11 @@ const AddBooking = () => {
 
         <div className="row">
           <input type="text" name="roomcost" placeholder="Room Cost" value={formData.roomcost} onChange={handleChange} />
-          <input type="text" name="maintenancecost" placeholder="Maintenance Cost" value={formData.maintenancecost} onChange={handleChange} />
+          <input type="text" name="maintenancecost" placeholder="Maintenance Cost(User)" value={formData.maintenancecost} onChange={handleChange} />
         </div>
 
         <div className="row">
+          <input type="text" name="maintenancecostsponsor" placeholder="Maintenance Cost(Sponor)" value={formData.maintenancecostsponsor} onChange={handleChange} />
           <input type="text" name="singleoccupy" placeholder="Single Occupy (yes/no)" value={formData.singleoccupy} onChange={handleChange} />
         </div>
 

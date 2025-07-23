@@ -57,7 +57,7 @@ const Booking = () => {
             <li>Agathiyar Bhavan - for a maximum accommodation of 1 personnel.</li>
           </ul>
         </div>
-        <div className="date-filter">
+        {/* <div className="date-filter">
           <label htmlFor="booking-date" style={{ fontSize: "16px" }}>
             Select Date:
           </label>
@@ -67,7 +67,7 @@ const Booking = () => {
             value={selectedDate}
             onChange={(e) => setSelectedDate(e.target.value)}
           />
-        </div>
+        </div> */}
         {loading ? (
           <div className="loading-content">Loading...</div>
         ) : searchResult.length > 0 ? (
