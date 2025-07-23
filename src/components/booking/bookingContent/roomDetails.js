@@ -67,9 +67,9 @@ const RoomDetails = () => {
   const totalAmount = data.reduce((sum, item) => sum + item.price, 0);
   const totalMaintenanceCost = data.reduce((sum, item) => sum + item.maintenance, 0);
 
-  console.log("Total Rooms:", totalRooms);
-  console.log("Total Amount:", totalAmount);
-  console.log("Total Maintenance Cost:", totalMaintenanceCost);
+  // console.log("Total Rooms:", totalRooms);
+  // console.log("Total Amount:", totalAmount);
+  // console.log("Total Maintenance Cost:", totalMaintenanceCost);
   
   const handleOpen = () => {
     setOpenModal(true);
@@ -237,6 +237,8 @@ const RoomDetails = () => {
         <ConfirmModal
           handleClose={handleClose}
           roomDetails={room}
+          startDate={checkIn}
+          endDate={checkOut}
           totalrooms={totalRooms}
           roomcost={room.roomcost}
           maintanancecost={totalMaintenanceCost}

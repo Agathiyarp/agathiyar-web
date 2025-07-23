@@ -339,6 +339,8 @@
 .icon-book::before { content: "📚"; }
 .icon-settings::before { content: "⚙️"; }
 .icon-calendar-info::before { content: "📅ℹ️"; }
+.icon-users-credit::before { content: "👥💳"; }
+.icon-booking-confirmation::before {content: "📩✅";}
 
 /* Responsive Design */
 @media (max-width: 1200px) {

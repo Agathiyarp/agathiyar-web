@@ -28,6 +28,7 @@ import VideoUpload from './components/admin/videos/videoupload'
 import EventList from './components/admin/events/eventlist';
 import RoomList from './components/admin/booking/roomlist';
 import EventDetails from './components/admin/events/eventdetails';
+import UserCredits from './components/admin/users/usercredits';
 
 const App = () => {
 
@@ -60,6 +61,8 @@ const App = () => {
           <Route path="/eventlist" element={<EventList />}/>
           <Route path="/roomlist" element={<RoomList />} />
           <Route path="/eventdetails" element={<EventDetails />} />
+          {/* <Route path="/bookingconfirmation" element={< />} /> */}
+          <Route path="/usercredits" element={<UserCredits />} />
         </Routes>
       </Router>
     </div>

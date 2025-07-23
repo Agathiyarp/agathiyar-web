@@ -33,7 +33,6 @@ const RoomBook = ({ searchResult }) => {
               },
             }
           );
-          console.log("Room Availability Response:", response.data.totalRooms);
           availabilityMap[room._id] = response?.data?.totalRooms || 0;
         } catch (error) {
           console.error("Error fetching room availability", error);
@@ -148,6 +147,24 @@ const RoomBook = ({ searchResult }) => {
                           />
                           <span className="semi-bold">Parking:</span> No
                         </p>
+                        <p className="available-text">
+                          <span className="icon-date">🛏️</span>
+                          Rooms Available: {availableRooms}
+                        </p>
+                        <p className="days-selected">
+                          <span className="icon-date">🕒</span>
+                          <span className="semi-bold">
+                            Days Selected:
+                          </span>{" "}
+                          {Math.max(
+                            1,
+                            Math.ceil(
+                              (new Date(checkOutDate) -
+                                new Date(checkInDate)) /
+                                (1000 * 60 * 60 * 24)
+                            )
+                          )}
+                        </p>
 
                         {isAvailable ? (
                           <>
@@ -205,25 +222,7 @@ const RoomBook = ({ searchResult }) => {
                               />
                             </div>
 
-                            <p className="days-selected">
-                              <span className="icon-date">🕒</span>
-                              <span className="semi-bold">
-                                Days Selected:
-                              </span>{" "}
-                              {Math.max(
-                                1,
-                                Math.ceil(
-                                  (new Date(checkOutDate) -
-                                    new Date(checkInDate)) /
-                                    (1000 * 60 * 60 * 24)
-                                )
-                              )}
-                            </p>
-
-                            <p className="available-text">
-                              <span className="icon-date">🛏️</span>
-                              Rooms Available: {availableRooms}
-                            </p>
+                            
                           </>
                         ) : (
                           <p className="unavailable-text">No Rooms Available</p>

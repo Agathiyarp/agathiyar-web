@@ -4,7 +4,7 @@ import axios from 'axios';
 import { useNavigate } from "react-router-dom";
 import { toast } from 'react-toastify';
 
-const ConfirmModal = ({ handleClose, roomDetails, totalrooms, roomcost, maintanancecost, totalamount }) => {
+const ConfirmModal = ({ handleClose, roomDetails, startDate, endDate, totalrooms, roomcost, maintanancecost, totalamount }) => {
   const navigate = useNavigate();
   const [isChecked, setIsChecked] = useState(false);
   const [showSuccessModal, setShowSuccessModal] = useState(false);
@@ -23,8 +23,8 @@ const ConfirmModal = ({ handleClose, roomDetails, totalrooms, roomcost, maintana
       email: userDetails?.email,
       roomid: roomDetails?._id,
       destination: roomDetails?.destination,
-      startdate: roomDetails?.startdate,
-      enddate: roomDetails?.enddate,
+      startdate: startDate,
+      enddate: endDate,
       singleoccupy: roomDetails?.singleoccupy,
       roomdescription: roomDetails?.roomdescription,
       roomtype: roomDetails?.roomtype,
@@ -124,8 +124,8 @@ const ConfirmModal = ({ handleClose, roomDetails, totalrooms, roomcost, maintana
         aria-describedby="success-description"
       >
         <Box sx={modalStyle}>
-          <Typography id="success-title" variant="h6">
-            Booking Forwarded
+          <Typography id="success-title" variant="h6" style={{ color: 'green' }}>
+            Booking Successful
           </Typography>
           <Typography id="success-description" sx={{ mt: 2 }}>
             Your booking has been forwarded to the booking admin. You will receive an email to your registered mail ID once the booking is confirmed. For more details, please visit the Contact Us section.

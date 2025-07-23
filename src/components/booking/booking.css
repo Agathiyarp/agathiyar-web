@@ -38,6 +38,21 @@
   text-align: left;
 }
 
+.available-credits {
+  font-size: 18px;
+  color: #2e7d32;
+  margin-top: 10px;
+  margin-bottom: 20px;
+  gap: 8px;
+  margin: 10px auto;
+  width: 250px;
+}
+.credit-value {
+  font-weight: bold;
+  font-size: 18px;
+  color: #000;
+}
+
 .tick-list {
   padding-left: 20px;
   text-align: left;

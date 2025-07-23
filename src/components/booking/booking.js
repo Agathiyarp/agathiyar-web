@@ -8,10 +8,18 @@ import axios from "axios";
 const Booking = () => {
   const [searchResult, setSearchResult] = useState([]);
   const [loading, setLoading] = useState(true);
+  const [availableCredits, setAvailableCredits] = useState(null);
   const [selectedDate, setSelectedDate] = useState(() => {
     const today = new Date();
     return today.toISOString().split("T")[0];
   });
+
+  useEffect(() => {
+      const userDetails = JSON.parse(sessionStorage.getItem("userDetails"));
+      if (userDetails) {
+        setAvailableCredits(userDetails.credits || 0);
+      }
+    }, []);
 
   const fetchData = async (date) => {
     setLoading(true);
@@ -68,6 +76,9 @@ const Booking = () => {
             onChange={(e) => setSelectedDate(e.target.value)}
           />
         </div> */}
+        <div className="available-credits">
+          Available User Credits: <span className="credit-value">{availableCredits}</span>
+        </div>
         {loading ? (
           <div className="loading-content">Loading...</div>
         ) : searchResult.length > 0 ? (
