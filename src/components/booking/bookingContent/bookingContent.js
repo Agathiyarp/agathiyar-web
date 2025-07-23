@@ -98,8 +98,8 @@ const RoomBook = ({ searchResult }) => {
     navigate("/room-details", {
       state: {
         room,
-        checkInDate,
-        checkOutDate,
+        checkIn,
+        checkOut,
       },
     });
   };

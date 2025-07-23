@@ -20,19 +20,19 @@ import { ToastContainer } from 'react-toastify';
 const RoomDetails = () => {
   const [openModal, setOpenModal] = useState(false);
   const location = useLocation();
-  const { room } = location.state; // Retrieve the passed room data
+  const { room, checkIn, checkOut } = location.state; // Retrieve the passed room data
 
   const mainImage = image1;
   const sideImages = [image2, image3];
 
-  const userDetails = JSON.parse(sessionStorage.getItem('userDetails'));
+  // const userDetails = JSON.parse(sessionStorage.getItem('userDetails'));
   
   const perBedCost = 500;
-  const maintanance = parseInt(room.maintenancecost, 10) || 0;
+  // const maintanance = parseInt(room.maintenancecost, 10) || 0;
   
   const amenities = [
-    { text: `Check-In: ${ moment(room.startdate).format("YYYY-MM-DD")}`, icon: <EventIcon fontSize="small" className="text-gray-600 align-middle pr-1" /> },
-    { text: `Check-Out: ${ moment(room.enddate).format("YYYY-MM-DD")}`, icon: <EventIcon fontSize="small" className="text-gray-600 align-middle pr-1" /> },
+    { text: `Check-In: ${ moment(checkIn).format("YYYY-MM-DD")}`, icon: <EventIcon fontSize="small" className="text-gray-600 align-middle pr-1" /> },
+    { text: `Check-Out: ${ moment(checkOut).format("YYYY-MM-DD")}`, icon: <EventIcon fontSize="small" className="text-gray-600 align-middle pr-1" /> },
     { text: "Hot Water", icon: <OpacityIcon fontSize="small" className="text-gray-600 mr-2" /> },
     { text: "Lift",  icon: <ElevatorIcon fontSize="small" className="text-gray-600 mr-2" />},
     { text: "Food Facility: No",  icon: <RestaurantIcon fontSize="small" className="text-gray-600 mr-2" />},
