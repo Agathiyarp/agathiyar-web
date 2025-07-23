@@ -7,7 +7,7 @@
 
 .admin-container {
   /* font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif; */
-  background: linear-gradient(135deg, #e8eaf6 0%, #f3e5f5 100%);
+  background-color: #e0f7fa;
   min-height: 100vh;
 }
 
@@ -165,8 +165,9 @@
 
 .group-title {
   font-size: 1.5rem;
-  color: #2e7d32;
-  margin-bottom: 10px;
+  color: #000;
+  margin-bottom: 20px;
+  text-align: left;
 }
 
 
@@ -177,6 +178,7 @@
   box-shadow: 0 4px 20px rgba(0,0,0,0.08);
   text-align: center;
   height: -webkit-fill-available;
+  background-color: #f4fcff;
 }
 
 .profile-avatar {
@@ -237,6 +239,9 @@
   display: grid;
   grid-template-columns: repeat(3, 1fr);
   gap: 1.5rem;
+  border-bottom: 1px solid #d2d2d2;
+  margin-bottom: 3rem;
+  padding-bottom: 2rem;
 }
 
 /* Dashboard Card Styles */
@@ -253,6 +258,7 @@
   flex-direction: column;
   align-items: center;
   justify-content: center;
+  background-color: #f4fcff;
 }
 
 .dashboard-card:hover {
@@ -273,7 +279,7 @@
 }
 
 /* Card-specific icon colors */
-.user-management .card-icon {
+/* .user-management .card-icon {
   background: #7986cb;
 }
 
@@ -311,7 +317,7 @@
 
 .eventsAdd .card-icon {
   background: #4de91e;
-}
+} */
 
 .card-title {
   font-size: 16px;

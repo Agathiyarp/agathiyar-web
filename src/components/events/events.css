@@ -34,6 +34,7 @@
     display: flex;
     flex-direction: row;
     flex-wrap: wrap;
+    background: linear-gradient(to right, #7cd1b8, #7dc4d6);
   }
   
   .workshop-item {

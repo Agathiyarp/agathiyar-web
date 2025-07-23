@@ -21,6 +21,9 @@ const Admin = () => {
       setUserAccess(userDetails.useraccess || []);
       setUserName(userDetails.username || []);
     }
+    if (userDetails.profileImage) {
+      setAvatar(userDetails.profileImage);
+    }
   }, []);
 
   const handleAvatarClick = () => {
