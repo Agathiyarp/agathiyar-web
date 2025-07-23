@@ -152,21 +152,25 @@ const RoomDetails = () => {
                 </td>
                 <td>{item.price}</td>
                 <td>{item.maintenance}</td>
-                <td>
-                  Qty: {item.additionalBeds}{" "}
-                  <button
-                    className="add-bed-btn"
-                    onClick={() => handleAddBed(index)}
-                  >
-                    +
-                  </button>
-                  <button
-                    className="remove-bed-btn"
-                    onClick={() => handleRemoveBed(index)}
-                    disabled={item.additionalBeds === 0}
-                  >
-                    -
-                  </button>
+                <td className="bed-control">
+                  <span>
+                    Qty: {item.additionalBeds}{" "}
+                    <button
+                      className="add-bed-btn"
+                      onClick={() => handleAddBed(index)}
+                      disabled={item.additionalBeds >= 2}
+                    >
+                      +
+                    </button>
+                    <button
+                      className="remove-bed-btn"
+                      onClick={() => handleRemoveBed(index)}
+                      disabled={item.additionalBeds === 0}
+                    >
+                      -
+                    </button>
+                  </span>
+                  <span className="max-bed">(Max 2 beds)</span>
                 </td>
               </tr>
             ))}
