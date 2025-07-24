@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import './bookingconfirmation.css';
 import MenuBar from '../../menumain/menubar';
+import { toast, ToastContainer } from "react-toastify";
 
 const BookingConfirmation = () => {
   const [bookings, setBookings] = useState([]);
@@ -11,8 +12,7 @@ const BookingConfirmation = () => {
   const [selectedBooking, setSelectedBooking] = useState(null);
   const [actionType, setActionType] = useState('');
 
-  useEffect(() => {
-    const fetchBookings = async () => {
+  const fetchBookings = async () => {
       try {
         const res = await fetch('https://www.agathiyarpyramid.org/api/bookings');
         if (!res.ok) throw new Error('Failed to fetch bookings');
@@ -26,6 +26,7 @@ const BookingConfirmation = () => {
       }
     };
 
+  useEffect(() => {
     fetchBookings();
   }, []);
 
@@ -62,14 +63,10 @@ const BookingConfirmation = () => {
 
       if (!res.ok) throw new Error('Failed to update status');
 
-      alert(`Booking ID ${selectedBooking.id} has been ${actionType}.`);
-
-      // Update local status
-      setBookings((prev) =>
-        prev.map((b) =>
-          b.id === selectedBooking.id ? { ...b, status: actionType } : b
-        )
-      );
+      toast.success(`Booking ID ${selectedBooking.id} has been ${actionType}.`,  {
+        toastId: 'booking-update-success',
+      });
+      await fetchBookings();
     } catch (err) {
       console.error(err);
       alert(`Error updating status for Booking ID ${selectedBooking.id}`);

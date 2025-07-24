@@ -36,6 +36,8 @@
   font-size: 14px;
   /* font-family: 'SF Pro Display Regular', sans-serif; */
   text-align: left;
+  border-left: 5px solid #26a69a;
+  width: 900px;
 }
 
 .available-credits {
@@ -98,6 +100,30 @@
 .room-card__view-deal:disabled {
   opacity: 0.6;
 }
+
+.info-strip-booking {
+  background-color: #e0f7fa;
+  border-left: 5px solid #26a69a;
+  margin: 20px auto;
+  padding: 20px;
+  border-radius: 8px;
+  width: 900px;
+  font-size: 16px;
+  color: #333;
+  box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+}
+
+.info-strip-booking ul {
+  list-style: none;
+  padding-left: 0;
+}
+
+.info-strip-booking li {
+  margin-bottom: 8px;
+  display: flex;
+  align-items: flex-start;
+}
+
 
 /* Media Queries for Responsive Design */
 @media screen and (max-width: 768px) {

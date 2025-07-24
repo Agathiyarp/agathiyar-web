@@ -3,12 +3,15 @@ import { Modal, Box, Button, Typography, Checkbox, FormControlLabel } from '@mui
 import axios from 'axios';
 import { useNavigate } from "react-router-dom";
 import { toast } from 'react-toastify';
+import CircularProgress from '@mui/material/CircularProgress';
+
 
 const ConfirmModal = ({ handleClose, roomDetails, startDate, endDate, totalrooms, roomcost, maintanancecost, totalamount }) => {
   const navigate = useNavigate();
   const [isChecked, setIsChecked] = useState(false);
   const [showSuccessModal, setShowSuccessModal] = useState(false);
   const [showErrorModal, setShowErrorModal] = useState(false);
+  const [loading, setLoading] = useState(false);
 
   const userDetails = JSON.parse(sessionStorage.getItem('userDetails'));
 
@@ -17,6 +20,7 @@ const ConfirmModal = ({ handleClose, roomDetails, startDate, endDate, totalrooms
   };
 
   const handleConfirm = async () => {
+    setLoading(true);
     const requestBody = {
       memberid: userDetails?.usermemberid,
       username: userDetails?.username,
@@ -44,6 +48,8 @@ const ConfirmModal = ({ handleClose, roomDetails, startDate, endDate, totalrooms
       console.error('Error confirming booking:', error);
       toast.error("Booking Failed");
       setShowErrorModal(true);
+    } finally {
+      setLoading(false);
     }
   };
 
@@ -100,18 +106,24 @@ const ConfirmModal = ({ handleClose, roomDetails, startDate, endDate, totalrooms
             />
           </Box>
           <Box mt={3}>
-            <Button
-              variant="contained"
-              color="primary"
-              onClick={handleConfirm}
-              sx={{ mr: 2 }}
-              disabled={!isChecked}
-            >
-              Yes, Proceed
-            </Button>
-            <Button variant="outlined" onClick={handleClose}>
-              Cancel
-            </Button>
+            {loading ? (
+              <CircularProgress />
+            ) : (
+              <>
+                <Button
+                  variant="contained"
+                  color="primary"
+                  onClick={handleConfirm}
+                  sx={{ mr: 2 }}
+                  disabled={!isChecked}
+                >
+                  Yes, Proceed
+                </Button>
+                <Button variant="outlined" onClick={handleClose}>
+                  Cancel
+                </Button>
+              </>
+            )}
           </Box>
         </Box>
       </Modal>

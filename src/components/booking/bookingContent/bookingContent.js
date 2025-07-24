@@ -13,6 +13,7 @@ const RoomBook = ({ searchResult }) => {
   const [roomAvailability, setRoomAvailability] = useState({});
   const [showLoginModal, setShowLoginModal] = useState(false);
   const navigate = useNavigate();
+  const MAX_DAYS_ALLOWED = 10;
 
   // Helper to format date
   const formatDate = (date) => date.toISOString().split("T")[0];
@@ -86,8 +87,8 @@ const RoomBook = ({ searchResult }) => {
       return;
     }
 
-    if (diffDays > 2) {
-      alert("Check-in and check-out difference cannot exceed 2 days.");
+    if (diffDays > MAX_DAYS_ALLOWED) {
+      alert(`Check-in and check-out difference cannot exceed ${MAX_DAYS_ALLOWED} days.`);
       return;
     }
     if (!isLoggedIn) {
@@ -182,9 +183,9 @@ const RoomBook = ({ searchResult }) => {
                                     (new Date(checkOutDate) -
                                       new Date(newCheckIn)) /
                                     (1000 * 60 * 60 * 24);
-                                  if (diffDays > 2) {
+                                  if (diffDays > MAX_DAYS_ALLOWED) {
                                     alert(
-                                      "Check-in and Check-out difference cannot exceed 2 days."
+                                      `Check-in and Check-out difference cannot exceed ${MAX_DAYS_ALLOWED} days.`
                                     );
                                   } else {
                                     setCheckInDate(newCheckIn);
@@ -209,9 +210,9 @@ const RoomBook = ({ searchResult }) => {
                                     (new Date(newCheckOut) -
                                       new Date(checkInDate)) /
                                     (1000 * 60 * 60 * 24);
-                                  if (diffDays > 2) {
+                                  if (diffDays > MAX_DAYS_ALLOWED) {
                                     alert(
-                                      "Check-in and Check-out difference cannot exceed 2 days."
+                                      `Check-in and Check-out difference cannot exceed ${MAX_DAYS_ALLOWED} days.`
                                     );
                                   } else {
                                     setCheckOutDate(newCheckOut);

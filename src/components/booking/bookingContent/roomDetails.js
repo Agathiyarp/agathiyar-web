@@ -133,7 +133,7 @@ const RoomDetails = () => {
               <th>Rooms</th>
               <th>Price</th>
               <th>Maintenance</th>
-              <th>Additional beds</th>
+              {room.destination === "Pathriji Bhavan" && <th>Additional beds</th>}
             </tr>
           </thead>
           <tbody>
@@ -148,17 +148,18 @@ const RoomDetails = () => {
                     onChange={(e) => handleRoomChange(index, e.target.value)}
                   >
                     <option value="1">1</option>
+                    <option value="2">2</option>
                   </select>
                 </td>
                 <td>{item.price}</td>
                 <td>{item.maintenance}</td>
-                <td className="bed-control">
+                {room.destination === "Pathriji Bhavan" && <td className="bed-control">
                   <span>
                     Qty: {item.additionalBeds}{" "}
                     <button
                       className="add-bed-btn"
                       onClick={() => handleAddBed(index)}
-                      disabled={item.additionalBeds >= 2}
+                      disabled={item.additionalBeds >= 1}
                     >
                       +
                     </button>
@@ -170,8 +171,8 @@ const RoomDetails = () => {
                       -
                     </button>
                   </span>
-                  <span className="max-bed">(Max 2 beds)</span>
-                </td>
+                  <span className="max-bed">(Max 1 bed)</span>
+                </td>}
               </tr>
             ))}
           </tbody>

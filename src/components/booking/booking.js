@@ -87,6 +87,13 @@ const Booking = () => {
           <div className="empty-content">No Rooms Available</div>
         )}
       </div>
+      <div className="info-strip-booking">
+        <ul>
+          <li><strong>Terms and Conditions:</strong></li>
+          <li>✔️ If a user books&nbsp;<strong> 2 days and 2 rooms</strong>, <strong>&nbsp;credit will be reduced by 4</strong>.</li>
+          <li>✔️ If a user books&nbsp;<strong> 1 day and 1 room</strong>, <strong>&nbsp;credit will be reduced by 1</strong>.</li>
+        </ul>
+      </div>
       <Footer />
     </div>
   );
