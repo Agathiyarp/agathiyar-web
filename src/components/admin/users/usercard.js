@@ -14,15 +14,42 @@ const ACCESS_OPTIONS = [
   "settings",
 ];
 
-const USER_TYPE_OPTIONS = ["Donar", "Sponsor", "Patron"];
+const USER_TYPE_OPTIONS = ["donar", "sponsor", "patron"];
 
 const UserCard = ({ user, onSave }) => {
   const [isEditing, setIsEditing] = useState(false);
   const [formData, setFormData] = useState(user);
+  const [defaultCreditsMap, setDefaultCreditsMap] = useState({});
 
   useEffect(() => {
     setFormData(user);
+
+    fetch("https://www.agathiyarpyramid.org/api/credits")
+    .then((res) => {
+      if (!res.ok) throw new Error("Failed to load credit mapping");
+      return res.json();
+    })
+    .then((data) => {
+      setDefaultCreditsMap(data || {});
+    })
+    .catch((err) => {
+      console.error("Error loading credits map:", err);
+      setDefaultCreditsMap({}); // fallback
+    });
   }, [user]);
+
+  const handleUserTypeChange = (e) => {
+    const selectedType = e.target.value;
+    console.log("Selected User Type:", selectedType, defaultCreditsMap[0][selectedType]);
+    const defaultCredits = defaultCreditsMap[0][selectedType];
+
+    setFormData((prev) => ({
+      ...prev,
+      usertype: selectedType,
+      credits: defaultCredits,
+    }));
+    console.log("Updated Form Data:", formData, defaultCredits)
+  };
 
   const handleRoleChange = (e) => {
     const value = e.target.value;
@@ -74,6 +101,7 @@ const UserCard = ({ user, onSave }) => {
       useraccess: formData.useraccess || [],
       usertype: formData.usertype || "",
       usermemberid: formData.usermemberid,
+      credits: formData.credits || 0, 
     };
 
     fetch("https://www.agathiyarpyramid.org/api/updateuser", {
@@ -112,15 +140,23 @@ const UserCard = ({ user, onSave }) => {
           <select
             name="usertype"
             value={formData.usertype || ""}
-            onChange={handleInputChange}
+            onChange={handleUserTypeChange}
           >
             <option value="">Select User Type</option>
             {USER_TYPE_OPTIONS.map((type) => (
               <option key={type} value={type}>
-                {type}
+                 {type?.charAt(0).toUpperCase() + type?.slice(1)}
               </option>
             ))}
           </select>
+
+          <input
+            name="availablecredits"
+            value={formData.credits || 0}
+            readOnly
+            placeholder="Available Credits"
+            style={{ backgroundColor: "#f5f5f5", color: "#555" }}
+          />
 
           <select
             name="userrole"
@@ -184,6 +220,7 @@ const UserCard = ({ user, onSave }) => {
           <p>
             <strong>User Type:</strong> {user.usertype}
           </p>
+          <p><strong>Available Credits:</strong> {user.credits || 0}</p>
           <p>
             <strong>User Access:</strong>{" "}
             {Array.isArray(user?.useraccess) && user.useraccess.length
