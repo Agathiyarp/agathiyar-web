@@ -10,39 +10,12 @@ const RoomBook = ({ searchResult }) => {
   const [checkInDate, setCheckInDate] = useState("");
   const [checkOutDate, setCheckOutDate] = useState("");
   const [filteredRooms, setFilteredRooms] = useState([]);
-  const [roomAvailability, setRoomAvailability] = useState({});
   const [showLoginModal, setShowLoginModal] = useState(false);
   const navigate = useNavigate();
   const MAX_DAYS_ALLOWED = 10;
 
   // Helper to format date
   const formatDate = (date) => date.toISOString().split("T")[0];
-
-  // Fetch availability from API
-  const fetchRoomAvailability = async (rooms, checkIn, checkOut) => {
-    const availabilityMap = {};
-    await Promise.all(
-      rooms.map(async (room) => {
-        try {
-          const response = await axios.get(
-            "https://agathiyarpyramid.org/api/checkRoomAvailability",
-            {
-              params: {
-                roomId: room._id,
-                checkIn,
-                checkOut,
-              },
-            }
-          );
-          availabilityMap[room._id] = response?.data?.totalRooms || 0;
-        } catch (error) {
-          console.error("Error fetching room availability", error);
-          availabilityMap[room._id] = 0;
-        }
-      })
-    );
-    setRoomAvailability(availabilityMap);
-  };
 
   useEffect(() => {
     const today = new Date();
@@ -62,17 +35,7 @@ const RoomBook = ({ searchResult }) => {
 
     setFilteredRooms(result);
 
-    if (result.length > 0) {
-      fetchRoomAvailability(result, ci, co);
-    }
   }, [searchResult]);
-
-  // Re-fetch availability when dates change
-  useEffect(() => {
-    if (filteredRooms.length > 0) {
-      fetchRoomAvailability(filteredRooms, checkInDate, checkOutDate);
-    }
-  }, [checkInDate, checkOutDate]);
 
   const handleRoomSelect = (room) => {
     const isLoggedIn = sessionStorage.getItem("userDetails");
@@ -112,9 +75,7 @@ const RoomBook = ({ searchResult }) => {
           {filteredRooms.length > 0 ? (
             filteredRooms.map((room) => {
               const roomKey = room._id;
-              const availableRooms = roomAvailability[roomKey]
-                ? roomAvailability[roomKey]
-                : room?.totalrooms || 0;
+              const availableRooms = room?.availabletotalrooms || 0;
               const isAvailable = availableRooms > 0;
 
               return (

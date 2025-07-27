@@ -34,7 +34,7 @@ const ConfirmModal = ({ handleClose, roomDetails, startDate, endDate, roomsSelec
       singleoccupy: roomDetails?.singleoccupy,
       roomdescription: roomDetails?.roomdescription,
       roomtype: roomDetails?.roomtype,
-      totalroomsbooked: roomsSelected,
+      totalroomsbooked: roomsSelected ? Number(roomsSelected) : 0,
       creditused, // days * rooms
       extrabedbooked: bedsSelected || 0, // Assuming 1 extra bed booked
       roomvariation: roomDetails?.roomvariation,
@@ -49,6 +49,12 @@ const ConfirmModal = ({ handleClose, roomDetails, startDate, endDate, roomsSelec
       toast.success("Booking successful");
       setShowSuccessModal(true);
     } catch (error) {
+      const apiErrorMsg = error?.response?.data;
+      if (typeof(apiErrorMsg) === 'string') {
+        toast.error(apiErrorMsg);
+        setShowErrorModal(true);
+        return
+      }
       console.error('Error confirming booking:', error);
       toast.error("Booking Failed");
       setShowErrorModal(true);

@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from "react";
+import { useLocation } from "react-router-dom";
 import Footer from "../Footer";
 import "./booking.css";
 import MenuBar from "../menumain/menubar";
@@ -8,18 +9,19 @@ import axios from "axios";
 const Booking = () => {
   const [searchResult, setSearchResult] = useState([]);
   const [loading, setLoading] = useState(true);
-  const [availableCredits, setAvailableCredits] = useState(null);
+  const [availableCredits, setAvailableCredits] = useState(0);
   const [selectedDate, setSelectedDate] = useState(() => {
     const today = new Date();
     return today.toISOString().split("T")[0];
   });
+  const userStr = sessionStorage.getItem("userDetails");
 
   useEffect(() => {
-      const userDetails = JSON.parse(sessionStorage.getItem("userDetails"));
-      if (userDetails) {
-        setAvailableCredits(userDetails.credits || 0);
-      }
-    }, []);
+    const userDetails = userStr ? JSON.parse(userStr) : null;
+    if (userDetails) {
+      setAvailableCredits(userDetails.credits || 0);
+    }
+  }, []);
 
   const fetchData = async (date) => {
     setLoading(true);
