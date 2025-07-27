@@ -21,7 +21,7 @@ const RoomDetails = () => {
   const [openModal, setOpenModal] = useState(false);
   const location = useLocation();
   const { room, checkIn, checkOut } = location.state; // Retrieve the passed room data
-
+  const numberOfDays = moment(checkOut).diff(moment(checkIn), 'days');
   const mainImage = image1;
   const sideImages = [image2, image3];
 
@@ -66,6 +66,7 @@ const RoomDetails = () => {
   const totalRooms = data.reduce((sum, item) => sum + item.rooms, 0);
   const totalAmount = data.reduce((sum, item) => sum + item.price, 0);
   const totalMaintenanceCost = data.reduce((sum, item) => sum + item.maintenance, 0);
+  const totalBeds = data.reduce((sum, item) => sum + item.additionalBeds, 0);
 
   // console.log("Total Rooms:", totalRooms);
   // console.log("Total Amount:", totalAmount);
@@ -240,10 +241,12 @@ const RoomDetails = () => {
           roomDetails={room}
           startDate={checkIn}
           endDate={checkOut}
-          totalrooms={totalRooms}
+          roomsSelected={totalRooms}
           roomcost={room.roomcost}
           maintanancecost={totalMaintenanceCost}
           totalamount={totalAmount}
+          bedsSelected={totalBeds}
+          days={numberOfDays}
         />
       )}
       </div>

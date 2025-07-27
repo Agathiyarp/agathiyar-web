@@ -5,17 +5,21 @@ import MenuBar from "../../menumain/menubar";
 
 const AddBooking = () => {
   const [formData, setFormData] = useState({
-    destination: '',
-    startdate: '',
-    enddate: '',
+    roomname: '',
     singleoccupy: '',
     roomdescription: '',
     roomtype: '',
-    totalrooms: '',
+    availabletotalrooms: '',
     roomvariation: '',
-    roomcost: '',
-    maintenancecost: '', 
-    maintenancecostsponsor: ''
+    sponsoruserroomcost: '',
+    normaluserroomcost: '',
+    normalusermaintenancecost: '',
+    sponsorusermaintenancecost: '',
+    maxroomallowed: '',
+    extrabed: '',
+    extrabedcost: '',
+    userroomlimit: '',
+    maintenancealert: ''
   });
 
   const [singleImage, setSingleImage] = useState(null);
@@ -41,16 +45,12 @@ const AddBooking = () => {
 
     const payload = new FormData();
 
-    // Append form fields
     Object.entries(formData).forEach(([key, value]) => {
       payload.append(key, value);
     });
 
-    // Dates: already in yyyy-mm-dd format from <input type="date">
-    payload.set('startdate', formData.startdate);
-    payload.set('enddate', formData.enddate);
+    payload.append('createddate', new Date().toISOString());
 
-    // Append images
     if (singleImage) {
       payload.append('image', singleImage);
     }
@@ -59,38 +59,36 @@ const AddBooking = () => {
       payload.append('multipleimage', file);
     });
 
-    // Optional: Debug what’s being sent
-    for (let [key, value] of payload.entries()) {
-      console.log(key, value);
-    }
-
     try {
       const res = await fetch('https://www.agathiyarpyramid.org/api/addbooking', {
         method: 'POST',
-        body: payload, // Do NOT set Content-Type when using FormData
+        body: payload,
       });
 
-      const resultText = await res.text(); // Use .text() first for better debugging
+      const resultText = await res.text();
 
       if (res.status === 201) {
-
         setFormData({
-          destination: '',
-          startdate: '',
-          enddate: '',
+          roomname: '',
           singleoccupy: '',
           roomdescription: '',
           roomtype: '',
-          totalrooms: '',
+          availabletotalrooms: '',
           roomvariation: '',
-          roomcost: '',
-          maintenancecost: '',
-          maintenancecostsponsor: ''
+          sponsoruserroomcost: '',
+          normaluserroomcost: '',
+          normalusermaintenancecost: '',
+          sponsorusermaintenancecost: '',
+          maxroomallowed: '',
+          extrabed: '',
+          extrabedcost: '',
+          userroomlimit: '',
+          maintenancealert: ''
         });
         setSingleImage(null);
         setMultipleImages([]);
         setTimeout(() => navigate("/admin"), 3000);
-      } else if(res.status == '409'){
+      } else if (res.status === 409) {
         alert('Booking already exists for the specified date range');
       } else {
         console.error('Server responded with error:', resultText);
@@ -108,29 +106,60 @@ const AddBooking = () => {
       <h2>Add New Room</h2>
       <form onSubmit={handleSubmit} className="booking-form" encType="multipart/form-data">
         <div className="row">
-          <input type="text" name="destination" placeholder="Destination" value={formData.destination} onChange={handleChange} required />
+          <input type="text" name="roomname" placeholder="Room Name" value={formData.roomname} onChange={handleChange} required />
           <input type="text" name="roomtype" placeholder="Room Type" value={formData.roomtype} onChange={handleChange} required />
         </div>
 
         <div className="row">
-          <input type="date" name="startdate" value={formData.startdate} onChange={handleChange} required />
-          <input type="date" name="enddate" value={formData.enddate} onChange={handleChange} required />
-        </div>
-
-        <div className="row">
-          <input type="text" name="totalrooms" placeholder="Total Rooms" value={formData.totalrooms} onChange={handleChange} required />
+          <input type="text" name="availabletotalrooms" placeholder="Total Rooms" value={formData.availabletotalrooms} onChange={handleChange} required />
           <input type="text" name="roomvariation" placeholder="Room Variation" value={formData.roomvariation} onChange={handleChange} />
         </div>
 
         <div className="row">
-          <input type="text" name="roomcost" placeholder="Room Cost" value={formData.roomcost} onChange={handleChange} />
-          <input type="text" name="maintenancecost" placeholder="Maintenance Cost(User)" value={formData.maintenancecost} onChange={handleChange} />
+          <input type="text" name="normaluserroomcost" placeholder="Room Cost (Normal User)" value={formData.normaluserroomcost} onChange={handleChange} />
+          <input type="text" name="sponsoruserroomcost" placeholder="Room Cost (Sponsor User)" value={formData.sponsoruserroomcost} onChange={handleChange} />
         </div>
 
         <div className="row">
-          <input type="text" name="maintenancecostsponsor" placeholder="Maintenance Cost(Sponor)" value={formData.maintenancecostsponsor} onChange={handleChange} />
-          <input type="text" name="singleoccupy" placeholder="Single Occupy (yes/no)" value={formData.singleoccupy} onChange={handleChange} />
+          <input type="text" name="normalusermaintenancecost" placeholder="Maintenance Cost (Normal User)" value={formData.normalusermaintenancecost} onChange={handleChange} />
+          <input type="text" name="sponsorusermaintenancecost" placeholder="Maintenance Cost (Sponsor User)" value={formData.sponsorusermaintenancecost} onChange={handleChange} />
         </div>
+
+        <div className="row">
+          <select name="singleoccupy" value={formData.singleoccupy} onChange={handleChange}>
+            <option value="">Single Occupy</option>
+            <option value="yes">Yes</option>
+            <option value="no">No</option>
+          </select>
+          <input type="text" name="maxroomallowed" placeholder="Max Rooms Allowed Days" value={formData.maxroomallowed} onChange={handleChange} />
+        </div>
+
+        <div className="row">
+          <select name="extrabed" value={formData.extrabed} onChange={handleChange}>
+            <option value="">Extra Bed</option>
+            <option value="yes">Yes</option>
+            <option value="no">No</option>
+          </select>
+          {formData.extrabed.toLowerCase() === 'yes' && (
+            <input type="text" name="extrabedcost" placeholder="Extra Bed Cost" value={formData.extrabedcost} onChange={handleChange} />
+          )}
+          <input
+            type="text"
+            name="userroomlimit"
+            placeholder="User Room Booking Limit"
+            value={formData.userroomlimit}
+            onChange={handleChange}
+          />
+        </div>
+        <div className="row">
+          <textarea
+            name="maintenancealert"
+            placeholder="Maintenance Alert Message (if any)"
+            value={formData.maintenancealert}
+            onChange={handleChange}
+          ></textarea>
+        </div>
+
 
         <textarea name="roomdescription" placeholder="Room Description" value={formData.roomdescription} onChange={handleChange}></textarea>
 

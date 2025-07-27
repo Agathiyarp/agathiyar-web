@@ -6,7 +6,7 @@ import { toast } from 'react-toastify';
 import CircularProgress from '@mui/material/CircularProgress';
 
 
-const ConfirmModal = ({ handleClose, roomDetails, startDate, endDate, totalrooms, roomcost, maintanancecost, totalamount }) => {
+const ConfirmModal = ({ handleClose, roomDetails, startDate, endDate, roomsSelected, roomcost, maintanancecost, totalamount, bedsSelected, days }) => {
   const navigate = useNavigate();
   const [isChecked, setIsChecked] = useState(false);
   const [showSuccessModal, setShowSuccessModal] = useState(false);
@@ -14,6 +14,8 @@ const ConfirmModal = ({ handleClose, roomDetails, startDate, endDate, totalrooms
   const [loading, setLoading] = useState(false);
 
   const userDetails = JSON.parse(sessionStorage.getItem('userDetails'));
+  const totalCredit = userDetails?.credits || 0;
+  const creditused = totalCredit - (roomsSelected * days);
 
   const handleCheckboxChange = (event) => {
     setIsChecked(event.target.checked);
@@ -32,7 +34,9 @@ const ConfirmModal = ({ handleClose, roomDetails, startDate, endDate, totalrooms
       singleoccupy: roomDetails?.singleoccupy,
       roomdescription: roomDetails?.roomdescription,
       roomtype: roomDetails?.roomtype,
-      totalrooms,
+      totalroomsbooked: roomsSelected,
+      creditused, // days * rooms
+      extrabedbooked: bedsSelected || 0, // Assuming 1 extra bed booked
       roomvariation: roomDetails?.roomvariation,
       roomcost,
       maintanancecost,
