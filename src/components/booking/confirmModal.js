@@ -6,7 +6,7 @@ import { toast } from 'react-toastify';
 import CircularProgress from '@mui/material/CircularProgress';
 
 
-const ConfirmModal = ({ handleClose, roomDetails, startDate, endDate, roomsSelected, roomcost, maintanancecost, totalamount, bedsSelected, days }) => {
+const ConfirmModal = ({ handleClose, roomDetails, startDate, endDate, roomsSelected, roomcost, maintanancecost, totalamount, bedsSelected, days, refreshUserCredits }) => {
   const navigate = useNavigate();
   const [isChecked, setIsChecked] = useState(false);
   const [showSuccessModal, setShowSuccessModal] = useState(false);
@@ -47,6 +47,9 @@ const ConfirmModal = ({ handleClose, roomDetails, startDate, endDate, roomsSelec
       const response = await axios.post('https://agathiyarpyramid.org/api/roombooking', requestBody);
       console.log('Booking confirmed:', response.data);
       toast.success("Booking successful");
+      if (typeof refreshUserCredits === "function") {
+        await refreshUserCredits();
+      }
       setShowSuccessModal(true);
     } catch (error) {
       const apiErrorMsg = error?.response?.data;
@@ -66,7 +69,7 @@ const ConfirmModal = ({ handleClose, roomDetails, startDate, endDate, roomsSelec
   const handleSuccessClose = () => {
     setShowSuccessModal(false);
     handleClose();
-    navigate('/booking');
+    navigate('/booking', { state: { bookingSuccess: true } });
   };
 
   const handleErrorClose = () => {

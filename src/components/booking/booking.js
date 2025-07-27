@@ -15,6 +15,8 @@ const Booking = () => {
     return today.toISOString().split("T")[0];
   });
   const userStr = sessionStorage.getItem("userDetails");
+  const location = useLocation(); // ✅
+
 
   useEffect(() => {
     const userDetails = userStr ? JSON.parse(userStr) : null;
@@ -22,6 +24,36 @@ const Booking = () => {
       setAvailableCredits(userDetails.credits || 0);
     }
   }, []);
+
+  useEffect(() => {
+    if (location.state?.bookingSuccess) {
+      refreshUserCredits();
+      // Clear the state to prevent repeated refresh
+      window.history.replaceState({}, document.title);
+    }
+  }, [location.state]);
+
+  const refreshUserCredits = async () => {
+    try {
+      const userDetails = userStr ? JSON.parse(userStr) : null;
+      if (!userDetails?.usermemberid) return;
+
+      const response = await axios.get("https://www.agathiyarpyramid.org/api/users");
+      const users = response?.data || [];
+
+      const matchedUser = users.find(u => u.usermemberid === userDetails.usermemberid);
+      if (matchedUser) {
+        setAvailableCredits(matchedUser.credits || 0);
+
+        // Update sessionStorage for consistency
+        const updatedUserDetails = { ...userDetails, credits: matchedUser.credits };
+        sessionStorage.setItem("userDetails", JSON.stringify(updatedUserDetails));
+      }
+    } catch (error) {
+      console.error("Failed to refresh credits:", error);
+    }
+  };
+
 
   const fetchData = async (date) => {
     setLoading(true);
@@ -84,7 +116,7 @@ const Booking = () => {
         {loading ? (
           <div className="loading-content">Loading...</div>
         ) : searchResult.length > 0 ? (
-          <BookingContent searchResult={searchResult} />
+          <BookingContent searchResult={searchResult}  refreshUserCredits={refreshUserCredits}/>
         ) : (
           <div className="empty-content">No Rooms Available</div>
         )}
