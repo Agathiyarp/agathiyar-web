@@ -23,6 +23,7 @@ const ProfileMenu = ({ user, onLogout }) => {
   const data = sessionStorage.getItem('userDetails');
 
   const handleProfileClick = ()=> {
+    handleMenuClose();
     navigate('/profileview');
   }
 
@@ -39,7 +40,10 @@ const ProfileMenu = ({ user, onLogout }) => {
             onClick={handleMenuOpen}
             color="inherit"
           >
-            <Avatar src={user.profilePicture} alt={user.name} />
+            <Avatar src={user.profilePicture}>
+              {!user.profilePicture && user.name?.[0]?.toUpperCase()}
+            </Avatar>
+
           </IconButton>
 
           {/* Profile Dropdown Menu */}

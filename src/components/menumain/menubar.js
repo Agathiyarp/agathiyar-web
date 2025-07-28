@@ -26,7 +26,7 @@ const MenuBar = () => {
 
   const [user, setUser] = useState({
     name: "",
-    profilePicture: sessionData ? JSON.parse(sessionData)?.profileImage: ""
+    profilePicture: ""
   });
 
   const handleLogout = async () => {
@@ -110,8 +110,39 @@ const MenuBar = () => {
     handleResize(); // Check the screen size on mount
     window.addEventListener("resize", handleResize);
 
+    const data = sessionStorage.getItem("userDetails");
+    const parsedData = data && data.length > 0 ? JSON.parse(data) : null;
+
+    if (parsedData?.username) {
+      setUser((prev) => ({
+        ...prev,
+        name: parsedData.username,
+      }));
+
+      const fetchProfileImage = async () => {
+        try {
+          const response = await fetch(
+            `https://www.agathiyarpyramid.org/api/user/profile-image/${parsedData.username}`
+          );
+          if (!response.ok) throw new Error("Failed to fetch profile image");
+
+          const blob = await response.blob();
+          const imageUrl = URL.createObjectURL(blob);
+          setUser((prev) => ({
+            ...prev,
+            profilePicture: imageUrl,
+          }));
+        } catch (error) {
+          console.error("Failed to fetch profile image:", error);
+        }
+      };
+
+      fetchProfileImage();
+    }
+
     return () => window.removeEventListener("resize", handleResize);
   }, []);
+
 
   return (
     <AppBar

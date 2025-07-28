@@ -16,17 +16,31 @@ const Admin = () => {
 
   // Load user details on mount
   useEffect(() => {
-    const userInfo =sessionStorage.getItem("userDetails")
+    const userInfo = sessionStorage.getItem("userDetails");
     const userDetails = userInfo?.length ? JSON.parse(userInfo) : '';
+
     if (userDetails) {
       setUserType(userDetails.userrole);
       setUserAccess(userDetails.useraccess || []);
-      setUserName(userDetails.username || []);
-    }
-    if (userDetails.profileImage) {
-      setAvatar(userDetails.profileImage);
+      setUserName(userDetails.username || "");
+
+      const fetchProfileImage = async () => {
+        try {
+          const response = await fetch(`https://www.agathiyarpyramid.org/api/user/profile-image/${userDetails.username}`);
+          if (!response.ok) throw new Error("Failed to fetch image");
+
+          const blob = await response.blob();
+          const imageUrl = URL.createObjectURL(blob);
+          setAvatar(imageUrl); // ✅ Set fetched image
+        } catch (error) {
+          console.error("Failed to fetch profile image:", error);
+        }
+      };
+
+      fetchProfileImage();
     }
   }, []);
+
 
   const handleAvatarClick = () => {
     fileInputRef.current.click();
@@ -203,11 +217,11 @@ const Admin = () => {
                 onChange={handleFileChange}
               />
             </div>
-            {avatar && (
+            {/* {avatar && (
               <button className="remove-btn" onClick={handleRemove}>
                 Remove Image
               </button>
-            )}
+            )} */}
             <h2 className="profile-name">
               {userName?.toUpperCase() || "USER"}
             </h2>
