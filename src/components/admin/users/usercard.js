@@ -218,9 +218,9 @@ const UserCard = ({ user, onSave }) => {
             <strong>User Role:</strong> {user.userrole}
           </p>
           <p>
-            <strong>User Type:</strong> {user.usertype}
+            <strong>User Type:</strong> {user.usertype ? user.usertype: "Not specified"}
           </p>
-          <p><strong>Available Credits:</strong> {user.credits || 0}</p>
+          {user.usertype && user.usertype !== "user" ? <p><strong>Available Credits:</strong> {user.credits || 0}</p>: ''}
           <p>
             <strong>User Access:</strong>{" "}
             {Array.isArray(user?.useraccess) && user.useraccess.length

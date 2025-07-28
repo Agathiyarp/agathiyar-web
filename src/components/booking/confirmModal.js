@@ -4,6 +4,7 @@ import axios from 'axios';
 import { useNavigate } from "react-router-dom";
 import { toast } from 'react-toastify';
 import CircularProgress from '@mui/material/CircularProgress';
+import { use } from 'react';
 
 
 const ConfirmModal = ({ handleClose, roomDetails, startDate, endDate, roomsSelected, roomcost, maintanancecost, totalamount, bedsSelected, days, refreshUserCredits }) => {
@@ -14,6 +15,7 @@ const ConfirmModal = ({ handleClose, roomDetails, startDate, endDate, roomsSelec
   const [loading, setLoading] = useState(false);
 
   const userDetails = JSON.parse(sessionStorage.getItem('userDetails'));
+  const userType = userDetails?.usertype?.trim().toLowerCase() || "";
   const totalCredit = userDetails?.credits || 0;
   const creditused = totalCredit - (roomsSelected * days);
 
@@ -35,7 +37,7 @@ const ConfirmModal = ({ handleClose, roomDetails, startDate, endDate, roomsSelec
       roomdescription: roomDetails?.roomdescription,
       roomtype: roomDetails?.roomtype,
       totalroomsbooked: roomsSelected ? Number(roomsSelected) : 0,
-      creditused, // days * rooms
+      creditused: userType && userType !== "user" ? creditused: -1, // days * rooms
       extrabedbooked: bedsSelected || 0, // Assuming 1 extra bed booked
       roomvariation: roomDetails?.roomvariation,
       roomcost,

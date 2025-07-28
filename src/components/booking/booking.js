@@ -15,7 +15,9 @@ const Booking = () => {
     return today.toISOString().split("T")[0];
   });
   const userStr = sessionStorage.getItem("userDetails");
-  const location = useLocation(); // ✅
+  const userDetails = userStr ? JSON.parse(userStr) : null;
+  const userType = userDetails?.usertype?.trim().toLowerCase() || "";
+  const location = useLocation(); 
 
 
   useEffect(() => {
@@ -110,9 +112,13 @@ const Booking = () => {
             onChange={(e) => setSelectedDate(e.target.value)}
           />
         </div> */}
-        <div className="available-credits">
-          Available User Credits: <span className="credit-value">{availableCredits}</span>
-        </div>
+        {userType && userType !== "user" && (
+          <div className="available-credits">
+            Available User Credits: <span className="credit-value">{availableCredits}</span>
+          </div>
+        )}
+
+
         {loading ? (
           <div className="loading-content">Loading...</div>
         ) : searchResult.length > 0 ? (
