@@ -112,7 +112,7 @@ const BookingConfirmation = () => {
                 <td>{item.memberid || '-'}</td>
                 <td>{item.destination || '-'}</td>
                 <td>{item.totalamount || '0'}</td>
-                <td>{item.totalrooms || '0'}</td>
+                <td>{item.totalroomsbooked || '0'}</td>
                 <td>{item.bookingstatus || '-'}</td>
                 <td style={{ display: 'flex', flexDirection: 'column', gap: '10px' }}>
                    {item.bookingstatus === 'pending-approval' ? (
