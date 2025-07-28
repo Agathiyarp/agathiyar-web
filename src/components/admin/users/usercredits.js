@@ -128,7 +128,7 @@ const UserCredits = () => {
               onChange={(e) => setNewCredit(e.target.value)}
               placeholder="Enter new credit value"
             />
-            <div className="modal-actions">
+            <div className="modal-actions-1">
               <button onClick={handleUpdateCredit} className="save-btn">Save</button>
               <button onClick={handleCloseModal} className="cancel-btn">Cancel</button>
             </div>

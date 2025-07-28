@@ -87,7 +87,7 @@ const RoomList = () => {
         <div className="modal-overlay">
           <div className="modal-content">
             <p>Are you sure you want to delete the room record?</p>
-            <div className="modal-actions">
+            <div className="modal-actions-1">
               <button className="confirm-button" onClick={handleDeleteConfirmed}>Yes, Delete</button>
               <button className="cancel-button" onClick={handleCancel}>Cancel</button>
             </div>

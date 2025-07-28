@@ -126,7 +126,7 @@ const EventDetails = () => {
         </div>
       )}
 
-      {userList.length > 0 && (
+      {userList?.length > 0 && (
         <div className="user-list">
           <h4>User List</h4>
           <table>
