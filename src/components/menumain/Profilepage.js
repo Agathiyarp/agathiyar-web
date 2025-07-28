@@ -14,6 +14,7 @@ import {
   ListItemText,
   Typography,
   Paper,
+  Table, TableHead, TableRow, TableCell, TableBody, TableContainer, Button
 } from '@mui/material';
 import './Profilepage.css';
 import { ToastContainer, toast } from "react-toastify";
@@ -26,6 +27,7 @@ const ProfilePage = () => {
   const navigate = useNavigate();
   const fileInputRef = useRef(null);
   const [profileImg, setProfileImg] = useState('');
+  const [bookingList, setBookingList] = useState([]);
   const data = sessionStorage.getItem('userDetails');
   const parsedData = JSON.parse(data);
 
@@ -39,22 +41,33 @@ const ProfilePage = () => {
 
   // 🔁 Load profile image on mount
   useEffect(() => {
-    
-      const fetchProfileImage = async () => {
-        try {
-          const response = await fetch(`https://www.agathiyarpyramid.org/api/user/profile-image/${parsedData?.username}`);
+  const fetchProfileImage = async () => {
+    try {
+      const response = await fetch(`https://www.agathiyarpyramid.org/api/user/profile-image/${parsedData?.username}`);
+      if (!response.ok) throw new Error("Failed to fetch image");
+      const blob = await response.blob();
+      const imageUrl = URL.createObjectURL(blob);
+      setProfileImg(imageUrl);
+    } catch (error) {
+      console.error("Failed to fetch profile image:", error);
+    }
+  };
 
-          if (!response.ok) throw new Error("Failed to fetch image");
+  const fetchBookingList = async () => {
+    try {
+      const response = await fetch(`https://www.agathiyarpyramid.org/api/bookings/${parsedData?.usermemberid}`);
+      if (!response.ok) throw new Error("Failed to fetch booking list");
+      const result = await response.json();
+      setBookingList(result || []);
+    } catch (error) {
+      console.error("Failed to fetch booking list:", error);
+    }
+  };
 
-          const blob = await response.blob();
-          const imageUrl = URL.createObjectURL(blob); // ✅ create object URL for the image
-          setProfileImg(imageUrl);
-        } catch (error) {
-          console.error("Failed to fetch profile image:", error);
-        }
-      };
-      fetchProfileImage();
-  }, [parsedData?.username]);
+  fetchProfileImage();
+  fetchBookingList();
+}, [parsedData?.username, parsedData?.usermemberid]);
+
 
   const handleNavigate = (name) => {
     if (name === 'Home') {
@@ -201,7 +214,7 @@ const ProfilePage = () => {
                   <Typography sx={{ width: '35%', fontWeight: 500, textTransform: 'capitalize' }}>
                     {key.replace(/([A-Z])/g, ' $1').trim()}
                   </Typography>
-                  <Typography sx={{ color: 'text.secondary' }}>{value}</Typography>
+                  <Typography sx={{ color: 'text.secondary', fontWeight: 'bold' }}>{value}</Typography>
                 </Box>
               ))}
             </CardContent>
@@ -210,18 +223,46 @@ const ProfilePage = () => {
           <Card>
             <CardContent>
               <Typography variant="h5" gutterBottom>Booking History</Typography>
-              <Paper sx={{ p: 2 }}>
-                <Box sx={{ display: 'flex', flexDirection: { xs: 'column', sm: 'row' } }}>
-                  <Typography sx={{ width: { xs: '100%', sm: '25%' }, fontWeight: 500 }}>
-                    Booking Details
-                  </Typography>
-                  <Typography sx={{ color: 'text.secondary', mt: { xs: 1, sm: 0 } }}>
-                    Booking Description
-                  </Typography>
-                </Box>
-              </Paper>
+
+              {bookingList.length === 0 ? (
+                <Typography>No bookings found.</Typography>
+              ) : (
+                <TableContainer component={Paper}>
+                  <Table sx={{ minWidth: 650, marginTop: 0  }} aria-label="booking table">
+                    <TableHead>
+                      <TableRow sx={{ backgroundColor: '#4CAF50' }}>
+                        <TableCell sx={{ color: 'white' }}>Start Date</TableCell>
+                        <TableCell sx={{ color: 'white' }}>End Date</TableCell>
+                        <TableCell sx={{ color: 'white' }}>Booking ID</TableCell>
+                        <TableCell sx={{ color: 'white' }}>Email</TableCell>
+                        <TableCell sx={{ color: 'white' }}>User ID</TableCell>
+                        <TableCell sx={{ color: 'white' }}>Destination</TableCell>
+                        <TableCell sx={{ color: 'white' }}>Amount</TableCell>
+                        <TableCell sx={{ color: 'white' }}>Status</TableCell>
+                      </TableRow>
+                    </TableHead>
+                    <TableBody>
+                      {bookingList.map((row, index) => (
+                        <TableRow key={index}>
+                          <TableCell>{new Date(row.createddate).toLocaleDateString()}</TableCell>
+                          <TableCell>{new Date(row.enddate).toLocaleDateString()}</TableCell>
+                          <TableCell>{row.id}</TableCell>
+                          <TableCell>{row.email}</TableCell>
+                          <TableCell>{row.memberid}</TableCell>
+                          <TableCell>{row.destination}</TableCell>
+                          <TableCell>{row.maintanancecost}</TableCell>
+                          <TableCell>{row.bookingstatus}</TableCell>
+                        </TableRow>
+                      ))}
+                    </TableBody>
+                  </Table>
+                </TableContainer>
+
+              )}
             </CardContent>
           </Card>
+
+
         </Container>
       </Box>
       <ToastContainer position="top-right" autoClose={3000} hideProgressBar={false} />
