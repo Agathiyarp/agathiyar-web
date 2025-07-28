@@ -39,16 +39,21 @@ const ProfilePage = () => {
 
   // 🔁 Load profile image on mount
   useEffect(() => {
-    const fetchProfileImage = async () => {
-      try {
-        const response = await fetch(`https://www.agathiyarpyramid.org/api/user/profile-image/${parsedData?.username}`);
-        const result = await response.json();
-        if (result?.imageUrl) setProfileImg(result.imageUrl);
-      } catch (error) {
-        console.error("Failed to fetch profile image:", error);
-      }
-    };
-    fetchProfileImage();
+    
+      const fetchProfileImage = async () => {
+        try {
+          const response = await fetch(`https://www.agathiyarpyramid.org/api/user/profile-image/${parsedData?.username}`);
+
+          if (!response.ok) throw new Error("Failed to fetch image");
+
+          const blob = await response.blob();
+          const imageUrl = URL.createObjectURL(blob); // ✅ create object URL for the image
+          setProfileImg(imageUrl);
+        } catch (error) {
+          console.error("Failed to fetch profile image:", error);
+        }
+      };
+      fetchProfileImage();
   }, [parsedData?.username]);
 
   const handleNavigate = (name) => {
@@ -163,13 +168,13 @@ const ProfilePage = () => {
             </button>
           </Box>
 
-          <input
+          {/* <input
             ref={fileInputRef}
             type="file"
             accept="image/*"
             style={{ display: 'none' }}
             onChange={handleFileChange}
-          />
+          /> */}
           <Typography variant="h6" sx={{ fontWeight: 500, marginTop: '1rem' }}>
             {userDetails.fullName}
           </Typography>

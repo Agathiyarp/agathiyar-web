@@ -98,7 +98,7 @@ const LoginForm = () => {
               placeholder="Enter Password"
               value={password}
               onChange={(e) => setPassword(e.target.value)}
-              className={`input ${errors.password ? "error" : ""}`}
+              className={`input ${errors.password ? "error-display" : ""}`}
             />
             <span
               className="material-icons toggle-password"

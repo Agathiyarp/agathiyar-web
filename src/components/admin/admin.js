@@ -16,7 +16,8 @@ const Admin = () => {
 
   // Load user details on mount
   useEffect(() => {
-    const userDetails = JSON.parse(sessionStorage.getItem("userDetails"));
+    const userInfo =sessionStorage.getItem("userDetails")
+    const userDetails = userInfo?.length ? JSON.parse(userInfo) : '';
     if (userDetails) {
       setUserType(userDetails.userrole);
       setUserAccess(userDetails.useraccess || []);

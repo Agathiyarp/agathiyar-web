@@ -39,7 +39,7 @@
   font-size: 1rem;
 }
 
-.input.error {
+.input.error-display {
   border-color: red;
 }
 
@@ -47,6 +47,7 @@
   margin-top: 0.25rem;
   color: red;
   font-size: 0.875rem;
+  position: static;
 }
 
 .api-error-text {
@@ -131,7 +132,7 @@
 .password-container {
   position: relative;
   display: flex;
-  align-items: center;
+  flex-direction: column;
 }
 
 .toggle-password {
