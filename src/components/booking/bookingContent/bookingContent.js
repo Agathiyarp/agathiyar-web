@@ -14,6 +14,10 @@ const RoomBook = ({ searchResult }) => {
   const navigate = useNavigate();
   const MAX_DAYS_ALLOWED = 10;
 
+  const userDetails = JSON.parse(sessionStorage.getItem('userDetails'));
+
+  const userType = userDetails?.usertype?.trim().toLowerCase() || "";
+
   // Helper to format date
   const formatDate = (date) => date.toISOString().split("T")[0];
 
@@ -38,6 +42,11 @@ const RoomBook = ({ searchResult }) => {
   }, [searchResult]);
 
   const handleRoomSelect = (room) => {
+    if (userType === "donar" && room.roomname === "Patriji Bhavan") {
+      alert(`Donar cannot book Patriji Room`);
+      return;
+    }
+    console.log("Selected room:", room);
     const isLoggedIn = sessionStorage.getItem("userDetails");
     console.log("userDetails:", sessionStorage.getItem("userDetails"));
 
@@ -91,7 +100,7 @@ const RoomBook = ({ searchResult }) => {
                   <div className="room-card__content">
                     <div>
                       <div className="room-card__header">
-                        <h2 className="room-card__name">{room.destination}</h2>
+                        <h2 className="room-card__name">{room.roomname}</h2>
                       </div>
                       <p className="room-card__description">
                         {room.roomdescription}

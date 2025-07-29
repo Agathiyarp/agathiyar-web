@@ -89,7 +89,7 @@ const Booking = () => {
       <div className="booking-content-wrapper">
         <h1 className="booking-title">Agathiyar Pyramid Accomodation</h1>
         <h3 className="booking-subtitle">
-          Destination: Agathiyar - Pathriji - Dormitory
+          Destination: Agathiyar - Patriji - Dormitory
         </h3>
         <div className="info-section-booking">
           <p>
@@ -97,7 +97,7 @@ const Booking = () => {
             based on the number of persons accommodating:
           </p>
           <ul className="tick-list">
-            <li>Pathriji Bhavan - for a maximum accommodation of 4 personnel.</li>
+            <li>Patriji Bhavan - for a maximum accommodation of 4 personnel.</li>
             <li>Agathiyar Bhavan - for a maximum accommodation of 1 personnel.</li>
           </ul>
         </div>

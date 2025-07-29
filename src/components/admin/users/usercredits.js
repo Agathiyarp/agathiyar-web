@@ -9,6 +9,7 @@ const UserCredits = () => {
   const [showModal, setShowModal] = useState(false);
   const [selectedUser, setSelectedUser] = useState(null);
   const [newCredit, setNewCredit] = useState('');
+  const [updateReason, setUpdateReason] = useState('');
 
   useEffect(() => {
     const fetchCredits = async () => {
@@ -32,12 +33,14 @@ const UserCredits = () => {
     setSelectedUser(user);
     setNewCredit(user.credits ?? 0);
     setShowModal(true);
+    setUpdateReason('');
   };
 
   const handleCloseModal = () => {
     setShowModal(false);
     setSelectedUser(null);
     setNewCredit('');
+    setUpdateReason('');
   };
 
   const handleUpdateCredit = async () => {
@@ -50,7 +53,11 @@ const UserCredits = () => {
           headers: {
             'Content-Type': 'application/json',
           },
-          body: JSON.stringify({ credits: Number(newCredit) }),
+          body: JSON.stringify({ 
+            credits: Number(newCredit), 
+            reason: updateReason,
+            modifiedDate: new Date().toISOString()
+          }),
         }
       );
       if (!res.ok) throw new Error('Failed to update credits');
@@ -59,7 +66,7 @@ const UserCredits = () => {
       setCreditsList(prev =>
         prev.map(user =>
           user.usermemberid === selectedUser.usermemberid
-            ? { ...user, credits: Number(newCredit) }
+            ? { ...user, credits: Number(newCredit), modifiedDate: new Date().toISOString(), }
             : user
         )
       );
@@ -128,8 +135,20 @@ const UserCredits = () => {
               onChange={(e) => setNewCredit(e.target.value)}
               placeholder="Enter new credit value"
             />
+            <textarea
+              rows="3"
+              value={updateReason}
+              onChange={(e) => setUpdateReason(e.target.value)}
+              placeholder="Enter reason for update"
+              className="reason-textarea"
+            />
+            {updateReason.trim() === '' && (
+              <p style={{ color: 'red', fontSize: '12px', marginTop: '4px' }}>
+                Reason is required to proceed.
+              </p>
+            )}
             <div className="modal-actions-1">
-              <button onClick={handleUpdateCredit} className="save-btn">Save</button>
+              <button onClick={handleUpdateCredit} disabled={updateReason.trim() === ''} className="save-btn">Save</button>
               <button onClick={handleCloseModal} className="cancel-btn">Cancel</button>
             </div>
           </div>

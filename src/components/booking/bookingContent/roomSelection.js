@@ -33,7 +33,7 @@ const RoomSelection = ({ selectedRoom, searchData }) => {
     rooms = [1, 2];
     guests = [];
     beds = [];
-  } else if(searchData && searchData.destination === 'Pathriji Bhavan') {
+  } else if(searchData && searchData.destination === 'Patriji Bhavan') {
     rooms = [1, 2];
     guests = [1, 2, 3, 4];
     beds = [];

@@ -50,6 +50,10 @@ const BookingConfirmation = () => {
       userid: selectedBooking.userid,
       bookingid: selectedBooking.id,
       bookingstatus: actionType,
+      totalroomsbooked: selectedBooking.totalroomsbooked,
+      creditused: selectedBooking.creditused,
+      startdate: selectedBooking.startdate,
+      enddate: selectedBooking.enddate,
     };
 
     try {
@@ -95,7 +99,7 @@ const BookingConfirmation = () => {
               <th>Booking ID</th>
               <th>Name</th>
               <th>User ID</th>
-              <th>Destination</th>
+              <th>Room Name</th>
               <th>Amount</th>
               <th>Rooms</th>
               <th>Status</th>
@@ -110,7 +114,7 @@ const BookingConfirmation = () => {
                 <td>{item.id || '-'}</td>
                 <td>{item.username || '-'}</td>
                 <td>{item.memberid || '-'}</td>
-                <td>{item.destination || '-'}</td>
+                <td>{item.roomname || '-'}</td>
                 <td>{item.totalamount || '0'}</td>
                 <td>{item.totalroomsbooked || '0'}</td>
                 <td>{item.bookingstatus || '-'}</td>

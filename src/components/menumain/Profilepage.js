@@ -236,7 +236,7 @@ const ProfilePage = () => {
                         <TableCell sx={{ color: 'white' }}>Booking ID</TableCell>
                         <TableCell sx={{ color: 'white' }}>Email</TableCell>
                         <TableCell sx={{ color: 'white' }}>User ID</TableCell>
-                        <TableCell sx={{ color: 'white' }}>Destination</TableCell>
+                        <TableCell sx={{ color: 'white' }}>Room Name</TableCell>
                         <TableCell sx={{ color: 'white' }}>Amount</TableCell>
                         <TableCell sx={{ color: 'white' }}>Status</TableCell>
                       </TableRow>
@@ -249,7 +249,7 @@ const ProfilePage = () => {
                           <TableCell>{row.id}</TableCell>
                           <TableCell>{row.email}</TableCell>
                           <TableCell>{row.memberid}</TableCell>
-                          <TableCell>{row.destination}</TableCell>
+                          <TableCell>{row.roomname}</TableCell>
                           <TableCell>{row.maintanancecost}</TableCell>
                           <TableCell>{row.bookingstatus}</TableCell>
                         </TableRow>

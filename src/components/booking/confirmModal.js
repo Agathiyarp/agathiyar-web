@@ -30,7 +30,7 @@ const ConfirmModal = ({ handleClose, roomDetails, startDate, endDate, roomsSelec
       username: userDetails?.username,
       email: userDetails?.email,
       roomid: roomDetails?._id,
-      destination: roomDetails?.destination,
+      roomname: roomDetails?.roomname,
       startdate: startDate,
       enddate: endDate,
       singleoccupy: roomDetails?.singleoccupy,

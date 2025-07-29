@@ -25,9 +25,11 @@ const RoomDetails = () => {
   const mainImage = image1;
   const sideImages = [image2, image3];
 
-  // const userDetails = JSON.parse(sessionStorage.getItem('userDetails'));
+  const userDetails = JSON.parse(sessionStorage.getItem('userDetails'));
+
+  const userType = userDetails?.usertype?.trim().toLowerCase() || "";
   
-  const perBedCost = 500;
+  const perBedCost = parseInt(room?.extrabedcost, 10) || 0;
   // const maintanance = parseInt(room.maintenancecost, 10) || 0;
   
   const amenities = [
@@ -49,8 +51,9 @@ const RoomDetails = () => {
       price: 0, // Initialize to 0 since no rooms selected initially
       maintenance: 0, // Initialize to 0 since no rooms selected initially
       rooms: 1, // Default to 1 room
-      basePrice: parseInt(room.roomcost, 10) || 0,
-      baseMaintenance: parseInt(room.maintenancecost, 10) || 0
+      basePrice: userType && userType !== "user" ? parseInt(room.sponsoruserroomcost, 10) : parseInt(room.normaluserroomcost, 10),
+      baseMaintenance: userType && userType !== "user" ? parseInt(room.sponsorusermaintenancecost, 10) : parseInt(room.normalusermaintenancecost, 10),
+      extrabedcost: room.extrabedcost,
     },
   ];
 
@@ -89,7 +92,7 @@ const RoomDetails = () => {
     const rooms = parseInt(value, 10) || 0;
     updatedData[index].rooms = rooms;
     // Use base prices instead of current prices
-    updatedData[index].price = rooms * updatedData[index].basePrice + (updatedData[index].additionalBeds * perBedCost);
+    updatedData[index].price = rooms * updatedData[index].basePrice + (updatedData[index].additionalBeds * updatedData[index].extrabedcost);
     updatedData[index].maintenance = rooms * updatedData[index].baseMaintenance;
 
     setData(updatedData);
@@ -134,7 +137,7 @@ const RoomDetails = () => {
               <th>Rooms</th>
               <th>Price</th>
               <th>Maintenance</th>
-              {room.destination === "Pathriji Bhavan" && <th>Additional beds</th>}
+              {room.roomname === "Patriji Bhavan" && <th>Additional beds</th>}
             </tr>
           </thead>
           <tbody>
@@ -154,7 +157,7 @@ const RoomDetails = () => {
                 </td>
                 <td>{item.price}</td>
                 <td>{item.maintenance}</td>
-                {room.destination === "Pathriji Bhavan" && <td className="bed-control">
+                {room.roomname === "Patriji Bhavan" && <td className="bed-control">
                   <span>
                     Qty: {item.additionalBeds}{" "}
                     <button
@@ -186,7 +189,7 @@ const RoomDetails = () => {
     <div className="container-room">
       <MenuBar />
       <div className="main-content">
-        <h1 className="title"> <LocationOnIcon fontSize="large" className="text-gray-600 mr-2" />{room.destination}</h1>
+        <h1 className="title"> <LocationOnIcon fontSize="large" className="text-gray-600 mr-2" />{room.roomname}</h1>
         <div className="gallery">
           <div className="gallery-main">
             <div className="card">
