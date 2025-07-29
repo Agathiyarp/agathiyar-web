@@ -12,6 +12,10 @@ const BookingConfirmation = () => {
   const [selectedBooking, setSelectedBooking] = useState(null);
   const [actionType, setActionType] = useState('');
 
+  const userDetails = JSON.parse(sessionStorage.getItem('userDetails'));
+
+  const userType = userDetails?.usertype?.trim().toLowerCase() || "";
+
   const fetchBookings = async () => {
       try {
         const res = await fetch('https://www.agathiyarpyramid.org/api/bookings');
@@ -51,7 +55,7 @@ const BookingConfirmation = () => {
       bookingid: selectedBooking.id,
       bookingstatus: actionType,
       totalroomsbooked: selectedBooking.totalroomsbooked,
-      creditused: selectedBooking.creditused,
+      creditused: userType && userType !== "user" ? (actionType === 'approved' ? selectedBooking.creditused : 0) : 0,
       startdate: selectedBooking.startdate,
       enddate: selectedBooking.enddate,
     };

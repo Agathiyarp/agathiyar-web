@@ -17,7 +17,7 @@ const ConfirmModal = ({ handleClose, roomDetails, startDate, endDate, roomsSelec
   const userDetails = JSON.parse(sessionStorage.getItem('userDetails'));
   const userType = userDetails?.usertype?.trim().toLowerCase() || "";
   const totalCredit = userDetails?.credits || 0;
-  const creditused = totalCredit - (roomsSelected * days);
+  const creditused = roomsSelected * days;
 
   const handleCheckboxChange = (event) => {
     setIsChecked(event.target.checked);
@@ -37,9 +37,10 @@ const ConfirmModal = ({ handleClose, roomDetails, startDate, endDate, roomsSelec
       roomdescription: roomDetails?.roomdescription,
       roomtype: roomDetails?.roomtype,
       totalroomsbooked: roomsSelected ? Number(roomsSelected) : 0,
-      creditused: userType && userType !== "user" ? creditused: -1, // days * rooms
+      creditused: userType && userType !== "user" ? creditused: 0,
       extrabedbooked: bedsSelected || 0, // Assuming 1 extra bed booked
       roomvariation: roomDetails?.roomvariation,
+      usertype: userType,
       roomcost,
       maintanancecost,
       totalamount
