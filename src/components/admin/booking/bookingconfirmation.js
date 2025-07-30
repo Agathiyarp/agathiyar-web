@@ -12,7 +12,8 @@ const BookingConfirmation = () => {
   const [selectedBooking, setSelectedBooking] = useState(null);
   const [actionType, setActionType] = useState('');
 
-  const userDetails = JSON.parse(sessionStorage.getItem('userDetails'));
+  const userInfo = sessionStorage.getItem('userDetails')
+  const userDetails = userInfo ? JSON.parse(userInfo): '';
 
   const userType = userDetails?.usertype?.trim().toLowerCase() || "";
 

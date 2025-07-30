@@ -14,7 +14,8 @@ const ConfirmModal = ({ handleClose, roomDetails, startDate, endDate, roomsSelec
   const [showErrorModal, setShowErrorModal] = useState(false);
   const [loading, setLoading] = useState(false);
 
-  const userDetails = JSON.parse(sessionStorage.getItem('userDetails'));
+  const userInfo = sessionStorage.getItem('userDetails')
+  const userDetails = userInfo ? JSON.parse(userInfo): '';
   const userType = userDetails?.usertype?.trim().toLowerCase() || "";
   const totalCredit = userDetails?.credits || 0;
   const creditused = roomsSelected * days;

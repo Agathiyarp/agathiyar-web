@@ -137,6 +137,14 @@ const Admin = () => {
       cardName: "Booking Confirmation",
     },
     {
+      key: "blockRooms",
+      label: "Block Rooms",
+      group: "Rooms",
+      className: "block-rooms",
+      iconClass: "icon-booking-confirmation",
+      cardName: "Block Rooms",
+    },
+    {
       key: "video",
       label: "VIDEOS",
       group: "Others",
@@ -189,6 +197,8 @@ const Admin = () => {
       navigate("/bookingconfirmation");
     } else if (cardName === "Users Credit") {
       navigate("/usercredits");
+    } else if (cardName === "Block Rooms") {
+      navigate("/blockrooms");
     }
     // Add more conditions for other cards as needed
   };

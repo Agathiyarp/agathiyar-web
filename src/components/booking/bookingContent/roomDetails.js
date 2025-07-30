@@ -25,7 +25,8 @@ const RoomDetails = () => {
   const mainImage = image1;
   const sideImages = [image2, image3];
 
-  const userDetails = JSON.parse(sessionStorage.getItem('userDetails'));
+  const userInfo = sessionStorage.getItem('userDetails')
+  const userDetails = userInfo ? JSON.parse(userInfo): '';
 
   const userType = userDetails?.usertype?.trim().toLowerCase() || "";
   

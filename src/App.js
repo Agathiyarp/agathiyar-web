@@ -30,6 +30,7 @@ import RoomList from './components/admin/booking/roomlist';
 import EventDetails from './components/admin/events/eventdetails';
 import UserCredits from './components/admin/users/usercredits';
 import BookingConfirmation from './components/admin/booking/bookingconfirmation';
+import BlockRooms from './components/admin/booking/blockrooms';
 
 const App = () => {
 
@@ -64,6 +65,7 @@ const App = () => {
           <Route path="/eventdetails" element={<EventDetails />} />
           <Route path="/bookingconfirmation" element={<BookingConfirmation />} />
           <Route path="/usercredits" element={<UserCredits />} />
+          <Route path="/blockrooms" element={<BlockRooms />} />
         </Routes>
       </Router>
     </div>
