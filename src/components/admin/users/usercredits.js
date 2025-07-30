@@ -10,22 +10,20 @@ const UserCredits = () => {
   const [selectedUser, setSelectedUser] = useState(null);
   const [newCredit, setNewCredit] = useState('');
   const [updateReason, setUpdateReason] = useState('');
-
+  const fetchCredits = async () => {
+    try {
+      const res = await fetch('https://www.agathiyarpyramid.org/api/users');
+      if (!res.ok) throw new Error('Failed to fetch credits');
+      const data = await res.json();
+      setCreditsList(data);
+    } catch (err) {
+      console.error(err);
+      setError('Unable to load user credits.');
+    } finally {
+      setLoading(false);
+    }
+  };
   useEffect(() => {
-    const fetchCredits = async () => {
-      try {
-        const res = await fetch('https://www.agathiyarpyramid.org/api/users');
-        if (!res.ok) throw new Error('Failed to fetch credits');
-        const data = await res.json();
-        setCreditsList(data);
-      } catch (err) {
-        console.error(err);
-        setError('Unable to load user credits.');
-      } finally {
-        setLoading(false);
-      }
-    };
-
     fetchCredits();
   }, []);
 
@@ -55,21 +53,15 @@ const UserCredits = () => {
           },
           body: JSON.stringify({ 
             credits: Number(newCredit), 
-            reason: updateReason,
-            modifiedDate: new Date().toISOString()
+            creditmodifyreason: updateReason,
+            creditmodifiedate: new Date().toISOString()
           }),
         }
       );
       if (!res.ok) throw new Error('Failed to update credits');
 
       // Update local state
-      setCreditsList(prev =>
-        prev.map(user =>
-          user.usermemberid === selectedUser.usermemberid
-            ? { ...user, credits: Number(newCredit), modifiedDate: new Date().toISOString(), }
-            : user
-        )
-      );
+      fetchCredits();
       handleCloseModal();
     } catch (err) {
       console.error(err);
@@ -94,8 +86,9 @@ const UserCredits = () => {
             <tr>
               <th>Name</th>
               <th>User ID</th>
-              <th>Modified Date</th>
               <th>Credits</th>
+              <th>Modified Date</th>
+              <th>Modifed Reason</th>
               <th>Actions</th>
             </tr>
           </thead>
@@ -104,12 +97,13 @@ const UserCredits = () => {
               <tr key={index}>
                 <td>{item.name || '-'}</td>
                 <td>{item.usermemberid || '-'}</td>
+                <td>{item.credits ?? 0}</td>
                 <td>
-                  {item.modifiedDate
-                    ? new Date(item.modifiedDate).toLocaleDateString()
+                  {item.creditmodifiedate
+                    ? new Date(item.creditmodifiedate).toLocaleDateString()
                     : '-'}
                 </td>
-                <td>{item.credits ?? 0}</td>
+                <td>{item.creditmodifyreason || '-'}</td>
                 <td>
                   <button className="update-btn" onClick={() => handleOpenModal(item)}>
                     Update
