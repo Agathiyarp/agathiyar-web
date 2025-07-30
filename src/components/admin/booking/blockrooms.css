@@ -64,3 +64,15 @@ textarea {
 .submit-btn:hover {
   background: linear-gradient(to right, #28a745, #218838);
 }
+
+.btn-ctrl {
+  padding: 8px 15px;
+  background: #28a745;
+  color: #fff;
+  font-size: 14px;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  width: 80px;
+  margin-left: 10px;
+}

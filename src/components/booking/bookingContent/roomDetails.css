@@ -3,6 +3,29 @@
     background-color: #f0fdf4;
     margin-top: 60px;
   }
+
+  .custom-date-warning {
+  background-color: #fff3cd;
+  color: #856404;
+  padding: 10px;
+  font-weight: bold;
+  border: 1px solid #ffeeba;
+  border-radius: 4px;
+  text-align: center;
+  margin: 10px;
+  animation: slideDown 0.4s ease-out;
+}
+
+@keyframes slideDown {
+  from {
+    transform: translateY(-20px);
+    opacity: 0;
+  }
+  to {
+    transform: translateY(0px);
+    opacity: 1;
+  }
+}
   
   .navbar {
     background-color: #16a34a;

@@ -17,7 +17,10 @@ const Booking = () => {
   const userStr = sessionStorage.getItem("userDetails");
   const userDetails = userStr ? JSON.parse(userStr) : null;
   const userType = userDetails?.usertype?.trim().toLowerCase() || "";
-  const location = useLocation(); 
+  const location = useLocation();   
+  const [defaultCheckIn, setDefaultCheckIn] = useState(new Date().toISOString().split("T")[0]);
+  const [defaultCheckOut, setDefaultCheckOut] = useState(new Date().toISOString().split("T")[0]);
+  const [enableSchedule, setEnableSchedule] = useState("no");
 
 
   useEffect(() => {
@@ -28,12 +31,30 @@ const Booking = () => {
   }, []);
 
   useEffect(() => {
+    fetchSchedule();
+  }, []);
+  useEffect(() => {
     if (location.state?.bookingSuccess) {
       refreshUserCredits();
       // Clear the state to prevent repeated refresh
       window.history.replaceState({}, document.title);
     }
   }, [location.state]);
+
+  const fetchSchedule = async () => {
+    try {
+      const response = await axios.get("https://www.agathiyarpyramid.org/api/getschedules");
+      const data = response?.data?.[0]; // assuming only one active schedule
+      if (data) {
+        setDefaultCheckIn(data.startDate);
+        setDefaultCheckOut(data.endDate);
+        setEnableSchedule(data.enable?.toLowerCase() || "no");
+      }
+    } catch (error) {
+      console.error("Error fetching schedule:", error);
+    }
+  };
+
 
   const refreshUserCredits = async () => {
     try {
@@ -101,6 +122,9 @@ const Booking = () => {
             <li>Agathiyar Bhavan - for a maximum accommodation of 1 personnel.</li>
           </ul>
         </div>
+         {enableSchedule === 'yes' && <div className="custom-date-warning">
+          ⚠️ You are not allowed to book between {defaultCheckIn} and {defaultCheckOut}.
+        </div>}
         {/* <div className="date-filter">
           <label htmlFor="booking-date" style={{ fontSize: "16px" }}>
             Select Date:
@@ -127,6 +151,7 @@ const Booking = () => {
           <div className="empty-content">No Rooms Available</div>
         )}
       </div>
+     
       <div className="info-strip-booking">
         <ul>
           <li><strong>Terms and Conditions:</strong></li>
