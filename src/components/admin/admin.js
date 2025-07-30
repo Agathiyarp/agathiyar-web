@@ -138,7 +138,7 @@ const Admin = () => {
     },
     {
       key: "blockRooms",
-      label: "Block Rooms",
+      label: "BLOCK ROOMS",
       group: "Rooms",
       className: "block-rooms",
       iconClass: "icon-booking",
