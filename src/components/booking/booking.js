@@ -14,14 +14,12 @@ const Booking = () => {
     const today = new Date();
     return today.toISOString().split("T")[0];
   });
+
+  const [enabledDateRanges, setEnabledDateRanges] = useState([]);
   const userStr = sessionStorage.getItem("userDetails");
   const userDetails = userStr ? JSON.parse(userStr) : null;
   const userType = userDetails?.usertype?.trim().toLowerCase() || "";
   const location = useLocation();   
-  const [defaultCheckIn, setDefaultCheckIn] = useState(new Date().toISOString().split("T")[0]);
-  const [defaultCheckOut, setDefaultCheckOut] = useState(new Date().toISOString().split("T")[0]);
-  const [enableSchedule, setEnableSchedule] = useState("no");
-
 
   useEffect(() => {
     const userDetails = userStr ? JSON.parse(userStr) : null;
@@ -33,10 +31,10 @@ const Booking = () => {
   useEffect(() => {
     fetchSchedule();
   }, []);
+
   useEffect(() => {
     if (location.state?.bookingSuccess) {
       refreshUserCredits();
-      // Clear the state to prevent repeated refresh
       window.history.replaceState({}, document.title);
     }
   }, [location.state]);
@@ -44,17 +42,20 @@ const Booking = () => {
   const fetchSchedule = async () => {
     try {
       const response = await axios.get("https://www.agathiyarpyramid.org/api/getschedules");
-      const data = response?.data?.[0]; // assuming only one active schedule
-      if (data) {
-        setDefaultCheckIn(data.startDate);
-        setDefaultCheckOut(data.endDate);
-        setEnableSchedule(data.enable?.toLowerCase() || "no");
-      }
+      const schedules = response?.data || [];
+
+      const enabledRanges = schedules
+        .filter(s => s.enable?.toLowerCase() === "yes")
+        .map(s => ({
+          startDate: s.startDate,
+          endDate: s.endDate,
+        }));
+
+      setEnabledDateRanges(enabledRanges);
     } catch (error) {
       console.error("Error fetching schedule:", error);
     }
   };
-
 
   const refreshUserCredits = async () => {
     try {
@@ -68,7 +69,6 @@ const Booking = () => {
       if (matchedUser) {
         setAvailableCredits(matchedUser.credits || 0);
 
-        // Update sessionStorage for consistency
         const updatedUserDetails = { ...userDetails, credits: matchedUser.credits };
         sessionStorage.setItem("userDetails", JSON.stringify(updatedUserDetails));
       }
@@ -77,21 +77,14 @@ const Booking = () => {
     }
   };
 
-
   const fetchData = async (date) => {
     setLoading(true);
     try {
       const response = await axios.get(
         `https://agathiyarpyramid.org/api/getBookingRecords`,
-        {
-          params: { date },
-        }
+        { params: { date } }
       );
-      if (response?.data) {
-        setSearchResult(response.data);
-      } else {
-        setSearchResult([]);
-      }
+      setSearchResult(response?.data || []);
     } catch (error) {
       console.error("Error loading booking data", error);
       setSearchResult([]);
@@ -104,14 +97,19 @@ const Booking = () => {
     fetchData(selectedDate);
   }, [selectedDate]);
 
+  // Check if selectedDate is inside any restricted enabled date range
+ const isDateBlocked = enabledDateRanges.length > 0;
+
+
   return (
     <div className="outer-containers">
       <MenuBar />
       <div className="booking-content-wrapper">
-        <h1 className="booking-title">Agathiyar Pyramid Accomodation</h1>
+        <h1 className="booking-title">Agathiyar Pyramid Accommodation</h1>
         <h3 className="booking-subtitle">
           Destination: Agathiyar - Patriji - Dormitory
         </h3>
+
         <div className="info-section-booking">
           <p>
             *We provide 3 types of rooms. Please select the respective stay
@@ -122,9 +120,23 @@ const Booking = () => {
             <li>Agathiyar Bhavan - for a maximum accommodation of 1 personnel.</li>
           </ul>
         </div>
-         {enableSchedule === 'yes' && <div className="custom-date-warning">
-          ⚠️ You are not allowed to book between {defaultCheckIn} and {defaultCheckOut}.
-        </div>}
+
+        {isDateBlocked && (
+          <div className="custom-date-warning">
+            ⚠️ Booking is currently blocked and not available for the selected date ranges
+            <br />
+            Blocked Dates:
+            <ul>
+              {enabledDateRanges.map((range, idx) => (
+                <li key={idx}>
+                  {range.startDate} to {range.endDate}
+                </li>
+              ))}
+            </ul>
+          </div>
+        )}
+
+
         {/* <div className="date-filter">
           <label htmlFor="booking-date" style={{ fontSize: "16px" }}>
             Select Date:
@@ -136,22 +148,26 @@ const Booking = () => {
             onChange={(e) => setSelectedDate(e.target.value)}
           />
         </div> */}
+
         {userType && userType !== "user" && (
           <div className="available-credits">
             Available User Credits: <span className="credit-value">{availableCredits}</span>
           </div>
         )}
 
-
         {loading ? (
           <div className="loading-content">Loading...</div>
         ) : searchResult.length > 0 ? (
-          <BookingContent searchResult={searchResult}  refreshUserCredits={refreshUserCredits}/>
+          <BookingContent
+            searchResult={searchResult}
+            refreshUserCredits={refreshUserCredits}
+            enabledDateRanges={enabledDateRanges}
+          />
         ) : (
           <div className="empty-content">No Rooms Available</div>
         )}
       </div>
-     
+
       <div className="info-strip-booking">
         <ul>
           <li><strong>Terms and Conditions:</strong></li>
@@ -159,6 +175,7 @@ const Booking = () => {
           <li>✔️ If a user books&nbsp;<strong> 1 day and 1 room</strong>, <strong>&nbsp;credit will be reduced by 1</strong>.</li>
         </ul>
       </div>
+
       <Footer />
     </div>
   );

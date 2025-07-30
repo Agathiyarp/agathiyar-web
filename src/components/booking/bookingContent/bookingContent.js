@@ -6,7 +6,7 @@ import RestaurantIcon from "@mui/icons-material/Restaurant";
 import DirectionsCarIcon from "@mui/icons-material/DirectionsCar";
 import axios from "axios";
 
-const RoomBook = ({ searchResult }) => {
+const RoomBook = ({ searchResult, enabledDateRanges }) => {
   const [checkInDate, setCheckInDate] = useState("");
   const [checkOutDate, setCheckOutDate] = useState("");
   const [filteredRooms, setFilteredRooms] = useState([]);
@@ -42,6 +42,19 @@ const RoomBook = ({ searchResult }) => {
 
   }, [searchResult]);
 
+  const isDateInRange = (date, start, end) => {
+    const d = new Date(date);
+    return new Date(start) <= d && d <= new Date(end);
+  };
+
+  const isBookingBlocked = () => {
+    return enabledDateRanges.some(({ startDate, endDate }) =>
+      isDateInRange(checkInDate, startDate, endDate) ||
+      isDateInRange(checkOutDate, startDate, endDate)
+    );
+  };
+
+
   const handleRoomSelect = (room) => {
     if (userType === "donar" && room.roomname === "Patriji Bhavan") {
       alert(`Donar cannot book Patriji Room`);
@@ -54,6 +67,11 @@ const RoomBook = ({ searchResult }) => {
     const checkIn = new Date(checkInDate);
     const checkOut = new Date(checkOutDate);
     const diffDays = (checkOut - checkIn) / (1000 * 60 * 60 * 24);
+
+    if (isBookingBlocked()) {
+      alert(`Booking is not allowed between restricted dates.\nPlease select a different check-in or check-out Date.`);
+      return;
+    }
 
     if (checkOut <= checkIn) {
       alert("Check-out date must be after the check-in date.");
