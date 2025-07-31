@@ -8,6 +8,7 @@ const EventDetails = () => {
   const [dateFilter, setDateFilter] = useState({ start: '', end: '' });
   const [userDetails, setUserDetails] = useState(null);
   const [userList, setUserList] = useState([]);
+  const [eventDetails, setEventDetails] = useState([]);
   const [noResults, setNoResults] = useState(false);
 
   const handleFilterByDate = async () => {
@@ -16,9 +17,9 @@ const EventDetails = () => {
     try {
       const res = await fetch('https://www.agathiyarpyramid.org/api/events/filter/' + start + '/' + end);
       const data = await res.json();
-      console.log(data, res, "testv1");
-      if (res.ok) {
-        setUserList(data);
+      if (res.ok && data[0].data && data[0].data.length > 0) {
+        setUserList(data[0]?.data);
+        setEventDetails(data[0]);
         setUserDetails(null);
         setNoResults(false);
       } else {
@@ -33,7 +34,14 @@ const EventDetails = () => {
   };
 
   const exportToExcel = () => {
-    const ws = XLSX.utils.json_to_sheet(userList);
+    if (!eventDetails.eventId || userList.length === 0) return;
+
+    // Clone userList and append eventId to each record
+    const dataToExport = userList.map(user => ({
+      ...user,
+      eventId: eventDetails.eventId
+    }));
+    const ws = XLSX.utils.json_to_sheet(dataToExport);
     const wb = XLSX.utils.book_new();
     XLSX.utils.book_append_sheet(wb, ws, "Users");
     XLSX.writeFile(wb, "user_list.xlsx");
@@ -115,6 +123,10 @@ const EventDetails = () => {
                 <td><strong>Gender</strong></td>
                 <td>{userDetails.gender || '-'}</td>
               </tr>
+               <tr>
+                <td><strong>Event ID</strong></td>
+                <td>{eventDetails.eventId || '-'}</td>
+              </tr>
             </tbody>
           </table>
         </div>
@@ -132,17 +144,17 @@ const EventDetails = () => {
           <table>
             <thead>
               <tr>
-                <th>User ID</th><th>Name</th><th>Email</th><th>Mobile</th><th>Event Name</th>
+                <th>User ID</th><th>Name</th><th>Email</th><th>Mobile</th><th>Event ID</th>
               </tr>
             </thead>
             <tbody>
               {userList.map((user, i) => (
                 <tr key={i}>
-                  <td>{user.usermemberid}</td>
+                  <td>{eventDetails.memberId}</td>
                   <td>{user.name}</td>
                   <td>{user.email}</td>
-                  <td>{user.phoneNumber}</td>
-                  <td>{user.eventName}</td>
+                  <td>{user.phone}</td>
+                  <td>{eventDetails.eventId}</td>
                 </tr>
               ))}
             </tbody>

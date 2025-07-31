@@ -79,7 +79,7 @@ const UserManagement = () => {
         <input
           className='input-user'
           type="text"
-          placeholder="Search by Memberid, Phone or Username"
+          placeholder="Search by MemberID, Phone or Username"
           value={userId}
           onChange={(e) => setUserId(e.target.value)}
         />
