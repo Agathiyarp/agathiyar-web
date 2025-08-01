@@ -15,8 +15,8 @@ const BookGrid = () => {
         if (Array.isArray(data)) {
           const formattedBooks = data.map((book) => ({
             title: book.filename,
-            imageUrl: `https://www.agathiyarpyramid.org/images/${book.image}` || defaultCover,
-            downloadUrl: `https://www.agathiyarpyramid.org/books/${book.pdf}`,
+            imageUrl: `${book.coverimgpath}` || defaultCover,
+            downloadUrl: `${book.coverimgpath}`,
           }));
           setBooks(formattedBooks);
         } else {
