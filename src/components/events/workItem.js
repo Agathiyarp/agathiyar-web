@@ -4,8 +4,9 @@ import "./workItem.css";
 import PhoneIcon from "@mui/icons-material/Phone";
 import CalendarTodayIcon from "@mui/icons-material/CalendarToday";
 import AccessTimeIcon from "@mui/icons-material/AccessTime";
-import LanguageIcon from "@mui/icons-material/Language";
+import PlaceIcon from '@mui/icons-material/Place';
 import { Box, Typography } from "@mui/material";
+import { blue } from "@mui/material/colors";
 
 const WorkshopItem = ({
   mastername,
@@ -15,7 +16,7 @@ const WorkshopItem = ({
   startdate,
   enddate,
   numberofdays,
-  language,
+  destination,
   imageurl,
   roomtype,
   contactdetails,
@@ -101,14 +102,14 @@ const WorkshopItem = ({
             <AccessTimeIcon style={{ fontSize: "35px", marginRight: "8px" }} />
             <Typography variant="body1" className="text-item">
               <b>Duration</b>
-              <br /> {numberofdays}
+              <br /> {numberofdays}{" day(s)"}
             </Typography>
           </Box>
           <Box className="info-item" display="flex" alignItems="center">
-            <LanguageIcon style={{ fontSize: "35px", marginRight: "8px" }} />
+            <PlaceIcon style={{ fontSize: "35px", marginRight: "8px"}} />
             <Typography variant="body1" className="text-item">
-              <b>Language</b>
-              <br /> {language}
+              <b>Place</b>
+              <br /> {destination || "Not specified"}
             </Typography>
           </Box>
           <Box className="info-item" display="flex" alignItems="center">
