@@ -3,9 +3,9 @@ import moment from "moment";
 import { useLocation } from "react-router-dom";
 import './roomDetails.css';
 import MenuBar from "../../menumain/menubar";
-import image1 from "../../../images/image1.png";
-import image2 from "../../../images/image2.png";
-import image3 from "../../../images/image3.png";
+import image1 from "../../../images/rooms/Patriji/1.JPG";
+import image2 from "../../../images/rooms/Agathiyar/2.JPG";
+import image3 from "../../../images/rooms/Agathiyar/3.JPG";
 import LocationOnIcon from '@mui/icons-material/LocationOn';
 import EventIcon from '@mui/icons-material/Event';
 import OpacityIcon from '@mui/icons-material/Opacity'; // Hot Water
@@ -16,14 +16,17 @@ import LocalDrinkIcon from '@mui/icons-material/LocalDrink'; // Drinking Water
 import WcIcon from '@mui/icons-material/Wc'; // Attached Toilet
 import ConfirmModal from "../confirmModal";
 import { ToastContainer } from 'react-toastify';
+import ImagePreview from "./imagepreview";
 
 const RoomDetails = () => {
   const [openModal, setOpenModal] = useState(false);
+  const [galleryImages, setGalleryImages] = useState([image1, image2, image3]);
+  const [previewOpen, setPreviewOpen] = useState(false);
   const location = useLocation();
   const { room, checkIn, checkOut } = location.state; // Retrieve the passed room data
   const numberOfDays = moment(checkOut).diff(moment(checkIn), 'days');
-  const mainImage = image1;
-  const sideImages = [image2, image3];
+  const mainImage = galleryImages[0];
+  const sideImages = galleryImages.slice(1, 3); 
 
   const userInfo = sessionStorage.getItem('userDetails')
   const userDetails = userInfo ? JSON.parse(userInfo): '';
@@ -31,6 +34,7 @@ const RoomDetails = () => {
   const userType = userDetails?.usertype?.trim().toLowerCase() || "";
   
   const perBedCost = parseInt(room?.extrabedcost, 10) || 0;
+  
   // const maintanance = parseInt(room.maintenancecost, 10) || 0;
   
   const amenities = [
@@ -194,26 +198,26 @@ const RoomDetails = () => {
         <div className="gallery">
           <div className="gallery-main">
             <div className="card">
-              <img src={mainImage} alt="Main room view" />
+              <img style={{height: "520px"}}src={mainImage} alt="Main room view" />
             </div>
           </div>
-          <div className="gallery-grid">
+          <div className="gallery-grid1">
             {sideImages.map((src, index) => (
               <div key={index} className="card">
                 <img src={src} alt={`Room view ${index + 1}`} />
               </div>
             ))}
-            <div className="card see-all">
-              <img className="see-all-image" src={image1} alt="See all" />
+            <div className="card see-all" onClick={() => setPreviewOpen(true)}>
+              <img className="see-all-image" src={galleryImages[0]} alt="See all" />
               <div className="overlay">
-                <div className="overlay-content">
-                  <span>+11</span>
-                  <p>See All</p>
-                </div>
+                <p style={{color: "#fff"}}>See All</p>
               </div>
             </div>
           </div>
         </div>
+        {previewOpen && (
+          <ImagePreview images={galleryImages} onClose={() => setPreviewOpen(false)} />
+        )}
         <div className="content-wrapper">
           <div className="info-section">
             <div className="contact-info">
