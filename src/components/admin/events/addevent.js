@@ -22,6 +22,8 @@ const AddEvent = () => {
 
   const [events, setEvents] = useState([]);
   const [selectedImage, setSelectedImage] = useState(null);
+  const [showLanguageDropdown, setShowLanguageDropdown] = useState(false);
+
   // const navigate = useNavigate();
   console.log(events);
 
@@ -60,6 +62,17 @@ const AddEvent = () => {
     setFormData(prev => ({ ...prev, [name]: value }));
   };
 
+  const handleLanguageToggle = (lang) => {
+    setFormData((prev) => {
+      const isSelected = prev.language.includes(lang);
+      const newLangs = isSelected
+        ? prev.language.filter((l) => l !== lang)
+        : [...prev.language, lang];
+      return { ...prev, language: newLangs };
+    });
+  };
+
+
   const handleSubmit = async (e) => {
     e.preventDefault();
 
@@ -86,6 +99,7 @@ const AddEvent = () => {
       // Add imageUrl to formData
       const eventPayload = {
         ...formData,
+        language: formData.language.join(', '),  
         imageurl: imageUrl,
       };
 
@@ -134,7 +148,7 @@ const AddEvent = () => {
       <form onSubmit={handleSubmit} className="event-form">
         <div className="row">
           <input type="text" name="eventname" placeholder="Event Name *" value={formData.eventname} onChange={handleChange} required />
-          <input type="text" name="mastername" placeholder="Master Name *" value={formData.mastername} onChange={handleChange} required />
+          <input type="text" name="mastername" placeholder="Master Name" value={formData.mastername} onChange={handleChange} required />
         </div>
         <div className="row">
           <input type="date" name="startdate" placeholder="Start Date *" value={formData.startdate} onChange={handleChange} required />
@@ -153,12 +167,27 @@ const AddEvent = () => {
         </div>
         <div className="row">
           <input type="file" accept="image/*" onChange={(e) => setSelectedImage(e.target.files[0])} required />
-          <select name="language" value={formData.language} onChange={handleChange}>
-            <option value="">Select Language</option>
-            <option value="English">English</option>
-            <option value="Tamil">Tamil</option>
-            <option value="Hindi">Hindi</option>
-          </select>
+          <div className="language-dropdown">
+            <div className="dropdown-header" onClick={() => setShowLanguageDropdown(!showLanguageDropdown)}>
+              {formData.language.length > 0 ? formData.language.join(', ') : 'Select Languages'}
+              <span className="arrow">{showLanguageDropdown ? '▲' : '▼'}</span>
+            </div>
+            {showLanguageDropdown && (
+              <div className="dropdown-options">
+                {['English', 'Tamil', 'Hindi'].map((lang) => (
+                  <label key={lang}>
+                    <input
+                      type="checkbox"
+                      checked={formData.language.includes(lang)}
+                      onChange={() => handleLanguageToggle(lang)}
+                    />
+                    {lang}
+                  </label>
+                ))}
+              </div>
+            )}
+          </div>
+
         </div>
 
         <textarea name="eventdescription" placeholder="Describe your retreat event..." value={formData.eventdescription} onChange={handleChange}></textarea>
