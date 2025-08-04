@@ -6,42 +6,12 @@ import GridViewVeg from "../GridViewVeg";
 import GridViewAgath from "../GridViewAgath";
 import MeditationInfo from "../../components/MeditationInfo";
 import Footer from "../Footer";
-import ImageGallery from "../../components/ImageGallery";
 import MenuBar from "../menumain/menubar"; // Import the MenuBar
 import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
-import image0 from "../../images/home-image.gif";
 import AgathiyarAbout from "../AboutAgathiyar";
-// import image1 from "../../images/image1.png";
-// import image2 from "../../images/image2.png";
-// import image3 from "../../images/image3.png";
-// import image4 from "../../images/image4.png";
-// import image5 from "../../images/image5.png";
-// import MeditationVideo from "../../images/Meditation.mp4";
-
-const statements = [
-  "To teach meditation and spiritual science to all seekers of the truth.",
-  "A conducive environment for practicing Mouna (Silence), Mindfulness, and intense Meditation.",
-  "Self healing and Self realization in the lap of mother nature along with pyramid energies.",
-  "Spreading the message of compassion and vegetarian living to all humanity.",
-];
 
 const Home = () => {
-  const settings = {
-    // dots: true,
-    // infinite: true,
-    // speed: 500,
-    slidesToShow: 1,
-    // slidesToScroll: 1,
-    // autoplay: true,
-    // autoplaySpeed: 3000,
-  };
-
-  const images = [
-    { src: image0, alt: "Slide 1" }
-    // { src: image2, alt: "Slide 2" },
-    // { src: image3, alt: "Slide 3" }
-  ];
 
   return (
     <div className="app-container">
@@ -82,8 +52,10 @@ const Home = () => {
         </div>
       </div>
 
-
-      <MeditationInfo />
+      <div>
+        <h1 className="meditation-heading">What is Meditation?</h1>
+        <MeditationInfo />
+      </div>
 
       <AgathiyarAbout />
      
