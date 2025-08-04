@@ -6,6 +6,7 @@ import meditationImg from '../images/rooms/Gallery/5.png';
 const MeditationInfo = () => {
   return (
     <div className="outer-container">
+      <h1 className="meditation-heading">What is Meditation?</h1>
       <div className="grid-container">
         <div className="text-container-meditation">
           <div className="meditation-info-container">

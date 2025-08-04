@@ -25,7 +25,14 @@ const Meditation = () => {
  
     return (
       <div className="outer-container">
+        <h1 className="meditation-heading">How to do Meditation?</h1>
         <div className="grid-container">
+          <div className="image-container">
+            <div className="photo-frame">
+              <img className="image" src={meditationImg} alt="Meditation" />
+            </div>
+          </div>
+          <div className="border"></div>
           <div className="text-container-meditation">
             {meditationGuide.map((section, index) => (
               <div key={index}>
@@ -37,12 +44,6 @@ const Meditation = () => {
                 </ul>
               </div>
             ))}
-          </div>
-          <div className="border"></div>
-          <div className="image-container">
-            <div className="photo-frame">
-              <img className="image" src={meditationImg} alt="Meditation" />
-            </div>
           </div>
         </div>
       </div>

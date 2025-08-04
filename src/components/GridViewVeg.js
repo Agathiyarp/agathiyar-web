@@ -10,6 +10,7 @@ const GridViewVeg = () => {
   `;
   return (
     <div className="outer-container">
+      <h1 className="meditation-heading">Being a Vegetarian</h1>
       <div className="grid-container">
         <div className="text-container">
           <h3 style={{marginBottom: "10px"}}>Being a Vegetarian</h3>

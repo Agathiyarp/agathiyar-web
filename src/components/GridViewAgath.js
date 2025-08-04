@@ -11,6 +11,7 @@ const GridViewAgath = () => {
   
     return (
       <div className="outer-container">
+        <h1 className="meditation-heading">Swadhyayam</h1>
         <div className="grid-container">
           <div className="image-container">
             <div className="photo-frame">

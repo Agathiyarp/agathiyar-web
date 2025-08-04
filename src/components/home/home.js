@@ -53,24 +53,20 @@ const Home = () => {
       </div>
 
       <div>
-        <h1 className="meditation-heading">What is Meditation?</h1>
         <MeditationInfo />
       </div>
 
       <AgathiyarAbout />
      
       <div>
-        <h1 className="meditation-heading">How to do Meditation?</h1>
         <Meditation />
       </div>
 
       <div>
-        <h1 className="meditation-heading">Being a Vegetarian</h1>
         <GridViewVeg />
       </div>
 
       <div>
-        <h1 className="meditation-heading">Swadhyayam</h1>
         <GridViewAgath />
       </div>
 
