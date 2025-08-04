@@ -61,3 +61,19 @@
 .clear-button:hover {
   background-color: #c9302c;
 }
+
+
+.upload-button[disabled] {
+  background-color: #aaa;
+  cursor: not-allowed;
+}
+
+.upload-button[disabled]::after {
+  content: " ⏳";
+  animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
+}

@@ -165,7 +165,7 @@ const UserManagement = () => {
           <table>
             <thead>
               <tr>
-                <th>User ID</th><th>Name</th><th>Email</th><th>Mobile</th><th>Created At</th>
+                <th>User ID</th><th>Name</th><th>Email</th><th>Mobile</th><th>User Type</th><th>Created At</th>
               </tr>
             </thead>
             <tbody>
@@ -175,6 +175,7 @@ const UserManagement = () => {
                   <td>{user.name}</td>
                   <td>{user.email}</td>
                   <td>{user.phoneNumber}</td>
+                  <td>{user.usertype || 'Not specified'}</td>
                   <td>{formatDate(user.createdAt)}</td>
                 </tr>
               ))}

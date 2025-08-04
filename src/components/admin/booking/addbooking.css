@@ -61,3 +61,10 @@ textarea {
 .submit-btn:hover {
   background: linear-gradient(to right, #5a67d8, #6b46c1);
 }
+
+.loader {
+  text-align: center;
+  margin: 10px 0;
+  color: #007bff;
+  font-weight: bold;
+}

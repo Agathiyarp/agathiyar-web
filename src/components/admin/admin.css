@@ -328,7 +328,7 @@
 
 /* Icon content */
 .icon-user::before { content: "👤"; }
-.icon-new-user::before { content: "🧑‍🦰➕"; }
+.icon-new-user::before { content: "🧑‍🦰"; }
 .icon-calendar::before { content: "📅"; }
 .icon-calendar-add::before { content: "📅➕"; }
 .icon-booking::before { content: "📋"; }

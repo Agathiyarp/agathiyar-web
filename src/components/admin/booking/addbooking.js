@@ -25,6 +25,8 @@ const AddBooking = () => {
   const [singleImage, setSingleImage] = useState(null);
   const [multipleImages, setMultipleImages] = useState([]);
   const navigate = useNavigate();
+  const [loading, setLoading] = useState(false);
+
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -36,12 +38,19 @@ const AddBooking = () => {
   };
 
   const handleMultipleImageChange = (e) => {
-    const files = Array.from(e.target.files).slice(0, 5); // Max 5 files
+    const files = Array.from(e.target.files);
+    if (files.length > 5) {
+      alert('You can upload a maximum of 5 images.');
+      e.target.value = ''; // Clear the file input
+      setMultipleImages([]);
+      return;
+    }
     setMultipleImages(files);
-  };
+};
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+    setLoading(true);
 
     const payload = new FormData();
 
@@ -87,16 +96,21 @@ const AddBooking = () => {
         });
         setSingleImage(null);
         setMultipleImages([]);
+        alert('Romm added successfully!');
+        setLoading(false);
         setTimeout(() => navigate("/admin"), 3000);
       } else if (res.status === 409) {
         alert('Booking already exists for the specified date range');
+        setLoading(false);
       } else {
         console.error('Server responded with error:', resultText);
         alert('Failed to submit: ' + resultText);
+        setLoading(false);
       }
     } catch (error) {
       console.error('Network error:', error);
       alert('Network error occurred. See console for details.');
+      setLoading(false);
     }
   };
 
@@ -104,6 +118,7 @@ const AddBooking = () => {
     <div className="booking-form-container">
       <MenuBar />
       <h2>Add New Room</h2>
+      {loading && <div className="loader">Submitting...</div>}
       <form onSubmit={handleSubmit} className="booking-form" encType="multipart/form-data">
         <div className="row">
           <input type="text" name="roomname" placeholder="Room Name" value={formData.roomname} onChange={handleChange} required />
@@ -173,7 +188,9 @@ const AddBooking = () => {
           <input type="file" accept="image/*" multiple onChange={handleMultipleImageChange} />
         </div>
 
-        <button type="submit" className="submit-btn">Add Room</button>
+        <button type="submit" className="submit-btn" disabled={loading}>
+          {loading ? 'Submitting...' : 'Add Room'}
+        </button>
       </form>
     </div>
   );

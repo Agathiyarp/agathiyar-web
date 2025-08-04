@@ -140,3 +140,11 @@ textarea {
   height: 20px;
   cursor: pointer;
 }
+
+.loader {
+  text-align: center;
+  font-size: 16px;
+  color: #007bff;
+  margin-bottom: 10px;
+}
+

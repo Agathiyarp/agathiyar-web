@@ -8,6 +8,7 @@ export default function UploadBooks() {
   const [imageFile, setImageFile] = useState(null);
   const [imagePreview, setImagePreview] = useState(null);
   const [message, setMessage] = useState("");
+  const [isLoading, setIsLoading] = useState(false);
   const pdfInputRef = useRef(null);
   const imageInputRef = useRef(null);
 
@@ -64,6 +65,7 @@ export default function UploadBooks() {
     }
 
     try {
+      setIsLoading(true);
       const formData = new FormData();
       formData.append("name", filename);
       formData.append("file", pdfFile);
@@ -84,6 +86,7 @@ export default function UploadBooks() {
       }
 
       setMessage(`✅ ${resultMessage}`);
+      alert(`Book "${filename}" uploaded successfully!`);
       setFilename('');
       setPdfFile(null);
       setImageFile(null);
@@ -94,6 +97,8 @@ export default function UploadBooks() {
     } catch (error) {
       console.error("Upload failed:", error);
       setMessage(`❌ Error: ${error.message}`);
+    } finally {
+      setIsLoading(false);
     }
   };
 
@@ -129,9 +134,16 @@ export default function UploadBooks() {
           ref={imageInputRef}
         />
 
-        <button type="submit" className="upload-button">
-          Upload
-        </button>
+        {isLoading ? (
+          <button type="button" className="upload-button" disabled>
+            Uploading...
+          </button>
+        ) : (
+          <button type="submit" className="upload-button">
+            Upload
+          </button>
+        )}
+
       </form>
 
       {message && <p className="upload-message">{message}</p>}

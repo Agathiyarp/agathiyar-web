@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import './addevent.css';
-// import { useNavigate } from 'react-router-dom';
 import MenuBar from "../../menumain/menubar";
+import { useNavigate } from 'react-router-dom';
 
 const AddEvent = () => {
   const [formData, setFormData] = useState({
@@ -20,27 +20,10 @@ const AddEvent = () => {
     language: '',
   });
 
-  const [events, setEvents] = useState([]);
   const [selectedImage, setSelectedImage] = useState(null);
   const [showLanguageDropdown, setShowLanguageDropdown] = useState(false);
-
-  // const navigate = useNavigate();
-  console.log(events);
-
-  // Fetch all events on mount
-  // useEffect(() => {
-  //   fetchEvents();
-  // }, []);
-
-  // const fetchEvents = async () => {
-  //   try {
-  //     const res = await fetch('https://www.agathiyarpyramid.org/api/events');
-  //     const data = await res.json();
-  //     setEvents(data);
-  //   } catch (error) {
-  //     console.error('Error fetching events:', error);
-  //   }
-  // };
+  const navigate = useNavigate();
+  const [loading, setLoading] = useState(false);
 
   // Automatically calculate number of days when start or end date changes
   useEffect(() => {
@@ -75,6 +58,7 @@ const AddEvent = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+    setLoading(true);
 
     try {
       let imageUrl = '';
@@ -129,13 +113,15 @@ const AddEvent = () => {
           language: '',
         });
         setSelectedImage(null);
-        // fetchEvents();
+        setTimeout(() => navigate("/admin"), 3000);
       } else {
         alert(result.message || 'Failed to add event');
       }
     } catch (error) {
       console.error('Error:', error);
       alert('Failed to connect to server');
+    } finally {
+      setLoading(false);
     }
   };
 
@@ -143,7 +129,7 @@ const AddEvent = () => {
     <div className="event-form-container">
       <MenuBar />
       <h2>Add New Event</h2>
-      {/* <p className="subtitle">Create and manage your retreat events</p> */}
+      {loading && <div className="loader">Submitting...</div>}
 
       <form onSubmit={handleSubmit} className="event-form">
         <div className="row">
@@ -192,7 +178,9 @@ const AddEvent = () => {
 
         <textarea name="eventdescription" placeholder="Describe your retreat event..." value={formData.eventdescription} onChange={handleChange}></textarea>
         <textarea name="contactdetails" placeholder="Phone, email, address..." value={formData.contactdetails} onChange={handleChange}></textarea>
-        <button type="submit" className="submit-btn">CREATE EVENT</button>
+        <button type="submit" className="submit-btn" disabled={loading}>
+          {loading ? 'Submitting...' : 'CREATE EVENT'}
+        </button>
       </form>
     </div>
   );

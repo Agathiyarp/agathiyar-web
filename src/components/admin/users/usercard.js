@@ -170,11 +170,20 @@ const UserCard = ({ user, onSave }) => {
               </option>
             ))}
           </select>
-
-          {formData.userrole === "admin" ||
-          formData.userrole === "superadmin" ? (
-            <div className="access-checkbox-group">
-              {ACCESS_OPTIONS.map((access) => (
+          {!["admin", "superadmin"].includes(formData.userrole) && (
+            <p style={{ fontSize: "0.9em", color: "#888", marginLeft: "5px"}}>
+              User role has no access options.
+            </p>
+          )}
+          {formData.userrole === "superadmin" && (
+            <p style={{ fontSize: "0.9em", color: "#888", marginLeft: "5px" }}>
+              Superadmin has all access.
+            </p>
+          )}
+          
+          {formData.userrole === "admin" && 
+          <div className="access-checkbox-group">
+            {ACCESS_OPTIONS.map((access) => (
                 <label key={access}>
                   {access}
                   <input
@@ -184,14 +193,10 @@ const UserCard = ({ user, onSave }) => {
                     onChange={handleAccessCheckbox}
                   />
                 </label>
-              ))}
-            </div>
-          ) : (
-            <p style={{ fontSize: "0.9em", color: "#888" }}>
-              User role has no access options
-            </p>
-          )}
-
+              
+            ))}
+          </div>}
+          
           <div className="button-row">
             <button type="submit">Update</button>
             <button
