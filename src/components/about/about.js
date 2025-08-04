@@ -24,7 +24,7 @@ const About = () => {
           </div>
         </div>
         <div className="text-containers">
-          <h3 >Activities of Agasthiyar Ashram</h3>
+          <h3 >Activities of Agathiyar Ashram</h3>
           <ul>
             {spiritualPoints.map((point, index) => (
               <li key={index}>{point}</li>

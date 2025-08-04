@@ -1,5 +1,6 @@
 import React, { useEffect, useRef, useState } from 'react';
 // import profilePlaceholder from "../../images/profileImage.png";
+import MenuBar from '../menumain/menubar';
 import {
   Avatar,
   Box,
@@ -34,7 +35,7 @@ const ProfilePage = () => {
   const userDetails = {
     fullName: parsedData?.username,
     memberId: parsedData?.usermemberid,
-    userType: parsedData?.usertype,
+    userType: parsedData?.usertype ? parsedData?.usertype : 'Admin yet to set user type',
     email: parsedData?.email,
     phone: parsedData?.phoneNumber
   };
@@ -133,14 +134,21 @@ const ProfilePage = () => {
   ];
 
   return (
-    <Box sx={{ display: 'flex', minHeight: '100vh', bgcolor: 'grey.100', flexDirection: { xs: 'column', sm: 'row' } }}>
+    <div className='profile-page'>
+    <MenuBar/>
+    <Box sx={{ display: 'flex', minHeight: '100vh', bgcolor: 'grey.100', flexDirection: { xs: 'column', sm: 'row' }}}>
       {/* Sidebar */}
       <Drawer
         variant="permanent"
         sx={{
           width: { xs: '100%', sm: 240 },
           flexShrink: 0,
-          [`& .MuiDrawer-paper`]: { width: { xs: '100%', sm: 240 }, boxSizing: 'border-box' },
+          mt: { xs: 2, sm: 8 },  // Add top margin (adjust as needed)
+          [`& .MuiDrawer-paper`]: {
+            width: { xs: '100%', sm: 240 },
+            boxSizing: 'border-box',
+            mt: { xs: 2, sm: 13 }, // Apply margin inside drawer paper as well
+          },
         }}
       >
         <Box sx={{ display: 'flex', flexDirection: 'column', alignItems: 'center', p: 2 }}>
@@ -267,6 +275,7 @@ const ProfilePage = () => {
       </Box>
       <ToastContainer position="top-right" autoClose={3000} hideProgressBar={false} />
     </Box>
+    </div>
   );
 };
 

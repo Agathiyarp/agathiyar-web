@@ -13,7 +13,7 @@ const contactInfo = () => {
           <p >
             📍 <strong>Address:</strong>
             <br />
-            Agasthiyar Pyramid Dhyana Ashram
+            Agathiyar Pyramid Dhyana Ashram
             <br />
             Near Ramanaickenpettai,
             <br />
@@ -36,7 +36,7 @@ const contactInfo = () => {
               target="_blank"
               rel="noopener noreferrer"
             >
-              agathiyarpyramid.com
+              agathiyarpyramid.org
             </a>
           </p>
         </div>
@@ -105,9 +105,9 @@ const contactInfo = () => {
     </div>
     {/* Google Map Embed */}
     <div className="map-container">
-        <h2 >Agasthiyar Pyramid Dhyana Ashram Map Location</h2>
+        <h2 >Agathiyar Pyramid Dhyana Ashram Map Location</h2>
         <iframe
-          title="Agasthiyar Pyramid Dhyana Ashram Map"
+          title="Agathiyar Pyramid Dhyana Ashram Map"
           src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3171.992320171554!2d78.56666131503957!3d12.51049279087976!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x3badac2a9cfcf1f1%3A0xe2f41c3e99d1f77c!2sAgasthiyar%20Pyramid%20Dhyana%20Ashram!5e0!3m2!1sen!2sin!4v1632925147838!5m2!1sen!2sin"
           width="800" // Increased width
           height="600" // Increased height

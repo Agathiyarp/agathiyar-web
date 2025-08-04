@@ -1,6 +1,9 @@
 .menu-item {
   cursor: pointer;
 }
+.profile-page {
+  margin-top: 100px;
+}
 .profile-image {
   width: 100%;
   height: 100%;
