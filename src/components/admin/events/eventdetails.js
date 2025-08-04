@@ -47,15 +47,6 @@ const EventDetails = () => {
     XLSX.writeFile(wb, "user_list.xlsx");
   };
 
-  const formatDate = (isoDate) => {
-    if (!isoDate) return '-';
-    const date = new Date(isoDate);
-    const day = String(date.getDate()).padStart(2, '0');
-    const month = String(date.getMonth() + 1).padStart(2, '0');
-    const year = date.getFullYear();
-    return `${day}-${month}-${year}`;
-  };
-
   return (
     <div className="event-mgmt-container">
       <MenuBar />
@@ -76,6 +67,7 @@ const EventDetails = () => {
           onChange={(e) => setDateFilter({ ...dateFilter, end: e.target.value })}
         />
         <button className="btn-event" onClick={handleFilterByDate}>Filter</button>
+        <button className="btn-event" onClick={exportToExcel}>Export Excel</button>
       </div>
 
       {userDetails && (
@@ -140,28 +132,25 @@ const EventDetails = () => {
 
       {userList?.length > 0 && (
         <div className="user-list">
-          <h4>User List</h4>
           <table>
             <thead>
               <tr>
-                <th>User ID</th><th>Name</th><th>Email</th><th>Mobile</th><th>Event ID</th>
+                <th>Event Name</th><th>UserID</th><th>UserName</th><th>Additional Member Count</th><th>Email</th><th>Mobile</th>
               </tr>
             </thead>
             <tbody>
               {userList.map((user, i) => (
                 <tr key={i}>
+                  <td>{eventDetails.name}</td>
                   <td>{eventDetails.memberId}</td>
                   <td>{user.name}</td>
+                  <td>{user.memberCount}</td>
                   <td>{user.email}</td>
                   <td>{user.phone}</td>
-                  <td>{eventDetails.eventId}</td>
                 </tr>
               ))}
             </tbody>
           </table>
-          <div className="export-buttons">
-            <button className="btn-event" onClick={exportToExcel}>Export Excel</button>
-          </div>
         </div>
       )}
     </div>

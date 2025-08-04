@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import './users.css';
 import 'jspdf-autotable';
 import * as XLSX from 'xlsx';
@@ -6,51 +6,46 @@ import MenuBar from "../../menumain/menubar";
 
 const UserManagement = () => {
   const [userId, setUserId] = useState('');
-  const [dateFilter, setDateFilter] = useState({ start: '', end: '' });
   const [userDetails, setUserDetails] = useState(null);
   const [userList, setUserList] = useState([]);
+  const [allUsers, setAllUsers] = useState([]);
   const [noResults, setNoResults] = useState(false);
+  const [loading, setLoading] = useState(false);
 
+  useEffect(() => {
+    fetchAllUsers();
+  }, []);
 
-  const handleSearchByUserId = async () => {
-    if (!userId) return alert("Enter User ID");
+  const fetchAllUsers = async () => {
+    setLoading(true);
     try {
-      const res = await fetch('https://www.agathiyarpyramid.org/api/user/' + userId);
+      const res = await fetch('https://www.agathiyarpyramid.org/api/users');
       const data = await res.json();
-      if (res.ok && data && Object.keys(data).length > 0) {
-        setUserDetails(data);
-        setUserList([]);
-        setNoResults(false);
-      } else {
-        setUserDetails(null);
-        setUserList([]);
-        setNoResults(true);
+      if (res.ok && Array.isArray(data)) {
+        setAllUsers(data);
+        setUserList(data);
+        setNoResults(data.length === 0);
       }
     } catch (err) {
       console.error(err);
-      alert('Error fetching user details');
+      alert("Failed to load users");
     }
+    setLoading(false);
   };
 
-  const handleFilterByDate = async () => {
-    const { start, end } = dateFilter;
-    if (!start || !end) return alert("Select both start and end dates");
-    try {
-      const res = await fetch('https://www.agathiyarpyramid.org/api/user/filter/' + start + '/' + end);
-      const data = await res.json();
-      if (res.ok) {
-        setUserList(data);
-        setUserDetails(null);
-        setNoResults(false);
-      } else {
-        setUserList([]);
-        setUserDetails(null);
-        setNoResults(true);
-      }
-    } catch (err) {
-      console.error(err);
-      alert('Error fetching user list');
+  const handleFilter = () => {
+    let filtered = [...allUsers];
+    if (userId.trim()) {
+      const searchVal = userId.toLowerCase();
+      filtered = filtered.filter(user =>
+        (user.usermemberid && user.usermemberid.toLowerCase().includes(searchVal)) ||
+        (user.phoneNumber && user.phoneNumber.toLowerCase().includes(searchVal)) ||
+        (user.username && user.username.toLowerCase().includes(searchVal))
+      );
     }
+    setUserDetails(null);
+    setUserList(filtered);
+    setNoResults(filtered.length === 0);
   };
 
   const exportToExcel = () => {
@@ -72,106 +67,59 @@ const UserManagement = () => {
   return (
     <div className="user-mgmt-container">
       <MenuBar />
-      <h2>User Management</h2>
+      <h2>User List</h2>
 
-      <div className="section">
-        <h4>Search Users</h4>
-        <input
-          className='input-user'
-          type="text"
-          placeholder="Search by MemberID, Phone or Username"
-          value={userId}
-          onChange={(e) => setUserId(e.target.value)}
-        />
-        <button className="btn-user" onClick={handleSearchByUserId}>Search</button>
+      <div className="user-toolbar">
+        <div className="search-group">
+          <input
+            className="input-user"
+            type="text"
+            placeholder="Search by MemberID, Phone or Username"
+            value={userId}
+            onChange={(e) => setUserId(e.target.value)}
+          />
+          <button className="btn-user btn-blue" onClick={handleFilter}>Search</button>
+          <button className="btn-user btn-green export-top" onClick={exportToExcel}>Export Excel</button>
+        </div>
       </div>
 
-      <div className="section">
-        <h4>Filter by Date</h4>
-        <input
-          className='input-user'
-          type="date"
-          value={dateFilter.start}
-          onChange={(e) => setDateFilter({ ...dateFilter, start: e.target.value })}
-        />
-        <input
-          className='input-user'
-          type="date"
-          value={dateFilter.end}
-          onChange={(e) => setDateFilter({ ...dateFilter, end: e.target.value })}
-        />
-        <button className="btn-user" onClick={handleFilterByDate}>Filter</button>
-      </div>
+      {loading && <p>Loading...</p>}
 
       {userDetails && (
         <div className="user-details">
           <h4>User Details</h4>
           <table>
             <tbody>
-              <tr>
-                <td><strong>Name</strong></td>
-                <td>{userDetails.name || '-'}</td>
-              </tr>
-              <tr>
-                <td><strong>Email</strong></td>
-                <td>{userDetails.email || '-'}</td>
-              </tr>
-              <tr>
-                <td><strong>Phone</strong></td>
-                <td>{userDetails.phoneNumber || '-'}</td>
-              </tr>
-              <tr>
-                <td><strong>Country</strong></td>
-                <td>{userDetails.country || '-'}</td>
-              </tr>
-              <tr>
-                <td><strong>Username</strong></td>
-                <td>{userDetails.username || '-'}</td>
-              </tr>
-              <tr>
-                <td><strong>User Member ID</strong></td>
-                <td>{userDetails.usermemberid || '-'}</td>
-              </tr>
-              <tr>
-                <td><strong>User Type</strong></td>
-                <td>{userDetails.usertype || '-'}</td>
-              </tr>
-              <tr>
-                <td><strong>Address</strong></td>
-                <td>{userDetails.address || '-'}</td>
-              </tr>
-              <tr>
-                <td><strong>Date of Birth</strong></td>
-                <td>{userDetails.dateofbirth || '-'}</td>
-              </tr>
-              <tr>
-                <td><strong>Gender</strong></td>
-                <td>{userDetails.gender || '-'}</td>
-              </tr>
+              <tr><td><strong>Name</strong></td><td>{userDetails.name || '-'}</td></tr>
+              <tr><td><strong>Email</strong></td><td>{userDetails.email || '-'}</td></tr>
+              <tr><td><strong>Phone</strong></td><td>{userDetails.phoneNumber || '-'}</td></tr>
+              <tr><td><strong>Country</strong></td><td>{userDetails.country || '-'}</td></tr>
+              <tr><td><strong>Username</strong></td><td>{userDetails.username || '-'}</td></tr>
+              <tr><td><strong>User Member ID</strong></td><td>{userDetails.usermemberid || '-'}</td></tr>
+              <tr><td><strong>User Type</strong></td><td>{userDetails.usertype || '-'}</td></tr>
+              <tr><td><strong>Address</strong></td><td>{userDetails.address || '-'}</td></tr>
+              <tr><td><strong>Date of Birth</strong></td><td>{userDetails.dateofbirth || '-'}</td></tr>
+              <tr><td><strong>Gender</strong></td><td>{userDetails.gender || '-'}</td></tr>
             </tbody>
           </table>
         </div>
       )}
 
-      {noResults && (
-        <div className="no-results">
-          <p>No users found.</p>
-        </div>
-      )}
+      {noResults && <div className="no-results"><p>No users found.</p></div>}
 
       {userList?.length > 0 && (
         <div className="user-list">
-          <h4>User List</h4>
           <table>
             <thead>
               <tr>
-                <th>User ID</th><th>Name</th><th>Email</th><th>Mobile</th><th>User Type</th><th>Created At</th>
+                <th>User ID</th><th>Username</th><th>Name</th><th>Email</th><th>Mobile</th><th>User Type</th><th>Created At</th>
               </tr>
             </thead>
             <tbody>
               {userList.map((user, i) => (
                 <tr key={i}>
                   <td>{user.usermemberid}</td>
+                  <td>{user.username}</td>
                   <td>{user.name}</td>
                   <td>{user.email}</td>
                   <td>{user.phoneNumber}</td>
@@ -181,9 +129,6 @@ const UserManagement = () => {
               ))}
             </tbody>
           </table>
-          <div className="export-buttons">
-            <button className="btn-user" onClick={exportToExcel}>Export Excel</button>
-          </div>
         </div>
       )}
     </div>

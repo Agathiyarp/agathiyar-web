@@ -1,11 +1,11 @@
 .event-mgmt-container {
-  max-width: 900px;
   margin: 50px auto;
   margin-top: 100px;
   background-color: #ffffff;
   border-radius: 12px;
   padding: 30px;
   box-shadow: 0 0 15px rgba(0, 0, 0, 0.1);
+  justify-content: center;
   /* font-family: 'Segoe UI', sans-serif; */
 }
 
@@ -18,11 +18,19 @@
 .section {
   margin-bottom: 25px;
   text-align: center;
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  align-items: center;
+  gap: 12px;
 }
 
 .section h4 {
-  margin-bottom: 10px;
+  margin-bottom: 0;
+  margin-right: 10px;
   color: #2b6777;
+  font-size: 16px;
+  font-weight: 600;
 }
 
 .no-results {
@@ -37,20 +45,15 @@
 }
 
 .input-event {
-  padding: 12px;
-  width: 80%;
-  max-width: 300px;
+  padding: 10px;
+  width: 180px;
   border-radius: 8px;
   border: 1px solid #ccc;
-  margin: 8px 0;
   font-size: 14px;
-  display: block;
-  margin-left: auto;
-  margin-right: auto;
+  margin: 0;
 }
 
 .btn-event {
-  margin-top: 10px;
   padding: 10px 20px;
   background: linear-gradient(to right, #28a745, #218838);
   color: white;
@@ -59,6 +62,8 @@
   border-radius: 25px;
   cursor: pointer;
   transition: 0.3s;
+  height: 42px;
+  display: flex;
   align-items: center;
   justify-content: center;
 }
@@ -153,5 +158,45 @@ table th {
   .event-list table td {
     font-size: 12px;
     padding: 6px;
+  }
+}
+
+.user-list {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding-top: 20px;
+  margin: 0 auto;
+  width: 1000px;
+}
+
+.user-list-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  width: 100%;
+  max-width: 1200px;
+  margin-bottom: 10px;
+  padding: 0 15px;
+}
+
+.export-buttons {
+  display: flex;
+  justify-content: flex-end;
+}
+
+@media screen and (max-width: 600px) {
+  .section {
+    flex-direction: column;
+    align-items: center;
+  }
+
+  .btn-event {
+    width: 200px;
+  }
+
+  .input-event {
+    width: 90%;
+    max-width: 250px;
   }
 }

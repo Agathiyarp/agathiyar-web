@@ -41,17 +41,17 @@ const RoomDetails = () => {
     { text: `Check-In: ${ moment(checkIn).format("YYYY-MM-DD")}`, icon: <EventIcon fontSize="small" className="text-gray-600 align-middle pr-1" /> },
     { text: `Check-Out: ${ moment(checkOut).format("YYYY-MM-DD")}`, icon: <EventIcon fontSize="small" className="text-gray-600 align-middle pr-1" /> },
     { text: "Hot Water", icon: <OpacityIcon fontSize="small" className="text-gray-600 mr-2" /> },
-    { text: "Lift",  icon: <ElevatorIcon fontSize="small" className="text-gray-600 mr-2" />},
-    { text: "Food Facility: No",  icon: <RestaurantIcon fontSize="small" className="text-gray-600 mr-2" />},
-    { text: "Parking: No",  icon: <DirectionsCarIcon fontSize="small" className="text-gray-600 mr-2" />},
+    { text: "Maintenance",  icon: <ElevatorIcon fontSize="small" className="text-gray-600 mr-2" />},
+    { text: "Food Facility",  icon: <RestaurantIcon fontSize="small" className="text-gray-600 mr-2" />},
+    { text: "Parking",  icon: <DirectionsCarIcon fontSize="small" className="text-gray-600 mr-2" />},
     { text: "Drinking Water",  icon:  <LocalDrinkIcon fontSize="small" className="text-gray-600 mr-2" />},
     { text: "Attached Toilet",  icon: <WcIcon fontSize="small" className="text-gray-600 mr-2" />},
   ];
 
   const initialData = [
     {
-      name: "2 Bed Deluxe Room",
-      inclusion: "Double Bed, Western Attached, Let-Bath, 1st Floor, Toiletries, Wardrobe, Electric kettle, Table-Chair",
+      name: "Family Room",
+      inclusion: room.roomdescription,
       additionalBeds: 0,
       price: 0, // Initialize to 0 since no rooms selected initially
       maintenance: 0, // Initialize to 0 since no rooms selected initially

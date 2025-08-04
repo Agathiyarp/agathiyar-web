@@ -128,7 +128,7 @@ const RoomBook = ({ searchResult, enabledDateRanges }) => {
                       <div className="room_card_dates">
                         <p className="room-card__date">
                           <RestaurantIcon fontSize="small" className="icon" />
-                          <span className="semi-bold">Food Facility:</span> No
+                          <span className="semi-bold">Food Facility:</span> Yes
                         </p>
                         <p className="room-card__date">
                           <DirectionsCarIcon
