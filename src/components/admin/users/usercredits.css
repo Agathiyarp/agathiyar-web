@@ -6,16 +6,34 @@
   margin-top: 100px;
 }
 
+.table-scroll-wrapper {
+  width: 100%;
+  overflow-x: auto;
+  -webkit-overflow-scrolling: touch;
+  margin-top: 20px;
+  border-radius: 6px;
+  border: 1px solid #ddd;
+}
+
+.user-credits-container h2 {
+  text-align: center;
+  color: #2b8a3e;
+  margin-bottom: 30px;
+}
+
 .user-credits-table {
   width: 100%;
   border-collapse: collapse;
   margin-top: 20px;
+  overflow-x: auto;
 }
 
 .user-credits-table th,
 .user-credits-table td {
   padding: 10px;
   text-align: center;
+  border: 1px solid #ddd;
+  font-size: 14px;
 }
 
 .update-btn {
@@ -28,12 +46,13 @@
   cursor: pointer;
 }
 
+.update-btn:hover {
+  background-color: #115293;
+}
+
 .update-credit-text {
   color: green;
   margin-bottom: 10px;
-}
-.update-btn:hover {
-  background-color: #115293;
 }
 
 /* Modal styles */
@@ -47,6 +66,7 @@
   display: flex;
   align-items: center;
   justify-content: center;
+  z-index: 9999;
 }
 
 .modal {
@@ -66,18 +86,34 @@
   font-size: 16px;
 }
 
-.modal-actions button {
+.modal textarea {
+  width: 100%;
+  padding: 8px;
+  font-size: 14px;
+  font-family: inherit;
+  resize: vertical;
+  margin-bottom: 8px;
+}
+
+.modal-actions-1 {
+  display: flex;
+  justify-content: center;
+  gap: 12px;
+  margin-top: 10px;
+}
+
+.save-btn,
+.cancel-btn {
   padding: 8px 16px;
-  margin: 0 8px;
   border: none;
   border-radius: 4px;
   cursor: pointer;
+  font-size: 14px;
 }
 
 .save-btn {
   background-color: #4caf50;
   color: white;
-  margin-right: 10px;
 }
 
 .cancel-btn {
@@ -85,12 +121,42 @@
   color: white;
 }
 
-.reason-textarea {
-  width: 100%;
-  padding: 8px;
-  margin-top: 10px;
-  resize: vertical;
-  font-family: inherit;
-  font-size: 14px;
-}
+/* Responsive */
+@media screen and (max-width: 768px) {
+  .user-credits-table {
+    display: block;
+    overflow-x: auto;
+    white-space: nowrap;
+  }
 
+  .user-credits-table thead {
+    display: table;
+    width: 100%;
+  }
+
+  .user-credits-table tbody {
+    display: table;
+    width: 100%;
+  }
+
+  .user-credits-table th,
+  .user-credits-table td {
+    font-size: 13px;
+    padding: 8px;
+  }
+
+  .modal {
+    width: 90%;
+    padding: 20px;
+  }
+
+  .modal-actions-1 {
+    flex-direction: column;
+    gap: 10px;
+  }
+
+  .save-btn,
+  .cancel-btn {
+    width: 100%;
+  }
+}

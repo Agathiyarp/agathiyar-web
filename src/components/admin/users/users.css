@@ -7,7 +7,7 @@
   box-shadow: 0 0 15px rgba(0, 0, 0, 0.1);
   justify-self: center;
   max-width: 100%;
-  overflow-x: hidden;
+  /* overflow-x: hidden; */
 }
 
 .user-mgmt-container h2 {
@@ -15,9 +15,15 @@
   color: #2b8a3e;
   margin-bottom: 30px;
 }
+.user-list1 {
+  display: flex;
+  flex-direction: column;
+  padding-top: 20px;
+  margin: 0 auto;
+}
 
 .table-scroll-wrapper {
-  width: 100%;
+  /* width: 100%; */
   overflow-x: auto;
   /* Add these properties for better mobile scrolling */
   -webkit-overflow-scrolling: touch;
@@ -30,6 +36,7 @@
   width: 100%;
   min-width: 800px; /* Increased min-width to ensure scrolling */
   border-collapse: collapse;
+  table-layout: auto;
   white-space: nowrap;
   margin: 0; /* Remove default margin */
 }
@@ -216,14 +223,14 @@ table th {
 
   .table-scroll-wrapper {
     /* Force the wrapper to respect container boundaries */
-    max-width: 100%;
+    /* max-width: 100%; */
     overflow-x: auto;
     -webkit-overflow-scrolling: touch;
     border-radius: 8px;
   }
 
   .table-scroll-wrapper table {
-    min-width: 900px; /* Ensure table is wider than container on mobile */
+    min-width: 700px; /* Ensure table is wider than container on mobile */
   }
 
   .user-list table th,
@@ -272,8 +279,8 @@ table th {
   }
 
   .table-scroll-wrapper {
-    width: 100%;
-    max-width: 100%;
+    /* width: 100%; */
+    /* max-width: 100%; */
     overflow-x: auto;
     -webkit-overflow-scrolling: touch;
     /* Add touch scrolling momentum */
@@ -307,6 +314,8 @@ table th {
     padding: 10px;
     margin: 5px;
     margin-top: 80px;
+    max-width: 750px;
+    overflow-x: auto;
   }
 
   .table-scroll-wrapper table {
@@ -317,6 +326,5 @@ table th {
   .user-list table td {
     font-size: 11px;
     padding: 5px;
-    min-width: 100px;
   }
 }

@@ -12,9 +12,9 @@ const Footer = () => {
           </p>
           <p>Mobile: +91 85250 44990</p>
         </div>
-        <div className="footer-links">
+        {/* <div className="footer-links">
           <a onClick={(e) => e.preventDefault()}>Subscribe us on YouTube</a>
-        </div>
+        </div> */}
       </div>
       <div className="footer-bottom">
         <p>&copy; {new Date().getFullYear()} Copyrights Owned by AgathiyarPyramid.org. All rights reserved.</p>

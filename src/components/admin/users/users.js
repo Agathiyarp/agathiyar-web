@@ -108,7 +108,7 @@ const UserManagement = () => {
       {noResults && <div className="no-results"><p>No users found.</p></div>}
 
       {userList?.length > 0 && (
-        <div className="user-list">
+        <div className="user-list1">
            <div className="table-scroll-wrapper">
             <table>
               <thead>

@@ -81,38 +81,40 @@ const UserCredits = () => {
       ) : creditsList.length === 0 ? (
         <p>No credits found.</p>
       ) : (
-        <table className="user-credits-table">
-          <thead>
-            <tr>
-              <th>Name</th>
-              <th>User ID</th>
-              <th>Credits</th>
-              <th>Modified Date</th>
-              <th>Modifed Reason</th>
-              <th>Actions</th>
-            </tr>
-          </thead>
-          <tbody>
-            {creditsList.map((item, index) => (
-              <tr key={index}>
-                <td>{item.name || '-'}</td>
-                <td>{item.usermemberid || '-'}</td>
-                <td>{item.credits ?? 0}</td>
-                <td>
-                  {item.creditmodifiedate
-                    ? new Date(item.creditmodifiedate).toLocaleDateString()
-                    : '-'}
-                </td>
-                <td>{item.creditmodifyreason || '-'}</td>
-                <td>
-                  <button className="update-btn" onClick={() => handleOpenModal(item)}>
-                    Update
-                  </button>
-                </td>
+        <div className="table-scroll-wrapper">
+          <table className="user-credits-table">
+            <thead>
+              <tr>
+                <th>Name</th>
+                <th>User ID</th>
+                <th>Credits</th>
+                <th>Modified Date</th>
+                <th>Modifed Reason</th>
+                <th>Actions</th>
               </tr>
-            ))}
-          </tbody>
-        </table>
+            </thead>
+            <tbody>
+              {creditsList.map((item, index) => (
+                <tr key={index}>
+                  <td>{item.name || '-'}</td>
+                  <td>{item.usermemberid || '-'}</td>
+                  <td>{item.credits ?? 0}</td>
+                  <td>
+                    {item.creditmodifiedate
+                      ? new Date(item.creditmodifiedate).toLocaleDateString()
+                      : '-'}
+                  </td>
+                  <td>{item.creditmodifyreason || '-'}</td>
+                  <td>
+                    <button className="update-btn" onClick={() => handleOpenModal(item)}>
+                      Update
+                    </button>
+                  </td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        </div>
       )}
 
       {showModal && (
