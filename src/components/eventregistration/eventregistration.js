@@ -27,7 +27,7 @@ const EventRegistration = () => {
     event.preventDefault();
 
     if (registerChoice !== "Yes") {
-      toast.info("You chose not to register.");
+      toast.info("You choose not to register.");
       return;
     }
 

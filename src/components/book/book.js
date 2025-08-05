@@ -12,12 +12,19 @@ const BookGrid = () => {
     fetch('https://www.agathiyarpyramid.org/api/books')
       .then((res) => res.json())
       .then((data) => {
+        console.log(data, 'testv1');
         if (Array.isArray(data)) {
-          const formattedBooks = data.map((book) => ({
-            title: book.filename,
-            imageUrl: `${book.coverimgpath}` || defaultCover,
-            downloadUrl: `${book.coverimgpath}`,
-          }));
+
+          const formattedBooks = data.map((book) => {
+            const coverUrl = `https://www.agathiyarpyramid.org${book.coverimgpath.replace('/var/www/agathiyar-web', '')}`;
+            const fileUrl = `https://www.agathiyarpyramid.org${book.filepath.replace('/var/www/agathiyar-web', '')}`;
+
+            return {
+              title: book.filename,
+              imageUrl: coverUrl,
+              downloadUrl: fileUrl,
+            };
+          });
           setBooks(formattedBooks);
         } else {
           throw new Error('Unexpected API response');

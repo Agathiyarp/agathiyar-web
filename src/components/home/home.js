@@ -54,9 +54,9 @@ const Home = () => {
         <MeditationInfo />
       </div>
      
-      <div>
+      {/* <div>
         <Meditation />
-      </div>
+      </div> */}
 
       <div>
         <GridViewVeg />

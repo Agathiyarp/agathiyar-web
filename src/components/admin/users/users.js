@@ -125,7 +125,7 @@ const UserManagement = () => {
                     <td>{user.email}</td>
                     <td>{user.phoneNumber}</td>
                     <td>{user.usertype || 'Not specified'}</td>
-                    <td>{formatDate(user.createdAt)}</td>
+                    <td>{formatDate(user.createddate)}</td>
                   </tr>
                 ))}
               </tbody>
