@@ -18,7 +18,7 @@ const WorkshopItem = ({
   startdate,
   enddate,
   numberofdays,
-  destination,
+  place,
   imageurl,
   roomtype,
   contactdetails,
@@ -109,7 +109,7 @@ const WorkshopItem = ({
           <Box className="info-item" display="flex" alignItems="center">
             <PlaceIcon style={{ fontSize: "30px", marginRight: "8px" }} />
             <Typography variant="body1" className="text-item">
-              <b>Place</b><br /> {destination || "Not specified"}
+              <b>Place</b><br /> {place || "Not specified"}
             </Typography>
           </Box>
           <Box className="info-item" display="flex" alignItems="center">

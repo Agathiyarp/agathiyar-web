@@ -77,6 +77,27 @@ const Booking = () => {
     }
   };
 
+   const fetchBookingAvailability = async () => {
+    const userDetails = userStr ? JSON.parse(userStr) : null;
+    const memberId = userDetails?.usermemberid;
+
+    console.log("Parsed memberId:", memberId); // 🟡 Add this
+
+    if (!memberId) return;
+
+    try {
+      const response = await axios.get(`https://agathiyarpyramid.org/api/getBookingAvailability/${memberId}`);
+      console.log("Booking Availability:", response.data);
+    } catch (error) {
+      console.error("Error fetching booking availability:", error);
+    }
+  };
+
+
+  useEffect(() => {
+    fetchBookingAvailability();
+  }, []);
+
   const fetchData = async (date) => {
     setLoading(true);
     try {
