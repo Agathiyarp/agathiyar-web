@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import './eventdetails.css';
 import 'jspdf-autotable';
 import * as XLSX from 'xlsx';
@@ -11,14 +11,38 @@ const EventDetails = () => {
   const [eventDetails, setEventDetails] = useState([]);
   const [noResults, setNoResults] = useState(false);
 
+  // 🔁 Load all events on page load
+  useEffect(() => {
+    fetchAllEvents();
+  }, []);
+
+  const fetchAllEvents = async () => {
+    try {
+      const res = await fetch('https://www.agathiyarpyramid.org/api/events');
+      const data = await res.json();
+      if (res.ok && data?.length > 0 && data[0]?.data?.length > 0) {
+        setUserList(data[0].data);
+        setEventDetails(data[0]);
+        setNoResults(false);
+      } else {
+        setUserList([]);
+        setEventDetails([]);
+        setNoResults(true);
+      }
+    } catch (err) {
+      console.error(err);
+      alert('Error fetching all events');
+    }
+  };
+
   const handleFilterByDate = async () => {
     const { start, end } = dateFilter;
     if (!start || !end) return alert("Select both start and end dates");
     try {
-      const res = await fetch('https://www.agathiyarpyramid.org/api/events/filter/' + start + '/' + end);
+      const res = await fetch(`https://www.agathiyarpyramid.org/api/events/filter/${start}/${end}`);
       const data = await res.json();
-      if (res.ok && data[0].data && data[0].data.length > 0) {
-        setUserList(data[0]?.data);
+      if (res.ok && data[0]?.data?.length > 0) {
+        setUserList(data[0].data);
         setEventDetails(data[0]);
         setUserDetails(null);
         setNoResults(false);
@@ -36,11 +60,11 @@ const EventDetails = () => {
   const exportToExcel = () => {
     if (!eventDetails.eventId || userList.length === 0) return;
 
-    // Clone userList and append eventId to each record
     const dataToExport = userList.map(user => ({
       ...user,
       eventId: eventDetails.eventId
     }));
+
     const ws = XLSX.utils.json_to_sheet(dataToExport);
     const wb = XLSX.utils.book_new();
     XLSX.utils.book_append_sheet(wb, ws, "Users");
@@ -75,50 +99,18 @@ const EventDetails = () => {
           <h4>User Details</h4>
           <table>
             <tbody>
-              <tr>
-                <td><strong>Name</strong></td>
-                <td>{userDetails.name || '-'}</td>
-              </tr>
-              <tr>
-                <td><strong>Email</strong></td>
-                <td>{userDetails.email || '-'}</td>
-              </tr>
-              <tr>
-                <td><strong>Phone</strong></td>
-                <td>{userDetails.phoneNumber || '-'}</td>
-              </tr>
-              <tr>
-                <td><strong>Country</strong></td>
-                <td>{userDetails.country || '-'}</td>
-              </tr>
-              <tr>
-                <td><strong>Username</strong></td>
-                <td>{userDetails.username || '-'}</td>
-              </tr>
-              <tr>
-                <td><strong>User Member ID</strong></td>
-                <td>{userDetails.usermemberid || '-'}</td>
-              </tr>
-              <tr>
-                <td><strong>User Type</strong></td>
-                <td>{userDetails.usertype || '-'}</td>
-              </tr>
-              <tr>
-                <td><strong>Address</strong></td>
-                <td>{userDetails.address || '-'}</td>
-              </tr>
-              <tr>
-                <td><strong>Date of Birth</strong></td>
-                <td>{userDetails.dateofbirth || '-'}</td>
-              </tr>
-              <tr>
-                <td><strong>Gender</strong></td>
-                <td>{userDetails.gender || '-'}</td>
-              </tr>
-               <tr>
-                <td><strong>Event ID</strong></td>
-                <td>{eventDetails.eventId || '-'}</td>
-              </tr>
+              {/* User Details Display */}
+              <tr><td><strong>Name</strong></td><td>{userDetails.name || '-'}</td></tr>
+              <tr><td><strong>Email</strong></td><td>{userDetails.email || '-'}</td></tr>
+              <tr><td><strong>Phone</strong></td><td>{userDetails.phoneNumber || '-'}</td></tr>
+              <tr><td><strong>Country</strong></td><td>{userDetails.country || '-'}</td></tr>
+              <tr><td><strong>Username</strong></td><td>{userDetails.username || '-'}</td></tr>
+              <tr><td><strong>User Member ID</strong></td><td>{userDetails.usermemberid || '-'}</td></tr>
+              <tr><td><strong>User Type</strong></td><td>{userDetails.usertype || '-'}</td></tr>
+              <tr><td><strong>Address</strong></td><td>{userDetails.address || '-'}</td></tr>
+              <tr><td><strong>Date of Birth</strong></td><td>{userDetails.dateofbirth || '-'}</td></tr>
+              <tr><td><strong>Gender</strong></td><td>{userDetails.gender || '-'}</td></tr>
+              <tr><td><strong>Event ID</strong></td><td>{eventDetails.eventId || '-'}</td></tr>
             </tbody>
           </table>
         </div>
