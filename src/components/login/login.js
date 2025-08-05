@@ -76,7 +76,7 @@ const LoginForm = () => {
   return (
     <div className="login-page">
       <div><MenuBar/></div>
-      <div className="image-container">
+      <div className="image-container1">
         <img src={loginimage} alt="Background" />
       </div>
       <div className="form-container">

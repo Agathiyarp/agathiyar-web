@@ -53,8 +53,6 @@ const Home = () => {
       <div>
         <MeditationInfo />
       </div>
-
-      <AgathiyarAbout />
      
       <div>
         <Meditation />
@@ -67,6 +65,8 @@ const Home = () => {
       <div>
         <GridViewAgath />
       </div>
+
+      <AgathiyarAbout />
 
       {/* <div>
         <h1 className="meditation-heading">Image Gallery</h1>

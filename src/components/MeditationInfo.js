@@ -27,7 +27,7 @@ const MeditationInfo = () => {
           </div>
         </div>
         <div className="border"></div>
-        <div className="image-container">
+        <div className="image-container2">
           <div className="photo-frame">
             <img className="image" src={meditationImg} alt="Meditation" />
           </div>

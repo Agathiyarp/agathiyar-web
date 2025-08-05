@@ -1,328 +1,150 @@
 import React, { useState } from "react";
-import { TextField, Button, IconButton, Typography, MenuItem } from "@mui/material";
-import { AddCircle, RemoveCircle } from "@mui/icons-material";
-import reg3 from "../../images/reg3.png";
-import { toast, ToastContainer } from "react-toastify";
-import { useNavigate, useParams   } from "react-router-dom";
-import axios from 'axios';
-import MenuBar from '../menumain/menubar';
-import { useLocation } from "react-router-dom";
-
+import {
+  TextField,
+  MenuItem,
+  Button,
+} from "@mui/material";
+import { useNavigate, useParams, useLocation } from "react-router-dom";
+import axios from "axios";
+import MenuBar from "../menumain/menubar";
+import { ToastContainer, toast } from "react-toastify";
+import bgImage from "../../images/rooms/Gallery/10.png"; // Update path if needed
 
 const EventRegistration = () => {
-
   const { eventId } = useParams();
   const navigate = useNavigate();
   const location = useLocation();
   const queryParams = new URLSearchParams(location.search);
-  const startdate = queryParams.get("startdate");
-  const enddate = queryParams.get("enddate");
-  const [members, setMembers] = useState([{ name: "", phone: "", email: "", age: "", gender: "" }]);
-  const [comments, setComments] = useState("");
-  const [errorMessage, setErrorMessage] = useState("");
+  const startdate = queryParams.get("startdate") || "";
+  const enddate = queryParams.get("enddate") || "";
   const sessionData = JSON.parse(sessionStorage.getItem("userDetails"));
   const memberId = sessionData?.usermemberid;
 
-  const handleInputChange = (index, event) => {
-    const { name, value } = event.target;
-    const newMembers = [...members];
-    newMembers[index][name] = value;
-    setMembers(newMembers);
-  };
-
-  const addMember = () => {
-    if (members.length < 3) {
-      setMembers([...members, { name: "", phone: "", email: "", age: "", gender: "" }]);
-    }
-  };
-
-  const removeMember = (index) => {
-    const newMembers = members.filter((_, i) => i !== index);
-    setMembers(newMembers);
-  };
-
-  const handleCommentsChange = (event) => {
-    if (event.target.value.length <= 250) {
-      setComments(event.target.value);
-    }
-  };
-
-  const validateFields = () => {
-    for (const member of members) {
-      if (!member.name || !/^[a-zA-Z\s]+$/.test(member.name)) {
-        setErrorMessage("Name must contain only letters and be non-empty.");
-        return false;
-      }
-      if (!member.phone || !/^\d{10}$/.test(member.phone)) {
-        setErrorMessage("Phone number must be 10 digits.");
-        return false;
-      }
-      if (!member.email || !/\S+@\S+\.\S+/.test(member.email)) {
-        setErrorMessage("Invalid email format.");
-        return false;
-      }
-      if (!member.age) {
-        setErrorMessage("Age is required.");
-        return false;
-      }
-      if (!member.gender) {
-        setErrorMessage("Gender is required.");
-        return false;
-      }
-    }
-    setErrorMessage("");
-    return true;
-  };
+  const [registerChoice, setRegisterChoice] = useState("");
+  const [participantCount, setParticipantCount] = useState("");
 
   const handleSubmit = async (event) => {
     event.preventDefault();
 
-      const requestBody = {
-        eventid: eventId,
-        memberid: memberId,
-        comments: comments,
-        data: members,
-        startdate: startdate,
-        enddate: enddate
-      };
-      
-    if (validateFields()) {
-      try {
-        const response = await axios.post(
-          "https://agathiyarpyramid.org/api/event/user/register",
-          requestBody
-        );
+    if (registerChoice !== "Yes") {
+      toast.info("You chose not to register.");
+      return;
+    }
 
-        if (response && response.data && response.status === 201) {
-          toast.success("Registration successful!");
+    if (!participantCount || isNaN(participantCount) || participantCount <= 0) {
+      toast.error("Please enter a valid number of participants.");
+      return;
+    }
 
-          // Reset form
-          setMembers([{ name: "", phone: "", email: "", age: "", gender: "" }]);
-          setComments("");
+    const requestBody = {
+      eventid: eventId,
+      memberid: memberId,
+      register: true,
+      guests: participantCount,
+      startdate,
+      enddate,
+    };
 
-          setTimeout(() => {
-            navigate('/events');
-          }, 1000);
-        } else {
-          console.warn("⚠️ Unexpected response:", response);
-          toast.error("Something went wrong. Please try again.");
-        }
-      } catch (error) {
-        console.error("❌ Error registering user for event:", error);
-        toast.error("Registration failed. Please try again later.");
+    try {
+      const response = await axios.post(
+        "https://agathiyarpyramid.org/api/event/user/register",
+        requestBody
+      );
+      if (response && response.status === 201) {
+        toast.success("Registration successful!");
+        setTimeout(() => navigate("/events"), 1000);
+      } else {
+        toast.error("Registration failed.");
       }
-
+    } catch (error) {
+      console.error("Error submitting registration:", error);
+      toast.error("An error occurred.");
     }
   };
 
   return (
-    <div style={styles.backgroundContainer}>
-      <MenuBar/>
-      <div style={styles.formContainer}>
-        <h3 style={styles.heading}>Event Registration</h3>
-        <form onSubmit={handleSubmit}>
-          <h3 style={styles.memberTitle}>Member Id: {memberId}</h3>
-          {members.map((member, index) => (
-            <div key={index} style={styles.memberRow}>
-              <div>
-                <TextField
-                  fullWidth
-                  label="Name"
-                  name="name"
-                  value={member.name}
-                  onChange={(event) => handleInputChange(index, event)}
-                  required
-                  error={
-                    !/^[a-zA-Z\s]*$/.test(member.name) && member.name !== ""
-                  }
-                  helperText="Name must only contain letters."
-                  style={styles.textField}
-                />
-              </div>
-              <div>
-                <TextField
-                  fullWidth
-                  label="Phone Number"
-                  name="phone"
-                  value={member.phone}
-                  onChange={(event) => handleInputChange(index, event)}
-                  required
-                  error={!/^\d{10}$/.test(member.phone) && member.phone !== ""}
-                  helperText="Phone number must be 10 digits."
-                  style={styles.textField}
-                />
-              </div>
-              <div>
-                <TextField
-                  fullWidth
-                  label="Email"
-                  name="email"
-                  value={member.email}
-                  onChange={(event) => handleInputChange(index, event)}
-                  required
-                  error={
-                    !/\S+@\S+\.\S+/.test(member.email) && member.email !== ""
-                  }
-                  helperText="Please enter a valid email."
-                  style={styles.textField}
-                />
-              </div>
-              <div style={styles.dropdownContainer}>
-                <TextField
-                  select
-                  fullWidth
-                  label="Age"
-                  name="age"
-                  value={member.age}
-                  onChange={(event) => handleInputChange(index, event)}
-                  required
-                  style={styles.textField}
-                >
-                  {[...Array(100).keys()].map((age) => (
-                    <MenuItem key={age + 1} value={age + 1}>
-                      {age + 1}
-                    </MenuItem>
-                  ))}
-                </TextField>
-              </div>
-              <div style={styles.dropdownContainer}>
-                <TextField
-                  select
-                  fullWidth
-                  label="Gender"
-                  name="gender"
-                  value={member.gender}
-                  onChange={(event) => handleInputChange(index, event)}
-                  required
-                  style={styles.textField}
-                >
-                  <MenuItem value="">
-                    <em>None</em>
-                  </MenuItem>
-                  <MenuItem value="Male">Male</MenuItem>
-                  <MenuItem value="Female">Female</MenuItem>
-                  <MenuItem value="Other">Other</MenuItem>
-                </TextField>
-              </div>
-              {members.length > 1 && (
-                <IconButton
-                  onClick={() => removeMember(index)}
-                  style={styles.removeButton}
-                >
-                  <RemoveCircle />
-                </IconButton>
-              )}
-            </div>
-          ))}
-
-          {members.length < 3 && (
-            <div style={styles.addButtonContainer}>
-              <Button
-                variant="outlined"
-                color="primary"
-                startIcon={<AddCircle />}
-                onClick={addMember}
-              >
-                Add Member
-              </Button>
-            </div>
-          )}
-
-          <div style={styles.commentsContainer}>
+    <div style={{ ...styles.backgroundContainer, backgroundImage: `url(${bgImage})` }}>
+      <MenuBar />
+      <div style={styles.wrapper}>
+        <div style={styles.formContainer}>
+          <h3 style={styles.heading}>Event Registration</h3>
+          <form onSubmit={handleSubmit}>
             <TextField
+              select
               fullWidth
-              label="Comments"
-              multiline
-              rows={4}
-              value={comments}
-              onChange={handleCommentsChange}
-              helperText={`${comments.length}/250`}
-              inputProps={{ maxLength: 250 }}
+              label="Do you want to register?"
+              value={registerChoice}
+              onChange={(e) => setRegisterChoice(e.target.value)}
+              required
               style={styles.textField}
-            />
-          </div>
-
-          {errorMessage && (
-            <Typography
-              color="error"
-              align="center"
-              style={{ marginBottom: "20px" }}
             >
-              {errorMessage}
-            </Typography>
-          )}
+              <MenuItem value="">Select</MenuItem>
+              <MenuItem value="Yes">Yes</MenuItem>
+              <MenuItem value="No">No</MenuItem>
+            </TextField>
 
-          <Button
-            type="submit"
-            variant="contained"
-            color="primary"
-            style={styles.submitButton}
-          >
-            Submit
-          </Button>
-        </form>
+            {registerChoice === "Yes" && (
+              <TextField
+                fullWidth
+                label="Number of Participants"
+                type="number"
+                value={participantCount}
+                onChange={(e) => setParticipantCount(e.target.value)}
+                required
+                inputProps={{ min: 1 }}
+                style={styles.textField}
+              />
+            )}
+
+            <Button
+              type="submit"
+              variant="contained"
+              color="primary"
+              style={styles.submitButton}
+            >
+              Submit
+            </Button>
+          </form>
+        </div>
       </div>
-      <ToastContainer position="top-right" autoClose={3000} hideProgressBar={false} closeOnClick pauseOnHover draggable />
+      <ToastContainer position="top-right" autoClose={3000} />
     </div>
   );
 };
 
 const styles = {
   backgroundContainer: {
-    backgroundImage: `url(${reg3})`,
     backgroundSize: "cover",
     backgroundPosition: "center",
+    minHeight: "100vh",
+    width: "100%",
+  },
+  wrapper: {
+    minHeight: "calc(100vh - 80px)", // adjusts for navbar height
     display: "flex",
     justifyContent: "center",
     alignItems: "center",
-    marginTop: "100px",
+    padding: "20px",
+  },
+  formContainer: {
+    backgroundColor: "rgba(255, 255, 255, 0.95)",
+    padding: "30px",
+    borderRadius: "12px",
+    width: "100%",
+    maxWidth: "400px",
+    boxShadow: "0 4px 12px rgba(0, 0, 0, 0.1)",
   },
   heading: {
     textAlign: "center",
     fontSize: "22px",
     color: "#38a169",
-    marginTop: "0px",
-  },
-  formContainer: {
-    backgroundColor: "rgba(255, 255, 255, 0.85)",
-    padding: "30px",
-    borderRadius: "10px",
-    width: "100%",
-    maxWidth: "500px",
-    boxShadow: "0 4px 8px rgba(0, 0, 0, 0.1)",
-  },
-  memberRow: {
-    marginBottom: "20px",
-    display: "flex",
-    flexDirection: "column",
-  },
-  dropdownContainer: {
-    display: "flex",
-    justifyContent: "space-between",
-    marginBottom: "10px",
-  },
-  memberTitle: {
-    marginBottom: "10px",
-    color: "#000",
-    fontWeight: "400",
+    marginBottom: "50px",
   },
   textField: {
-    marginBottom: "5px",
-  },
-  addButtonContainer: {
-    display: "flex",
-    justifyContent: "center",
-    marginBottom: "20px",
-  },
-  commentsContainer: {
     marginBottom: "20px",
   },
   submitButton: {
-    display: "block",
     width: "100%",
-  },
-  removeButton: {
-    marginTop: "10px",
   },
 };
 

@@ -4,14 +4,9 @@ import './gallery.css';
 import MenuBar from "../menumain/menubar";
 import Footer from "../Footer";
 
-import img1 from '../../images/gallery/gallery1.png';
-import img2 from '../../images/gallery/gallery2.png';
-import img3 from '../../images/gallery/gallery3.png';
-import img4 from '../../images/gallery/gallery4.png';
-import img5 from '../../images/gallery/gallery5.png';
-import img6 from '../../images/gallery/gallery6.png';
 
-const images = [img1, img2, img3, img4, img5, img6];
+const importAll = (r) => r.keys().map(r);
+const galleryImages = importAll(require.context('../../images/rooms/Gallery', false, /\.(png|jpe?g|svg)$/));
 
 Modal.setAppElement('#root'); // or your app's top-level div
 
@@ -24,7 +19,7 @@ export default function Gallery() {
       <h2>Image Gallery</h2>
 
       <div className="gallery-grid">
-        {images.map((img, idx) => (
+        {galleryImages.map((img, idx) => (
           <div key={idx} className="gallery-tile" onClick={() => setSelectedImage(img)}>
             <img src={img} alt={`Gallery ${idx}`} className="gallery-thumbnail" />
           </div>

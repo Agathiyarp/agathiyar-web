@@ -13,6 +13,10 @@
     display: flex; /* Center image */
     justify-content: center; /* Center image horizontally */
     padding: 20px; /* Padding inside image section */
+    max-width: 450px;
+  }
+  .image-container2 {
+    max-width: 600px;
   }
 
   .text-container {
