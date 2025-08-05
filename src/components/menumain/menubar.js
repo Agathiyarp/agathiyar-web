@@ -11,7 +11,6 @@ import {
 import MoreVertIcon from "@mui/icons-material/MoreVert";
 import { useNavigate, useLocation } from "react-router-dom";
 import mainlogo from "../../images/mainlogo.png";
-import profile from "../../images/profileImage.png";
 import "./menubar.css";
 import { ToastContainer, toast } from "react-toastify";
 import ProfileMenu from "./Profile";

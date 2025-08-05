@@ -190,10 +190,10 @@ const Booking = () => {
       </div>
 
       <div className="info-strip-booking">
-        <ul>
-          <li><strong>Terms and Conditions:</strong></li>
-          <li>✔️ If a user books&nbsp;<strong> 2 days and 2 rooms</strong>, <strong>&nbsp;credit will be reduced by 4</strong>.</li>
-          <li>✔️ If a user books&nbsp;<strong> 1 day and 1 room</strong>, <strong>&nbsp;credit will be reduced by 1</strong>.</li>
+        <p><strong>Terms and Conditions:</strong></p>
+        <ul className="tick-list">
+          <li>If a user books&nbsp; 2 days and 2 rooms, <strong>&nbsp;credit will be reduced by 4</strong>.</li>
+          <li>If a user books&nbsp; 1 day and 1 room, <strong>&nbsp;credit will be reduced by 1</strong>.</li>
         </ul>
       </div>
 

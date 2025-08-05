@@ -67,11 +67,7 @@ const Home = () => {
       </div>
 
       <AgathiyarAbout />
-
-      {/* <div>
-        <h1 className="meditation-heading">Image Gallery</h1>
-        <ImageGallery />
-      </div> */}
+      
       <Footer />
     </div>
   );

@@ -34,11 +34,29 @@
   border-radius: 5px;
   margin-top: 10px;
   font-size: 14px;
-  /* font-family: 'SF Pro Display Regular', sans-serif; */
   text-align: left;
   border-left: 5px solid #26a69a;
-  width: 900px;
+  width: 100%;
+  max-width: 900px;
+  margin-left: auto;
+  margin-right: auto;
+  box-sizing: border-box;
 }
+
+.info-strip-booking {
+  background-color: #e0f7fa;
+  border-left: 5px solid #26a69a;
+  margin: 20px auto;
+  padding: 20px;
+  border-radius: 8px;
+  width: 100%;
+  max-width: 900px;
+  font-size: 16px;
+  color: #333;
+  box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+  box-sizing: border-box;
+}
+
 
 .available-credits {
   font-size: 18px;
@@ -56,9 +74,30 @@
 }
 
 .tick-list {
-  padding-left: 20px;
+  display: inline-block;
   text-align: left;
+  padding-left: 0;
+  margin: 0 auto;
+  list-style: none;
 }
+
+.tick-list li {
+  position: relative;
+  padding-left: 28px;
+  margin-bottom: 8px;
+  font-size: 14px;
+  color: #333;
+}
+
+.tick-list li::before {
+  content: '\2714';
+  position: absolute;
+  left: 0;
+  top: 0;
+  color: #38a169;
+  font-size: 16px;
+}
+
 
 .date-filter {
   display: flex;
@@ -101,18 +140,6 @@
   opacity: 0.6;
 }
 
-.info-strip-booking {
-  background-color: #e0f7fa;
-  border-left: 5px solid #26a69a;
-  margin: 20px auto;
-  padding: 20px;
-  border-radius: 8px;
-  width: 900px;
-  font-size: 16px;
-  color: #333;
-  box-shadow: 0 2px 5px rgba(0,0,0,0.1);
-}
-
 .info-strip-booking ul {
   list-style: none;
   padding-left: 0;
@@ -142,6 +169,9 @@
   .date-filter {
     width: 100%;
     align-items: stretch;
+  }
+  .info-strip-booking li {
+    flex-direction: column;
   }
 }
 

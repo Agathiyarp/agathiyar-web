@@ -87,4 +87,7 @@ iframe {
   iframe {
       height: 300px; /* Decrease height for mobile devices */
   }
+  .grid-container-route {
+    margin: 20px; /* Spacing around route sections */
+  }
 }

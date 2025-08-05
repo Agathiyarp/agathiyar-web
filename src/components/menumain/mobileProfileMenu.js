@@ -1,8 +1,7 @@
-import React from "react";
+import React, {useState, useEffect} from "react";
 import { MenuItem, Avatar, Typography, Box } from "@mui/material";
 import { useNavigate } from "react-router-dom";
 import "./mobileProfileMenu.css";
-import profile from "../../images/profileImage.png";
 import { toast } from 'react-toastify';
 import Button from '@mui/material/Button';
 
@@ -10,14 +9,34 @@ const MobileProfileMenu = ({ onLogout }) => {
   const navigate = useNavigate();
 
   const data = sessionStorage.getItem('userDetails');
+  const [profileImg, setProfileImg] = useState(''); 
 
   const user = {
     name: `${data && JSON.parse(data)?.username}`,
     memberId: `${JSON.parse(data)?.usermemberid}`,
-    visited: 10,
     usertype: `${JSON.parse(data)?.usertype}`,
-    profilePicture: profile,
+    profilePicture: profileImg,
   };
+
+  useEffect(() => {
+    const parsedData = data ? JSON.parse(data) : null;
+
+    const fetchProfileImage = async () => {
+      try {
+        const response = await fetch(`https://www.agathiyarpyramid.org/api/user/profile-image/${parsedData?.username}`);
+        if (!response.ok) throw new Error("Failed to fetch image");
+        const blob = await response.blob();
+        const imageUrl = URL.createObjectURL(blob);
+        setProfileImg(imageUrl);
+      } catch (error) {
+        console.error("Failed to fetch profile image:", error);
+      }
+    };
+
+    if (parsedData?.username) {
+      fetchProfileImage();
+    }
+  }, [data]);
 
   const handleLogout = async () => {
     try {
@@ -51,20 +70,19 @@ const MobileProfileMenu = ({ onLogout }) => {
       {user && (
         <MenuItem onClick={() => navigate("/profile")}>
           <Avatar
-            src={user.profilePicture}
+            src={profileImg}
             alt={user.name}
             sx={{ marginRight: "10px", width: '150px', height: '150px' }}
           />
           <Box>
-            <Typography variant="h5" color="info" sx={{marginBottom: '10px'}}>{user.name}</Typography>
+            <Typography variant="h5" color="info" sx={{ marginBottom: '10px' }}>
+              {user.name}
+            </Typography>
             <Typography variant="body2" color="success">
               Member ID: {user.memberId}
             </Typography>
             <Typography variant="body2" color="success">
-              Visited: {user.visited} times
-            </Typography>
-            <Typography variant="body2" color="success">
-              Type: {user.usertype}
+              UserType: {user.usertype}
             </Typography>
           </Box>
         </MenuItem>

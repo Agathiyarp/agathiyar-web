@@ -137,11 +137,11 @@ const RoomBook = ({ searchResult, enabledDateRanges }) => {
                           />
                           <span className="semi-bold">Parking:</span> No
                         </p>
-                        <p className="available-text">
+                        <p className="room-card__date">
                           <span className="icon-date">🛏️</span>
-                          Rooms Available: {availableRooms}
+                          <span className="semi-bold">Rooms Available: {availableRooms}</span>
                         </p>
-                        <p className="days-selected">
+                        <p className="room-card__date">
                           <span className="icon-date">🕒</span>
                           <span className="semi-bold">
                             Days Selected:

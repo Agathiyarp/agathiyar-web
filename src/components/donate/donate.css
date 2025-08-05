@@ -55,9 +55,10 @@ ul {
     height: auto; /* Maintain aspect ratio */
 }
 
-.text-container {
+.donate-container {
     text-align: center;
-    padding: 10px;
+    padding: 100px;
+    min-height: 400px,
 }
 
 /* Media Queries for Responsiveness */
@@ -69,7 +70,7 @@ ul {
     }
 
     .donate-image-container,
-    .text-container {
+    .donate-container {
         flex: 1; /* Allow containers to grow equally */
         margin: 10px; /* Margin for spacing */
         max-width: 48%; /* Ensure they don’t exceed 48% of the width */
@@ -91,7 +92,9 @@ ul {
     }
 
     .donate-image-container,
-    .text-container {
+    .donate-container {
         width: 100%; /* Make sure both containers are full width */
+        padding: 0;
+        padding-top: 10px;
     }
 }
