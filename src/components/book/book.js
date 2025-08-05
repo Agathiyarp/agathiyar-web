@@ -16,8 +16,8 @@ const BookGrid = () => {
         if (Array.isArray(data)) {
 
           const formattedBooks = data.map((book) => {
-            const coverUrl = `https://www.agathiyarpyramid.org${book.coverimgpath.replace('/var/www/agathiyar-web', '')}`;
-            const fileUrl = `https://www.agathiyarpyramid.org${book.filepath.replace('/var/www/agathiyar-web', '')}`;
+            const coverUrl = `https://www.agathiyarpyramid.org${book.coverimgpath.replace('/var/www/agathiyar-web/build', '')}`;
+            const fileUrl = `https://www.agathiyarpyramid.org${book.filepath.replace('/var/www/agathiyar-web/build', '')}`;
 
             return {
               title: book.filename,
@@ -52,7 +52,7 @@ const BookGrid = () => {
               onError={(e) => (e.target.src = defaultCover)}
             />
             <h3 >{book.title}</h3>
-            <a href={book.downloadUrl} download>
+            <a href={book.downloadUrl} target="_blank" download>
               <button >
                 CLICK TO DOWNLOAD PDF
               </button>
