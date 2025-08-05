@@ -37,7 +37,6 @@ const Home = () => {
             learning. Our Ashram aspires to be a beacon of stillness and spiritual nourishment, inspiring a
             global community to embrace conscious living and compassionate wisdom.
           </p>
-          <button className="more-info-button">More Info</button>
         </div>
 
         <div className="card1">
@@ -48,7 +47,6 @@ const Home = () => {
             inward, cultivate peace, and grow spiritually through mindful living, compassionate choices,
             and the transformative power of knowledge.
           </p>
-          <button className="more-info-button">More Info</button>
         </div>
       </div>
 

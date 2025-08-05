@@ -140,8 +140,8 @@ const RoomDetails = () => {
               <th>Name</th>
               <th>Inclusion</th>
               <th>Rooms</th>
-              <th>Price</th>
-              <th>Maintenance</th>
+              <th>Price in Rs</th>
+              <th>Maintenance Cost in Rs</th>
               {room.roomname === "Patriji Bhavan" && <th>Additional beds</th>}
             </tr>
           </thead>

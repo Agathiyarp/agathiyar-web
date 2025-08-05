@@ -32,7 +32,7 @@ const contactInfo = () => {
           <p >
             🌐 <strong>Website:</strong>{" "}
             <a
-              href="http://agathiyarpyramid.com"
+              href="http://agathiyarpyramid.org"
               target="_blank"
               rel="noopener noreferrer"
             >

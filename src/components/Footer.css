@@ -24,14 +24,11 @@
 }
 
 .footer-links a {
-  color: #1b954eff;
   text-decoration: none;
-  font-weight: bold;
-  transition: color 0.3s;
 }
 
 .footer-links a:hover {
-  color: #f39c12; /* Change color on hover */
+  text-decoration: none;
 }
 
 .footer-bottom {
