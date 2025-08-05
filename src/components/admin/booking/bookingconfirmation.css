@@ -3,24 +3,60 @@
   font-family: Arial, sans-serif;
   margin: 0 auto;
   margin-top: 100px;
+  max-width: 1400px;
 }
 
 .booking-text {
-    text-align: center;
-    font-size: 24px;
-    margin-bottom: 20px;
+  text-align: center;
+  font-size: 24px;
+  margin-bottom: 20px;
+}
+
+.filter-section {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  justify-content: center;
+  margin-bottom: 20px;
+}
+
+.filter-section input[type="text"],
+.filter-section input[type="date"] {
+  padding: 8px;
+  font-size: 0.9rem;
+  width: 160px;
+  min-width: 120px;
+  flex: 1 1 auto;
+}
+
+.search-btn,
+.export-btn {
+  background-color: #1e90ff;
+  color: white;
+  border: none;
+  padding: 8px 16px;
+  cursor: pointer;
+  border-radius: 4px;
+  font-size: 14px;
+}
+
+.export-btn {
+  background-color: #28a745;
 }
 
 .booking-table {
   width: 100%;
   border-collapse: collapse;
   margin-top: 20px;
+  overflow-x: auto;
+  display: block;
 }
 
 .booking-table th,
 .booking-table td {
   padding: 10px;
   text-align: center;
+  white-space: nowrap;
 }
 
 .approve-btn,
@@ -43,7 +79,9 @@
 }
 
 .approve-btn:hover,
-.reject-btn:hover {
+.reject-btn:hover,
+.save-btn:hover,
+.cancel-btn:hover {
   opacity: 0.9;
 }
 
@@ -54,10 +92,7 @@
 
 .modal-overlay {
   position: fixed;
-  top: 0;
-  left: 0;
-  right: 0;
-  bottom: 0;
+  top: 0; left: 0; right: 0; bottom: 0;
   background: rgba(0, 0, 0, 0.6);
   display: flex;
   align-items: center;
@@ -101,33 +136,21 @@
   border-radius: 4px;
 }
 
-.save-btn:hover,
-.cancel-btn:hover {
-  opacity: 0.9;
-}
+/* Mobile-first responsiveness */
+@media (max-width: 600px) {
+  .filter-section {
+    flex-direction: column;
+    align-items: stretch;
+  }
 
-.filter-section {
-  display: flex;
-  gap: 10px;
-  margin: 20px 0;
-  flex-wrap: wrap;
-}
+  .filter-section input[type="text"],
+  .filter-section input[type="date"],
+  .search-btn,
+  .export-btn {
+    width: 100%;
+  }
 
-.filter-section input[type="text"],
-.filter-section input[type="date"] {
-  padding: 5px;
-  font-size: 0.9rem;
-}
-
-.search-btn, .export-btn {
-  background-color: #1e90ff;
-  color: white;
-  border: none;
-  padding: 6px 12px;
-  cursor: pointer;
-  border-radius: 4px;
-}
-
-.export-btn {
-  background-color: #28a745;
+  .booking-table {
+    font-size: 12px;
+  }
 }

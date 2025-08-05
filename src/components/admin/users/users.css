@@ -6,12 +6,32 @@
   padding: 30px;
   box-shadow: 0 0 15px rgba(0, 0, 0, 0.1);
   justify-self: center;
+  max-width: 100%;
+  overflow-x: hidden;
 }
 
 .user-mgmt-container h2 {
   text-align: center;
   color: #2b8a3e;
   margin-bottom: 30px;
+}
+
+.table-scroll-wrapper {
+  width: 100%;
+  overflow-x: auto;
+  /* Add these properties for better mobile scrolling */
+  -webkit-overflow-scrolling: touch;
+  border: 1px solid #ddd;
+  border-radius: 8px;
+  margin-top: 20px;
+}
+
+.table-scroll-wrapper table {
+  width: 100%;
+  min-width: 800px; /* Increased min-width to ensure scrolling */
+  border-collapse: collapse;
+  white-space: nowrap;
+  margin: 0; /* Remove default margin */
 }
 
 .section {
@@ -89,11 +109,16 @@ table td {
   border: 1px solid #ddd;
   padding: 10px;
   text-align: left;
+  min-width: 100px; /* Ensure minimum column width */
 }
 
 table th {
   background-color: #28a745;
   color: white;
+  font-weight: bold;
+  position: sticky;
+  top: 0;
+  z-index: 10;
 }
 
 .export-buttons {
@@ -103,56 +128,28 @@ table th {
   gap: 15px;
 }
 
-
 .user-list table {
   width: 100%;
   border-collapse: collapse;
-  overflow-x: auto;
-  display: block;
-  white-space: nowrap;
 }
 
-/* Table responsiveness on smaller screens */
-@media screen and (max-width: 768px) {
-  .user-mgmt-container {
-    padding: 20px 15px;
-    margin: 20px auto;
-    margin-top: 100px;
-  }
-
-  .input-user {
-    width: 100%;
-  }
-
-  .btn-user {
-    width: 200px;
-  }
-
-  .export-buttons {
-    flex-direction: column;
-    align-items: center;
-  }
-
-  .user-list table th,
-  .user-list table td {
-    font-size: 13px;
-    padding: 8px;
-  }
-
-  .user-details table,
-  .user-list table {
-    display: block;
-    overflow-x: auto;
-  }
+/* Enhanced scrollbar styling */
+.table-scroll-wrapper::-webkit-scrollbar {
+  height: 8px;
 }
 
-/* Even tighter spacing for very small phones */
-@media screen and (max-width: 480px) {
-  .user-list table th,
-  .user-list table td {
-    font-size: 12px;
-    padding: 6px;
-  }
+.table-scroll-wrapper::-webkit-scrollbar-track {
+  background: #f1f1f1;
+  border-radius: 4px;
+}
+
+.table-scroll-wrapper::-webkit-scrollbar-thumb {
+  background-color: #888;
+  border-radius: 4px;
+}
+
+.table-scroll-wrapper::-webkit-scrollbar-thumb:hover {
+  background-color: #555;
 }
 
 .user-toolbar {
@@ -192,4 +189,134 @@ table th {
 .export-top {
   margin-left: 20px;
   background: linear-gradient(to right, #007bff, #0056b3);
+}
+
+/* Table responsiveness on smaller screens */
+@media screen and (max-width: 768px) {
+  .user-mgmt-container {
+    padding: 20px 15px;
+    margin: 20px 10px; /* Add side margins */
+    margin-top: 100px;
+    width: calc(100% - 20px); /* Account for margins */
+    box-sizing: border-box;
+  }
+
+  .input-user {
+    width: 100%;
+  }
+
+  .btn-user {
+    width: 200px;
+  }
+
+  .export-buttons {
+    flex-direction: column;
+    align-items: center;
+  }
+
+  .table-scroll-wrapper {
+    /* Force the wrapper to respect container boundaries */
+    max-width: 100%;
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+    border-radius: 8px;
+  }
+
+  .table-scroll-wrapper table {
+    min-width: 900px; /* Ensure table is wider than container on mobile */
+  }
+
+  .user-list table th,
+  .user-list table td {
+    font-size: 13px;
+    padding: 8px;
+    min-width: 120px; /* Ensure readable column width */
+  }
+
+  /* Remove conflicting display: block */
+  .user-details table {
+    display: table; /* Keep as table, not block */
+    width: 100%;
+  }
+
+  .user-list table {
+    display: table; /* Keep as table, not block */
+    width: 100%;
+  }
+}
+
+/* Mobile (phones) */
+@media screen and (max-width: 600px) {
+  .user-toolbar {
+    flex-direction: column;
+    gap: 10px;
+    align-items: stretch;
+  }
+
+  .user-mgmt-container {
+    width: calc(100% - 10px);
+    max-width: none;
+    padding: 15px;
+    margin: 10px 5px;
+    margin-top: 90px;
+    box-sizing: border-box;
+  }
+
+  .input-user,
+  .btn-user {
+    width: 100%;
+  }
+
+  .export-top {
+    margin-left: 0;
+  }
+
+  .table-scroll-wrapper {
+    width: 100%;
+    max-width: 100%;
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+    /* Add touch scrolling momentum */
+    scroll-behavior: smooth;
+  }
+
+  .table-scroll-wrapper table {
+    min-width: 1000px; /* Force horizontal scroll on small screens */
+  }
+
+  .user-list table th,
+  .user-list table td {
+    font-size: 12px;
+    padding: 6px;
+    min-width: 110px;
+  }
+
+  /* Enhanced scrollbar for mobile */
+  .table-scroll-wrapper::-webkit-scrollbar {
+    height: 10px;
+  }
+
+  .table-scroll-wrapper::-webkit-scrollbar-thumb {
+    border-radius: 5px;
+  }
+}
+
+/* Even tighter spacing for very small phones */
+@media screen and (max-width: 480px) {
+  .user-mgmt-container {
+    padding: 10px;
+    margin: 5px;
+    margin-top: 80px;
+  }
+
+  .table-scroll-wrapper table {
+    min-width: 1100px; /* Even wider to ensure scrolling */
+  }
+
+  .user-list table th,
+  .user-list table td {
+    font-size: 11px;
+    padding: 5px;
+    min-width: 100px;
+  }
 }

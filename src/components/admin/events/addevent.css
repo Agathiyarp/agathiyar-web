@@ -78,13 +78,6 @@ textarea {
   background-color: #f9f9f9;
 }
 
-.delete-btn {
-  background-color: #d9534f;
-  color: white;
-  padding: 0.5rem 1rem;
-  border: none;
-  cursor: pointer;
-}
 .language-dropdown {
   position: relative;
   width: 100%;
@@ -146,5 +139,44 @@ textarea {
   font-size: 16px;
   color: #007bff;
   margin-bottom: 10px;
+}
+
+
+@media (max-width: 768px) {
+  .submit-btn {
+    font-size: 14px;
+    padding: 12px 20px;
+    border-radius: 20px;
+    width: 60%;
+  }
+
+  .row {
+    flex-direction: column;
+    gap: 15px;
+  }
+
+  .event-form-container {
+    margin: 40px 15px;
+    margin-top: 100px;
+    padding: 20px;
+  }
+
+  .event-form {
+    padding: 10px;
+  }
+
+  input, select, textarea {
+    font-size: 14px;
+    padding: 10px;
+  }
+
+  .dropdown-header {
+    font-size: 14px;
+    padding: 10px;
+  }
+
+  .dropdown-options label {
+    font-size: 13px;
+  }
 }
 

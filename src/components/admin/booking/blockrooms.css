@@ -1,18 +1,23 @@
 .schedule-form-container {
-  max-width: 700px;
+  max-width: 900px;
   margin: 80px auto;
   padding: 30px;
   background: #fdf6e3;
-  border-radius: 15px 15px 0 0;
+  border-radius: 15px;
   text-align: center;
+  box-sizing: border-box;
 }
 
 .schedule-form {
   background-color: #fff;
   padding: 30px;
   border-radius: 0 0 15px 15px;
-  box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
   color: #333;
+  background-image: url("../../../images/rooms/Agathiyar/1.JPG");
+  background-size: cover;           /* ensures image covers entire container */
+  background-position: center;      /* centers the image */
+  background-repeat: no-repeat; 
 }
 
 .schedule-form h2 {
@@ -24,14 +29,16 @@
 .row {
   display: flex;
   flex-direction: column;
-  align-items: flex-start;
+  align-items: center;
   margin-bottom: 20px;
+  width: 300px;
+  margin: 20px auto;
 }
 
 label {
   font-weight: 600;
   margin-bottom: 8px;
-  color: #333;
+  color: #fff;
 }
 
 input, textarea, select {
@@ -74,5 +81,67 @@ textarea {
   border-radius: 5px;
   cursor: pointer;
   width: 80px;
-  margin-left: 10px;
+  margin-left: 8px;
+}
+
+.schedule-table {
+  width: 100%;
+  border-collapse: collapse;
+  margin-top: 30px;
+  overflow-x: auto;
+}
+
+.schedule-table th,
+.schedule-table td {
+  padding: 10px;
+  text-align: center;
+  font-size: 14px;
+}
+
+.schedule-table th {
+  font-weight: bold;
+}
+
+@media (max-width: 1024px) {
+  .schedule-form-container {
+    padding: 20px;
+  }
+
+  .submit-btn {
+    width: 100%;
+    font-size: 15px;
+    border-radius: 20px;
+  }
+
+  .btn-ctrl {
+    font-size: 13px;
+    width: 70px;
+    margin: 5px 4px;
+  }
+}
+
+@media (max-width: 768px) {
+  .schedule-form {
+    padding: 20px;
+  }
+
+  .schedule-form h2 {
+    font-size: 20px;
+  }
+
+  .submit-btn {
+    font-size: 14px;
+    padding: 12px 20px;
+    width: 100%;
+  }
+
+  .schedule-table {
+    display: block;
+    overflow-x: auto;
+  }
+
+  .schedule-table table {
+    width: 100%;
+    min-width: 600px;
+  }
 }

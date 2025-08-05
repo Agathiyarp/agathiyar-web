@@ -109,26 +109,28 @@ const UserManagement = () => {
 
       {userList?.length > 0 && (
         <div className="user-list">
-          <table>
-            <thead>
-              <tr>
-                <th>User ID</th><th>Username</th><th>Name</th><th>Email</th><th>Mobile</th><th>User Type</th><th>Created At</th>
-              </tr>
-            </thead>
-            <tbody>
-              {userList.map((user, i) => (
-                <tr key={i}>
-                  <td>{user.usermemberid}</td>
-                  <td>{user.username}</td>
-                  <td>{user.name}</td>
-                  <td>{user.email}</td>
-                  <td>{user.phoneNumber}</td>
-                  <td>{user.usertype || 'Not specified'}</td>
-                  <td>{formatDate(user.createdAt)}</td>
+           <div className="table-scroll-wrapper">
+            <table>
+              <thead>
+                <tr>
+                  <th>User ID</th><th>Username</th><th>Name</th><th>Email</th><th>Mobile</th><th>User Type</th><th>Created At</th>
                 </tr>
-              ))}
-            </tbody>
-          </table>
+              </thead>
+              <tbody>
+                {userList.map((user, i) => (
+                  <tr key={i}>
+                    <td>{user.usermemberid}</td>
+                    <td>{user.username}</td>
+                    <td>{user.name}</td>
+                    <td>{user.email}</td>
+                    <td>{user.phoneNumber}</td>
+                    <td>{user.usertype || 'Not specified'}</td>
+                    <td>{formatDate(user.createdAt)}</td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          </div>
         </div>
       )}
     </div>
