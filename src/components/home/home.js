@@ -6,8 +6,13 @@ import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
 import AgathiyarAbout from "./about/AboutAgathiyar";
 import HomeSection from './section/HomeSection';
-import corePrincipleImg from '../../images/home/core-principle.png';
+import corePrincipleImg from '../../images/home/pyramid.png';
 import mounamImg from '../../images/home/meditation1.png';
+import home1 from '../../images/home/home1.png';
+import home2 from '../../images/home/home2.png';
+import home3 from '../../images/home/home3.png';
+// import home4 from '../../images/home/home4.jpg';
+import home5 from '../../images/home/home5.png';
 import swathayayam from '../../images/home/swathayayam.png';
 import meditationImg from '../../images/home/meditation3.png';
 import selfMasteryImg from '../../images/home/meditation.png';
@@ -94,7 +99,7 @@ const Home = () => {
 
       <div>
         <ImageSection
-          imageSrc={vegImage}
+          imageSrc={home5}
           title="Pyramid Energy"
           content="The concept of 'pyramid energy' is that the unique geometric structure of a pyramid can harness and amplify a form of cosmic or universal energy. These include enhancing meditation by promoting deeper states of focus and spiritual awareness, as well as possessing healing properties that can balance the body's energy fields and reduce stress. Additionally, it is believed that the pyramid shape can preserve organic matter and clear negative energy from a space, thereby creating a more positive and revitalized environment."
         />
@@ -104,14 +109,14 @@ const Home = () => {
         <HomeSection
           title="Self Mastery"
           description="'Be a light unto yourself' encourages self-reliance and inner awareness, which are key to self-mastery. By trusting your inner wisdom and taking responsibility for your actions, you develop self-discipline, emotional balance, and clarity. It helps you stay true to your values, make conscious choices, and grow from within—leading to true personal mastery."
-          image={meditationImg}
+          image={home1}
           imagePosition="right"
         />
       </div>
 
       <div>
         <ImageSection
-          imageSrc={vegImage}
+          imageSrc={home2}
           title="Service"
           content="In spiritual development, service plays a vital role because it helps dissolve the ego, which is often the biggest barrier to inner growth. By serving others, you shift focus from 'me and mine' to the well-being of others, cultivating compassion, humility, and empathy. Service purifies the mind, opens the heart, and aligns your actions with higher values like love, generosity, and unity. It transforms spiritual knowledge into real-life practice, making your path more meaningful and grounded. 
           Ultimately, through genuine service, you experience the interconnectedness of all beings, which deepens your spiritual understanding and brings you closer to your true self."
@@ -122,7 +127,7 @@ const Home = () => {
         <HomeSection
           title="What is Meditation?"
           description="Meditation means making our mind 'rather empty'. Once our mind is more or less empty, we have a tremendous capability of receiving cosmic energy and cosmic information surrounding us. This leads to good health and absolute clarity in thought processes, leading to a joyous life."
-          image={meditationImg}
+          image={home3}
           imagePosition="right"
         />
       </div>
@@ -151,14 +156,14 @@ const Home = () => {
             fulfilling
             Purpose of Life is thoroughly understood
             Life becomes Celebration."
-          image={meditationImg}
+          image={home3}
           imagePosition="right"
         />
       </div>
 
       <div>
         <ImageSection
-          imageSrc={vegImage}
+          imageSrc={home5}
           title="Rules / Guidelines of the Ashram"
           content="This ashram is for all sincere truth seekers for Mounam, Dhyanam
             and Swadhyayam.
