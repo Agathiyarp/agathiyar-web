@@ -75,23 +75,23 @@ const Booking = () => {
     }
   };
 
-   const fetchBookingAvailability = async () => {
-    const memberId = userDetails?.usermemberid;
+  //  const fetchBookingAvailability = async () => {
+  //   const memberId = userDetails?.usermemberid;
 
-    if (!memberId) return;
+  //   if (!memberId) return;
 
-    try {
-      const response = await axios.get(`https://agathiyarpyramid.org/api/getBookingAvailability/${memberId}`);
-      console.log("Booking Availability:", response.data);
-    } catch (error) {
-      console.error("Error fetching booking availability:", error);
-    }
-  };
+  //   try {
+  //     const response = await axios.get(`https://agathiyarpyramid.org/api/getBookingAvailability/${memberId}`);
+  //     console.log("Booking Availability:", response.data);
+  //   } catch (error) {
+  //     console.error("Error fetching booking availability:", error);
+  //   }
+  // };
 
 
-  useEffect(() => {
-    fetchBookingAvailability();
-  }, []);
+  // useEffect(() => {
+  //   fetchBookingAvailability();
+  // }, []);
 
   const fetchData = async (date) => {
     setLoading(true);

@@ -4,12 +4,18 @@ import "./bookingContent.css";
 import { useNavigate } from "react-router-dom";
 import RestaurantIcon from "@mui/icons-material/Restaurant";
 import DirectionsCarIcon from "@mui/icons-material/DirectionsCar";
+import DatePicker from "react-datepicker";
+import "react-datepicker/dist/react-datepicker.css";
 
 const RoomBook = ({ searchResult, enabledDateRanges }) => {
   const [checkInDate, setCheckInDate] = useState("");
   const [checkOutDate, setCheckOutDate] = useState("");
   const [filteredRooms, setFilteredRooms] = useState([]);
   const [showLoginModal, setShowLoginModal] = useState(false);
+  const [disabledDates, setDisabledDates] = useState({});
+
+
+
   const navigate = useNavigate();
   const MAX_DAYS_ALLOWED = 10;
 
@@ -39,7 +45,25 @@ const RoomBook = ({ searchResult, enabledDateRanges }) => {
 
     setFilteredRooms(result);
 
+    const fetchedRoomTypes = new Set();
+    result.forEach(room => {
+      const key = normalizeRoomName(room.roomname);
+      if (key && !fetchedRoomTypes.has(key)) {
+        fetchedRoomTypes.add(key);
+        console.log(key, "test key")
+        fetchBlockedDatesForRoom(key);
+      }
+    });
+
   }, [searchResult]);
+
+  const normalizeRoomName = (name) => {
+    const lower = name.toLowerCase();
+    if (lower.includes("agathiyar")) return "agathiyar";
+    if (lower.includes("patriji")) return "patriji";
+    if (lower.includes("dormitory")) return "dormitory";
+    return "";
+  };
 
   const isDateInRange = (date, start, end) => {
     const d = new Date(date);
@@ -52,6 +76,56 @@ const RoomBook = ({ searchResult, enabledDateRanges }) => {
       isDateInRange(checkOutDate, startDate, endDate)
     );
   };
+
+  const fetchBlockedDatesForRoom = async (roomTypeKey) => {
+    const today = new Date();
+    const future = new Date();
+    future.setDate(today.getDate() + 30);
+
+    const start = formatDate(today);
+    const end = formatDate(future);
+
+    try {
+      const res = await fetch(`https://www.agathiyarpyramid.org/api/dailyrooms?start=${start}&end=${end}`);
+      const data = await res.json();
+
+      const blocked = data
+        .filter(entry => entry[roomTypeKey] === 0)
+        .map(entry => entry.date);
+
+      setDisabledDates(prev => ({
+        ...prev,
+        [roomTypeKey]: Array.from(new Set([...(prev[roomTypeKey] || []), ...blocked])),
+      }));
+    } catch (err) {
+      console.error(`Failed to fetch blocked dates for ${roomTypeKey}:`, err);
+    }
+  };
+
+  const countValidDays = (start, end, blockedDates = []) => {
+    const startDate = new Date(start);
+    const endDate = new Date(end);
+    const blockedSet = new Set(blockedDates); // for fast lookup
+
+    let count = 0;
+    const current = new Date(startDate);
+
+    while (current <= endDate) {
+      const yyyy = current.getFullYear();
+      const mm = String(current.getMonth() + 1).padStart(2, '0');
+      const dd = String(current.getDate()).padStart(2, '0');
+      const formatted = `${yyyy}-${mm}-${dd}`;
+
+      if (!blockedSet.has(formatted)) {
+        count++;
+      }
+
+      current.setDate(current.getDate() + 1);
+    }
+
+    return count;
+  };
+
 
 
   const handleRoomSelect = (room) => {
@@ -100,8 +174,8 @@ const RoomBook = ({ searchResult, enabledDateRanges }) => {
           {filteredRooms.length > 0 ? (
             filteredRooms.map((room) => {
               const roomKey = room._id;
-              const availableRooms = room?.availabletotalrooms || 0;
-              const isAvailable = availableRooms > 0;
+              const normalizedRoomType = normalizeRoomName(room.roomname);
+              const checkInDisabledDates = disabledDates[normalizedRoomType] || [];
 
               return (
                 <div key={roomKey} className="room-card">
@@ -136,49 +210,44 @@ const RoomBook = ({ searchResult, enabledDateRanges }) => {
                         </p>
                         <p className="room-card__date">
                           <span className="icon-date">🛏️</span>
-                          <span className="semi-bold">Rooms Available: {availableRooms}</span>
+                          <span className="semi-bold">Maintenance:</span> Yes
                         </p>
                         <p className="room-card__date">
                           <span className="icon-date">🕒</span>
                           <span className="semi-bold">
                             Days Selected:
                           </span>{" "}
-                          {Math.max(
-                            1,
-                            Math.ceil(
-                              (new Date(checkOutDate) -
-                                new Date(checkInDate)) /
-                                (1000 * 60 * 60 * 24)
-                            )
-                          )}
+                          {countValidDays(checkInDate, checkOutDate, checkInDisabledDates)}
                         </p>
-
-                        {isAvailable ? (
                           <>
                             <div className="checkin-date">
                               <label className="semi-bold">
                                 <span className="icon-date">🗓️</span>
                                 <span>Check-In Date:</span>
                               </label>
-                              <input
-                                type="date"
-                                value={checkInDate}
-                                onChange={(e) => {
-                                  const newCheckIn = e.target.value;
-                                  const diffDays =
-                                    (new Date(checkOutDate) -
-                                      new Date(newCheckIn)) /
-                                    (1000 * 60 * 60 * 24);
-                                  if (diffDays > MAX_DAYS_ALLOWED) {
-                                    alert(
-                                      `Check-in and Check-out difference cannot exceed ${MAX_DAYS_ALLOWED} days.`
-                                    );
-                                  } else {
-                                    setCheckInDate(newCheckIn);
+                              <DatePicker
+                                selected={new Date(checkInDate)}
+                                onChange={(date) => {
+                                  const formatted = formatDate(date);
+                                  if (checkInDisabledDates.includes(formatted)) {
+                                    alert("This Check-In date is unavailable.");
+                                    return;
                                   }
+                                  setCheckInDate(formatted);
                                 }}
+                                dateFormat="yyyy-MM-dd"
+                                minDate={new Date()}
+                                excludeDates={checkInDisabledDates.map(dateStr => new Date(dateStr))}
                                 className="date-input"
-                                min={formatDate(new Date())}
+                                dayClassName={(date) => {
+                                  const yyyy = date.getFullYear();
+                                  const mm = String(date.getMonth() + 1).padStart(2, '0');
+                                  const dd = String(date.getDate()).padStart(2, '0');
+                                  const formatted = `${yyyy}-${mm}-${dd}`;
+                                  console.log(disabledDates, 'formatted:', formatted);
+
+                                  return checkInDisabledDates.includes(formatted) ? "blocked-date" : undefined;
+                                }}
                               />
                             </div>
 
@@ -187,43 +256,47 @@ const RoomBook = ({ searchResult, enabledDateRanges }) => {
                                 <span className="icon-date">🗓️</span>
                                 <span>Check-Out Date:</span>
                               </label>
-                              <input
-                                type="date"
-                                value={checkOutDate}
-                                onChange={(e) => {
-                                  const newCheckOut = e.target.value;
+                              <DatePicker
+                                selected={new Date(checkOutDate)}
+                                onChange={(date) => {
+                                  const formatted = formatDate(date);
                                   const diffDays =
-                                    (new Date(newCheckOut) -
-                                      new Date(checkInDate)) /
-                                    (1000 * 60 * 60 * 24);
+                                    (date - new Date(checkInDate)) / (1000 * 60 * 60 * 24);
+
+                                  if (checkInDisabledDates.includes(formatted)) {
+                                    alert("This Check-Out date is unavailable.");
+                                    return;
+                                  }
+
                                   if (diffDays > MAX_DAYS_ALLOWED) {
-                                    alert(
-                                      `Check-in and Check-out difference cannot exceed ${MAX_DAYS_ALLOWED} days.`
-                                    );
+                                    alert(`Check-in and Check-out difference cannot exceed ${MAX_DAYS_ALLOWED} days.`);
                                   } else {
-                                    setCheckOutDate(newCheckOut);
+                                    setCheckOutDate(formatted);
                                   }
                                 }}
+                                dateFormat="yyyy-MM-dd"
+                                minDate={new Date()}
+                                excludeDates={checkInDisabledDates.map(dateStr => new Date(dateStr))}
                                 className="date-input"
-                                min={formatDate(new Date())}
+                                dayClassName={(date) => {
+                                  const yyyy = date.getFullYear();
+                                  const mm = String(date.getMonth() + 1).padStart(2, '0');
+                                  const dd = String(date.getDate()).padStart(2, '0');
+                                  const formatted = `${yyyy}-${mm}-${dd}`;
+                                  console.log(disabledDates, 'formatted:', formatted);
+
+                                  return checkInDisabledDates.includes(formatted) ? "blocked-date" : undefined;
+                                }}
                               />
                             </div>
-
-                            
                           </>
-                        ) : (
-                          <p className="unavailable-text">No Rooms Available</p>
-                        )}
                       </div>
                     </div>
 
                     <div className="room-card__booking">
                       <button
                         onClick={() => handleRoomSelect(room)}
-                        className={`room-card__view-deal ${
-                          isAvailable ? "" : "disabled"
-                        }`}
-                        disabled={!isAvailable}
+                        className={`room-card__view-deal`}
                       >
                         SELECT ROOM
                       </button>

@@ -169,6 +169,7 @@
 .semi-bold {
   font-weight: 600;
   color: #38a169;
+  margin-bottom: 0;
 }
 
 .date-input {
@@ -257,6 +258,15 @@
   color: #38a169;
   font-size: 16px;
 }
+
+.blocked-date {
+  background-color: #ffcccc !important;
+  color: red !important;
+  border-radius: 50% !important;
+  text-decoration: line-through;
+  cursor: not-allowed;
+}
+
 
 /* Responsive */
 @media (max-width: 768px) {
