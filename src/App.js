@@ -30,6 +30,7 @@ import EventDetails from './components/admin/events/eventdetails';
 import UserCredits from './components/admin/users/usercredits';
 import BookingConfirmation from './components/admin/booking/bookingconfirmation';
 import BlockRooms from './components/admin/booking/blockrooms';
+import ImageUpload from './components/admin/images/imageupload';
 
 const App = () => {
 
@@ -58,6 +59,7 @@ const App = () => {
           <Route path="/uploadbook" element={<UploadBooks />} />
           <Route path="/updateuser" element={<UpdateUser />} />
           <Route path="/videoupload" element={<VideoUpload />}/>
+          <Route path="/imageupload" element={<ImageUpload />}/>
           <Route path="/eventlist" element={<EventList />}/>
           <Route path="/roomlist" element={<RoomList />} />
           <Route path="/eventdetails" element={<EventDetails />} />

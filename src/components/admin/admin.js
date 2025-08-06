@@ -142,7 +142,7 @@ const Admin = () => {
     {
       key: "video",
       label: "VIDEOS",
-      group: "Others",
+      group: "Upload",
       className: "videos",
       iconClass: "icon-video",
       cardName: "Videos",
@@ -150,10 +150,18 @@ const Admin = () => {
     {
       key: "books",
       label: "BOOKS",
-      group: "Others",
+      group: "Upload",
       className: "books",
       iconClass: "icon-book",
       cardName: "Books",
+    },
+    {
+      key: "images",
+      label: "GALLERY",
+      group: "Upload",
+      className: "images",
+      iconClass: "icon-images",
+      cardName: "Images",
     },
   ];
 
@@ -182,6 +190,8 @@ const Admin = () => {
       navigate("/updateuser");
     } else if (cardName === "Videos") {
       navigate("/videoupload");
+    } else if (cardName === "Images") {
+      navigate("/imageupload");
     } else if (cardName === "Rooms") {
       navigate("/roomlist");
     } else if (cardName === "Events") {
@@ -228,7 +238,7 @@ const Admin = () => {
             <p className="profile-role">Role: {userRole?.toUpperCase()}</p>
           </div>
           <div>
-          {[ "Users", "Events", "Rooms", "Others"].map((group) => {
+          {[ "Users", "Events", "Rooms", "Upload"].map((group) => {
             const groupCards = cardsWithStatus.filter(
               (card) => card.group === group
             );
