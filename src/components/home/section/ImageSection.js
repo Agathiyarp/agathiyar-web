@@ -1,5 +1,5 @@
 import React from 'react';
-import './ImageTextSection.css';
+import './ImageSection.css';
 
 const ImageTextSection = ({ imageSrc, title, content }) => {
   return (
