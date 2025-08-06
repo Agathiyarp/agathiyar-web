@@ -8,7 +8,7 @@ import { useNavigate, useParams, useLocation } from "react-router-dom";
 import axios from "axios";
 import MenuBar from "../menumain/menubar";
 import { ToastContainer, toast } from "react-toastify";
-import bgImage from "../../images/rooms/Gallery/10.png"; // Update path if needed
+import bgImage from "../../images/gallery/10.png"; // Update path if needed
 
 const EventRegistration = () => {
   const { eventId } = useParams();

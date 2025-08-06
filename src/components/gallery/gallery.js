@@ -6,7 +6,7 @@ import Footer from "../Footer";
 
 
 const importAll = (r) => r.keys().map(r);
-const galleryImages = importAll(require.context('../../images/rooms/Gallery', false, /\.(png|jpe?g|svg)$/));
+const galleryImages = importAll(require.context('../../images/gallery', false, /\.(png|jpe?g|svg)$/));
 
 Modal.setAppElement('#root'); // or your app's top-level div
 
