@@ -112,6 +112,7 @@ const ConfirmModal = ({ handleClose, roomDetails, startDate, endDate, roomsSelec
           </Typography>
           <Box mt={2}>
             <FormControlLabel
+              sx={{ display: 'flex', alignItems: 'center', justifyContent: 'center' }}
               control={
                 <Checkbox
                   checked={isChecked}
@@ -119,7 +120,11 @@ const ConfirmModal = ({ handleClose, roomDetails, startDate, endDate, roomsSelec
                   color="primary"
                 />
               }
-              label="I agree to the Terms and Conditions"
+              label={
+                <Typography variant="body2">
+                  I agree to the Terms and Conditions
+                </Typography>
+              }
             />
           </Box>
           <Box mt={3}>
