@@ -10,6 +10,7 @@ import corePrincipleImg from '../../images/home/core-principle.png';
 import mounamImg from '../../images/home/meditation1.png';
 import swathayayam from '../../images/home/swathayayam.png';
 import meditationImg from '../../images/home/meditation3.png';
+import selfMasteryImg from '../../images/home/meditation.png';
 import ImageSection from '../home/section/ImageSection';
 import vegImage from '../../images/home/home4.jpg';
 
@@ -128,7 +129,7 @@ const Home = () => {
 
       <div>
         <ImageSection
-          imageSrc={vegImage}
+          imageSrc={selfMasteryImg}
           title="How to do Mediation"
           content="Find a quiet, comfortable space, sit in a comfortable posture, with your back straight, clasp your hands, cross your legs and close your eyes
           gently bring your attention to your breath. Feel the air moving in and out of your nose. Don't try to change your breathing; just observe it as it is. 
