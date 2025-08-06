@@ -4,7 +4,6 @@ import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import Home from './components/home/home';
-// import About from './components/about/about';
 import AppRegistration from './components/register/register';
 import Login from './components/login/login';
 import Contact from './components/contactus/contactinfo';

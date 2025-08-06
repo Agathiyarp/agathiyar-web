@@ -1,12 +1,7 @@
 import React from "react";
-import Slider from "react-slick";
 import "./home.css"; // Custom CSS
-import Meditation from "../Meditation";
-// import GridViewVeg from "../GridViewVeg";
-// import GridViewAgath from "../GridViewAgath";
-import MeditationInfo from "../../components/MeditationInfo";
 import Footer from "../Footer";
-import MenuBar from "../menumain/menubar"; // Import the MenuBar
+import MenuBar from "../menumain/menubar";
 import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
 import AgathiyarAbout from "../AboutAgathiyar";
