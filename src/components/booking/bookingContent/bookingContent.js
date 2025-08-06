@@ -4,7 +4,6 @@ import "./bookingContent.css";
 import { useNavigate } from "react-router-dom";
 import RestaurantIcon from "@mui/icons-material/Restaurant";
 import DirectionsCarIcon from "@mui/icons-material/DirectionsCar";
-import axios from "axios";
 
 const RoomBook = ({ searchResult, enabledDateRanges }) => {
   const [checkInDate, setCheckInDate] = useState("");

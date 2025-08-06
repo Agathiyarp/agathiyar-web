@@ -151,8 +151,6 @@ const RegistrationForm = () => {
           if (!response.ok) {
             throw new Error("Network response was not ok");
           }
-
-          const data = await response.json();
           toast.success("Registration successful!");
           setTimeout(() => {
             navigate("/login");
@@ -178,7 +176,6 @@ const RegistrationForm = () => {
           throw new Error("Network response was not ok");
         }
 
-        const data = await response.json();
         toast.success("Registration successful!");
         setTimeout(() => {
           navigate("/login");

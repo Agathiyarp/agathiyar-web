@@ -20,7 +20,7 @@ import ImagePreview from "./imagepreview";
 
 const RoomDetails = () => {
   const [openModal, setOpenModal] = useState(false);
-  const [galleryImages, setGalleryImages] = useState([image1, image2, image3]);
+  const [galleryImages] = useState([image1, image2, image3]);
   const [previewOpen, setPreviewOpen] = useState(false);
   const location = useLocation();
   const { room, checkIn, checkOut } = location.state; // Retrieve the passed room data
