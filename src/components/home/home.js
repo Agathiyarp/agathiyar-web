@@ -1,10 +1,10 @@
 import React from "react";
 import "./home.css"; // Custom CSS
-import Footer from "../Footer";
+import Footer from '../footer/Footer';
 import MenuBar from "../menumain/menubar";
 import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
-import AgathiyarAbout from "../AboutAgathiyar";
+import AgathiyarAbout from "./about/AboutAgathiyar";
 import HomeSection from './section/HomeSection';
 import corePrincipleImg from '../../images/home/core-principle.png';
 import mounamImg from '../../images/home/meditation1.png';

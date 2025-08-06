@@ -1,6 +1,6 @@
 import React from "react";
 import MenuBar from "../menumain/menubar";
-import Footer from "../Footer";
+import Footer from '../footer/Footer';
 import ScanImage from "../../images/scan.png";
 import './donate.css';
 

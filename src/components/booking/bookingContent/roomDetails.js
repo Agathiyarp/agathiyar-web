@@ -75,10 +75,6 @@ const RoomDetails = () => {
   const totalAmount = data.reduce((sum, item) => sum + item.price, 0);
   const totalMaintenanceCost = data.reduce((sum, item) => sum + item.maintenance, 0);
   const totalBeds = data.reduce((sum, item) => sum + item.additionalBeds, 0);
-
-  // console.log("Total Rooms:", totalRooms);
-  // console.log("Total Amount:", totalAmount);
-  // console.log("Total Maintenance Cost:", totalMaintenanceCost);
   
   const handleOpen = () => {
     setOpenModal(true);

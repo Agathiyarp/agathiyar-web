@@ -60,9 +60,7 @@ const RoomBook = ({ searchResult, enabledDateRanges }) => {
       alert(`Donar cannot book Patriji Room`);
       return;
     }
-    console.log("Selected room:", room);
     const isLoggedIn = sessionStorage.getItem("userDetails");
-    console.log("userDetails:", sessionStorage.getItem("userDetails"));
 
     const checkIn = new Date(checkInDate);
     const checkOut = new Date(checkOutDate);

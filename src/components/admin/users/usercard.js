@@ -40,7 +40,6 @@ const UserCard = ({ user, onSave }) => {
 
   const handleUserTypeChange = (e) => {
     const selectedType = e.target.value;
-    console.log("Selected User Type:", selectedType, defaultCreditsMap[0][selectedType]);
     const defaultCredits = defaultCreditsMap[0][selectedType];
 
     setFormData((prev) => ({
@@ -48,7 +47,6 @@ const UserCard = ({ user, onSave }) => {
       usertype: selectedType,
       credits: defaultCredits,
     }));
-    console.log("Updated Form Data:", formData, defaultCredits)
   };
 
   const handleRoleChange = (e) => {
@@ -116,7 +114,6 @@ const UserCard = ({ user, onSave }) => {
         return response.text(); // Don't force JSON
       })
       .then((text) => {
-        console.log("API Raw Response Text:", text);
         onSave(payload);
         setIsEditing(false);
       })

@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import "./events.css";
 import MenuBar from "../menumain/menubar";
-import Footer from "../Footer";
+import Footer from '../footer/Footer';
 import WorkshopItem from "./workItem";
 import axios from "axios";
 

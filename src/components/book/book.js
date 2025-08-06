@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import './book.css';
 import MenuBar from '../menumain/menubar';
-import Footer from '../Footer';
+import Footer from '../footer/Footer';
 import defaultCover from '../../images/book1.png'; // fallback if image fails
 
 const BookGrid = () => {
@@ -12,7 +12,6 @@ const BookGrid = () => {
     fetch('https://www.agathiyarpyramid.org/api/books')
       .then((res) => res.json())
       .then((data) => {
-        console.log(data, 'testv1');
         if (Array.isArray(data)) {
 
           const formattedBooks = data.map((book) => {

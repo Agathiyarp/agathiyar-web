@@ -1,7 +1,7 @@
 import React, { useState, useEffect, useRef } from "react";
 import "./VideoList.css";
 import MenuBar from "../menumain/menubar";
-import Footer from "../Footer";
+import Footer from '../footer/Footer';
 
 const VideoList = () => {
   const [videoList, setVideoList] = useState([]);

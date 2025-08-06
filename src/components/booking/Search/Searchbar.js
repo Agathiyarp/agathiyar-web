@@ -64,7 +64,6 @@ const Searchbar = ({onSearch}) => {
       setDaysBetween(null);
     } else {
       setDaysBetween(daysDifference);
-      console.log(`Number of days: ${daysDifference}`);
     }
 
     if (user.role === 'non-donor') {

@@ -1,7 +1,7 @@
 import React, { useRef, useState, useEffect } from "react";
 import "./admin.css";
 import MenuBar from "../menumain/menubar";
-import Footer from '../Footer';
+import Footer from '../footer/Footer';
 import { useNavigate } from "react-router-dom";
 
 const Admin = () => {
@@ -55,11 +55,6 @@ const Admin = () => {
       };
       reader.readAsDataURL(file);
     }
-  };
-
-  const handleRemove = (e) => {
-    e.stopPropagation();
-    setAvatar(null);
   };
 
   // All cards definition
@@ -227,11 +222,6 @@ const Admin = () => {
                 onChange={handleFileChange}
               />
             </div>
-            {/* {avatar && (
-              <button className="remove-btn" onClick={handleRemove}>
-                Remove Image
-              </button>
-            )} */}
             <h2 className="profile-name">
               {userName?.toUpperCase() || "USER"}
             </h2>

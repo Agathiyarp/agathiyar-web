@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import Modal from 'react-modal';
 import './gallery.css';
 import MenuBar from "../menumain/menubar";
-import Footer from "../Footer";
+import Footer from '../footer/Footer';
 
 
 const importAll = (r) => r.keys().map(r);

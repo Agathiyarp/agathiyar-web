@@ -134,7 +134,6 @@ const RegistrationForm = () => {
       const reader = new FileReader();
       reader.onloadend = async () => {
         const base64Image = reader.result;
-        console.log(base64Image);
         setFormData((prevFormData) => ({
           ...prevFormData,
           profileImage: base64Image,

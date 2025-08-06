@@ -36,7 +36,6 @@ const BlockRooms = () => {
 
 
   const handleDelete = async (schedule) => {
-    console.log("Deleting schedule:", schedule);
     const confirmDelete = window.confirm(`Are you sure you want to delete the schedule from ${schedule.startDate} to ${schedule.endDate}?`);
     if (!confirmDelete) return;
 

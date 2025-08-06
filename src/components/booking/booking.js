@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { useLocation } from "react-router-dom";
-import Footer from "../Footer";
+import Footer from '../footer/Footer';
 import "./booking.css";
 import MenuBar from "../menumain/menubar";
 import BookingContent from "./bookingContent/bookingContent";
@@ -10,7 +10,7 @@ const Booking = () => {
   const [searchResult, setSearchResult] = useState([]);
   const [loading, setLoading] = useState(true);
   const [availableCredits, setAvailableCredits] = useState(0);
-  const [selectedDate, setSelectedDate] = useState(() => {
+  const [selectedDate] = useState(() => {
     const today = new Date();
     return today.toISOString().split("T")[0];
   });
@@ -22,11 +22,10 @@ const Booking = () => {
   const location = useLocation();   
 
   useEffect(() => {
-    const userDetails = userStr ? JSON.parse(userStr) : null;
     if (userDetails) {
       setAvailableCredits(userDetails.credits || 0);
     }
-  }, []);
+  }, [userDetails]);
 
   useEffect(() => {
     fetchSchedule();
@@ -59,7 +58,6 @@ const Booking = () => {
 
   const refreshUserCredits = async () => {
     try {
-      const userDetails = userStr ? JSON.parse(userStr) : null;
       if (!userDetails?.usermemberid) return;
 
       const response = await axios.get("https://www.agathiyarpyramid.org/api/users");
@@ -78,10 +76,7 @@ const Booking = () => {
   };
 
    const fetchBookingAvailability = async () => {
-    const userDetails = userStr ? JSON.parse(userStr) : null;
     const memberId = userDetails?.usermemberid;
-
-    console.log("Parsed memberId:", memberId); // 🟡 Add this
 
     if (!memberId) return;
 
@@ -156,19 +151,6 @@ const Booking = () => {
             </ul>
           </div>
         )}
-
-
-        {/* <div className="date-filter">
-          <label htmlFor="booking-date" style={{ fontSize: "16px" }}>
-            Select Date:
-          </label>
-          <input
-            type="date"
-            id="booking-date"
-            value={selectedDate}
-            onChange={(e) => setSelectedDate(e.target.value)}
-          />
-        </div> */}
 
         {userType && userType !== "user" && (
           <div className="available-credits">

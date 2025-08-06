@@ -51,12 +51,6 @@ const LoginForm = () => {
           setTimeout(() => {
             navigate("/");
           }, 3000);
-          // data.userRole = "admin"; // superadmin, 
-          // // data.userAccess = ["users", "userAdd", "events", "bookings", "content", "video", "books", "settings"]; 
-
-          // //get this from the API response
-          // data.userAccess = ["users", "userAdd", "events", "bookings", "content", "settings"]; 
-          // console.log("User Details:", data);
           sessionStorage.setItem('userDetails', JSON.stringify(data));
         } else if (response.status === 401) {
           toast.error("Invalid email or password. Please try again.");
