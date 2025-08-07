@@ -102,33 +102,34 @@ const RoomBook = ({ searchResult, enabledDateRanges }) => {
     }
   };
 
-  const countValidDays = (start, end, blockedDates = []) => {
-    const startDate = new Date(start);
-    const endDate = new Date(end);
-    const blockedSet = new Set(blockedDates); // for fast lookup
+  const getValidDates = (checkInDate, checkOutDate, disabledDates = []) => {
+    const start = new Date(checkInDate);
+    const end = new Date(checkOutDate);
+    const blockedSet = new Set(disabledDates);
 
-    let count = 0;
-    const current = new Date(startDate);
+    const validDates = [];
+    const current = new Date(start);
 
-    while (current <= endDate) {
+    while (current <= end) {
       const yyyy = current.getFullYear();
       const mm = String(current.getMonth() + 1).padStart(2, '0');
       const dd = String(current.getDate()).padStart(2, '0');
       const formatted = `${yyyy}-${mm}-${dd}`;
 
       if (!blockedSet.has(formatted)) {
-        count++;
+        validDates.push(formatted);
       }
 
       current.setDate(current.getDate() + 1);
     }
 
-    return count;
+    return validDates;
   };
 
 
 
-  const handleRoomSelect = (room) => {
+
+  const handleRoomSelect = (room, validDays) => {
     if (userType === "donar" && room.roomname === "Patriji Bhavan") {
       alert(`Donar cannot book Patriji Room`);
       return;
@@ -162,6 +163,7 @@ const RoomBook = ({ searchResult, enabledDateRanges }) => {
         room,
         checkIn,
         checkOut,
+        validDays
       },
     });
   };
@@ -176,6 +178,8 @@ const RoomBook = ({ searchResult, enabledDateRanges }) => {
               const roomKey = room._id;
               const normalizedRoomType = normalizeRoomName(room.roomname);
               const checkInDisabledDates = disabledDates[normalizedRoomType] || [];
+              const validDays = getValidDates(checkInDate, checkOutDate, checkInDisabledDates);
+              console.log("testv333", validDays, normalizedRoomType);
 
               return (
                 <div key={roomKey} className="room-card">
@@ -217,7 +221,7 @@ const RoomBook = ({ searchResult, enabledDateRanges }) => {
                           <span className="semi-bold">
                             Days Selected:
                           </span>{" "}
-                          {countValidDays(checkInDate, checkOutDate, checkInDisabledDates)}
+                          {validDays?.length}
                         </p>
                           <>
                             <div className="checkin-date">
@@ -295,7 +299,7 @@ const RoomBook = ({ searchResult, enabledDateRanges }) => {
 
                     <div className="room-card__booking">
                       <button
-                        onClick={() => handleRoomSelect(room)}
+                        onClick={() => handleRoomSelect(room, validDays)}
                         className={`room-card__view-deal`}
                       >
                         SELECT ROOM

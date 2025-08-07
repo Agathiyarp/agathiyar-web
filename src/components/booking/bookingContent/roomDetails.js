@@ -23,7 +23,7 @@ const RoomDetails = () => {
   const [galleryImages] = useState([image1, image2, image3]);
   const [previewOpen, setPreviewOpen] = useState(false);
   const location = useLocation();
-  const { room, checkIn, checkOut } = location.state; // Retrieve the passed room data
+  const { room, checkIn, checkOut, validDays } = location.state; // Retrieve the passed room data
   const numberOfDays = moment(checkOut).diff(moment(checkIn), 'days');
   const mainImage = galleryImages[0];
   const sideImages = galleryImages.slice(1, 3); 
@@ -251,6 +251,7 @@ const RoomDetails = () => {
           totalamount={totalAmount}
           bedsSelected={totalBeds}
           days={numberOfDays}
+          validDays={validDays}
         />
       )}
       </div>

@@ -7,7 +7,7 @@ import CircularProgress from '@mui/material/CircularProgress';
 import { use } from 'react';
 
 
-const ConfirmModal = ({ handleClose, roomDetails, startDate, endDate, roomsSelected, roomcost, maintanancecost, totalamount, bedsSelected, days, refreshUserCredits }) => {
+const ConfirmModal = ({ handleClose, roomDetails, startDate, endDate, roomsSelected, roomcost, maintanancecost, totalamount, bedsSelected, days, refreshUserCredits, validDays }) => {
   const navigate = useNavigate();
   const [isChecked, setIsChecked] = useState(false);
   const [showSuccessModal, setShowSuccessModal] = useState(false);
@@ -18,7 +18,7 @@ const ConfirmModal = ({ handleClose, roomDetails, startDate, endDate, roomsSelec
   const userDetails = userInfo ? JSON.parse(userInfo): '';
   const userType = userDetails?.usertype?.trim().toLowerCase() || "";
   const totalCredit = userDetails?.credits || 0;
-  const creditused = roomsSelected * days;
+  const creditused = roomsSelected * validDays?.length;
 
   const handleCheckboxChange = (event) => {
     setIsChecked(event.target.checked);
@@ -44,7 +44,8 @@ const ConfirmModal = ({ handleClose, roomDetails, startDate, endDate, roomsSelec
       usertype: userType,
       roomcost,
       maintanancecost,
-      totalamount
+      totalamount,
+      validDays
     };
 
     try {
