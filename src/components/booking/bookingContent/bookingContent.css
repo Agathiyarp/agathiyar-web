@@ -41,6 +41,9 @@
   font-weight: bold;
   cursor: pointer;
 }
+.modal-buttons {
+  margin-top: 20px;
+}
 .gotologin {
   background-color: #38a169;
   color: #fff;

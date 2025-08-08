@@ -4,6 +4,7 @@ import 'react-toastify/dist/ReactToastify.css';
 import { useNavigate } from 'react-router-dom';
 import "./register.css";
 import MenuBar from "../menumain/menubar";
+import { Visibility, VisibilityOff } from "@mui/icons-material";
 
 const Required = () => <span style={{ color: "red" }}>*</span>;
 
@@ -25,6 +26,9 @@ const RegistrationForm = () => {
   const [errors, setErrors] = useState({});
   const navigate = useNavigate();
   const [imageFile, setImageFile] = useState(null);
+
+  const [showPassword, setShowPassword] = useState(false);
+  const [showConfirmPassword, setShowConfirmPassword] = useState(false);
 
   const handleImageChange = (e) => {
     const file = e.target.files[0];
@@ -308,29 +312,43 @@ const RegistrationForm = () => {
           <div className="group-container">
             <div className="input-box m-r-10">
               <label>Password <Required /></label>
-              <input
+            <input
                 type="password"
-                name="password"
+              name="password"
                 placeholder="Enter password"
-                value={formData.password}
-                onChange={handleChange}
+              value={formData.password}
+              onChange={handleChange}
               />
-              {errors.password && <p className="error-text">{errors.password}</p>}
-            </div>
+            {errors.password && <p className="error-text">{errors.password}</p>}
+            <span
+              className="material-icons"
+              onClick={() => setShowPassword(!showPassword)}
+              title={showPassword ? "Hide Password" : "Show Password"}
+            >
+              {showPassword ? <VisibilityOff /> : <Visibility />}
+            </span>
+          </div>
 
             <div className="input-box">
               <label>Confirm Password <Required /></label>
-              <input
+            <input
                 type="password"
-                name="confirmPassword"
+              name="confirmPassword"
                 placeholder="Confirm password"
-                value={formData.confirmPassword}
-                onChange={handleChange}
+              value={formData.confirmPassword}
+              onChange={handleChange}
               />
-              {errors.confirmPassword && <p className="error-text">{errors.confirmPassword}</p>}
+            {errors.confirmPassword && <p className="error-text">{errors.confirmPassword}</p>}
             </div>
+            <span
+              className="material-icons"
+              onClick={() => setShowConfirmPassword(!showConfirmPassword)}
+              title={showConfirmPassword ? "Hide Password" : "Show Password"}
+            >
+              {showConfirmPassword ? <VisibilityOff /> : <Visibility />}
+            </span>
           </div>
-
+          
           <button type="submit">Submit</button>
         </form>
       </section>

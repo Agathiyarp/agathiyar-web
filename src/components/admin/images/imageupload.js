@@ -94,7 +94,7 @@ const ImageUpload = () => {
   return (
     <div className="upload-container">
       <MenuBar />
-      <h2>Upload Images</h2>
+      <h2 className='upload-image-text'>Upload Images</h2>
 
       <form onSubmit={handleSubmit}>
         <input

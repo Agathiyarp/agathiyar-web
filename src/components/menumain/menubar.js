@@ -10,7 +10,7 @@ import {
 } from "@mui/material";
 import MoreVertIcon from "@mui/icons-material/MoreVert";
 import { useNavigate, useLocation } from "react-router-dom";
-import mainlogo from "../../images/mainlogo.png";
+import mainlogo from "../../images/AGATHIYAR_LOGO_2025.png";
 import "./menubar.css";
 import { ToastContainer, toast } from "react-toastify";
 import ProfileMenu from "./Profile";
@@ -175,7 +175,7 @@ const MenuBar = () => {
                 }
           }
         >
-          Agathiyar Pyramid Dhyanam Ashram
+          Agathiyar Pyramid Dhyana Ashram
           <br />
         </Typography>
 

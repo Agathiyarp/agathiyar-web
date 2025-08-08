@@ -19,14 +19,22 @@ import { ToastContainer } from 'react-toastify';
 import ImagePreview from "./imagepreview";
 
 const RoomDetails = () => {
+  const baseUrl = "https://www.agathiyarpyramid.org/";
   const [openModal, setOpenModal] = useState(false);
-  const [galleryImages] = useState([image1, image2, image3]);
   const [previewOpen, setPreviewOpen] = useState(false);
   const location = useLocation();
   const { room, checkIn, checkOut, validDays } = location.state; // Retrieve the passed room data
+  const multipleimage = room?.multipleimage ? room?.multipleimage  : [];
+  
+  const [galleryImages] = useState(
+    multipleimage ? multipleimage.map(img =>
+      img.startsWith("http") ? img : `${baseUrl}${img}`
+    ) : []
+  );
   const numberOfDays = moment(checkOut).diff(moment(checkIn), 'days');
-  const mainImage = galleryImages[0];
+  const mainImage = `${galleryImages[0]}`;
   const sideImages = galleryImages.slice(1, 3); 
+  console.log(mainImage, sideImages, "gallery")
 
   const userInfo = sessionStorage.getItem('userDetails')
   const userDetails = userInfo ? JSON.parse(userInfo): '';
@@ -59,12 +67,14 @@ const RoomDetails = () => {
       basePrice: userType && userType !== "user" ? parseInt(room.sponsoruserroomcost, 10) : parseInt(room.normaluserroomcost, 10),
       baseMaintenance: userType && userType !== "user" ? parseInt(room.sponsorusermaintenancecost, 10) : parseInt(room.normalusermaintenancecost, 10),
       extrabedcost: room.extrabedcost,
+      roomvariation: room.roomvariation
     },
   ];
 
   const [data, setData] = useState(() => {
     // Initialize with proper calculations
     const initializedData = [...initialData];
+    console.log(initialData, 'testv1')
     initializedData[0].price = initializedData[0].rooms * initializedData[0].basePrice;
     initializedData[0].maintenance = initializedData[0].rooms * initializedData[0].baseMaintenance;
     return initializedData;
@@ -144,7 +154,7 @@ const RoomDetails = () => {
           <tbody>
             {data.map((item, index) => (
               <tr key={index}>
-                <td>{item.name}</td>
+                <td>{item.roomvariation}</td>
                 <td>{item.inclusion}</td>
                 <td>
                   <select
