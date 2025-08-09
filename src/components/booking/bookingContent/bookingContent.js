@@ -102,32 +102,39 @@ const RoomBook = ({ searchResult, enabledDateRanges }) => {
     }
   };
 
+  const fmt = (d) => {
+    const yyyy = d.getFullYear();
+    const mm = String(d.getMonth() + 1).padStart(2, '0');
+    const dd = String(d.getDate()).padStart(2, '0');
+    return `${yyyy}-${mm}-${dd}`;
+  };
+
+  const toLocalMidnight = (d) => {
+    const x = new Date(d);
+    x.setHours(0, 0, 0, 0);
+    return x;
+  };
+
   const getValidDates = (checkInDate, checkOutDate, disabledDates = []) => {
-    const start = new Date(checkInDate);
-    const end = new Date(checkOutDate);
+    // Normalize to local midnight to avoid timezone issues
+    const start = toLocalMidnight(checkInDate);
+    const end = toLocalMidnight(checkOutDate);
     const blockedSet = new Set(disabledDates);
 
     const validDates = [];
     const current = new Date(start);
 
-    while (current <= end) {
-      const yyyy = current.getFullYear();
-      const mm = String(current.getMonth() + 1).padStart(2, '0');
-      const dd = String(current.getDate()).padStart(2, '0');
-      const formatted = `${yyyy}-${mm}-${dd}`;
-
+    // Iterate from check-in (inclusive) to the day before check-out (exclusive)
+    while (current < end) {
+      const formatted = fmt(current);
       if (!blockedSet.has(formatted)) {
         validDates.push(formatted);
       }
-
       current.setDate(current.getDate() + 1);
     }
 
     return validDates;
   };
-
-
-
 
   const handleRoomSelect = (room, validDays) => {
     if (userType === "donar" && room.roomname === "Patriji Bhavan") {
@@ -179,7 +186,6 @@ const RoomBook = ({ searchResult, enabledDateRanges }) => {
               const normalizedRoomType = normalizeRoomName(room.roomname);
               const checkInDisabledDates = disabledDates[normalizedRoomType] || [];
               const validDays = getValidDates(checkInDate, checkOutDate, checkInDisabledDates);
-              console.log("testv333", validDays, normalizedRoomType);
 
               return (
                 <div key={roomKey} className="room-card">

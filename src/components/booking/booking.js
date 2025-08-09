@@ -32,6 +32,10 @@ const Booking = () => {
   }, []);
 
   useEffect(() => {
+    refreshUserCredits();
+  }, []);
+
+  useEffect(() => {
     if (location.state?.bookingSuccess) {
       refreshUserCredits();
       window.history.replaceState({}, document.title);
