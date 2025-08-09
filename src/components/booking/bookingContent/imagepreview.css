@@ -1,57 +1,213 @@
+/* imagepreview.css */
+
 .image-preview-modal {
   position: fixed;
   top: 0;
   left: 0;
-  width: 100%;
-  height: 100%;
-  background: rgba(0,0,0,0.85);
+  width: 100vw;
+  height: 100vh;
   z-index: 9999;
   display: flex;
-  flex-direction: column;
-  overflow-y: auto;
-  padding: 20px;
-  box-sizing: border-box;
+  justify-content: center;
+  align-items: center;
+  overflow: hidden;
+  background-color: rgba(0, 0, 0, 0.75);
 }
 
+.image-preview-overlay {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  cursor: pointer;
+  background: transparent;
+  z-index: 1;
+}
+
+.image-preview-content {
+  position: relative;
+  background: #111;
+  border-radius: 8px;
+  padding: 12px 16px 20px;
+  max-width: 90vw;
+  max-height: 90vh;
+  box-sizing: border-box;
+  display: flex;
+  flex-direction: column;
+  z-index: 10;
+}
+
+.image-preview-content.horizontal-layout {
+  flex-direction: row;
+  max-width: 95vw;
+  max-height: 85vh;
+}
+
+/* Header */
 .image-preview-header {
   display: flex;
-  justify-content: space-between;
   align-items: center;
-  margin-bottom: 20px;
-}
-
-.preview-title {
+  justify-content: space-between;
+  margin-bottom: 8px;
   color: white;
-  font-size: 24px;
-  margin: 0;
-  flex-grow: 1;
-  text-align: center;
+  user-select: none;
 }
 
 .close-btn {
   background: transparent;
   border: none;
+  font-size: 28px;
   color: white;
-  font-size: 30px;
-  font-weight: bold;
   cursor: pointer;
-  padding: 5px 10px;
-  position: absolute;
-  top: 20px;
-  right: 20px;
+  padding: 0 8px;
+  transition: color 0.2s ease;
 }
 
-.image-gallery {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-  gap: 20px;
-  padding-top: 10px;
+.close-btn:hover {
+  color: #ff5555;
 }
 
-.image-gallery img {
-  width: 100%;
-  height: auto;
-  border-radius: 10px;
+.preview-title {
+  font-size: 18px;
+  margin: 0;
+  flex-grow: 1;
+  text-align: center;
+}
+
+.view-controls {
+  display: flex;
+  gap: 8px;
+}
+
+.view-btn {
+  background: transparent;
+  border: none;
+  font-size: 20px;
+  color: white;
+  cursor: pointer;
+  padding: 6px 8px;
+  border-radius: 4px;
+  transition: background-color 0.2s ease;
+}
+
+.view-btn:hover {
+  background-color: rgba(255, 255, 255, 0.2);
+}
+
+/* Main Image Container */
+.main-image-container {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+  flex-grow: 1;
+  min-height: 300px;
+  max-height: 70vh;
+  user-select: none;
+}
+
+.image-preview-content.horizontal-layout .main-image-container {
+  max-width: 80vw;
+  max-height: 80vh;
+}
+
+/* Navigation Buttons */
+.nav-btn {
+  background: rgba(0, 0, 0, 0.4);
+  border: none;
+  color: white;
+  font-size: 40px;
+  cursor: pointer;
+  padding: 8px 12px;
+  border-radius: 50%;
+  transition: background-color 0.2s ease;
+  user-select: none;
+  z-index: 5;
+  user-select: none;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 60px;
+  width: 60px;
+}
+
+.nav-btn:hover {
+  background: rgba(255, 255, 255, 0.2);
+}
+
+.prev-btn {
+  margin-right: 12px;
+}
+
+.next-btn {
+  margin-left: 12px;
+}
+
+.image-wrapper {
+  flex-grow: 1;
+  max-height: 100%;
+  max-width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+  border-radius: 6px;
+  background-color: black;
+}
+
+.main-preview-image {
+  max-width: 100%;
+  max-height: 100%;
+  user-select: none;
+  pointer-events: none;
+  transition: object-fit 0.3s ease;
+}
+
+/* Horizontal layout adjustment for image-wrapper */
+.image-preview-content.horizontal-layout .image-wrapper {
+  max-width: 70vw;
+  max-height: 80vh;
+}
+
+/* Thumbnail container */
+.thumbnail-container {
+  margin-top: 12px;
+  display: flex;
+  overflow-x: auto;
+  gap: 8px;
+  padding-bottom: 4px;
+  justify-content: center;
+  user-select: none;
+}
+
+.image-preview-content.horizontal-layout .thumbnail-container {
+  flex-direction: column;
+  margin-top: 0;
+  margin-left: 12px;
+  max-height: 80vh;
+  overflow-y: auto;
+  overflow-x: hidden;
+  justify-content: flex-start;
+}
+
+.thumbnail {
+  height: 60px;
+  width: 80px;
   object-fit: cover;
-  box-shadow: 0 4px 12px rgba(0,0,0,0.3);
+  border-radius: 4px;
+  cursor: pointer;
+  opacity: 0.7;
+  border: 2px solid transparent;
+  transition: border-color 0.3s ease, opacity 0.3s ease;
+  flex-shrink: 0;
+}
+
+.thumbnail:hover {
+  opacity: 1;
+}
+
+.thumbnail.active {
+  border-color: #4fc3f7;
+  opacity: 1;
 }
