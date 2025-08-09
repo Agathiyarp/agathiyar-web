@@ -151,6 +151,10 @@ const RoomBook = ({ searchResult, enabledDateRanges }) => {
       alert(`Booking is not allowed between restricted dates.\nPlease select a different check-in or check-out Date.`);
       return;
     }
+    if(validDays.length === 0) {
+      alert("Rooms are not available for the current date. Please select a different date.");
+      return;
+    }
 
     if (checkOut <= checkIn) {
       alert("Check-out date must be after the check-in date.");
