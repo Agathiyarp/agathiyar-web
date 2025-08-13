@@ -125,7 +125,7 @@
 .room-card__name {
   /* font-family: 'SF Pro Display Semibold', sans-serif; */
   font-size: 1.2rem;
-  color: #000;
+  margin-bottom: 15px;
 }
 
 .room-card__description {
@@ -162,6 +162,11 @@
   align-items: center;
   margin: 8px 0;
   gap: 10px;
+}
+
+.checkin-date,
+.checkout-date span {
+  font-size: 14px;
 }
 
 .icon {

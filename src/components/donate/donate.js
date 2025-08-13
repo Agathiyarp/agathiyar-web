@@ -15,7 +15,7 @@ const Donate = () => {
       <MenuBar />
       <div className="grid-containers">
         <div className="text-containers-donate">
-          <h2>“ Dharmo Rakshathi Rakshitaha ”</h2>
+          <h2>“Dharmo Rakshathi Rakshitaha”</h2>
           <ul>
             {spiritualPoints.map((point, index) => (
               <li className="spirtual-list" key={index}>{point}</li>
@@ -32,7 +32,7 @@ const Donate = () => {
         <div className="donate-container">
           <h2 >Donate</h2>
 
-          <h3 >Pay Via QR code / Trust Account Details</h3>
+          <h4 >Pay Via QR code / Trust Account Details</h4>
           <p >
             The Chennai Pyramid Spiritual Trust
             <br />

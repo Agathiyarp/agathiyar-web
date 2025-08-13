@@ -26,7 +26,7 @@
   color: #4a4a4a;
 }
 
-.row {
+.schedule-form-container .row {
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -35,13 +35,13 @@
   margin: 20px auto;
 }
 
-label {
+.schedule-form-container label {
   font-weight: 600;
   margin-bottom: 8px;
   color: #fff;
 }
 
-input, textarea, select {
+.schedule-form-container input, textarea, select {
   width: 100%;
   padding: 10px;
   border: 1px solid #ccc;
@@ -58,7 +58,6 @@ textarea {
 .submit-btn {
   margin-top: 20px;
   padding: 12px 25px;
-  background: linear-gradient(to right, #007bff, #0056b3);
   color: white;
   font-size: 16px;
   border: none;

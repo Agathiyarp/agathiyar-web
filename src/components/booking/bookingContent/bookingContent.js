@@ -204,7 +204,7 @@ const RoomBook = ({ searchResult, enabledDateRanges }) => {
                   <div className="room-card__content">
                     <div>
                       <div className="room-card__header">
-                        <h2 className="room-card__name">{room.roomname}</h2>
+                        <h4 className="room-card__name">{room.roomname}</h4>
                       </div>
                       <p className="room-card__description">
                         {room.roomdescription}
