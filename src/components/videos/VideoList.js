@@ -128,8 +128,8 @@ const VideoList = () => {
                   />
                 )}
               </div>
-              <h3 className="video-title">{video.title}</h3>
-              <p className="video-description">{video.description}</p>
+              <h2 className="video-title">{video.title}</h2>
+              <h4 className="video-description">{video.description}</h4>
             </div>
           ))}
         </div>

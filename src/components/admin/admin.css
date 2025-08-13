@@ -219,14 +219,13 @@
 .profile-name {
   font-size: 18px;
   font-weight: 600;
-  color: #424242;
   margin-bottom: 0.5rem;
 }
 
 .profile-role {
-  color: #666;
   font-size: 14px;
   margin-bottom: 0.25rem;
+  font-weight: 600;
 }
 
 .profile-details {
@@ -320,7 +319,7 @@
 
 .card-title {
   font-size: 16px;
-  font-weight: 600;
+  font-weight: 800;
   margin: 0;
 }
 

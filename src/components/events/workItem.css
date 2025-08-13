@@ -97,3 +97,141 @@
   max-height: 80vh;
   border-radius: 8px;
 }
+
+
+/* ========== Mobile-only overrides for WorkshopItem ========== */
+@media (max-width: 600px) {
+  .workshop-item {
+    padding: 12px;
+  }
+
+  /* Top section */
+  .workshop-item .image-and-time {
+    position: relative;
+  }
+
+  .workshop-item .image-placeholder {
+    border-radius: 10px;
+    overflow: hidden;
+  }
+
+  .workshop-item .event-image {
+    height: 200px;         /* taller, touch-friendly */
+    width: 100%;
+    object-fit: cover;
+    border-radius: 10px;   /* stronger rounding on mobile */
+  }
+
+  .workshop-item .time-left {
+    position: absolute;
+    top: 8px;
+    left: 8px;
+    background: rgba(0,0,0,0.6);
+    color: #fff;
+    padding: 6px 10px;
+    border-radius: 8px;
+    font-size: 12px;
+    line-height: 1.2;
+  }
+
+  .workshop-item .workshop-host {
+    margin: 10px 0 12px;
+    font-size: 14px;
+    line-height: 1.3;
+  }
+
+  /* Register button spans full width and comes earlier on mobile */
+  .workshop-item .register-button {
+    order: -1;            /* brings it to the top within its flex row */
+    width: 100%;
+    margin: 10px 0 0;
+  }
+
+  .workshop-item .btn-register {
+    width: 100%;
+    padding: 12px 16px;
+    border-radius: 10px;
+    font-weight: 600;
+  }
+
+  /* Details section */
+  .workshop-item .workshop-details {
+    margin-top: 12px;
+  }
+
+  .workshop-item .workshop-header {
+    display: flex;
+    gap: 8px;
+    align-items: flex-start;
+    justify-content: space-between;
+    margin-bottom: 6px;
+  }
+
+  .workshop-item .event-title {
+    font-size: 18px !important;
+    line-height: 1.2;
+    margin: 0;
+  }
+
+  .workshop-item .price {
+    font-size: 16px;
+    font-weight: 700;
+    white-space: nowrap;
+  }
+
+  .workshop-item .description-container {
+    margin-top: 10px;
+  }
+
+  .workshop-item .description {
+    line-height: 1.4;
+    margin-bottom: 8px;
+    font-size: 14px;
+    padding-left: 18px;
+  }
+
+  .workshop-item .description::before {
+    top: 0;
+  }
+
+  /* Info grid becomes single-column cards on mobile */
+  .workshop-item .workshop-info {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+    margin-top: 12px;
+  }
+
+  .workshop-item .workshop-info .info-item {
+    flex: 1 1 100%;
+    background: #fafafa;
+    border: 1px solid #eee;
+    border-radius: 10px;
+    padding: 10px;
+  }
+
+  .workshop-item .text-item {
+    font-size: 13px;      /* slightly smaller body text */
+  }
+
+  /* Image preview modal tweaks for small screens */
+  .workshop-item .modal-content {
+    width: 92%;
+    margin-top: 0;
+    max-height: 85vh;
+    padding: 12px;
+  }
+
+  .workshop-item .modal-content.preview-modal {
+    padding: 8px;
+  }
+
+  .workshop-item .preview-image {
+    max-height: 70vh;
+  }
+
+  .workshop-item .close-icon {
+    top: 6px;
+    right: 6px;
+  }
+}

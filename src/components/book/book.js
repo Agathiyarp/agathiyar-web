@@ -50,7 +50,7 @@ const BookGrid = () => {
               alt={book.title}
               onError={(e) => (e.target.src = defaultCover)}
             />
-            <h3 >{book.title}</h3>
+            <h4>{book.title}</h4>
             <a href={book.downloadUrl} target="_blank" download rel="noreferrer" >
               <button >
                 CLICK TO DOWNLOAD PDF

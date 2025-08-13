@@ -117,12 +117,12 @@
   
   .workshop-header h2 {
     font-size: 24px;
-    color: #333;
   }
   
-  .price {
+  .workshop-header .price {
     font-size: 18px;
     font-weight: 700;
+    color: #6c78b4;
   }
   
   .description {
