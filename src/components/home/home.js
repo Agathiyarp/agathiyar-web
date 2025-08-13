@@ -38,14 +38,14 @@ const Home = () => {
       {/* Content Section */}
       <div className="mission-vision-wrapper">
         <div className="card1">
-          <h3 className="card-title1">VISION</h3>
+          <h4 className="card-title1">VISION</h4>
           <p className="card-text">
             Our vision is to become the international headquarters for Mouna Dhyanam (Silent Meditation), serving as a global sanctuary for spiritual growth. Guided by the seven core principles of Silence, Meditation, Vegetarianism, and Swadhyayam, we aim to foster self-mastery and inner peace. We will leverage the unique energy of our pyramid to empower individuals on their journey, inspiring a life of selfless Service and creating a worldwide community dedicated to higher consciousness.
           </p>
         </div>
 
         <div className="card1">
-          <h3 className="card-title1">MISSION</h3>
+          <h4 className="card-title1">MISSION</h4>
           <p className="card-text">
             Our mission is to establish and operate the international headquarters for Mouna Dhyanam (Silent Meditation), providing a sanctuary for spiritual seekers worldwide. We empower individuals on their path to inner peace and self-realization by imparting the seven core principles of Silence, Meditation, Vegetarianism, Swadhyayam, Pyramid Energy, Self Mastery, and Service.
           </p>

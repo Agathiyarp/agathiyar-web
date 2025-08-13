@@ -259,7 +259,7 @@ const Admin = () => {
                         }
                       >
                         <div className={`card-icon ${card.iconClass}`}></div>
-                        <h2 className="card-title">{card.label}</h2>
+                        <h4 className="card-title">{card.label}</h4>
                       </div>
                     ))}
                   </div>
