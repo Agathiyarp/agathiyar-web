@@ -22,7 +22,7 @@
 }
 
 .home-title {
-  font-size: 2rem;
+  font-size: 24px;
   color: #4e9558;
   font-weight: 700;
   margin-bottom: 20px;
@@ -30,7 +30,7 @@
 }
 
 .home-left p {
-  font-size: 1.3rem;
+  font-size: 16px;
   line-height: 1.7;
   margin-bottom: 15px;
 }
@@ -49,4 +49,12 @@
   height: auto;
   /* border-radius: 8px; */
   box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+}
+
+
+@media (max-width: 768px) {
+  .home-title {
+    margin-top: 5px;
+    margin-bottom: 10px;
+  }
 }
