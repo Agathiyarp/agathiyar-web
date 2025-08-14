@@ -30,7 +30,7 @@ const ProfilePage = () => {
   const [profileImg, setProfileImg] = useState('');
   const [bookingList, setBookingList] = useState([]);
   const data = sessionStorage.getItem('userDetails');
-  const parsedData = JSON.parse(data);
+  const parsedData = data && data.length> 0 && JSON.parse(data);
 
   const userDetails = {
     fullName: parsedData?.username,
