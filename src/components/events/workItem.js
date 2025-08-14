@@ -35,7 +35,17 @@ const WorkshopItem = ({
       setShowLoginModal(true);
       return;
     }
-    navigate(`/eventregister/${id}${startdate ? `?startdate=${startdate}` : ""}${enddate ? `&enddate=${enddate}` : ""}`);
+     const queryParams = new URLSearchParams();
+
+    if (startdate) queryParams.append("startdate", startdate);
+    if (enddate) queryParams.append("enddate", enddate);
+    if (eventname) queryParams.append("eventname", eventname);
+    if (mastername) queryParams.append("eventmastername", mastername);
+    if (numberofdays) queryParams.append("eventdays", numberofdays);
+    if (place) queryParams.append("eventplace", place);
+    if (contactdetails) queryParams.append("contact", contactdetails);
+
+    navigate(`/eventregister/${id}?${queryParams.toString()}`);
   };
 
   const calculateTimeLeft = (date) => {

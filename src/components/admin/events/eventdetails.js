@@ -11,22 +11,45 @@ const EventDetails = () => {
   const [eventDetails, setEventDetails] = useState([]);
   const [noResults, setNoResults] = useState(false);
 
+  const [events, setEvents] = useState([]);
+  const [selectedEvent, setSelectedEvent] = useState(''); 
+  const [allRegistrations, setAllRegistrations] = useState([]);
+
   // 🔁 Load all events on page load
   useEffect(() => {
     fetchAllEvents();
+    fetchEventsList();
   }, []);
+
+  const fetchEventsList = async () => {
+    try {
+      const res = await fetch('https://www.agathiyarpyramid.org/api/get-events');
+      const data = await res.json();
+      if (res.ok && Array.isArray(data)) {
+        setEvents(data);
+      } else {
+        setEvents([]);
+      }
+    } catch (err) {
+      console.error(err);
+      setEvents([]);
+    }
+  };
 
   const fetchAllEvents = async () => {
     try {
-      const res = await fetch('https://www.agathiyarpyramid.org/api/events');
+      const res = await fetch('https://www.agathiyarpyramid.org/api/eventregistrations');
       const data = await res.json();
-      if (res.ok && data?.length > 0 && data[0]?.data?.length > 0) {
-        setUserList(data[0].data);
-        setEventDetails(data[0]);
+      console.log(data, "testv1")
+      if (res.ok && data?.length > 0) {
+        setUserList(data);
+        setEventDetails(data);
+        setAllRegistrations(data); 
         setNoResults(false);
       } else {
         setUserList([]);
         setEventDetails([]);
+        setAllRegistrations([]);
         setNoResults(true);
       }
     } catch (err) {
@@ -41,8 +64,8 @@ const EventDetails = () => {
     try {
       const res = await fetch(`https://www.agathiyarpyramid.org/api/events/filter/${start}/${end}`);
       const data = await res.json();
-      if (res.ok && data[0]?.data?.length > 0) {
-        setUserList(data[0].data);
+      if (res.ok && data?.length > 0) {
+        setUserList(data);
         setEventDetails(data[0]);
         setUserDetails(null);
         setNoResults(false);
@@ -57,13 +80,30 @@ const EventDetails = () => {
     }
   };
 
-  const exportToExcel = () => {
-    if (!eventDetails.eventId || userList.length === 0) return;
+  const handleEventChange = (e) => {
+    const eventName = e.target.value;
+    setSelectedEvent(eventName);
+    setUserDetails(null);
 
-    const dataToExport = userList.map(user => ({
-      ...user,
-      eventId: eventDetails.eventId
-    }));
+    if (!eventName) {
+      // Show all registrations again
+      setUserList(allRegistrations);
+      setNoResults(allRegistrations.length === 0);
+      return;
+    }
+
+    const filtered = allRegistrations.filter(
+      (u) =>
+        (u.eventname && String(u.eventname).toLowerCase() === eventName.toLowerCase()) ||
+        (u.event_name && String(u.event_name).toLowerCase() === eventName.toLowerCase())
+    );
+    setUserList(filtered);
+    setNoResults(filtered.length === 0);
+  };
+
+  const exportToExcel = () => {
+    if (userList.length === 0) return;
+    const dataToExport = userList;
 
     const ws = XLSX.utils.json_to_sheet(dataToExport);
     const wb = XLSX.utils.book_new();
@@ -77,7 +117,7 @@ const EventDetails = () => {
       <h2>Events Details</h2>
 
       <div className="section">
-        <h4>Filter by Date</h4>
+        <h4 style={{marginBottom: '10px', width: '100%'}}>Filter by:</h4>
         <input
           className='input-event'
           type="date"
@@ -91,6 +131,29 @@ const EventDetails = () => {
           onChange={(e) => setDateFilter({ ...dateFilter, end: e.target.value })}
         />
         <button className="btn-event" onClick={handleFilterByDate}>Filter</button>
+      </div>
+      <div className='section' style={{marginBottom: '10px'}}>
+        <h4 style={{color: '#ccc'}}>(OR)</h4>
+      </div>
+      <div className='section'>
+         <h4 style={{marginBottom: '20px'}}>Filter EventName:</h4>
+        <select
+          className="input-event"
+          value={selectedEvent}
+          onChange={handleEventChange}
+          style={{marginBottom: '10px'}}
+        >
+          <option value="">All</option>
+          {events.map((ev, idx) => {
+            // Try to be flexible with API field names:
+            const name = ev.eventname || ev.event_name || ev.name || ev.title || '';
+            return (
+              <option key={idx} value={name}>
+                {name || `Event ${idx + 1}`}
+              </option>
+            );
+          })}
+        </select>
         <button className="btn-event" onClick={exportToExcel}>Export Excel</button>
       </div>
 
@@ -127,18 +190,21 @@ const EventDetails = () => {
           <table>
             <thead>
               <tr>
-                <th>Event Name</th><th>UserID</th><th>UserName</th><th>Additional Member Count</th><th>Email</th><th>Mobile</th>
+                <th>UserID</th><th>Event Name</th><th>Event MasterName</th><th>Start Date</th><th>End Date</th><th>Event Days</th><th>Event Place</th><th>Additional Member Count</th><th>Mobile</th>
               </tr>
             </thead>
             <tbody>
               {userList.map((user, i) => (
                 <tr key={i}>
-                  <td>{eventDetails.name}</td>
-                  <td>{eventDetails.memberId}</td>
-                  <td>{user.name}</td>
-                  <td>{user.memberCount}</td>
-                  <td>{user.email}</td>
-                  <td>{user.phone}</td>
+                  <td>{user.memberid}</td>
+                  <td>{user.eventname}</td>
+                  <td>{user.eventmastername}</td>
+                  <td>{user.startdate}</td>
+                  <td>{user.enddate}</td>
+                  <td>{user.eventdays}</td>
+                  <td>{user.eventplace}</td>
+                  <td>{user.guests}</td>
+                  <td>{user.contact}</td>
                 </tr>
               ))}
             </tbody>

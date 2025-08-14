@@ -17,6 +17,12 @@ const EventRegistration = () => {
   const queryParams = new URLSearchParams(location.search);
   const startdate = queryParams.get("startdate") || "";
   const enddate = queryParams.get("enddate") || "";
+  const eventname = queryParams.get("eventname") || "";
+  const eventmastername = queryParams.get("eventmastername") || "";
+  const eventdays = queryParams.get("eventdays") || ""; 
+  const eventplace = queryParams.get("eventplace") || "";
+  const contact = queryParams.get("contact") || "";
+
   const sessionData = JSON.parse(sessionStorage.getItem("userDetails"));
   const memberId = sessionData?.usermemberid;
 
@@ -43,6 +49,11 @@ const EventRegistration = () => {
       guests: participantCount,
       startdate,
       enddate,
+      eventname,
+      eventmastername,
+      eventdays,
+      eventplace,
+      contact,
     };
 
     try {
