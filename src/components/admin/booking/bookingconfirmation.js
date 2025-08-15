@@ -166,11 +166,13 @@ const BookingConfirmation = () => {
         <table className="booking-table">
           <thead>
             <tr>
+              <th>Created Date</th>
               <th>Start Date</th>
               <th>End Date</th>
               <th>Booking ID</th>
               <th>Name</th>
               <th>User ID</th>
+              <th>User Type</th>
               <th>Room Name</th>
               <th>Amount</th>
               <th>Rooms</th>
@@ -181,12 +183,14 @@ const BookingConfirmation = () => {
           <tbody>
             {filteredBookings.map((item, index) => (
               <tr key={index}>
-                <td>{item.startdate ? new Date(item.startdate).toLocaleDateString() : '-'}</td>
-                <td>{item.enddate ? new Date(item.enddate).toLocaleDateString() : '-'}</td>
-                <td>{item.id || '-'}</td>
+                <td>{item.createddate ? item.createddate : '-'}</td>
+                <td>{item.startdate ? item.startdate : '-'}</td>
+                <td>{item.enddate ? item.enddate: '-'}</td>
+                <td>{item.bookingId || '-'}</td>
                 <td>{item.username || '-'}</td>
                 <td>{item.memberid || '-'}</td>
-                <td>{item.roomname || '-'}</td>
+                <td>{item.usertype || '-'}</td>
+                <td>{item.destination || '-'}</td>
                 <td>{item.totalamount || '0'}</td>
                 <td>{item.totalroomsbooked || '0'}</td>
                 <td>{item.bookingstatus || '-'}</td>
