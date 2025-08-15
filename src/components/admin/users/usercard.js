@@ -1,19 +1,10 @@
 import React, { useState, useEffect } from "react";
 import "./updateuser.css";
+import { ALL_CARDS } from '../../../constants/cards';
 
 const USER_ROLES = ["user", "admin", "superadmin"];
-
-const ACCESS_OPTIONS = [
-  "users",
-  "userAdd",
-  "events",
-  "bookings",
-  "content",
-  "video",
-  "books",
-  "settings",
-];
-
+const ACCESS_OPTIONS = ALL_CARDS.map(card => card.key);
+const ACCESS_LABEL = ALL_CARDS.map(card => card.label);
 const USER_TYPE_OPTIONS = ["donar", "sponsor", "patron"];
 
 const UserCard = ({ user, onSave }) => {
@@ -22,25 +13,33 @@ const UserCard = ({ user, onSave }) => {
   const [defaultCreditsMap, setDefaultCreditsMap] = useState({});
 
   useEffect(() => {
-    setFormData(user);
+    // Normalize access defaults when the user prop changes
+    const normalizedAccess =
+      user.userrole === "superadmin"
+        ? [...ACCESS_OPTIONS]                 // superadmin: all checked
+        : user.userrole === "admin"
+        ? Array.isArray(user.useraccess) ? user.useraccess : []  // admin: none unless explicitly set
+        : [];
+
+    setFormData({ ...user, useraccess: normalizedAccess });
 
     fetch("https://www.agathiyarpyramid.org/api/credits")
-    .then((res) => {
-      if (!res.ok) throw new Error("Failed to load credit mapping");
-      return res.json();
-    })
-    .then((data) => {
-      setDefaultCreditsMap(data || {});
-    })
-    .catch((err) => {
-      console.error("Error loading credits map:", err);
-      setDefaultCreditsMap({}); // fallback
-    });
+      .then((res) => {
+        if (!res.ok) throw new Error("Failed to load credit mapping");
+        return res.json();
+      })
+      .then((data) => {
+        setDefaultCreditsMap(data || {});
+      })
+      .catch((err) => {
+        console.error("Error loading credits map:", err);
+        setDefaultCreditsMap({});
+      });
   }, [user]);
 
   const handleUserTypeChange = (e) => {
     const selectedType = e.target.value;
-    const defaultCredits = defaultCreditsMap[0][selectedType];
+    const defaultCredits = defaultCreditsMap?.[0]?.[selectedType] ?? 0;
 
     setFormData((prev) => ({
       ...prev,
@@ -49,19 +48,25 @@ const UserCard = ({ user, onSave }) => {
     }));
   };
 
+  // ✅ Role changes: admin -> all unchecked, superadmin -> all checked
   const handleRoleChange = (e) => {
     const value = e.target.value;
-    let newAccess = [];
 
-    if (value === "admin" || value === "superadmin") {
-      newAccess = ACCESS_OPTIONS;
-    }
+    setFormData((prev) => {
+      let nextAccess = prev.useraccess || [];
 
-    setFormData((prev) => ({
-      ...prev,
-      userrole: value,
-      useraccess: newAccess,
-    }));
+      if (value === "superadmin") {
+        nextAccess = [...ACCESS_OPTIONS];    // force all
+      } else if (value === "user") {
+        nextAccess = [];                     // force none
+      } // else "admin": KEEP existing selections
+
+      return {
+        ...prev,
+        userrole: value,
+        useraccess: nextAccess,
+      };
+    });
   };
 
   const handleAccessCheckbox = (e) => {
@@ -69,9 +74,7 @@ const UserCard = ({ user, onSave }) => {
     setFormData((prev) => {
       let updatedAccess = prev.useraccess ? [...prev.useraccess] : [];
       if (checked) {
-        if (!updatedAccess.includes(value)) {
-          updatedAccess.push(value);
-        }
+        if (!updatedAccess.includes(value)) updatedAccess.push(value);
       } else {
         updatedAccess = updatedAccess.filter((item) => item !== value);
       }
@@ -92,14 +95,17 @@ const UserCard = ({ user, onSave }) => {
       return;
     }
 
-    // Final payload
+    // Ensure superadmin always submits with full access
+    const finalAccess =
+      formData.userrole === "superadmin" ? [...ACCESS_OPTIONS] : (formData.useraccess || []);
+
     const payload = {
       name: formData.name || "",
       userrole: formData.userrole || "",
-      useraccess: formData.useraccess || [],
+      useraccess: finalAccess,
       usertype: formData.usertype || "",
       usermemberid: formData.usermemberid,
-      credits: formData.credits || 0, 
+      credits: formData.credits || 0,
     };
 
     fetch("https://www.agathiyarpyramid.org/api/updateuser", {
@@ -108,12 +114,10 @@ const UserCard = ({ user, onSave }) => {
       body: JSON.stringify(payload),
     })
       .then((response) => {
-        if (!response.ok) {
-          throw new Error("Failed to update user");
-        }
-        return response.text(); // Don't force JSON
+        if (!response.ok) throw new Error("Failed to update user");
+        return response.text();
       })
-      .then((text) => {
+      .then(() => {
         onSave(payload);
         setIsEditing(false);
       })
@@ -142,7 +146,7 @@ const UserCard = ({ user, onSave }) => {
             <option value="">Select User Type</option>
             {USER_TYPE_OPTIONS.map((type) => (
               <option key={type} value={type}>
-                 {type?.charAt(0).toUpperCase() + type?.slice(1)}
+                {type?.charAt(0).toUpperCase() + type?.slice(1)}
               </option>
             ))}
           </select>
@@ -167,33 +171,35 @@ const UserCard = ({ user, onSave }) => {
               </option>
             ))}
           </select>
+
           {!["admin", "superadmin"].includes(formData.userrole) && (
-            <p style={{ fontSize: "0.9em", color: "#888", marginLeft: "5px"}}>
+            <p style={{ fontSize: "0.9em", color: "#888", marginLeft: "5px" }}>
               User role has no access options.
             </p>
           )}
+
           {formData.userrole === "superadmin" && (
             <p style={{ fontSize: "0.9em", color: "#888", marginLeft: "5px" }}>
               Superadmin has all access.
             </p>
           )}
-          
-          {formData.userrole === "admin" && 
-          <div className="access-checkbox-group">
-            {ACCESS_OPTIONS.map((access) => (
-                <label key={access}>
-                  {access}
+
+          {formData.userrole === "admin" && (
+            <div className="access-checkbox-group">
+              {ALL_CARDS.map((access) => (
+                <label key={access.key}>
+                  {access.label}
                   <input
                     type="checkbox"
-                    value={access}
-                    checked={formData.useraccess?.includes(access) || false}
+                    value={access.key}
+                    checked={formData.useraccess?.includes(access.key) || false}
                     onChange={handleAccessCheckbox}
                   />
                 </label>
-              
-            ))}
-          </div>}
-          
+              ))}
+            </div>
+          )}
+
           <div className="button-row">
             <button type="submit">Update</button>
             <button
@@ -210,19 +216,15 @@ const UserCard = ({ user, onSave }) => {
       ) : (
         <>
           <h2 onClick={() => setIsEditing(true)}>{user.name}</h2>
-          <p>
-            <strong>Username:</strong> {user.username}
-          </p>
-          <p>
-            <strong>User Member ID:</strong> {user.usermemberid}
-          </p>
-          <p>
-            <strong>User Role:</strong> {user.userrole}
-          </p>
-          <p>
-            <strong>User Type:</strong> {user.usertype ? user.usertype: "Not specified"}
-          </p>
-          {user.usertype && user.usertype !== "user" ? <p><strong>Available Credits:</strong> {user.credits || 0}</p>: ''}
+          <p><strong>Username:</strong> {user.username}</p>
+          <p><strong>User Member ID:</strong> {user.usermemberid}</p>
+          <p><strong>User Role:</strong> {user.userrole}</p>
+          <p><strong>User Type:</strong> {user.usertype ? user.usertype : "Not specified"}</p>
+          {user.usertype && user.usertype !== "user" ? (
+            <p><strong>Available Credits:</strong> {user.credits || 0}</p>
+          ) : (
+            ""
+          )}
           <p>
             <strong>User Access:</strong>{" "}
             {Array.isArray(user?.useraccess) && user.useraccess.length
