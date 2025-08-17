@@ -97,6 +97,8 @@ const Admin = () => {
       navigate("/usercredits");
     } else if (cardName === "Block Rooms") {
       navigate("/blockrooms");
+    } else if (cardName === "Manual Booking") {
+      navigate("/manualbooking");
     }
     // Add more conditions for other cards as needed
   };
