@@ -1,9 +1,10 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import './manualbooking.css'; // uses same structure as your addbooking.css with a small .error addition
 import { useNavigate } from 'react-router-dom';
 import MenuBar from "../../menumain/menubar";
 
 const initialForm = {
+  bookingid: '',
   name: '',
   age: '',
   gender: '',
@@ -13,13 +14,63 @@ const initialForm = {
   email: '',
   startdate: '',
   enddate: '',
+  modeOfPayment: '',
 };
 
 const ManualBooking = () => {
   const [formData, setFormData] = useState(initialForm);
   const [errors, setErrors] = useState({});
   const [loading, setLoading] = useState(false);
+  const [rooms, setRooms] = useState([]);
+  const [roomsLoading, setRoomsLoading] = useState(false);
+  const [roomsError, setRoomsError] = useState('');
   const navigate = useNavigate();
+
+  // Fetch rooms once (per given date in your requirement)
+  useEffect(() => {
+    const fetchRooms = async () => {
+      setRoomsLoading(true);
+      setRoomsError('');
+      try {
+        const res = await fetch('https://agathiyarpyramid.org/api/getBookingRecords?date=2025-08-18');
+        const data = await res.json().catch(() => null);
+
+        // Try to derive room names from different possible shapes
+        let candidates = [];
+        if (Array.isArray(data)) {
+          candidates = data.map(
+            (b) => b?.roomname ?? b?.roomName ?? b?.room ?? b?.RoomName ?? null
+          );
+        } else if (data && typeof data === 'object') {
+          const arrs = [
+            Array.isArray(data.rooms) ? data.rooms : [],
+            Array.isArray(data.availableRooms) ? data.availableRooms : [],
+            Array.isArray(data.records) ? data.records : [],
+          ].flat();
+
+          if (arrs.length) {
+            candidates = arrs.map(
+              (b) => b?.roomname ?? b?.roomName ?? b?.room ?? b?.RoomName ?? (typeof b === 'string' ? b : null)
+            );
+          }
+        }
+
+        const unique = [...new Set(candidates.filter(Boolean))].sort((a, b) =>
+          String(a).localeCompare(String(b))
+        );
+
+        setRooms(unique);
+        if (unique.length === 0) setRoomsError('No rooms found. You can retry submission later.');
+      } catch (err) {
+        console.error('Rooms fetch failed:', err);
+        setRoomsError('Failed to load rooms. Please try again.');
+      } finally {
+        setRoomsLoading(false);
+      }
+    };
+
+    fetchRooms();
+  }, []);
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -42,8 +93,9 @@ const ManualBooking = () => {
   const validate = () => {
     const e = {};
 
-    // Required checks
+    // Required checks: all except bookingid
     Object.entries(formData).forEach(([k, v]) => {
+      if (k === 'bookingid') return; // optional
       if (!String(v || '').trim()) e[k] = 'This field is required';
     });
 
@@ -105,7 +157,6 @@ const ManualBooking = () => {
         setFormData(initialForm);
         setErrors({});
         setLoading(false);
-        // Navigate if desired (adjust route)
         setTimeout(() => navigate('/admin'), 1200);
       } else {
         alert('Submission failed: ' + text);
@@ -122,10 +173,30 @@ const ManualBooking = () => {
     <div className="booking-form-container">
       <MenuBar />
       <h2>Manual Booking</h2>
-      <p className="manual-booking-note">*All fields are mandatory</p>
+      <p className="manual-booking-note">
+        *All fields are mandatory, except Booking ID
+      </p>
       {loading && <div className="manual-booking-loader">Submitting...</div>}
 
       <form onSubmit={handleSubmit} className="manual-booking-container">
+        {/* Row 0 - Booking ID (optional) */}
+        <div className="manual-booking-row">
+          <div style={{ flex: 1 }}>
+            <input
+              type="text"
+              name="bookingid"
+              placeholder="Booking ID (optional)"
+              value={formData.bookingid}
+              onChange={handleChange}
+              aria-invalid={!!errors.bookingid}
+              aria-describedby="err-bookingid"
+            />
+            {errors.bookingid && (
+              <div id="err-bookingid" className="manual-booking-error">{errors.bookingid}</div>
+            )}
+          </div>
+        </div>
+
         {/* Row 1 */}
         <div className="manual-booking-row">
           <div style={{ flex: 1 }}>
@@ -153,7 +224,7 @@ const ManualBooking = () => {
               aria-invalid={!!errors.age}
               aria-describedby="err-age"
             />
-            {errors.age && <div id="err-age" className="error">{errors.age}</div>}
+            {errors.age && <div id="err-age" className="manual-booking-error">{errors.age}</div>}
           </div>
         </div>
 
@@ -173,21 +244,29 @@ const ManualBooking = () => {
               <option value="female">Female</option>
               <option value="other">Other</option>
             </select>
-            {errors.gender && <div id="err-gender" className="error">{errors.gender}</div>}
+            {errors.gender && <div id="err-gender" className="manual-booking-error">{errors.gender}</div>}
           </div>
 
+          {/* Room Name dropdown */}
           <div style={{ flex: 1 }}>
-            <input
-              type="text"
+            <select
               name="roomname"
-              placeholder="Room Name"
               value={formData.roomname}
               onChange={handleChange}
               required
               aria-invalid={!!errors.roomname}
               aria-describedby="err-roomname"
-            />
-            {errors.roomname && <div id="err-roomname" className="error">{errors.roomname}</div>}
+              disabled={roomsLoading || roomsError}
+            >
+              <option value="">
+                {roomsLoading ? 'Loading rooms...' : roomsError ? 'Rooms unavailable' : 'Select Room'}
+              </option>
+              {!roomsLoading && !roomsError && rooms.map((r) => (
+                <option key={r} value={r}>{r}</option>
+              ))}
+            </select>
+            {errors.roomname && <div id="err-roomname" className="manual-booking-error">{errors.roomname}</div>}
+            {roomsError && <div className="manual-booking-error" style={{ marginTop: 6 }}>{roomsError}</div>}
           </div>
         </div>
 
@@ -204,7 +283,7 @@ const ManualBooking = () => {
               aria-invalid={!!errors.phone}
               aria-describedby="err-phone"
             />
-            {errors.phone && <div id="err-phone" className="error">{errors.phone}</div>}
+            {errors.phone && <div id="err-phone" className="manual-booking-error">{errors.phone}</div>}
           </div>
 
           <div style={{ flex: 1 }}>
@@ -218,7 +297,7 @@ const ManualBooking = () => {
               aria-invalid={!!errors.email}
               aria-describedby="err-email"
             />
-            {errors.email && <div id="err-email" className="error">{errors.email}</div>}
+            {errors.email && <div id="err-email" className="manual-booking-error">{errors.email}</div>}
           </div>
         </div>
 
@@ -235,7 +314,7 @@ const ManualBooking = () => {
               aria-invalid={!!errors.startdate}
               aria-describedby="err-startdate"
             />
-            {errors.startdate && <div id="err-startdate" className="error">{errors.startdate}</div>}
+            {errors.startdate && <div id="err-startdate" className="manual-booking-error">{errors.startdate}</div>}
           </div>
 
           <div style={{ flex: 1 }}>
@@ -249,8 +328,30 @@ const ManualBooking = () => {
               aria-invalid={!!errors.enddate}
               aria-describedby="err-enddate"
             />
-            {errors.enddate && <div id="err-enddate" className="error">{errors.enddate}</div>}
+            {errors.enddate && <div id="err-enddate" className="manual-booking-error">{errors.enddate}</div>}
           </div>
+        </div>
+
+        {/* Row 5 - Mode of Payment (required) */}
+        <div className="row">
+          <div style={{ flex: 1 }}>
+            <select
+              name="modeOfPayment"
+              value={formData.modeOfPayment}
+              onChange={handleChange}
+              required
+              aria-invalid={!!errors.modeOfPayment}
+              aria-describedby="err-modeOfPayment"
+            >
+              <option value="">Mode of Payment</option>
+              <option value="Credits">Credits</option>
+              <option value="Cash/Online">Cash/Online</option>
+            </select>
+            {errors.modeOfPayment && (
+              <div id="err-modeOfPayment" className="manual-booking-error">{errors.modeOfPayment}</div>
+            )}
+          </div>
+          <div style={{ flex: 1 }} />
         </div>
 
         {/* Address (full width) */}
@@ -264,7 +365,7 @@ const ManualBooking = () => {
             aria-invalid={!!errors.address}
             aria-describedby="err-address"
           />
-          {errors.address && <div id="err-address" className="error">{errors.address}</div>}
+          {errors.address && <div id="err-address" className="manual-booking-error">{errors.address}</div>}
         </div>
 
         <button type="submit" className="manual-booking-submit-btn" disabled={loading}>
