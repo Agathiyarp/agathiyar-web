@@ -79,7 +79,7 @@ const MenuBar = () => {
   if (data && data.length > 0 && JSON.parse(data)?.username) {
     delete routes.Login;
     if(isMobile) {
-      routes.Profile = "/profile";
+      routes.Profile = "/profileview";
     }
   }
 

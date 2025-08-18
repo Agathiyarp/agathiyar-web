@@ -59,7 +59,7 @@ const BookingConfirmation = () => {
     const payload = {
       memberid: selectedBooking.memberid,
       userid: selectedBooking.userid,
-      bookingid: selectedBooking.id,
+      bookingid: selectedBooking.bookingId,
       bookingstatus: actionType,
       totalroomsbooked: selectedBooking.totalroomsbooked,
       creditused: userType !== "user" ? (actionType === 'approved' ? selectedBooking.creditused : 0) : 0,
@@ -76,11 +76,11 @@ const BookingConfirmation = () => {
 
       if (!res.ok) throw new Error('Failed to update status');
 
-      toast.success(`Booking ID ${selectedBooking.id} has been ${actionType}.`, { toastId: 'booking-update-success' });
+      toast.success(`Booking ID ${selectedBooking.bookingId} has been ${actionType}.`, { toastId: 'booking-update-success' });
       await fetchBookings();
     } catch (err) {
       console.error(err);
-      alert(`Error updating status for Booking ID ${selectedBooking.id}`);
+      alert(`Error updating status for Booking ID ${selectedBooking.bookingId}`);
     } finally {
       closeModal();
     }
@@ -90,7 +90,7 @@ const BookingConfirmation = () => {
     let filtered = bookings;
 
     if (searchBookingId)
-      filtered = filtered.filter(item => item.id?.toString().includes(searchBookingId));
+      filtered = filtered.filter(item => item.bookingId?.toString().includes(searchBookingId));
 
     if (searchUserId)
       filtered = filtered.filter(item => item.memberid?.toString().includes(searchUserId));
@@ -108,7 +108,7 @@ const BookingConfirmation = () => {
     const csv = [
       ["BookingID", "UserID", "Username", "StartDate", "EndDate", "RoomName", "Amount", "Rooms", "Status"],
       ...filteredBookings.map(b => [
-        b.id, b.userid, b.username, b.startdate, b.enddate, b.roomname, b.totalamount, b.totalroomsbooked, b.bookingstatus
+        b.bookingId, b.userid, b.username, b.startdate, b.enddate, b.roomname, b.totalamount, b.totalroomsbooked, b.bookingstatus
       ])
     ]
       .map(row => row.join(","))
@@ -218,7 +218,7 @@ const BookingConfirmation = () => {
         <div className="modal-overlay">
           <div className="modal">
             <h3 className='confirm-header-text'>Confirm {actionType === 'approved' ? 'Approval' : 'Rejection'}</h3>
-            <p>Are you sure you want to <strong>{actionType}</strong> booking ID <strong>{selectedBooking.id}</strong>?</p>
+            <p>Are you sure you want to <strong>{actionType}</strong> booking ID <strong>{selectedBooking.bookingId}</strong>?</p>
             <div className="modal-actions">
               <button onClick={confirmAction} className="save-btn">Yes, Confirm</button>
               <button onClick={closeModal} className="cancel-btn">Cancel</button>
