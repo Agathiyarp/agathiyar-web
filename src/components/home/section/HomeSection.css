@@ -31,7 +31,6 @@
 
 .home-left p {
   font-size: 16px;
-  line-height: 1.7;
   margin-bottom: 15px;
 }
 
@@ -56,5 +55,10 @@
   .home-title {
     margin-top: 5px;
     margin-bottom: 10px;
+    padding-left: 10px;
+  }
+  .home-description {
+    text-align: justify;
+    padding: 0 10px;
   }
 }

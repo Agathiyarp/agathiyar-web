@@ -12,7 +12,7 @@
   margin: 0 auto;
   overflow: hidden;
   border-radius: 8px;
-  background-color: #000; /* Optional: avoids white flash */
+  background-color: #000;
 }
 
 .video-wrapper video {
@@ -39,65 +39,66 @@
 /* Carousel Styles */
 .carousel-container {
   margin: 20px 0;
-  width: 100%; /* Adjust width as needed, e.g., 80%, 600px, etc. */
-  overflow: hidden; /* Prevent overflow if needed */
+  width: 100%;
+  overflow: hidden;
 }
 
 .carousel-image {
   width: 100%;
-  height: 480px; /* Make sure the image fills the container */
-  object-fit: cover; /* Maintain aspect ratio while covering the container */
-  border-radius: 8px; /* Optional: add rounded corners */
+  height: 480px;
+  object-fit: cover;
+  border-radius: 8px;
+  animation: fadeIn 1.5s ease-out forwards;
 }
-/* App.css */
 
 /* Mission Statements Section */
 .mission-statements-container {
   margin: 40px 0;
-  text-align: center; /* Center align text */
-  padding: 20px; /* Add some padding */
-  background-color: #f9f9f9; /* Light background color */
-  border-radius: 10px; /* Rounded corners */
-  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1); /* Subtle shadow for depth */
+  text-align: center;
+  padding: 20px;
+  background-color: #f9f9f9;
+  border-radius: 10px;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
 }
 
 .mission-statements-container h2 {
   font-size: 28px;
-  color: #333; /* Dark color for the heading */
-  margin-bottom: 20px; /* Space below the heading */
+  color: #333;
+  margin-bottom: 20px;
 }
 
 .single-image-container {
-  margin: 20px 0; /* Margin above and below the image */
+  margin: 20px 0;
 }
 
 .single-image {
-  width: 100%; /* Full width */
-  max-width: 800px; /* Maximum width */
-  height: auto; /* Maintain aspect ratio */
-  border-radius: 8px; /* Optional: rounded corners */
+  width: 100%;
+  max-width: 800px;
+  height: auto;
+  border-radius: 8px;
 }
 
 .mission-list {
-  list-style-type: none; /* Remove default list styles */
-  padding: 0; /* Remove padding */
+  list-style-type: none;
+  padding: 0;
 }
-.home-section p{
+
+.home-section p {
   font-size: 16px;
+  line-height: 1.6;
 }
 
 .mission-item {
-  background-color: #fff; /* White background for list items */
-  margin: 10px 0; /* Space between items */
-  padding: 15px; /* Padding inside the item */
-  border-radius: 8px; /* Rounded corners */
-  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1); /* Shadow for depth */
-  transition: background-color 0.3s; /* Smooth transition for hover effect */
-  /* font-family: 'Raleway, sans-serif'; */
+  background-color: #fff;
+  margin: 10px 0;
+  padding: 15px;
+  border-radius: 8px;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+  transition: background-color 0.3s;
 }
 
 .mission-item:hover {
-  background-color: #f0f0f0; /* Change background on hover */
+  background-color: #f0f0f0;
 }
 
 /* Fixed Header Styles */
@@ -106,8 +107,8 @@
   top: 0;
   left: 0;
   right: 0;
-  z-index: 1000; /* Ensure it stays above other elements */
-  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1); /* Optional: add shadow */
+  z-index: 1000;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
 }
 
 .MuiToolbar-root {
@@ -121,12 +122,11 @@
 
 .vision-heading {
   color: green !important;
-  /* font-family: 'Raleway, sans-serif'; */
 }
+
 .meditation-heading {
   color: green !important;
   text-align: center;
-  /* font-family: 'Raleway, sans-serif'; */
 }
 
 @keyframes fadeIn {
@@ -140,17 +140,13 @@
   }
 }
 
-.carousel-image {
-  animation: fadeIn 1.5s ease-out forwards;
-}
-
 .mission-vision-wrapper {
   display: flex;
   justify-content: center;
   gap: 40px;
   padding: 60px 20px;
   flex-wrap: wrap;
-  background: linear-gradient(to right, #7cd1b8, #7dc4d6); /* Adjust gradient stops as needed */
+  background: linear-gradient(to right, #7cd1b8, #7dc4d6);
 }
 
 .card1 {
@@ -160,6 +156,8 @@
   border-radius: 12px;
   box-shadow: 0 8px 16px rgba(0,0,0,0.1);
   text-align: center;
+  flex: 1;
+  min-width: 280px;
 }
 
 .card-title1 {
@@ -167,14 +165,12 @@
   font-weight: 700;
   letter-spacing: 1px;
   margin-bottom: 20px;
-  /* font-family: Raleway, sans-serif; */
 }
 
 .card-text {
   font-size: 16px;
   line-height: 1.7;
   margin-bottom: 20px;
-  /* font-family: Raleway, sans-serif; */
 }
 
 .more-info-button {
@@ -191,22 +187,140 @@
   background-color: #157a74;
 }
 
+/* Mobile Responsive Styles */
 @media (max-width: 768px) {
+  .app-container {
+    padding: 10px;
+    padding-top: 70px;
+  }
+
+  .carousel-container {
+    margin: 10px 0;
+  }
+
+  .video-wrapper {
+    margin: 0 auto 20px;
+    border-radius: 4px;
+  }
+
+  .carousel-image {
+    height: 200px;
+    border-radius: 4px;
+  }
+
   .mission-vision-wrapper {
     flex-direction: column;
     align-items: center;
-    padding: 20px 10px;
+    padding: 30px 10px;
+    gap: 20px;
   }
+
   .card1 {
-    padding: 8px;
+    padding: 20px;
+    max-width: 100%;
+    margin: 0 5px;
   }
+
+  .card-title1 {
+    font-size: 18px;
+    margin-bottom: 15px;
+  }
+
+  .card-text {
+    font-size: 14px;
+    line-height: 1.5;
+    margin-bottom: 15px;
+  }
+
   .home-section {
-    padding: 10px;
-    gap:0 !important;
-    padding-left: 10px !important;
-    font-size: 16px;
+    padding: 20px 10px !important;
+    gap: 20px !important;
   }
+
+  .home-section p {
+    font-size: 14px;
+    line-height: 1.5;
+    margin-bottom: 15px;
+  }
+
+  .home-section h2,
+  .home-section h3 {
+    font-size: 20px;
+    margin-bottom: 15px;
+  }
+
   .home-right {
     padding-right: 10px;
+  }
+
+  .logo {
+    width: 60px;
+    height: 60px;
+    margin-right: 10px;
+    margin-left: 10px;
+  }
+
+  .mission-statements-container {
+    margin: 20px 0;
+    padding: 15px;
+  }
+
+  .mission-statements-container h2 {
+    font-size: 22px;
+    margin-bottom: 15px;
+  }
+
+  .mission-item {
+    padding: 12px;
+    margin: 8px 0;
+  }
+}
+
+/* Extra small mobile devices */
+@media (max-width: 480px) {
+  .app-container {
+    padding: 5px;
+    padding-top: 60px;
+  }
+
+  .mission-vision-wrapper {
+    padding: 20px 5px;
+  }
+
+  .card1 {
+    padding: 15px;
+    margin: 0;
+  }
+
+  .card-title1 {
+    font-size: 16px;
+  }
+
+  .card-text {
+    font-size: 13px;
+  }
+
+  .home-section {
+    padding: 15px 5px !important;
+  }
+
+  .home-section p {
+    font-size: 13px;
+  }
+
+  .home-section h2,
+  .home-section h3 {
+    font-size: 18px;
+  }
+
+  .carousel-image {
+    height: 180px;
+  }
+
+  .logo {
+    width: 50px;
+    height: 50px;
+    margin-right: 8px;
+    margin-left: 8px;
   }
 }

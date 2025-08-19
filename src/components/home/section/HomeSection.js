@@ -6,7 +6,7 @@ const HomeSection = ({ title, description, image}) => {
     <div className="home-section">
       <div className="home-left">
         <h1 className="home-title">{title}</h1>
-        <p>
+        <p className='home-description'>
           {description}
         </p>
       </div>
