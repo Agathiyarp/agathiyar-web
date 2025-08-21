@@ -68,7 +68,7 @@ const MenuBar = () => {
     Videos: "/videos",
     Gallery: "/gallery",
     Booking: "/booking",
-    ContactUs: "/contact",
+    "Contact Us": "/contact",
     Donate: "/donate",
     Books: "/book",
     Login: "/login"
