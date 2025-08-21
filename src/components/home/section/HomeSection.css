@@ -9,16 +9,15 @@
 }
 
 .home-left {
-  flex: 1;
+  flex: 1 1 50%;
   min-width: 300px;
   max-width: 600px;
 }
 
 .home-right {
-  flex: 1;
+  flex: 1 1 50%;
   display: flex;
   min-width: 300px;
-  max-height: 500px;
 }
 
 .home-title {
