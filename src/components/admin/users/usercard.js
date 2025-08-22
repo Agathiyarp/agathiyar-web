@@ -4,7 +4,7 @@ import { ALL_CARDS } from '../../../constants/cards';
 
 const USER_ROLES = ["user", "admin", "superadmin"];
 const ACCESS_OPTIONS = ALL_CARDS.map(card => card.key);
-const ACCESS_LABEL = ALL_CARDS.map(card => card.label);
+// const ACCESS_LABEL = ALL_CARDS.map(card => card.label);
 const USER_TYPE_OPTIONS = ["donar", "sponsor", "patron"];
 
 const UserCard = ({ user, onSave }) => {

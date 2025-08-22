@@ -99,7 +99,7 @@ const LoginForm = () => {
     }
   };
 
-  const isMobile = viewportWidth < 768;
+  // const isMobile = viewportWidth < 768;
   const isSmallMobile = viewportWidth < 480;
 
   const inputStyles = (fieldName) => ({

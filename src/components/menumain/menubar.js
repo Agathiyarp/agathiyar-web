@@ -21,7 +21,7 @@ const MenuBar = () => {
   const isMenuOpen = Boolean(anchorEl);
   const navigate = useNavigate();
   const location = useLocation(); // Get the current location for active link highlighting
-  const sessionData = sessionStorage.getItem("userDetails");
+  // const sessionData = sessionStorage.getItem("userDetails");
 
   const [user, setUser] = useState({
     name: "",

@@ -3,7 +3,7 @@ import IconButton from '@mui/material/IconButton';
 import Avatar from '@mui/material/Avatar';
 import Menu from '@mui/material/Menu';
 import MenuItem from '@mui/material/MenuItem';
-import Typography from '@mui/material/Typography';
+// import Typography from '@mui/material/Typography';
 import Box from '@mui/material/Box';
 import { useNavigate } from "react-router-dom";
 
@@ -20,7 +20,7 @@ const ProfileMenu = ({ user, onLogout }) => {
     setAnchorEl(null);
   };
 
-  const data = sessionStorage.getItem('userDetails');
+  // const data = sessionStorage.getItem('userDetails');
 
   const handleProfileClick = ()=> {
     handleMenuClose();
