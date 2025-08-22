@@ -1,5 +1,5 @@
-import React, { useEffect, useState } from 'react';
-import './manualbooking.css'; // uses same structure as your addbooking.css with a small .error addition
+import React, { useEffect, useRef, useState } from 'react';
+import './manualbooking.css';
 import { useNavigate } from 'react-router-dom';
 import MenuBar from "../../menumain/menubar";
 
@@ -8,7 +8,7 @@ const initialForm = {
   name: '',
   age: '',
   gender: '',
-  roomname: '',
+  roomname: '',      // kept as-is; we’ll store the chosen destination here
   address: '',
   phone: '',
   email: '',
@@ -21,57 +21,198 @@ const ManualBooking = () => {
   const [formData, setFormData] = useState(initialForm);
   const [errors, setErrors] = useState({});
   const [loading, setLoading] = useState(false);
-  const [rooms, setRooms] = useState([]);
+  const [matchMessage, setMatchMessage] = useState({ text: '', type: '' }); 
+
+  // destinations (populates the "Select Destination" dropdown)
+  const [rooms, setRooms] = useState([]); // keep the var name to minimize changes; values are destinations
   const [roomsLoading, setRoomsLoading] = useState(false);
   const [roomsError, setRoomsError] = useState('');
-  const navigate = useNavigate();
 
-  // Fetch rooms once (per given date in your requirement)
+  // booking autofill state
+  const [autoLoading, setAutoLoading] = useState(false);
+  const [autoError, setAutoError] = useState('');
+
+  const navigate = useNavigate();
+  const debounceTimer = useRef(null);
+
+  // --- Utils ---
+  const toYMD = (dLike) => {
+    if (!dLike) return '';
+    const d = new Date(dLike);
+    if (isNaN(d.getTime())) return '';
+    const yyyy = d.getFullYear();
+    const mm = String(d.getMonth() + 1).padStart(2, '0');
+    const dd = String(d.getDate()).padStart(2, '0');
+    return `${yyyy}-${mm}-${dd}`;
+  };
+
+  const norm = (v) => (v === undefined || v === null ? '' : String(v).trim());
+
+  // Try a bunch of key variants safely
+  const pick = (obj, keys = []) => {
+    for (const k of keys) {
+      if (obj?.[k] !== undefined && obj?.[k] !== null && String(obj?.[k]).length > 0) {
+        return obj[k];
+      }
+    }
+    return '';
+  };
+
+  // --- Fetch unique "destination" values once to populate dropdown ---
   useEffect(() => {
-    const fetchRooms = async () => {
+    const fetchDestinations = async () => {
       setRoomsLoading(true);
       setRoomsError('');
       try {
-        const res = await fetch('https://agathiyarpyramid.org/api/getBookingRecords?date=2025-08-18');
+        const res = await fetch('https://www.agathiyarpyramid.org/api/bookings');
         const data = await res.json().catch(() => null);
 
-        // Try to derive room names from different possible shapes
+        const collectDest = (obj) =>
+          obj?.destination ??
+          obj?.Destination ??
+          obj?.dest ??
+          obj?.place ??
+          // final fallbacks if some rows still use room fields:
+          obj?.roomname ?? obj?.roomName ?? obj?.room ?? obj?.RoomName ?? null;
+
         let candidates = [];
         if (Array.isArray(data)) {
-          candidates = data.map(
-            (b) => b?.roomname ?? b?.roomName ?? b?.room ?? b?.RoomName ?? null
-          );
+          candidates = data.map(collectDest);
         } else if (data && typeof data === 'object') {
-          const arrs = [
-            Array.isArray(data.rooms) ? data.rooms : [],
-            Array.isArray(data.availableRooms) ? data.availableRooms : [],
+          const buckets = [
+            Array.isArray(data.bookings) ? data.bookings : [],
             Array.isArray(data.records) ? data.records : [],
+            Array.isArray(data.data) ? data.data : [],
           ].flat();
-
-          if (arrs.length) {
-            candidates = arrs.map(
-              (b) => b?.roomname ?? b?.roomName ?? b?.room ?? b?.RoomName ?? (typeof b === 'string' ? b : null)
-            );
-          }
+          candidates = buckets.map(collectDest);
         }
 
-        const unique = [...new Set(candidates.filter(Boolean))].sort((a, b) =>
-          String(a).localeCompare(String(b))
-        );
+        const unique = [...new Set(candidates.filter(Boolean).map(String))]
+          .sort((a, b) => a.localeCompare(b));
 
         setRooms(unique);
-        if (unique.length === 0) setRoomsError('No rooms found. You can retry submission later.');
+        if (unique.length === 0) setRoomsError('No destinations found. You can retry later.');
       } catch (err) {
-        console.error('Rooms fetch failed:', err);
-        setRoomsError('Failed to load rooms. Please try again.');
+        console.error('Destinations fetch failed:', err);
+        setRoomsError('Failed to load destinations. Please try again.');
       } finally {
         setRoomsLoading(false);
       }
     };
 
-    fetchRooms();
+    fetchDestinations();
   }, []);
 
+  // --- Autofill booking details when bookingid is entered ---
+  const fetchAndHydrateByBookingId = async (bookingIdRaw) => {
+    const bookingId = norm(bookingIdRaw);
+    if (!bookingId) return;
+
+    setAutoLoading(true);
+    setAutoError('');
+    setMatchMessage('');
+    try {
+      const res = await fetch('https://www.agathiyarpyramid.org/api/bookings');
+      const data = await res.json();
+
+      const toIdString = (item) => {
+        const found =
+          pick(item, ['bookingid', 'bookingId', 'BookingId', 'id', 'booking_id', 'BookingID']) ||
+          pick(item?.booking ?? {}, ['id', 'bookingId']);
+        return norm(found);
+      };
+
+      // find matches
+      let matches = [];
+      if (Array.isArray(data)) {
+        matches = data.filter((it) => toIdString(it) === bookingId);
+      } else if (data && typeof data === 'object') {
+        const arrs = [
+          Array.isArray(data.bookings) ? data.bookings : [],
+          Array.isArray(data.records) ? data.records : [],
+          Array.isArray(data.data) ? data.data : [],
+        ].flat();
+        matches = arrs.filter((it) => toIdString(it) === bookingId);
+      }
+
+      if (!matches.length) {
+        // Treat as NEW booking id: do NOT error, do NOT reset form
+        setAutoError('');
+        setMatchMessage({ text: `No existing record found. Using as NEW Booking ID: ${bookingId}`, type: 'info' });
+        setAutoLoading(false);
+        return;
+      }
+
+      // If multiple, prefer most recent by created/updated date field if available
+      const scoreTime = (it) => {
+        const t =
+          pick(it, ['updatedAt', 'updated_at', 'createdAt', 'created_at', 'createddate', 'createdDate']) ||
+          pick(it?.booking ?? {}, ['updatedAt', 'createdAt']);
+        const ts = Date.parse(t);
+        return isNaN(ts) ? 0 : ts;
+      };
+      const record = matches.reduce((a, b) => (scoreTime(a) >= scoreTime(b) ? a : b));
+
+      // Extract fields (robust to naming)
+      const start =
+        pick(record, ['startdate', 'startDate', 'checkin', 'checkIn', 'fromDate', 'from']) ||
+        pick(record?.booking ?? {}, ['startDate', 'checkIn', 'from']);
+
+      const end =
+        pick(record, ['enddate', 'endDate', 'checkout', 'checkOut', 'toDate', 'to']) ||
+        pick(record?.booking ?? {}, ['endDate', 'checkOut', 'to']);
+
+      // Prefer "destination" as the dropdown value; fallback to room fields
+      const roomOrDest =
+        pick(record, ['destination', 'Destination', 'dest', 'place']) ||
+        pick(record?.booking ?? {}, ['destination', 'place']) ||
+        pick(record, ['roomname', 'roomName', 'room', 'RoomName']) ||
+        pick(record?.booking ?? {}, ['roomName', 'room']);
+
+      const addr =
+        pick(record, ['address', 'Address', 'addr']) ||
+        pick(record?.guest ?? {}, ['address']);
+
+      const payMode =
+        pick(record, ['modeOfPayment', 'paymentMode', 'payment_method', 'paymentMethod']) ||
+        pick(record?.payment ?? {}, ['mode', 'paymentMode']);
+
+      setFormData((prev) => ({
+        ...prev,
+        startdate: toYMD(start) || prev.startdate,
+        enddate: toYMD(end) || prev.enddate,
+        roomname: norm(roomOrDest) || prev.roomname, // store destination/room into roomname field
+        address: norm(addr) || prev.address,
+        modeOfPayment: norm(payMode) || prev.modeOfPayment,
+      }));
+      setMatchMessage({ text: `Match found for Booking ID: ${bookingId}`, type: 'success' });
+    } catch (err) {
+      console.error('Autofill fetch failed:', err);
+      setAutoError('Failed to fetch booking details. Please try again.');
+    } finally {
+      setAutoLoading(false);
+    }
+  };
+
+
+  // Debounce autofill while typing bookingid
+  useEffect(() => {
+    clearTimeout(debounceTimer.current);
+    setAutoError('');
+    if (!formData.bookingid) return;
+    debounceTimer.current = setTimeout(() => {
+      fetchAndHydrateByBookingId(formData.bookingid);
+    }, 600);
+    return () => clearTimeout(debounceTimer.current);
+  }, [formData.bookingid]); // eslint-disable-line react-hooks/exhaustive-deps
+
+  const handleBookingIdBlur = () => {
+    // Trigger immediate fetch on blur as well (cancels debounce)
+    clearTimeout(debounceTimer.current);
+    if (formData.bookingid) fetchAndHydrateByBookingId(formData.bookingid);
+  };
+
+  // --- Handlers ---
   const handleChange = (e) => {
     const { name, value } = e.target;
 
@@ -87,6 +228,9 @@ const ManualBooking = () => {
       return;
     }
 
+    // Clear autofill error if bookingid changes
+    if (name === 'bookingid') setAutoError('');
+
     setFormData((p) => ({ ...p, [name]: value }));
   };
 
@@ -95,7 +239,7 @@ const ManualBooking = () => {
 
     // Required checks: all except bookingid
     Object.entries(formData).forEach(([k, v]) => {
-      if (k === 'bookingid') return; // optional
+      if (k === 'bookingid') return;
       if (!String(v || '').trim()) e[k] = 'This field is required';
     });
 
@@ -107,18 +251,18 @@ const ManualBooking = () => {
       }
     }
 
-    // Gender: restrict to known
+    // Gender
     if (!e.gender && !['male', 'female', 'other'].includes(formData.gender)) {
       e.gender = 'Select a valid gender';
     }
 
-    // Email format
+    // Email
     if (!e.email) {
       const emailOk = /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(formData.email);
       if (!emailOk) e.email = 'Enter a valid email address';
     }
 
-    // Phone: minimum 10 digits (allow leading +)
+    // Phone
     if (!e.phone) {
       const digits = formData.phone.replace(/\D/g, '');
       if (digits.length < 10) e.phone = 'Enter a valid phone number (min 10 digits)';
@@ -176,7 +320,30 @@ const ManualBooking = () => {
       <p className="manual-booking-note">
         *All fields are mandatory, except Booking ID
       </p>
-      {loading && <div className="manual-booking-loader">Submitting...</div>}
+
+      {(loading || autoLoading) && (
+        <div className="manual-booking-loader">
+          {loading ? 'Submitting...' : 'Loading booking details...'}
+        </div>
+      )}
+
+      {autoError && (
+        <div className="manual-booking-error" style={{ marginBottom: 12 }}>
+          {autoError}
+        </div>
+      )}
+
+      {matchMessage.text && (
+        <div
+          style={{
+            marginBottom: 12,
+            color: matchMessage.type === 'success' ? 'green' : 'red',
+            fontWeight: 500
+          }}
+        >
+          {matchMessage.text}
+        </div>
+      )}
 
       <form onSubmit={handleSubmit} className="manual-booking-container">
         {/* Row 0 - Booking ID (optional) */}
@@ -185,11 +352,14 @@ const ManualBooking = () => {
             <input
               type="text"
               name="bookingid"
-              placeholder="Booking ID (optional)"
+              placeholder="Search or enter Booking ID"
               value={formData.bookingid}
               onChange={handleChange}
+              onBlur={handleBookingIdBlur}
               aria-invalid={!!errors.bookingid}
               aria-describedby="err-bookingid"
+              autoCapitalize="off"
+              autoCorrect="off"
             />
             {errors.bookingid && (
               <div id="err-bookingid" className="manual-booking-error">{errors.bookingid}</div>
@@ -247,7 +417,7 @@ const ManualBooking = () => {
             {errors.gender && <div id="err-gender" className="manual-booking-error">{errors.gender}</div>}
           </div>
 
-          {/* Room Name dropdown */}
+          {/* Destination dropdown (stored in roomname) */}
           <div style={{ flex: 1 }}>
             <select
               name="roomname"
@@ -256,10 +426,10 @@ const ManualBooking = () => {
               required
               aria-invalid={!!errors.roomname}
               aria-describedby="err-roomname"
-              disabled={roomsLoading || roomsError}
+              disabled={roomsLoading || !!roomsError}
             >
               <option value="">
-                {roomsLoading ? 'Loading rooms...' : roomsError ? 'Rooms unavailable' : 'Select Room'}
+                {roomsLoading ? 'Loading destinations...' : roomsError ? 'Destinations unavailable' : 'Select Destination'}
               </option>
               {!roomsLoading && !roomsError && rooms.map((r) => (
                 <option key={r} value={r}>{r}</option>

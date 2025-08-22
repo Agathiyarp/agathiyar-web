@@ -15,7 +15,6 @@ const AddBooking = () => {
     normaluserroomcost: '',
     normalusermaintenancecost: '',
     sponsorusermaintenancecost: '',
-    maxroomallowed: '',
     extrabed: '',
     extrabedcost: '',
     userroomlimit: '',
@@ -88,7 +87,6 @@ const AddBooking = () => {
           normaluserroomcost: '',
           normalusermaintenancecost: '',
           sponsorusermaintenancecost: '',
-          maxroomallowed: '',
           extrabed: '',
           extrabedcost: '',
           userroomlimit: '',
@@ -146,10 +144,7 @@ const AddBooking = () => {
             <option value="yes">Yes</option>
             <option value="no">No</option>
           </select>
-          <input type="text" name="maxroomallowed" placeholder="Max Rooms Allowed Days" value={formData.maxroomallowed} onChange={handleChange} />
-        </div>
-
-        <div className="row">
+          
           <select name="extrabed" value={formData.extrabed} onChange={handleChange}>
             <option value="">Extra Bed</option>
             <option value="yes">Yes</option>

@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import './usercredits.css';
 import MenuBar from '../../menumain/menubar';
+import { formatDate } from '../../common/utils';
 
 const UserCredits = () => {
   const [creditsList, setCreditsList] = useState([]);
@@ -101,7 +102,7 @@ const UserCredits = () => {
                   <td>{item.credits ?? 0}</td>
                   <td>
                     {item.creditmodifiedate
-                      ? new Date(item.creditmodifiedate).toLocaleDateString()
+                      ? formatDate(item.creditmodifiedate)
                       : '-'}
                   </td>
                   <td>{item.creditmodifyreason || '-'}</td>

@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import './blockrooms.css';
 import MenuBar from "../../menumain/menubar";
+import { formatDate } from '../../common/utils';
 
 const BlockRooms = () => {
   const [formData, setFormData] = useState({
@@ -128,15 +129,15 @@ const BlockRooms = () => {
       {/* Add New Schedule Form */}
       <form onSubmit={handleSubmit} className="schedule-form">
         <div className="row">
-          <label>Start Date:</label>
+          <label>Start Date</label>
           <input type="date" name="startDate" value={formData.startDate} onChange={handleChange} min={getTodayDate()} required />
         </div>
         <div className="row">
-          <label>End Date:</label>
+          <label>End Date</label>
           <input type="date" name="endDate" value={formData.endDate} onChange={handleChange} min={formData.startDate || getTodayDate()} required />
         </div>
         <div className="row">
-          <label>Enable:</label>
+          <label>Enable</label>
           <select name="enable" value={formData.enable} onChange={handleChange} required>
             <option value="">Select</option>
             <option value="yes">Yes</option>
@@ -147,7 +148,7 @@ const BlockRooms = () => {
       </form>
 
       {/* Schedule Table */}
-      <h3>Existing Schedules</h3>
+      <h3 style={{marginTop: '20px', color: '#4caf50', fontSize: '24px'}}>Existing Schedules</h3>
       <table className="schedule-table">
         <thead>
           <tr>
@@ -169,7 +170,7 @@ const BlockRooms = () => {
                     onChange={(e) => handleEditChange(e, index)}
                   />
                 ) : (
-                  sch.startDate
+                  formatDate(sch.startDate)
                 )}
               </td>
               <td>
@@ -181,7 +182,7 @@ const BlockRooms = () => {
                     onChange={(e) => handleEditChange(e, index)}
                   />
                 ) : (
-                  sch.endDate
+                  formatDate(sch.endDate)
                 )}
               </td>
               <td>
