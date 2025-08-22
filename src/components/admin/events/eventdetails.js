@@ -190,21 +190,20 @@ const EventDetails = () => {
           <table>
             <thead>
               <tr>
-                <th>UserID</th><th>Event Name</th><th>Event MasterName</th><th>Start Date</th><th>End Date</th><th>Event Days</th><th>Event Place</th><th>Additional Member Count</th><th>Mobile</th>
+                <th style={{width: '300px'}}>Event Name</th><th>UserID</th><th>UserName</th><th>UserType</th><th>Additional Member Count</th><th>Mobile</th><th>Email</th>
               </tr>
             </thead>
             <tbody>
               {userList.map((user, i) => (
                 <tr key={i}>
-                  <td>{user.memberid}</td>
                   <td>{user.eventname}</td>
-                  <td>{user.eventmastername}</td>
-                  <td>{user.startdate}</td>
-                  <td>{user.enddate}</td>
-                  <td>{user.eventdays}</td>
-                  <td>{user.eventplace}</td>
-                  <td>{user.guests}</td>
+                  <td>{user.memberid}</td>
+                  <td>{user.name}</td>
+                  <td>{user.usertype || '-'}</td>
+                  <td style={{textAlign: 'center'}}>{user.guests}</td>
                   <td>{user.contact}</td>
+                  <td>{user.email || '-'}</td>
+                  
                 </tr>
               ))}
             </tbody>

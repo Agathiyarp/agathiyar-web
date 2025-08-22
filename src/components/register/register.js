@@ -6,6 +6,7 @@ import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 
 import MenuBar from "../menumain/menubar";
+import RegisterBg from '../../images/register.png';
 
 const RegistrationForm = () => {
 
@@ -296,13 +297,13 @@ const RegistrationForm = () => {
 
   return (
     <div style={{
-      minHeight: '100vh',
+      minHeight: '100svh',
       display: 'flex',
       flexDirection: 'column',
       background: 'linear-gradient(135deg, #f0fff4 0%, #dcfce7 100%)',
       fontFamily: 'system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif',
       padding: isSmallMobile ? '10px' : '20px',
-      overflow: 'auto',
+      overflow: 'hidden',
       position: 'relative',
       width: '100%',
       boxSizing: 'border-box'
@@ -341,7 +342,10 @@ const RegistrationForm = () => {
         display: 'flex',
         alignItems: 'center',
         justifyContent: 'center',
-        paddingTop: '60px'
+        paddingTop: '60px',
+        backgroundImage: `url(${RegisterBg})`,
+        backgroundSize: 'cover',
+        backgroundPosition: 'center',
       }}>
         <div className="success-animation" style={{
           background: 'rgba(255, 255, 255, 0.95)',
@@ -418,8 +422,8 @@ const RegistrationForm = () => {
           {/* Form */}
           <form onSubmit={handleSubmit} style={{ 
             padding: isSmallMobile ? '0 20px 20px' : '0 32px 32px',
-            maxHeight: 'calc(100vh - 180px)',
-            overflowY: 'auto'
+            // maxHeight: 'calc(100vh - 180px)',
+            // overflowY: 'auto'
           }}>
             {/* Name Field */}
             <div style={{ marginBottom: '20px' }}>
@@ -815,7 +819,7 @@ const RegistrationForm = () => {
             </div>
 
             {/* Terms and Conditions */}
-            <div style={{ display: 'flex', alignItems: 'center', gap: 6, marginBottom: 24 }}>
+            {/* <div style={{ display: 'flex', alignItems: 'center', gap: 6, marginBottom: 24 }}>
               <input
                 type="checkbox"
                 id="terms"
@@ -835,7 +839,7 @@ const RegistrationForm = () => {
                 I agree to the <span style={{ color: '#10b981', fontWeight: 600 }}>Terms of Service</span> and
                 <span style={{ color: '#10b981', fontWeight: 600 }}> Privacy Policy</span>
               </label>
-            </div>
+            </div> */}
 
 
 

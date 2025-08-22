@@ -25,6 +25,9 @@ const EventRegistration = () => {
 
   const sessionData = JSON.parse(sessionStorage.getItem("userDetails"));
   const memberId = sessionData?.usermemberid;
+  const username = sessionData?.username;
+  const email = sessionData?.email;
+  const usertype = sessionData?.usertype;
 
   const [registerChoice, setRegisterChoice] = useState("");
   const [participantCount, setParticipantCount] = useState("");
@@ -54,6 +57,9 @@ const EventRegistration = () => {
       eventdays,
       eventplace,
       contact,
+      name: username || "",
+      email: email || "",
+      usertype: usertype || "",
     };
 
     try {

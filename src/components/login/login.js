@@ -4,6 +4,8 @@ import { Visibility, VisibilityOff } from "@mui/icons-material";
 import { toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import MenuBar from "../menumain/menubar";
+import loginBg from '../../images/login.png';
+
 
 const LoginForm = () => {
   const [formData, setFormData] = useState({
@@ -131,7 +133,9 @@ const LoginForm = () => {
       minHeight: '100vh',
       display: 'flex',
       flexDirection: 'column',
-      background: 'linear-gradient(135deg, #f0fff4 0%, #dcfce7 100%)',
+      backgroundImage: `url(${loginBg})`,
+      backgroundSize: 'cover',
+      backgroundPosition: 'center',
       fontFamily: 'system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif',
       padding: isSmallMobile ? '10px' : '20px',
       overflow: 'auto',
