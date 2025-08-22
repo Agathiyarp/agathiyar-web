@@ -39,5 +39,10 @@
 @media (max-width: 768px) {
   .agathiyar-content p {
     text-align: justify;
+    font-size: 13px;
+  }
+  .agathiyar-content h1 {
+    font-size: 24px;
+    margin-top: 0;
   }
 }

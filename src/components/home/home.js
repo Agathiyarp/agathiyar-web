@@ -5,7 +5,7 @@ import MenuBar from "../menumain/menubar";
 import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
 import AgathiyarAbout from "./about/AboutAgathiyar";
-import HomeSection from './section/HomeSection';
+import TextSection from './section/TextSection';
 import corePrincipleImg from '../../images/home/pyramid.png';
 import mounamImg from '../../images/home/meditation1.png';
 import home1 from '../../images/home/home1.png';
@@ -53,7 +53,7 @@ const Home = () => {
       </div>
 
       <div>
-        <HomeSection
+        <TextSection
           title="Core Principles"
           description="We operate based on seven core principles—Silence, Meditation, Vegetarianism, Swadhyayam, Pyramid Energy, Self Mastery, and Service—form a path for personal and spiritual growth. The journey begins with Silence and Meditation to quiet the mind and foster self-awareness. A Vegetarian diet and Swadhyayam (self-study) support this inner work. The belief in Pyramid Energy is thought to enhance these practices. The ultimate goal is Self Mastery, which is then expressed through selfless Service to others.."
           image={corePrincipleImg}
@@ -70,7 +70,7 @@ const Home = () => {
       </div>
 
       <div>
-        <HomeSection
+        <TextSection
           title="Dhyanam/Meditation"
           description="Anapanasati meditation is a mindfulness practice centered around breathing. The term 'Anapanasati' is a Pali word that translates to 'mindfulness of breathing.' It is a core meditation technique in Buddhism designed to develop concentration, awareness, and insight.
 
@@ -89,7 +89,7 @@ const Home = () => {
       </div>
 
       <div>
-        <HomeSection
+        <TextSection
           title="Swadhyayam"
           description="Swadhyaya is the practice of self-study and introspection, a cornerstone of spiritual growth. It involves a deep exploration of one's own thoughts, beliefs, and actions, often guided by the study of sacred texts or philosophical principles. This process of self-inquiry helps individuals understand their true nature, identify personal limitations, and cultivate virtues. Ultimately, Swadhyaya leads to greater self-awareness, inner peace, and a deeper connection to one's spiritual path."
           image={swathayayam}
@@ -106,7 +106,7 @@ const Home = () => {
       </div>
 
       <div>
-        <HomeSection
+        <TextSection
           title="Self Mastery"
           description="'Be a light unto yourself' encourages self-reliance and inner awareness, which are key to self-mastery. By trusting your inner wisdom and taking responsibility for your actions, you develop self-discipline, emotional balance, and clarity. It helps you stay true to your values, make conscious choices, and grow from within—leading to true personal mastery."
           image={home1}
@@ -124,7 +124,7 @@ const Home = () => {
       </div>
 
       <div>
-        <HomeSection
+        <TextSection
           title="What is Meditation?"
           description="Meditation means making our mind 'rather empty'. Once our mind is more or less empty, we have a tremendous capability of receiving cosmic energy and cosmic information surrounding us. This leads to good health and absolute clarity in thought processes, leading to a joyous life."
           image={home3}
@@ -143,7 +143,7 @@ const Home = () => {
       </div>
 
       <div>
-        <HomeSection
+        <TextSection
           title="Benefits of Meditation"
           description="Mind naturally stays in Peaceful and Joyful state
             Wasteful Habits die naturally
