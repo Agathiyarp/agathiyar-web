@@ -2,6 +2,7 @@ import React, { useEffect, useRef, useState } from 'react';
 import './manualbooking.css';
 import { useNavigate } from 'react-router-dom';
 import MenuBar from "../../menumain/menubar";
+import ManualBookingTable from './manualbookingtable';
 
 const initialForm = {
   bookingid: '',
@@ -542,6 +543,8 @@ const ManualBooking = () => {
           {loading ? 'Submitting...' : 'Submit Booking'}
         </button>
       </form>
+      <hr className="section-divider" />
+      <ManualBookingTable />
     </div>
   );
 };

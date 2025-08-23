@@ -1,0 +1,70 @@
+.section-divider {
+  border: 0;
+  height: 1px;
+  background: #eee;
+  margin: 24px 0;
+}
+
+.manual-booking-table-wrap {
+  margin-top: 8px;
+}
+
+.table-header-actions {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  margin-bottom: 10px;
+}
+
+.table-refresh-btn {
+  padding: 8px 14px;
+  border: 0;
+  border-radius: 8px;
+  background: #198754; /* green */
+  color: #fff;
+  font-weight: 600;
+  cursor: pointer;
+}
+.table-refresh-btn:disabled { opacity: 0.6; cursor: default; }
+
+.table-scroll {
+  overflow: auto;
+  border-radius: 10px;
+  box-shadow: 0 2px 8px rgba(0,0,0,.06);
+}
+
+.admin-green-table {
+  width: 100%;
+  border-collapse: separate;
+  border-spacing: 0;
+  min-width: 760px;
+  background: #fff;
+}
+
+.admin-green-table thead th {
+  position: sticky;
+  top: 0;
+  background: #28a745; /* header green like your screenshot */
+  /* color: #fff; */
+  text-align: left;
+  padding: 14px 16px;
+  font-weight: 700;
+  border-right: 1px solid rgba(255,255,255,.2);
+  white-space: nowrap;
+}
+.admin-green-table thead th:last-child { border-right: 0; }
+
+.admin-green-table tbody td {
+  padding: 12px 16px;
+  border-bottom: 1px solid #eee;
+  vertical-align: middle;
+}
+
+.admin-green-table tbody tr:nth-child(even) td {
+  background: #fafafa;
+}
+
+.admin-green-table tbody tr:hover td {
+  background: #f2fff6;
+}

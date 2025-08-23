@@ -31,6 +31,7 @@ import BookingConfirmation from './components/admin/booking/bookingconfirmation'
 import BlockRooms from './components/admin/booking/blockrooms';
 import ImageUpload from './components/admin/images/imageupload';
 import ManualBooking from './components/admin/manualbooking/manualbooking';
+import DailyAvailability from './components/admin/dailyavailability/dailyavailability';
 
 const App = () => {
 
@@ -66,6 +67,7 @@ const App = () => {
           <Route path="/usercredits" element={<UserCredits />} />
           <Route path="/blockrooms" element={<BlockRooms />} />
            <Route path="/manualbooking" element={<ManualBooking />} />
+           <Route path="/roomsavailability" element={<DailyAvailability />} />
         </Routes>
       </Router>
     </div>

@@ -88,6 +88,14 @@ export const ALL_CARDS = [
     cardName: "Manual Booking",
   },
   {
+    key: "roomsAvailability",
+    label: "ROOMS AVAILABILITY",
+    group: "Rooms",
+    className: "rooms-availability",
+    iconClass: "icon-booking",
+    cardName: "Rooms Availability",
+  },
+  {
     key: "video",
     label: "VIDEOS",
     group: "Upload",
