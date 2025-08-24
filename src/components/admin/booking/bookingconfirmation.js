@@ -123,6 +123,22 @@ const BookingConfirmation = () => {
     URL.revokeObjectURL(url);
   };
 
+  const renderActionButtons = (item) => {
+    if (item.bookingstatus === 'pending-approval') {
+      return (
+        <div className="action-buttons">
+          <button className="approve-btn" onClick={() => openConfirmationModal(item, 'approved')}>
+            Approve
+          </button>
+          <button className="reject-btn" onClick={() => openConfirmationModal(item, 'rejected')}>
+            Reject
+          </button>
+        </div>
+      );
+    }
+    return <span style={{ fontStyle: 'italic', color: 'gray' }}>No Actions</span>;
+  };
+
   return (
     <div className="booking-requests-container">
       <MenuBar />
@@ -157,71 +173,77 @@ const BookingConfirmation = () => {
       </div>
 
       {loading ? (
-        <p>Loading...</p>
+        <div className="loading-container">
+          <p>Loading...</p>
+        </div>
       ) : error ? (
-        <p className="error">{error}</p>
+        <div className="loading-container">
+          <p className="error">{error}</p>
+        </div>
       ) : filteredBookings.length === 0 ? (
-        <p>No bookings found.</p>
+        <div className="empty-container">
+          <p>No bookings found.</p>
+        </div>
       ) : (
-        <table className="booking-table">
-          <thead>
-            <tr>
-              <th>Created Date</th>
-              <th>Start Date</th>
-              <th>End Date</th>
-              <th>Booking ID</th>
-              <th>Name</th>
-              <th>User ID</th>
-              <th>User Type</th>
-              <th>Room Name</th>
-              <th>Amount</th>
-              <th>Rooms</th>
-              <th>Status</th>
-              <th>Actions</th>
-            </tr>
-          </thead>
-          <tbody>
-            {filteredBookings.map((item, index) => (
-              <tr key={index}>
-                <td>{item.createddate ? item.createddate : '-'}</td>
-                <td>{item.startdate ? item.startdate : '-'}</td>
-                <td>{item.enddate ? item.enddate: '-'}</td>
-                <td>{item.bookingId || '-'}</td>
-                <td>{item.username || '-'}</td>
-                <td>{item.memberid || '-'}</td>
-                <td>{item.usertype || '-'}</td>
-                <td>{item.destination || '-'}</td>
-                <td>{item.totalamount || '0'}</td>
-                <td>{item.totalroomsbooked || '0'}</td>
-                <td>{item.bookingstatus || '-'}</td>
-                <td style={{ display: 'flex', flexDirection: 'column', gap: '10px' }}>
-                  {item.bookingstatus === 'pending-approval' ? (
-                    <>
-                      <button className="approve-btn" onClick={() => openConfirmationModal(item, 'approved')}>
-                        Approve
-                      </button>
-                      <button className="reject-btn" onClick={() => openConfirmationModal(item, 'rejected')}>
-                        Reject
-                      </button>
-                    </>
-                  ) : (
-                    <span style={{ fontStyle: 'italic', color: 'gray' }}>No Actions</span>
-                  )}
-                </td>
+        <div className="table-container">
+          <table className="booking-table">
+            <thead>
+              <tr>
+                <th>Created Date</th>
+                <th>Start Date</th>
+                <th>End Date</th>
+                <th>Booking ID</th>
+                <th>Name</th>
+                <th>User ID</th>
+                <th>User Type</th>
+                <th>Room Name</th>
+                <th>Amount</th>
+                <th>Rooms</th>
+                <th>Status</th>
+                <th>Actions</th>
               </tr>
-            ))}
-          </tbody>
-        </table>
+            </thead>
+            <tbody>
+              {filteredBookings.map((item, index) => (
+                <tr key={index}>
+                  <td>{item.createddate || '-'}</td>
+                  <td>{item.startdate || '-'}</td>
+                  <td>{item.enddate || '-'}</td>
+                  <td>{item.bookingId || '-'}</td>
+                  <td>{item.username || '-'}</td>
+                  <td>{item.memberid || '-'}</td>
+                  <td>{item.usertype || '-'}</td>
+                  <td>{item.destination || '-'}</td>
+                  <td>{item.totalamount || '0'}</td>
+                  <td>{item.totalroomsbooked || '0'}</td>
+                  <td>{item.bookingstatus || '-'}</td>
+                  <td>
+                    {renderActionButtons(item)}
+                  </td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        </div>
       )}
 
       {showModal && selectedBooking && (
         <div className="modal-overlay">
           <div className="modal">
-            <h3 className='confirm-header-text'>Confirm {actionType === 'approved' ? 'Approval' : 'Rejection'}</h3>
-            <p>Are you sure you want to <strong>{actionType}</strong> booking ID <strong>{selectedBooking.bookingId}</strong>?</p>
+            <h3 className='confirm-header-text'>
+              Confirm {actionType === 'approved' ? 'Approval' : 'Rejection'}
+            </h3>
+            <p>
+              Are you sure you want to <strong>{actionType}</strong> booking ID{' '}
+              <strong>{selectedBooking.bookingId}</strong>?
+            </p>
             <div className="modal-actions">
-              <button onClick={confirmAction} className="save-btn">Yes, Confirm</button>
-              <button onClick={closeModal} className="cancel-btn">Cancel</button>
+              <button onClick={confirmAction} className="save-btn">
+                Yes, Confirm
+              </button>
+              <button onClick={closeModal} className="cancel-btn">
+                Cancel
+              </button>
             </div>
           </div>
         </div>
