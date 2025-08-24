@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import './manualbookingtable.css';
+import { formatDate } from '../../common/utils';
 
 export default function ManualBookingTable() {
   const [rows, setRows] = useState([]);
@@ -27,20 +28,6 @@ export default function ManualBookingTable() {
   useEffect(() => {
     load();
   }, []);
-
-  const formatDate = (dateString) => {
-    if (!dateString) return '-';
-    try {
-      const date = new Date(dateString);
-      return date.toLocaleDateString('en-IN', {
-        year: 'numeric',
-        month: 'short',
-        day: 'numeric'
-      });
-    } catch {
-      return dateString;
-    }
-  };
 
   if (loading) {
     return (
