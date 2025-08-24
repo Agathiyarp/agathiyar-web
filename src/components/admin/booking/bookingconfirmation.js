@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import './bookingconfirmation.css';
 import MenuBar from '../../menumain/menubar';
-import { toast, ToastContainer } from "react-toastify";
+import { toast } from "react-toastify";
 
 const BookingConfirmation = () => {
   const [bookings, setBookings] = useState([]);
@@ -17,6 +17,7 @@ const BookingConfirmation = () => {
   const [showModal, setShowModal] = useState(false);
   const [selectedBooking, setSelectedBooking] = useState(null);
   const [actionType, setActionType] = useState('');
+  const [confirming, setConfirming] = useState(false); // 👈 add loader state
 
   const userInfo = sessionStorage.getItem('userDetails')
   const userDetails = userInfo ? JSON.parse(userInfo): '';
@@ -24,6 +25,7 @@ const BookingConfirmation = () => {
 
   const fetchBookings = async () => {
     try {
+      setLoading(true);
       const res = await fetch('https://www.agathiyarpyramid.org/api/bookings');
       if (!res.ok) throw new Error('Failed to fetch bookings');
       const data = await res.json();
@@ -48,13 +50,14 @@ const BookingConfirmation = () => {
   };
 
   const closeModal = () => {
+    if (confirming) return; // prevent closing while loading
     setShowModal(false);
     setSelectedBooking(null);
     setActionType('');
   };
 
   const confirmAction = async () => {
-    if (!selectedBooking || !actionType) return;
+    if (!selectedBooking || !actionType || confirming) return;
 
     const payload = {
       memberid: selectedBooking.memberid,
@@ -67,22 +70,49 @@ const BookingConfirmation = () => {
       enddate: selectedBooking.enddate,
     };
 
+    setConfirming(true);
+
+    const id = selectedBooking.bookingId;
+    const toastId = `booking-update-${id}-${actionType}`;
+
     try {
-      const res = await fetch('https://www.agathiyarpyramid.org/api/booking/update-booking-status', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(payload),
-      });
+      await toast.promise(
+        (async () => {
+          const res = await fetch('https://www.agathiyarpyramid.org/api/booking/update-booking-status', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify(payload),
+          });
+          if (!res.ok) {
+            const text = await res.text().catch(() => '');
+            throw new Error(text || 'Failed to update status');
+          }
+          return res.json().catch(() => ({}));
+        })(),
+        {
+          pending: `Updating booking ${id}...`,
+          success: `Booking ID ${id} has been ${actionType}.`,
+          error: {
+            render({ data }) {
+              // data is the error thrown
+              const msg = data?.message || 'Error updating booking. Please try again.';
+              return msg.length > 140 ? msg.slice(0, 140) + '…' : msg;
+            }
+          }
+        },
+        { toastId }
+      );
 
-      if (!res.ok) throw new Error('Failed to update status');
-
-      toast.success(`Booking ID ${selectedBooking.bookingId} has been ${actionType}.`, { toastId: 'booking-update-success' });
+      // Refresh and close after success
       await fetchBookings();
+      setShowModal(false);
+      setSelectedBooking(null);
+      setActionType('');
     } catch (err) {
       console.error(err);
-      alert(`Error updating status for Booking ID ${selectedBooking.bookingId}`);
+      // toast.promise already handled the error toast
     } finally {
-      closeModal();
+      setConfirming(false);
     }
   };
 
@@ -108,7 +138,7 @@ const BookingConfirmation = () => {
     const csv = [
       ["BookingID", "UserID", "Username", "StartDate", "EndDate", "RoomName", "Amount", "Rooms", "Status"],
       ...filteredBookings.map(b => [
-        b.bookingId, b.userid, b.username, b.startdate, b.enddate, b.roomname, b.totalamount, b.totalroomsbooked, b.bookingstatus
+        b.bookingId, b.userid, b.username, b.startdate, b.enddate, b.roomname ?? b.destination, b.totalamount, b.totalroomsbooked, b.bookingstatus
       ])
     ]
       .map(row => row.join(","))
@@ -125,12 +155,21 @@ const BookingConfirmation = () => {
 
   const renderActionButtons = (item) => {
     if (item.bookingstatus === 'pending-approval') {
+      const disabled = confirming && selectedBooking?.bookingId === item.bookingId;
       return (
         <div className="action-buttons">
-          <button className="approve-btn" onClick={() => openConfirmationModal(item, 'approved')}>
+          <button
+            className="approve-btn"
+            onClick={() => openConfirmationModal(item, 'approved')}
+            disabled={confirming || showModal} // avoid double-opens
+          >
             Approve
           </button>
-          <button className="reject-btn" onClick={() => openConfirmationModal(item, 'rejected')}>
+          <button
+            className="reject-btn"
+            onClick={() => openConfirmationModal(item, 'rejected')}
+            disabled={confirming || showModal}
+          >
             Reject
           </button>
         </div>
@@ -213,13 +252,11 @@ const BookingConfirmation = () => {
                   <td>{item.username || '-'}</td>
                   <td>{item.memberid || '-'}</td>
                   <td>{item.usertype || '-'}</td>
-                  <td>{item.destination || '-'}</td>
+                  <td>{item.destination || item.roomname || '-'}</td>
                   <td>{item.totalamount || '0'}</td>
                   <td>{item.totalroomsbooked || '0'}</td>
                   <td>{item.bookingstatus || '-'}</td>
-                  <td>
-                    {renderActionButtons(item)}
-                  </td>
+                  <td>{renderActionButtons(item)}</td>
                 </tr>
               ))}
             </tbody>
@@ -229,8 +266,8 @@ const BookingConfirmation = () => {
 
       {showModal && selectedBooking && (
         <div className="modal-overlay">
-          <div className="modal">
-            <h3 className='confirm-header-text'>
+          <div className="modal" role="dialog" aria-modal="true" aria-labelledby="confirm-header">
+            <h3 id="confirm-header" className='confirm-header-text'>
               Confirm {actionType === 'approved' ? 'Approval' : 'Rejection'}
             </h3>
             <p>
@@ -238,18 +275,26 @@ const BookingConfirmation = () => {
               <strong>{selectedBooking.bookingId}</strong>?
             </p>
             <div className="modal-actions">
-              <button onClick={confirmAction} className="save-btn">
-                Yes, Confirm
+              <button
+                onClick={confirmAction}
+                className="save-btn"
+                disabled={confirming}
+              >
+                {confirming ? (
+                  <>
+                    <span className="btn-spinner" aria-hidden /> Processing…
+                  </>
+                ) : (
+                  'Yes, Confirm'
+                )}
               </button>
-              <button onClick={closeModal} className="cancel-btn">
+              <button onClick={closeModal} className="cancel-btn" disabled={confirming}>
                 Cancel
               </button>
             </div>
           </div>
         </div>
       )}
-
-      <ToastContainer />
     </div>
   );
 };

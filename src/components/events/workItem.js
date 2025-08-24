@@ -9,7 +9,6 @@ import LanguageIcon from "@mui/icons-material/Language";
 import { Box, Typography } from "@mui/material";
 import CloseIcon from "@mui/icons-material/Close";
 
-
 const WorkshopItem = ({
   mastername,
   eventname,
@@ -72,14 +71,19 @@ const WorkshopItem = ({
         </div>
         <div className="image-placeholder" onClick={() => setShowImagePreview(true)}>
           <img className="event-image" src={imageurl} alt="event" />
+          <div className="image-overlay"></div>
         </div>
-        <p className="workshop-host">
-          {mastername} <br /> {eventname}
-        </p>
+        <div className="workshop-host-container">
+          <p className="workshop-host">
+            <span className="master-name">{mastername}</span>
+            <span className="event-name-subtitle">{eventname}</span>
+          </p>
+        </div>
         <div className="workshop-info">
           <div className="register-button">
             <button className="btn-register" onClick={() => handleRegister(eventid)}>
-              Register
+              <span className="register-text">Register</span>
+              <div className="button-shine"></div>
             </button>
           </div>
         </div>
@@ -93,43 +97,57 @@ const WorkshopItem = ({
 
         <div className="description-container">
           {descriptionSentences.map((sentence, index) => (
-            <p key={index} className="description">{sentence}.</p>
+            <div key={index} className="description-item">
+              <p className="description">{sentence}.</p>
+            </div>
           ))}
         </div>
 
-        <div className="workshop-info">
+        <div className="workshop-info-grid">
           <Box className="info-item" display="flex" alignItems="center">
-            <CalendarTodayIcon style={{ fontSize: "30px", marginRight: "8px" }} />
+            <div className="icon-wrapper">
+              <CalendarTodayIcon style={{ fontSize: "30px" }} />
+            </div>
             <Typography variant="body1" className="text-item">
               <b>Start Date</b><br /> {startdate}
             </Typography>
           </Box>
           <Box className="info-item" display="flex" alignItems="center">
-            <CalendarTodayIcon style={{ fontSize: "30px", marginRight: "8px" }} />
+            <div className="icon-wrapper">
+              <CalendarTodayIcon style={{ fontSize: "30px" }} />
+            </div>
             <Typography variant="body1" className="text-item">
               <b>End Date</b><br /> {enddate}
             </Typography>
           </Box>
           <Box className="info-item" display="flex" alignItems="center">
-            <AccessTimeIcon style={{ fontSize: "30px", marginRight: "8px" }} />
+            <div className="icon-wrapper">
+              <AccessTimeIcon style={{ fontSize: "30px" }} />
+            </div>
             <Typography variant="body1" className="text-item">
               <b>Duration</b><br /> {numberofdays} day(s)
             </Typography>
           </Box>
           <Box className="info-item" display="flex" alignItems="center">
-            <PlaceIcon style={{ fontSize: "30px", marginRight: "8px" }} />
+            <div className="icon-wrapper">
+              <PlaceIcon style={{ fontSize: "30px" }} />
+            </div>
             <Typography variant="body1" className="text-item">
               <b>Place</b><br /> {place || "Not specified"}
             </Typography>
           </Box>
           <Box className="info-item" display="flex" alignItems="center">
-            <PhoneIcon style={{ fontSize: "30px", marginRight: "8px" }} />
+            <div className="icon-wrapper">
+              <PhoneIcon style={{ fontSize: "30px" }} />
+            </div>
             <Typography variant="body1" className="text-item">
               <b>Contact</b><br /> {contactdetails}
             </Typography>
           </Box>
           <Box className="info-item" display="flex" alignItems="center">
-            <LanguageIcon style={{ fontSize: "35px", marginRight: "8px" }} />
+            <div className="icon-wrapper">
+              <LanguageIcon style={{ fontSize: "35px" }} />
+            </div>
             <Typography variant="body1" className="text-item">
               <b>Language</b><br /> {language || "Not specified"}
             </Typography>
@@ -139,13 +157,19 @@ const WorkshopItem = ({
 
       {/* Login Modal */}
       {showLoginModal && (
-        <div className="modal-overlay">
-          <div className="modal-content">
-            <h2>Please Login</h2>
-            <p>You need to log in to proceed with booking.</p>
-            <div className="modal-buttons">
-              <button className="gotologin" onClick={() => navigate("/login")}>Go to Login</button>
-              <button className="cancel-btn" onClick={() => setShowLoginModal(false)}>Cancel</button>
+        <div className="modal-overlay" onClick={() => setShowLoginModal(false)}>
+          <div className="modal-content login-modal" onClick={(e) => e.stopPropagation()}>
+            <div className="modal-header">
+              <h2>Please Login</h2>
+            </div>
+            <div className="modal-body">
+              <p>You need to log in to proceed with booking.</p>
+            </div>
+            <div className="modal-footer">
+              <div className="modal-buttons">
+                <button className="gotologin" onClick={() => navigate("/login")}>Go to Login</button>
+                <button className="cancel-btn" onClick={() => setShowLoginModal(false)}>Cancel</button>
+              </div>
             </div>
           </div>
         </div>
@@ -154,12 +178,14 @@ const WorkshopItem = ({
       {/* Image Preview Modal */}
       {showImagePreview && (
         <div className="modal-overlay" onClick={() => setShowImagePreview(false)}>
-          <div className="modal-content preview-modal">
+          <div className="modal-content preview-modal" onClick={(e) => e.stopPropagation()}>
             <CloseIcon
               className="close-icon"
               onClick={() => setShowImagePreview(false)}
             />
-            <img src={imageurl} alt="Preview" className="preview-image" />
+            <div className="preview-image-container">
+              <img src={imageurl} alt="Preview" className="preview-image" />
+            </div>
           </div>
         </div>
       )}

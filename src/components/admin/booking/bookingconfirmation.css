@@ -3,7 +3,6 @@
   font-family: Arial, sans-serif;
   margin: 0 auto;
   margin-top: 100px;
-  max-width: 1400px; /* Limit max width for very large screens */
 }
 
 .booking-text {
@@ -223,6 +222,36 @@
 .cancel-btn:hover {
   background-color: #da190b;
 }
+
+/* Spinner inside the confirm button */
+.btn-spinner {
+  display: inline-block;
+  width: 16px;
+  height: 16px;
+  margin-right: 8px;
+  border: 2px solid rgba(255,255,255,0.6);
+  border-top-color: #fff;
+  border-radius: 50%;
+  animation: btnspin 0.7s linear infinite;
+  vertical-align: text-bottom;
+}
+
+@keyframes btnspin {
+  to { transform: rotate(360deg); }
+}
+
+/* Optional: dim modal while confirming */
+.modal[aria-modal="true"] {
+  transition: opacity 0.2s ease;
+}
+.save-btn:disabled,
+.cancel-btn:disabled,
+.approve-btn:disabled,
+.reject-btn:disabled {
+  opacity: 0.7;
+  cursor: not-allowed;
+}
+
 
 /* Loading and empty states */
 .loading-container,
