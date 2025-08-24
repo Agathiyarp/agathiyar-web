@@ -1,70 +1,389 @@
-.section-divider {
-  border: 0;
-  height: 1px;
-  background: #eee;
-  margin: 24px 0;
-}
-
+/* Manual Booking Table Styles */
 .manual-booking-table-wrap {
-  margin-top: 8px;
+  max-width: 100%;
+  margin: 0 auto;
+  padding: 20px;
+  background: #fff;
+  border-radius: 12px;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+  font-family: Arial, sans-serif;
 }
 
-.table-header-actions {
+.table-header {
   display: flex;
-  align-items: center;
   justify-content: space-between;
-  gap: 12px;
-  margin-bottom: 10px;
+  align-items: center;
+  margin-bottom: 20px;
+  gap: 16px;
 }
 
-.table-refresh-btn {
-  padding: 8px 14px;
-  border: 0;
-  border-radius: 8px;
-  background: #198754; /* green */
-  color: #fff;
+.table-header h2 {
+  margin: 0;
   font-weight: 600;
-  cursor: pointer;
+  font-family: Arial, sans-serif;
 }
-.table-refresh-btn:disabled { opacity: 0.6; cursor: default; }
+
+.refresh-btn {
+  padding: 8px 16px;
+  background: #28a745;
+  color: white;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+  font-weight: 500;
+  font-family: Arial, sans-serif;
+  transition: all 0.2s ease;
+  white-space: nowrap;
+}
+
+.refresh-btn:hover:not(:disabled) {
+  background: #218838;
+  transform: translateY(-1px);
+}
+
+.refresh-btn:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+  transform: none;
+}
+
+.table-container {
+  border-radius: 12px;
+  overflow: hidden;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.07);
+  border: 1px solid #e9ecef;
+}
 
 .table-scroll {
-  overflow: auto;
-  border-radius: 10px;
-  box-shadow: 0 2px 8px rgba(0,0,0,.06);
+  overflow-x: auto;
+  overflow-y: visible;
 }
 
-.admin-green-table {
+.admin-table {
   width: 100%;
   border-collapse: separate;
   border-spacing: 0;
-  min-width: 760px;
-  background: #fff;
+  background: white;
+  font-family: Arial, sans-serif;
 }
 
-.admin-green-table thead th {
+.admin-table thead {
+  background:#28a745;
+}
+
+.admin-table thead th {
   position: sticky;
   top: 0;
-  background: #28a745; /* header green like your screenshot */
-  /* color: #fff; */
+  background: inherit;
+  color: white;
   text-align: left;
-  padding: 14px 16px;
-  font-weight: 700;
-  border-right: 1px solid rgba(255,255,255,.2);
+  padding: 16px 12px;
+  font-weight: 600;
+  font-family: Arial, sans-serif;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  border-right: 1px solid rgba(255, 255, 255, 0.2);
   white-space: nowrap;
+  z-index: 10;
 }
-.admin-green-table thead th:last-child { border-right: 0; }
 
-.admin-green-table tbody td {
-  padding: 12px 16px;
-  border-bottom: 1px solid #eee;
+/* Column-specific min-widths */
+.admin-table th:nth-child(1), /* Full Name */
+.admin-table td:nth-child(1) {
+  min-width: 180px;
+}
+
+.admin-table th:nth-child(2), /* Age */
+.admin-table td:nth-child(2) {
+  min-width: 40px;
+}
+
+.admin-table th:nth-child(3), /* Gender */
+.admin-table td:nth-child(3) {
+  min-width: 60px;
+}
+
+.admin-table th:nth-child(4), /* Room Type */
+.admin-table td:nth-child(4) {
+  min-width: 160px;
+}
+
+.admin-table th:nth-child(5), /* Phone */
+.admin-table td:nth-child(5) {
+  min-width: 120px;
+}
+
+.admin-table th:nth-child(6), /* Email */
+.admin-table td:nth-child(6) {
+  min-width: 200px;
+}
+
+.admin-table th:nth-child(7), /* Start Date */
+.admin-table td:nth-child(7) {
+  min-width: 110px;
+}
+
+.admin-table th:nth-child(8), /* End Date */
+.admin-table td:nth-child(8) {
+  min-width: 120px;
+}
+
+.admin-table th:nth-child(9), /* Payment */
+.admin-table td:nth-child(9) {
+  min-width: 100px;
+}
+
+.admin-table th:nth-child(10), /* Address */
+.admin-table td:nth-child(10) {
+  min-width: 220px;
+}
+
+.admin-table thead th:last-child {
+  border-right: none;
+}
+
+.admin-table tbody td {
+  padding: 14px 12px;
+  border-bottom: 1px solid #e9ecef;
   vertical-align: middle;
+  line-height: 1.4;
+  font-family: Arial, sans-serif;
 }
 
-.admin-green-table tbody tr:nth-child(even) td {
-  background: #fafafa;
+.admin-table tbody tr:nth-child(even) {
+  background: #f8f9fa;
 }
 
-.admin-green-table tbody tr:hover td {
-  background: #f2fff6;
+.admin-table tbody tr:hover {
+  background: #e8f5e8;
+  transform: scale(1.001);
+  transition: all 0.2s ease;
+}
+
+.admin-table tbody tr:last-child td {
+  border-bottom: none;
+}
+
+.email-cell {
+  max-width: 200px;
+  word-break: break-word;
+}
+
+.address-cell {
+  max-width: 180px;
+  word-break: break-word;
+}
+
+.no-data {
+  text-align: center;
+  padding: 40px 20px !important;
+  font-style: italic;
+  background: #f8f9fa !important;
+}
+
+.table-footer {
+  margin-top: 16px;
+  padding-top: 16px;
+  border-top: 1px solid #e9ecef;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.record-count {
+  margin: 0;
+  font-weight: 500;
+}
+
+/* Loading States */
+.loading-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 60px 20px;
+}
+
+.loading-spinner {
+  width: 40px;
+  height: 40px;
+  border: 4px solid #e9ecef;
+  border-left: 4px solid #28a745;
+  border-radius: 50%;
+  animation: spin 1s linear infinite;
+  margin-bottom: 16px;
+}
+
+@keyframes spin {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
+}
+
+.error-container {
+  text-align: center;
+  padding: 40px 20px;
+  color: #dc3545;
+}
+
+.error-message {
+  margin-bottom: 16px;
+  font-size: 16px;
+}
+
+.retry-btn {
+  padding: 8px 16px;
+  background: #dc3545;
+  color: white;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+  font-weight: 500;
+  transition: background 0.2s ease;
+}
+
+.retry-btn:hover {
+  background: #c82333;
+}
+
+/* Mobile Responsiveness */
+@media (max-width: 768px) {
+  .manual-booking-table-wrap {
+    padding: 16px;
+    margin: 0;
+    border-radius: 8px;
+  }
+
+  .table-header {
+    flex-direction: column;
+    align-items: stretch;
+    gap: 12px;
+  }
+
+  .table-header h2 {
+    text-align: center;
+  }
+
+  .refresh-btn {
+    align-self: center;
+    width: fit-content;
+  }
+
+  .table-container {
+    border-radius: 8px;
+    margin: 0 -16px;
+  }
+
+  .table-scroll {
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+  }
+
+  .admin-table {
+    min-width: 1220px; /* Updated total width */
+  }
+
+  .admin-table thead th {
+    padding: 12px 8px;
+  }
+
+  .admin-table tbody td {
+    padding: 12px 8px;
+  }
+
+  .email-cell {
+    max-width: 150px;
+  }
+
+  .address-cell {
+    max-width: 120px;
+  }
+}
+
+/* Ultra Mobile (< 480px) */
+@media (max-width: 480px) {
+  .manual-booking-table-wrap {
+    padding: 12px;
+  }
+
+  .admin-table {
+    min-width: 1000px; /* Updated for ultra mobile */
+  }
+
+  .admin-table thead th {
+    padding: 10px 6px;
+  }
+
+  .admin-table tbody td {
+    padding: 10px 6px;
+  }
+
+  .email-cell {
+    max-width: 120px;
+  }
+
+  .address-cell {
+    max-width: 100px;
+  }
+
+  .loading-container,
+  .error-container {
+    padding: 30px 15px;
+  }
+
+  .loading-spinner {
+    width: 30px;
+    height: 30px;
+    border-width: 3px;
+  }
+}
+
+/* Alternative Mobile Card Layout (Optional) */
+@media (max-width: 600px) {
+  .mobile-card-view .admin-table,
+  .mobile-card-view .admin-table thead,
+  .mobile-card-view .admin-table tbody,
+  .mobile-card-view .admin-table th,
+  .mobile-card-view .admin-table td,
+  .mobile-card-view .admin-table tr {
+    display: block;
+  }
+
+  .mobile-card-view .admin-table thead tr {
+    position: absolute;
+    top: -9999px;
+    left: -9999px;
+  }
+
+  .mobile-card-view .admin-table tbody tr {
+    background: white;
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    margin-bottom: 16px;
+    padding: 16px;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+  }
+
+  .mobile-card-view .admin-table tbody tr:hover {
+    transform: none;
+    box-shadow: 0 4px 8px rgba(0,0,0,0.15);
+  }
+
+  .mobile-card-view .admin-table tbody td {
+    border: none;
+    padding: 8px 0;
+    position: relative;
+    padding-left: 120px !important;
+    text-align: left;
+    background: transparent !important;
+  }
+
+  .mobile-card-view .admin-table tbody td:before {
+    content: attr(data-label) ": ";
+    position: absolute;
+    left: 0;
+    top: 8px;
+    font-weight: 600;
+    color: #495057;
+    width: 110px;
+  }
 }
