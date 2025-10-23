@@ -1,0 +1,348 @@
+/* @font-face {
+  font-family: 'SF Pro Display Regular';
+  src: url('../../../fonts/sf-pro-display-regular.woff2');
+  font-weight: 400;
+  font-style: normal;
+}
+
+@font-face {
+  font-family: 'SF Pro Display Semibold';
+  src: url('../../../fonts/sf-pro-display-semibold.woff2');
+  font-weight: 600;
+  font-style: normal;
+} */
+
+.modal-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(0,0,0,0.5);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 999;
+}
+
+.modal-content {
+  background: #fff;
+  padding: 24px 32px;
+  border-radius: 10px;
+  width: 90%;
+  max-width: 400px;
+  text-align: center;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.3);
+}
+
+.modal-buttons button {
+  margin: 10px;
+  padding: 10px 16px;
+  font-weight: bold;
+  cursor: pointer;
+}
+.modal-buttons {
+  margin-top: 20px;
+}
+.gotologin {
+  background-color: #38a169;
+  color: #fff;
+  padding: 8px 16px;
+  border: none;
+  border-radius: 4px;
+  font-weight: bold;
+  cursor: pointer;
+}
+
+.cancel-btn {
+  padding: 8px 16px;
+  border: none;
+  border-radius: 4px;
+  font-weight: bold;
+  cursor: pointer;
+}
+.icon-date {
+  margin-right: 6px;
+}
+
+.room-search-results {
+  /* font-family: 'SF Pro Display Regular', sans-serif; */
+  color: #333;
+  padding: 0 16px;
+}
+
+.room-search-results__content {
+  display: flex;
+  flex-direction: column;
+}
+
+.room-search-results__list {
+  width: 100%;
+}
+
+.room-card {
+  background-color: #fff;
+  border-radius: 8px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+  padding: 16px;
+  margin-bottom: 20px;
+  display: flex;
+  flex-direction: row;
+  gap: 16px;
+  flex-wrap: wrap;
+}
+
+.room-card__image-container {
+  flex: 1 1 10px;
+  position: relative;
+}
+
+.room-card__image {
+  width: 380px;
+  height: 180px;
+  object-fit: cover;
+  border-radius: 8px;
+}
+
+.room-card__image-counter {
+  position: absolute;
+  bottom: 8px;
+  left: 8px;
+  background: rgba(0, 0, 0, 0.6);
+  color: #fff;
+  font-size: 12px;
+  padding: 4px 8px;
+  border-radius: 4px;
+}
+
+.room-card__content {
+  flex: 2 1 10px;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+}
+
+.room-card__name {
+  /* font-family: 'SF Pro Display Semibold', sans-serif; */
+  font-size: 1.2rem;
+  margin-bottom: 15px;
+}
+
+.room-card__description {
+  font-size: 0.95rem;
+  color: #555;
+  margin: 8px 0;
+}
+
+.room-card__date {
+  font-size: 0.9rem;
+  color: #444;
+  margin: 4px 0;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.room_card_dates {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: left;
+  gap: 16px;
+}
+
+.room-dates-left,
+.room-dates-right {
+  flex: 1;
+  min-width: 250px;
+}
+
+.checkin-date,
+.checkout-date {
+  display: flex;
+  align-items: center;
+  margin: 8px 0;
+  gap: 10px;
+}
+
+.checkin-date,
+.checkout-date span {
+  font-size: 14px;
+}
+
+.icon {
+  vertical-align: middle;
+  margin-right: 4px;
+}
+
+.semi-bold {
+  font-weight: 600;
+  color: #38a169;
+  margin-bottom: 0;
+}
+
+.date-input {
+  width: 180px;
+  padding: 4px 8px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  font-size: 0.9rem;
+}
+
+.days-selected,
+.available-text,
+.unavailable-text {
+  font-size: 0.9rem;
+  margin-top: 10px;
+}
+
+.available-text {
+  color: #38a169;
+  font-weight: bold;
+}
+
+.unavailable-text {
+  color: #e53e3e;
+  font-weight: bold;
+  margin: 5px;
+}
+
+.room-card__booking {
+  text-align: right;
+  margin-top: 12px;
+}
+
+.room-card__view-deal {
+  background-color: #38a169;
+  color: #fff;
+  padding: 8px 16px;
+  border: none;
+  border-radius: 4px;
+  font-weight: bold;
+  cursor: pointer;
+}
+
+.room-card__view-deal.disabled {
+  background-color: #ccc;
+  cursor: not-allowed;
+}
+
+/* Center-align info section with better layout */
+.info-section-booking {
+  background-color: #e0f7fa;
+  text-align: center;
+  margin: 30px auto;
+  padding: 20px;
+  border-radius: 8px;
+  font-size: 0.95rem;
+  line-height: 1.6;
+}
+
+.info-section-booking p {
+  margin-bottom: 12px;
+  color: #444;
+}
+
+.info-section-booking .tick-list {
+  display: inline-block;
+  text-align: left;
+  padding-left: 0;
+  margin: 0 auto;
+  list-style: none;
+}
+
+.info-section-booking .tick-list li {
+  position: relative;
+  padding-left: 28px;
+  margin-bottom: 8px;
+  font-size: 14px;
+  color: #333;
+}
+
+.info-section-booking .tick-list li::before {
+  content: '\2714';
+  position: absolute;
+  left: 0;
+  top: 0;
+  color: #38a169;
+  font-size: 16px;
+}
+
+.blocked-date {
+  background-color: #ffcccc !important;
+  color: red !important;
+  border-radius: 50% !important;
+  text-decoration: line-through;
+  cursor: not-allowed;
+}
+
+
+/* Responsive */
+@media (max-width: 768px) {
+  .room-card {
+    flex-direction: column;
+  }
+
+  .room-card__image {
+    width: 320px;
+  }
+
+  .room-card__image-container,
+  .room-card__content {
+    width: 100%;
+  }
+
+  .room-search-results {
+    padding: 0 8px;
+    margin-top: 0px;
+  }
+
+  .room-card__name {
+    font-size: 1rem;
+  }
+
+  .room-card__description,
+  .room-card__date,
+  .days-selected,
+  .available-text,
+  .unavailable-text {
+    font-size: 0.85rem;
+  }
+
+  .room-card__view-deal {
+    width: 100%;
+    margin-top: 8px;
+  }
+
+  .info-section-booking {
+    font-size: 0.9rem;
+    padding: 16px;
+  }
+
+  .info-section-booking .tick-list li {
+    font-size: 13px;
+  }
+
+  .checkin-date,
+  .checkout-date {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+
+  .date-input {
+    width: 100%;
+  }
+
+  .room_card_dates {
+    flex-direction: column;
+    gap: 2px;
+  }
+  .checkin-date, .checkout-date {
+    margin: 0;
+  }
+  .available-text {
+    margin-top: 0px;
+  }
+  .room-card__booking {
+    margin-top: 0px;
+  }
+}

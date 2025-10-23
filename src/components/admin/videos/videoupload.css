@@ -1,0 +1,56 @@
+.upload-container {
+  max-width: 500px;
+  margin: 0 auto;
+  padding: 20px;
+  margin-top: 100px;
+}
+
+.upload-form {
+  display: flex;
+  flex-direction: column;
+}
+
+.upload-input {
+  margin: 10px 0;
+  padding: 8px;
+}
+
+.upload-button {
+  padding: 10px;
+  background-color: #2196F3;
+  color: white;
+  border: none;
+  cursor: pointer;
+}
+
+.upload-button:hover {
+  background-color: #1976D2;
+}
+
+.upload-message {
+  margin-top: 15px;
+  color: #d9534f;
+}
+
+.upload-preview {
+  margin-top: 20px;
+}
+
+.video-embed iframe {
+  max-width: 100%;
+  border: 1px solid #ccc;
+  margin-top: 10px;
+}
+
+.clear-button {
+  margin-top: 10px;
+  padding: 8px;
+  background-color: #f44336;
+  color: white;
+  border: none;
+  cursor: pointer;
+}
+
+.clear-button:hover {
+  background-color: #d32f2f;
+}

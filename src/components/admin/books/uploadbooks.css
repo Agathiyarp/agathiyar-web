@@ -1,0 +1,80 @@
+.upload-container {
+  max-width: 500px;
+  margin: 0 auto;
+  padding: 20px;
+  margin-top: 100px;
+}
+
+.upload-form {
+  display: flex;
+  flex-direction: column;
+}
+
+.upload-input {
+  margin: 10px 0;
+  padding: 8px;
+}
+
+.upload-button {
+  padding: 10px;
+  background-color: #4CAF50;
+  color: white;
+  border: none;
+  cursor: pointer;
+}
+
+.upload-button:hover {
+  background-color: #45a049;
+}
+
+.upload-message {
+  margin-top: 15px;
+  color: #d9534f;
+}
+
+.upload-preview {
+  margin-top: 20px;
+}
+
+.image-preview {
+  max-width: 100%;
+  height: auto;
+  border: 1px solid #ccc;
+  margin-top: 10px;
+}
+
+.upload-label {
+  margin-top: 10px;
+  font-weight: bold;
+  color: #6c78b4;
+}
+
+.clear-button {
+  margin-top: 10px;
+  padding: 6px 12px;
+  background-color: #d9534f;
+  color: white;
+  border: none;
+  cursor: pointer;
+  border-radius: 4px;
+}
+
+.clear-button:hover {
+  background-color: #c9302c;
+}
+
+
+.upload-button[disabled] {
+  background-color: #aaa;
+  cursor: not-allowed;
+}
+
+.upload-button[disabled]::after {
+  content: " ⏳";
+  animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
+}
