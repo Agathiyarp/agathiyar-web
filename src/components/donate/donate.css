@@ -1,0 +1,100 @@
+.outer-containers {
+    display: flex;
+    flex-direction: column;
+}
+
+.grid-containers {
+    display: flex;
+    flex-direction: column; /* Stack items vertically on mobile */
+    align-items: center;
+    margin: 0;
+}
+
+.spirtual-list {
+    padding-bottom: 5px;
+}
+
+ul {
+    list-style-type: none !important; /* Remove bullet points */
+    padding: 0; /* Remove default padding */
+    margin: 0; /* Remove default margin */
+}
+
+.grid-container {
+    display: flex;
+    flex-direction: row; /* Default to column layout */
+    align-items: center; /* Center align items */
+    justify-content: center;
+    width: 100%;
+    padding: 10px; /* Add padding for better spacing */
+}
+
+.text-containers-donate {
+    text-align: center;
+    flex: 1 1;
+    background-color: #e0f7fa;
+    padding: 10px;
+    /* font-family: 'Raleway, sans-serif'; */
+}
+
+.donate-image-container {
+    width: 100%;
+    max-width: 400px; /* Limit the max width for larger screens */
+    height: auto; /* Maintain aspect ratio */
+    margin-top: 20px;
+}
+
+.photo-frame {
+    border: 1px solid #ccc; /* Optional styling */
+    padding: 10px; /* Optional padding */
+    border-radius: 10px; /* Optional rounded corners */
+}
+
+.image {
+    width: 100%; /* Full width to fit the container */
+    height: auto; /* Maintain aspect ratio */
+}
+
+.donate-container {
+    text-align: center;
+    padding: 100px;
+    min-height: 400px,
+}
+
+/* Media Queries for Responsiveness */
+@media (min-width: 768px) {
+    .grid-containers {
+        flex-direction: row; /* Change to row layout on larger screens */
+        justify-content: space-between; /* Space between items */
+        width: 100%;
+    }
+
+    .donate-image-container,
+    .donate-container {
+        flex: 1; /* Allow containers to grow equally */
+        margin: 10px; /* Margin for spacing */
+        max-width: 48%; /* Ensure they don’t exceed 48% of the width */
+    }
+
+    .donate-image-container {
+        max-width: 400px; /* Maintain the same max width */
+    }
+}
+
+/* Ensure mobile view is stacked */
+@media (max-width: 767px) {
+    .grid-containers {
+        flex-direction: column; /* Stack items on small screens */
+    }
+
+    .grid-container {
+        flex-direction: column;
+    }
+
+    .donate-image-container,
+    .donate-container {
+        width: 100%; /* Make sure both containers are full width */
+        padding: 0;
+        padding-top: 10px;
+    }
+}
