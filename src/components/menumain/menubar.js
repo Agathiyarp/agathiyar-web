@@ -48,6 +48,8 @@ const MenuBar = () => {
         toast.success("Logout successful!");
         sessionStorage.setItem("userDetails", "");
         setUser(null);
+        setTimeout(() => navigate("/login"), 3000);
+        console.log("User logged out:", data);
       }
     } catch (err) {
       toast.error("Logout failed");

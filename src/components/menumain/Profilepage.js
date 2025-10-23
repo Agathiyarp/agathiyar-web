@@ -140,7 +140,8 @@ const ProfilePage = () => {
           if (data) {
             toast.success("Logout successful!");
             sessionStorage.setItem("userDetails", "");
-            setTimeout(() => navigate("/"), 3000);
+            console.log("User logged out:", data);
+            setTimeout(() => navigate("/login"), 3000);
           }
         } catch (err) {
           toast.error("Logout failed");
