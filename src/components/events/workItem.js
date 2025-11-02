@@ -43,9 +43,17 @@ const WorkshopItem = ({
     if (numberofdays) queryParams.append("eventdays", numberofdays);
     if (place) queryParams.append("eventplace", place);
     if (contactdetails) queryParams.append("contact", contactdetails);
+    
 
     navigate(`/eventregister/${id}?${queryParams.toString()}`);
   };
+
+  const isEventCompleted = (endDate) => {
+    const currentDate = new Date();
+    const eventEndDate = new Date(endDate);
+    return eventEndDate < currentDate; // true if event is over
+  };
+
 
   const calculateTimeLeft = (date) => {
     const currentDate = new Date();
@@ -81,7 +89,10 @@ const WorkshopItem = ({
         </div>
         <div className="workshop-info">
           <div className="register-button">
-            <button className="btn-register" onClick={() => handleRegister(eventid)}>
+            <button disabled={isEventCompleted(enddate)} style={{
+                opacity: isEventCompleted(enddate) ? 0.6 : 1,
+                cursor: isEventCompleted(enddate) ? "not-allowed" : "pointer",
+              }} className="btn-register" onClick={() => handleRegister(eventid)}>
               <span className="register-text">Register</span>
               <div className="button-shine"></div>
             </button>

@@ -106,9 +106,14 @@ const EventRegistration = () => {
                 label="Number of Participants"
                 type="number"
                 value={participantCount}
-                onChange={(e) => setParticipantCount(e.target.value)}
+                onChange={(e) => {
+                  const value = Number(e.target.value);
+                  if (value <= 10) {
+                    setParticipantCount(value);
+                  }
+                }}
                 required
-                inputProps={{ min: 1 }}
+                inputProps={{ min: 1, max: 10 }}
                 style={styles.textField}
               />
             )}
