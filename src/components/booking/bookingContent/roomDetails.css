@@ -378,12 +378,13 @@
 .book-room {
   background: #38a169;
   color: white;
-  padding: 12px 24px;
+  padding: 30px 50px;
   border-radius: 6px;
   display: inline-flex;
   align-items: center;
   font-weight: bold;
-  margin-top: 20px;
+  margin-top: 50px;
+  margin-left: 50px;
   cursor: pointer;
   border: none;
   font-size: 1rem;
