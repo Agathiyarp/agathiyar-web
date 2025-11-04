@@ -1,0 +1,326 @@
+/* General Styles */
+.app-container {
+  padding: 20px;
+  background-color: #f5f5f5;
+  padding-top: 80px;
+}
+
+.video-wrapper {
+  width: 100%;
+  max-width: 1000px;
+  aspect-ratio: 16 / 9;
+  margin: 0 auto;
+  overflow: hidden;
+  border-radius: 8px;
+  background-color: #000;
+}
+
+.video-wrapper video {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+}
+
+/* Header Styles */
+.logo {
+  margin-right: 20px;
+  margin-left: 20px;
+  width: 104px;
+  height: 104px;
+}
+
+.menu {
+  display: flex;
+  align-items: center;
+  flex-grow: 1;
+}
+
+/* Carousel Styles */
+.carousel-container {
+  margin: 20px 0;
+  width: 100%;
+  overflow: hidden;
+}
+
+.carousel-image {
+  width: 100%;
+  height: 480px;
+  object-fit: cover;
+  border-radius: 8px;
+  animation: fadeIn 1.5s ease-out forwards;
+}
+
+/* Mission Statements Section */
+.mission-statements-container {
+  margin: 40px 0;
+  text-align: center;
+  padding: 20px;
+  background-color: #f9f9f9;
+  border-radius: 10px;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+}
+
+.mission-statements-container h2 {
+  font-size: 28px;
+  color: #333;
+  margin-bottom: 20px;
+}
+
+.single-image-container {
+  margin: 20px 0;
+}
+
+.single-image {
+  width: 100%;
+  max-width: 800px;
+  height: auto;
+  border-radius: 8px;
+}
+
+.mission-list {
+  list-style-type: none;
+  padding: 0;
+}
+
+.home-section p {
+  font-size: 16px;
+  line-height: 1.6;
+}
+
+.mission-item {
+  background-color: #fff;
+  margin: 10px 0;
+  padding: 15px;
+  border-radius: 8px;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+  transition: background-color 0.3s;
+}
+
+.mission-item:hover {
+  background-color: #f0f0f0;
+}
+
+/* Fixed Header Styles */
+.fixed-header {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  z-index: 1000;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+}
+
+.MuiToolbar-root {
+  margin: 10px;
+}
+
+.slick-arrow .slick-next {
+  background: #000;
+  border-radius: 5px;
+}
+
+.vision-heading {
+  color: green !important;
+}
+
+.meditation-heading {
+  color: green !important;
+  text-align: center;
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(-20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.mission-vision-wrapper {
+  display: flex;
+  justify-content: center;
+  gap: 40px;
+  padding: 60px 20px;
+  flex-wrap: wrap;
+  background: linear-gradient(to right, #7cd1b8, #7dc4d6);
+}
+
+.card1 {
+  background: white;
+  padding: 32px;
+  max-width: 400px;
+  border-radius: 12px;
+  box-shadow: 0 8px 16px rgba(0,0,0,0.1);
+  text-align: center;
+  flex: 1;
+  min-width: 280px;
+}
+
+.card-title1 {
+  font-size: 20px;
+  font-weight: 700;
+  letter-spacing: 1px;
+  margin-bottom: 20px;
+}
+
+.card-text {
+  font-size: 16px;
+  line-height: 1.6;
+  margin-bottom: 20px;
+}
+
+.more-info-button {
+  padding: 10px 24px;
+  border: none;
+  background-color: #1a9c93;
+  color: white;
+  font-weight: 600;
+  border-radius: 4px;
+  cursor: pointer;
+}
+
+.more-info-button:hover {
+  background-color: #157a74;
+}
+
+/* Mobile Responsive Styles */
+@media (max-width: 768px) {
+  .app-container {
+    padding: 10px;
+    padding-top: 70px;
+  }
+
+  .carousel-container {
+    margin: 10px 0;
+  }
+
+  .video-wrapper {
+    margin: 0 auto 20px;
+    border-radius: 4px;
+  }
+
+  .carousel-image {
+    height: 200px;
+    border-radius: 4px;
+  }
+
+  .mission-vision-wrapper {
+    flex-direction: column;
+    align-items: center;
+    padding: 30px 10px;
+    gap: 20px;
+  }
+
+  .card1 {
+    padding: 20px;
+    max-width: 100%;
+    margin: 0 5px;
+  }
+
+  .card-title1 {
+    font-size: 18px;
+    margin-bottom: 15px;
+  }
+
+  .card-text {
+    font-size: 14px;
+    line-height: 1.6;
+    margin-bottom: 15px;
+  }
+
+  .home-section {
+    padding: 20px 10px !important;
+    gap: 20px !important;
+  }
+
+  .home-section p {
+    font-size: 14px;
+    line-height: 1.6;
+    margin-bottom: 15px;
+  }
+
+  .home-section h2,
+  .home-section h3 {
+    font-size: 20px;
+    margin-bottom: 15px;
+  }
+
+  .home-right {
+    padding-right: 10px;
+  }
+
+  .logo {
+    width: 60px;
+    height: 60px;
+    margin-right: 10px;
+    margin-left: 10px;
+  }
+
+  .mission-statements-container {
+    margin: 20px 0;
+    padding: 15px;
+  }
+
+  .mission-statements-container h2 {
+    font-size: 22px;
+    margin-bottom: 15px;
+  }
+
+  .mission-item {
+    padding: 12px;
+    margin: 8px 0;
+  }
+}
+
+/* Extra small mobile devices */
+@media (max-width: 480px) {
+  .app-container {
+    padding: 5px;
+    padding-top: 60px;
+  }
+
+  .mission-vision-wrapper {
+    padding: 20px 5px;
+  }
+
+  .card1 {
+    padding: 15px;
+    margin: 0;
+  }
+
+  .card-title1 {
+    font-size: 16px;
+  }
+
+  .card-text {
+    font-size: 13px;
+  }
+
+  .home-section {
+    padding: 15px 5px !important;
+  }
+
+  .home-section p {
+    font-size: 13px;
+  }
+
+  .home-section h2,
+  .home-section h3 {
+    font-size: 18px;
+  }
+
+  .carousel-image {
+    height: 180px;
+  }
+
+  .logo {
+    width: 50px;
+    height: 50px;
+    margin-right: 8px;
+    margin-left: 8px;
+  }
+}

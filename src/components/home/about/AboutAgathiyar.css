@@ -1,0 +1,48 @@
+.agathiyar-background {
+  background: url('../../../images/gallery/1.JPG') no-repeat center center fixed;
+  background-size: cover;
+  min-height: 100vh;
+}
+
+/* Content box styling */
+.agathiyar-content {
+  max-width: 1350px;
+  margin: 0 auto;
+  background-color: rgba(255, 255, 255, 0.85);
+  padding: 2rem;
+  box-shadow: 0 0 15px rgba(0,0,0,0.3);
+  opacity: 0.8;
+  /* font-family: 'Raleway, sans-serif'; */
+}
+
+.agathiyar-content h1 {
+  text-align: center;
+  color: green !important;;
+  margin-bottom: 1.5rem;
+  font-size: 30px;
+}
+
+.agathiyar-content h2 {
+  color: green !important;
+  margin-top: 2rem;
+  margin-bottom: 1rem;
+  font-size: 24px;
+}
+
+.agathiyar-content p {
+  line-height: 1.6;
+  margin-bottom: 1.2rem;
+  font-size: 16px;
+}
+
+
+@media (max-width: 768px) {
+  .agathiyar-content p {
+    text-align: justify;
+    font-size: 13px;
+  }
+  .agathiyar-content h1 {
+    font-size: 24px;
+    margin-top: 0;
+  }
+}

@@ -1,0 +1,38 @@
+.footer {
+  background: linear-gradient(to right, #7cd1b8, #7dc4d6);
+  color: #0b0202ff;
+  padding: 30px 20px;
+  text-align: center;
+}
+
+.footer-content {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin-bottom: 20px;
+}
+
+.footer-info {
+  margin-bottom: 15px;
+  font-weight: 600;
+  font-size: 16px;
+}
+
+.footer-links {
+  display: flex;
+  gap: 5px;
+}
+
+.footer-links a {
+  text-decoration: none;
+}
+
+.footer-links a:hover {
+  text-decoration: none;
+}
+
+.footer-bottom {
+  border-top: 1px solid #444;
+  padding-top: 15px;
+  /* font-family: 'Raleway, sans-serif'; */
+}

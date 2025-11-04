@@ -1,0 +1,330 @@
+.user-mgmt-container {
+  margin: 50px auto;
+  margin-top: 100px;
+  background-color: #ffffff;
+  border-radius: 12px;
+  padding: 30px;
+  box-shadow: 0 0 15px rgba(0, 0, 0, 0.1);
+  justify-self: center;
+  max-width: 100%;
+  /* overflow-x: hidden; */
+}
+
+.user-mgmt-container h2 {
+  text-align: center;
+  color: #2b8a3e;
+  margin-bottom: 30px;
+}
+.user-list1 {
+  display: flex;
+  flex-direction: column;
+  padding-top: 20px;
+  margin: 0 auto;
+}
+
+.table-scroll-wrapper {
+  /* width: 100%; */
+  overflow-x: auto;
+  /* Add these properties for better mobile scrolling */
+  -webkit-overflow-scrolling: touch;
+  border: 1px solid #ddd;
+  border-radius: 8px;
+  margin-top: 20px;
+}
+
+.table-scroll-wrapper table {
+  width: 100%;
+  min-width: 800px; /* Increased min-width to ensure scrolling */
+  border-collapse: collapse;
+  table-layout: auto;
+  white-space: nowrap;
+  margin: 0; /* Remove default margin */
+}
+
+.section {
+  margin-bottom: 25px;
+  text-align: center;
+}
+
+.section h4 {
+  margin-bottom: 10px;
+  color: #2b6777;
+}
+
+.no-results {
+  margin-top: 20px;
+  margin: 0 auto;
+  width: 50%;
+  font-weight: bold;
+}
+
+.btn-user {
+  width: 200px;
+}
+
+.input-user {
+  padding: 12px;
+  width: 100%;
+  max-width: 500px;
+  border-radius: 8px;
+  border: 1px solid #ccc;
+  margin: 8px 0;
+  font-size: 14px;
+  display: block;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.btn-user {
+  margin-top: 10px;
+  padding: 10px 20px;
+  background: linear-gradient(to right, #28a745, #218838);
+  color: white;
+  font-weight: 600;
+  border: none;
+  border-radius: 25px;
+  cursor: pointer;
+  transition: 0.3s;
+  align-items: center;
+  justify-content: center;
+}
+
+.btn-user:hover {
+  background: linear-gradient(to right, #218838, #1e7e34);
+}
+
+.user-details,
+.user-list {
+  margin-top: 30px;
+}
+
+pre {
+  background-color: #f4f4f4;
+  padding: 15px;
+  border-radius: 8px;
+  overflow-x: auto;
+}
+
+table {
+  width: 100%;
+  border-collapse: collapse;
+  margin-top: 20px;
+}
+
+table th,
+table td {
+  border: 1px solid #ddd;
+  padding: 10px;
+  text-align: left;
+  min-width: 100px; /* Ensure minimum column width */
+}
+
+table th {
+  background-color: #28a745;
+  color: white;
+  font-weight: bold;
+  position: sticky;
+  top: 0;
+  z-index: 10;
+}
+
+.export-buttons {
+  margin-top: 20px;
+  display: flex;
+  justify-content: center;
+  gap: 15px;
+}
+
+.user-list table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+/* Enhanced scrollbar styling */
+.table-scroll-wrapper::-webkit-scrollbar {
+  height: 8px;
+}
+
+.table-scroll-wrapper::-webkit-scrollbar-track {
+  background: #f1f1f1;
+  border-radius: 4px;
+}
+
+.table-scroll-wrapper::-webkit-scrollbar-thumb {
+  background-color: #888;
+  border-radius: 4px;
+}
+
+.table-scroll-wrapper::-webkit-scrollbar-thumb:hover {
+  background-color: #555;
+}
+
+.user-toolbar {
+  display: flex;
+  gap: 10px;
+  flex-wrap: wrap;
+  align-items: center;
+  margin-bottom: 20px;
+  justify-content: center;
+}
+
+.user-toolbar .input-user {
+  padding: 6px 8px;
+  font-size: 14px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  height: 50px;
+}
+
+.btn-user {
+  font-size: 14px;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+}
+
+.btn-blue {
+  background-color: #007bff;
+  color: white;
+}
+
+.btn-green {
+  background-color: #28a745;
+  color: white;
+}
+
+.export-top {
+  margin-left: 20px;
+  background: linear-gradient(to right, #007bff, #0056b3);
+}
+
+/* Table responsiveness on smaller screens */
+@media screen and (max-width: 768px) {
+  .user-mgmt-container {
+    padding: 20px 15px;
+    margin: 20px 10px; /* Add side margins */
+    margin-top: 100px;
+    width: calc(100% - 20px); /* Account for margins */
+    box-sizing: border-box;
+  }
+
+  .input-user {
+    width: 100%;
+  }
+
+  .btn-user {
+    width: 200px;
+  }
+
+  .export-buttons {
+    flex-direction: column;
+    align-items: center;
+  }
+
+  .table-scroll-wrapper {
+    /* Force the wrapper to respect container boundaries */
+    /* max-width: 100%; */
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+    border-radius: 8px;
+  }
+
+  .table-scroll-wrapper table {
+    min-width: 700px; /* Ensure table is wider than container on mobile */
+  }
+
+  .user-list table th,
+  .user-list table td {
+    font-size: 13px;
+    padding: 8px;
+    min-width: 120px; /* Ensure readable column width */
+  }
+
+  /* Remove conflicting display: block */
+  .user-details table {
+    display: table; /* Keep as table, not block */
+    width: 100%;
+  }
+
+  .user-list table {
+    display: table; /* Keep as table, not block */
+    width: 100%;
+  }
+}
+
+/* Mobile (phones) */
+@media screen and (max-width: 600px) {
+  .user-toolbar {
+    flex-direction: column;
+    gap: 10px;
+    align-items: stretch;
+  }
+
+  .user-mgmt-container {
+    width: calc(100% - 10px);
+    max-width: none;
+    padding: 15px;
+    margin: 10px 5px;
+    margin-top: 90px;
+    box-sizing: border-box;
+  }
+
+  .input-user,
+  .btn-user {
+    width: 100%;
+  }
+
+  .export-top {
+    margin-left: 0;
+  }
+
+  .table-scroll-wrapper {
+    /* width: 100%; */
+    /* max-width: 100%; */
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+    /* Add touch scrolling momentum */
+    scroll-behavior: smooth;
+  }
+
+  .table-scroll-wrapper table {
+    min-width: 1000px; /* Force horizontal scroll on small screens */
+  }
+
+  .user-list table th,
+  .user-list table td {
+    font-size: 12px;
+    padding: 6px;
+    min-width: 110px;
+  }
+
+  /* Enhanced scrollbar for mobile */
+  .table-scroll-wrapper::-webkit-scrollbar {
+    height: 10px;
+  }
+
+  .table-scroll-wrapper::-webkit-scrollbar-thumb {
+    border-radius: 5px;
+  }
+}
+
+/* Even tighter spacing for very small phones */
+@media screen and (max-width: 480px) {
+  .user-mgmt-container {
+    padding: 10px;
+    margin: 5px;
+    margin-top: 80px;
+    max-width: 750px;
+    overflow-x: auto;
+  }
+
+  .table-scroll-wrapper table {
+    min-width: 1100px; /* Even wider to ensure scrolling */
+  }
+
+  .user-list table th,
+  .user-list table td {
+    font-size: 11px;
+    padding: 5px;
+  }
+}

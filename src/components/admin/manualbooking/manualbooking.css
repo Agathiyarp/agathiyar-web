@@ -1,0 +1,94 @@
+/* Container */
+.manual-booking-container {
+  max-width: 800px;
+  margin: auto;
+  background: beige;
+  padding: 30px;
+  border-radius: 15px 15px 0 0;
+  color: white;
+  text-align: center;
+}
+
+/* Form wrapper */
+.manual-booking-form {
+  background-color: #ffffff;
+  padding: 30px;
+  border-radius: 0 0 15px 15px;
+  box-shadow: 0px 4px 10px rgba(0,0,0,0.1);
+  color: #333;
+}
+
+.manual-booking-note {
+  font-size: 14px;
+  color: #c53030; /* red for emphasis */
+  margin-bottom: 20px;
+  text-align: center;
+  font-weight: 500;
+}
+
+.manual-booking-form h2 {
+  margin-bottom: 10px;
+}
+
+/* Row layout */
+.manual-booking-row {
+  display: flex;
+  gap: 20px;
+  margin-bottom: 20px;
+  flex-wrap: wrap;
+}
+
+/* Inputs & selects */
+.manual-booking-form input,
+.manual-booking-form select,
+.manual-booking-form textarea {
+  flex: 1;
+  padding: 12px;
+  border: 1px solid #ccc;
+  border-radius: 8px;
+  font-size: 14px;
+  width: 100%;
+  box-sizing: border-box;
+}
+
+/* Textarea specifics */
+.manual-booking-form textarea {
+  min-height: 80px;
+  resize: vertical;
+  margin-bottom: 6px;
+}
+
+/* Submit button */
+.manual-booking-submit-btn {
+  margin-top: 20px;
+  padding: 14px 28px;
+  background: linear-gradient(to right, #28a745, #218838);
+  color: white;
+  font-size: 16px;
+  border: none;
+  border-radius: 25px;
+  cursor: pointer;
+  width: 300px;
+  font-weight: bold;
+  transition: background 0.3s ease;
+}
+
+.manual-booking-submit-btn:hover {
+  background: linear-gradient(to right, #5a67d8, #6b46c1);
+}
+
+/* Loader */
+.manual-booking-loader {
+  text-align: center;
+  margin: 10px 0;
+  color: #007bff;
+  font-weight: bold;
+}
+
+/* Inline error */
+.manual-booking-error {
+  margin-top: 6px;
+  font-size: 12px;
+  color: #c53030; /* red */
+  text-align: left;
+}

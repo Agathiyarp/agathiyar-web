@@ -1,0 +1,104 @@
+.users-container {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 20px;
+  padding: 20px;
+  margin-top: 100px;
+}
+
+.users-heading {
+  font-size: 2rem;
+  margin-bottom: 20px;
+  width: 100%;
+  text-align: center; 
+}
+
+.user-card {
+  border: 1px solid #ccc;
+  padding: 16px;
+  width: 500px;
+  border-radius: 8px;
+  box-shadow: 2px 2px 8px rgba(0,0,0,0.1);
+  /* font-family: Arial, sans-serif; */
+  background-color: palegreen;
+  transition: transform 0.2s;
+}
+
+.user-card:hover {
+  transform: scale(1.02);
+}
+
+.user-card h2 {
+  margin: 0 0 10px;
+  color: #6c78b4;
+  cursor: pointer;
+  transition: color 0.2s;
+}
+
+.user-card h2:hover {
+  color: #384ebb;
+}
+
+.user-card p {
+  margin: 4px 0;
+  color: #666;
+}
+
+.edit-form {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  margin-top: 10px;
+}
+
+.edit-form input,
+.edit-form select {
+  padding: 8px;
+  border-radius: 4px;
+  border: 1px solid #ccc;
+}
+
+.edit-form select[multiple] {
+  height: 100px;
+}
+
+.edit-form button {
+  padding: 8px;
+  border: none;
+  border-radius: 4px;
+  background-color: #007bff;
+  color: white;
+  cursor: pointer;
+  transition: background-color 0.2s;
+}
+
+.edit-form button:hover {
+  background-color: #0056b3;
+}
+
+.access-checkbox-group {
+  display: flex;
+  flex-wrap: wrap; /* allows multiple in a row */
+  gap: 12px 20px; 
+}
+
+.access-checkbox-group label {
+  display: flex;
+  align-items: center;
+  gap: 6px; /* space between text and checkbox */
+  margin-bottom: 4px;
+}
+
+.access-checkbox-group input[type="checkbox"]:hover {
+  border-radius: 4px;
+  cursor: pointer;
+}
+
+.button-row {
+  display: flex;
+  gap: 10px;
+  margin-top: 10px;
+}
+
+

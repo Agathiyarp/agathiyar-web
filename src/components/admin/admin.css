@@ -1,0 +1,405 @@
+/* Reset and base styles */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+.admin-container {
+  /* font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif; */
+  background-color: #e0f7fa;
+  min-height: 100vh;
+}
+
+/* Header Styles */
+.header {
+  background: white;
+  padding: 0 2rem;
+  box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+  position: relative;
+  z-index: 100;
+}
+
+.dashboard-card.disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+  pointer-events: none;
+}
+
+.nav-container {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  max-width: 1400px;
+  margin: 0 auto;
+  height: 70px;
+}
+
+.logo-section {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.logo {
+  width: 60px;
+  height: 60px;
+  background: #7986cb;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: white;
+  font-weight: bold;
+  font-size: 14px;
+}
+
+.brand-text {
+  color: #424242;
+}
+
+.brand-name {
+  font-size: 18px;
+  font-weight: 600;
+  margin: 0;
+}
+
+.brand-subtitle {
+  font-size: 14px;
+  color: #666;
+  margin: 0;
+}
+
+.nav-menu {
+  display: flex;
+  gap: 2rem;
+  list-style: none;
+}
+
+.nav-menu a {
+  text-decoration: none;
+  color: #666;
+  font-weight: 500;
+  font-size: 14px;
+  transition: color 0.3s;
+}
+
+.nav-menu a:hover {
+  color: #7986cb;
+}
+
+.admin-section {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+}
+
+.admin-btn {
+  background: #7986cb;
+  color: white;
+  padding: 8px 20px;
+  border: none;
+  border-radius: 8px;
+  font-weight: 500;
+  cursor: pointer;
+  transition: background 0.3s;
+}
+
+.admin-btn:hover {
+  background: #5c6bc0;
+}
+
+.admin-info {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.admin-avatar {
+  width: 32px;
+  height: 32px;
+  background: #ff9800;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: white;
+  font-weight: bold;
+  font-size: 14px;
+}
+
+.admin-text {
+  color: #666;
+  font-size: 14px;
+}
+
+/* Main Content Styles */
+.main-content {
+  max-width: 1400px;
+  margin: 0 auto;
+  padding: 3rem 2rem;
+  margin-top: 40px;
+}
+
+.dashboard-title {
+  text-align: center;
+  font-size: 30px;
+  font-weight: 700;
+  color: #424242;
+  margin-bottom: 3rem;
+  letter-spacing: -0.5px;
+  color: #38a169;
+  /* font-family: 'SF Pro Display Regular', sans-serif; */
+}
+
+.dashboard-layout {
+  display: grid;
+  grid-template-columns: 280px 1fr;
+  gap: 2rem;
+  align-items: start;
+}
+
+.card-group {
+  margin-top: 30px;
+}
+
+.group-title {
+  font-size: 1.5rem;
+  margin-bottom: 20px;
+  text-align: left;
+}
+
+
+.admin-profile {
+  background: white;
+  padding: 2rem;
+  border-radius: 16px;
+  box-shadow: 0 4px 20px rgba(0,0,0,0.08);
+  text-align: center;
+  height: -webkit-fill-available;
+  background-color: #f4fcff;
+}
+
+.profile-avatar {
+  width: 100px;
+  height: 100px;
+  background-color: #eee;
+  border-radius: 50%;
+  overflow: hidden;
+  position: relative;
+  cursor: pointer;
+  margin: 0 auto 1rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.avatar-img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+}
+
+.remove-btn {
+  background-color: #38a169;
+  color: white;
+  border: none;
+  border-radius: 4px;
+  padding: 4px 10px;
+  margin-bottom: 1rem;
+  cursor: pointer;
+  font-size: 0.9rem;
+}
+
+.remove-btn:hover {
+  background-color: #38a169;
+}
+
+.profile-name {
+  font-size: 18px;
+  font-weight: 600;
+  margin-bottom: 0.5rem;
+}
+
+.profile-role {
+  font-size: 14px;
+  margin-bottom: 0.25rem;
+  font-weight: 600;
+}
+
+.profile-details {
+  color: #666;
+  font-size: 14px;
+}
+
+.dashboard-cards {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 1.5rem;
+  border-bottom: 1px solid #d2d2d2;
+  margin-bottom: 3rem;
+  padding-bottom: 2rem;
+}
+
+/* Dashboard Card Styles */
+.dashboard-card {
+  background: white;
+  padding: 2rem;
+  border-radius: 16px;
+  box-shadow: 0 4px 20px rgba(0,0,0,0.08);
+  text-align: center;
+  transition: transform 0.3s, box-shadow 0.3s;
+  cursor: pointer;
+  min-height: 140px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  background-color: #f4fcff;
+}
+
+.dashboard-card:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 8px 30px rgba(0,0,0,0.12);
+}
+
+.card-icon {
+  /* width: 50px; */
+  height: 50px;
+  border-radius: 12px;
+  margin-bottom: 1rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 24px;
+  color: white;
+}
+
+/* Card-specific icon colors */
+/* .user-management .card-icon {
+  background: #7986cb;
+}
+
+.events .card-icon {
+  background: #4de91e;
+}
+
+.bookings .card-icon {
+  background: #29b6f6;
+}
+
+.contents .card-icon {
+  background: #26c6da;
+}
+
+.contentes .card-icon {
+  background: #ff7043;
+}
+
+.videos .card-icon {
+  background: #78909c;
+}
+
+.books .card-icon {
+  background: #ffb74d;
+}
+
+.settings .card-icon {
+  background: #ce93d8;
+}
+
+.eventDetails .card-icon {
+  background: #4de91e;
+}
+
+.eventsAdd .card-icon {
+  background: #4de91e;
+} */
+
+.card-title {
+  font-size: 16px;
+  font-weight: 800;
+  margin: 0;
+}
+
+/* Icon content */
+.icon-user::before { content: "👤"; }
+.icon-new-user::before { content: "🧑‍🦰"; }
+.icon-calendar::before { content: "📅"; }
+.icon-calendar-add::before { content: "📅➕"; }
+.icon-booking::before { content: "📋"; }
+.icon-booking-add::before { content: "📋➕"; }
+.icon-content::before { content: "✅"; }
+.icon-folder::before { content: "💳"; }
+.icon-video::before { content: "🎬"; }
+.icon-book::before { content: "📚"; }
+.icon-images::before { content: "🏞️"; }
+.icon-settings::before { content: "⚙️"; }
+.icon-calendar-info::before { content: "📅ℹ️"; }
+.icon-users-credit::before { content: "👥💳"; }
+.icon-booking-confirmation::before {content: "📩✅";}
+
+/* Responsive Design */
+@media (max-width: 1200px) {
+  .dashboard-layout {
+    grid-template-columns: 1fr;
+    gap: 2rem;
+  }
+  
+  .dashboard-cards {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+@media (max-width: 768px) {
+  .nav-menu {
+    display: none;
+  }
+  
+  .dashboard-cards {
+    grid-template-columns: 1fr;
+  }
+  
+  .main-content {
+    padding: 2rem 1rem;
+  }
+  
+  .dashboard-title {
+    font-size: 1.5rem;
+  }
+  
+  .nav-container {
+    padding: 0 1rem;
+  }
+}
+
+@media (max-width: 480px) {
+  .admin-section {
+    gap: 0.5rem;
+  }
+  
+  .admin-btn {
+    padding: 6px 12px;
+    font-size: 12px;
+  }
+  
+  .brand-name {
+    font-size: 16px;
+  }
+  
+  .brand-subtitle {
+    font-size: 12px;
+  }
+  
+  .dashboard-card {
+    padding: 1.5rem;
+    min-height: 120px;
+  }
+  
+  .card-icon {
+    width: 40px;
+    height: 40px;
+    font-size: 20px;
+  }
+}

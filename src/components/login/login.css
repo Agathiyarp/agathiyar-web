@@ -1,0 +1,216 @@
+/* General styles for larger screens (desktop) */
+.login-page {
+  display: flex;
+  height: 100vh;
+  flex-direction: row; /* Default layout for larger screens */
+}
+
+.form-container {
+  background-color: rgba(255, 255, 255, 0.9); /* Slight transparency */
+  padding: 10rem;
+  /* border-radius: 18px; */
+  box-shadow: 0 5px 10px rgba(0, 0, 0, 0.2);
+  width: 50%; /* Adjust the width as needed */
+  height: 100vh;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+
+.heading {
+  font-size: 2rem;
+  font-weight: bold;
+  margin-bottom: 1.5rem;
+  text-align: center;
+  color: #38a169;
+}
+
+.input-container {
+  margin-bottom: 1rem;
+}
+
+.input {
+  width: 100%;
+  padding: 0.5rem;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  outline: none;
+  transition: border-color 0.3s;
+  font-size: 1rem;
+}
+
+.input.error-display {
+  border-color: red;
+}
+
+.error-text {
+  margin-top: 0.25rem;
+  color: red;
+  font-size: 0.875rem;
+  position: static;
+}
+
+.api-error-text {
+  margin-bottom: 1rem;
+  color: red;
+  font-size: 0.875rem;
+  text-align: center;
+}
+
+.options-container {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 1rem;
+}
+
+.forgot-password {
+  color: #007bff;
+  text-decoration: none;
+}
+
+.forgot-password:hover {
+  text-decoration: underline;
+}
+
+.button {
+  width: 100%;
+  padding: 0.5rem;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  transition: background-color 0.3s;
+  font-size: 1rem;
+}
+
+.login-btn {
+  background-color: #38a169;
+  color: #fff;
+}
+
+.button.disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+.signup-link {
+  text-align: center;
+  margin-top: 1rem;
+}
+
+.signup-link a {
+  color: #007bff;
+  text-decoration: none;
+}
+
+.signup-link a:hover {
+  text-decoration: underline;
+}
+
+.image-container1 {
+  width: 60%; 
+  display: flex;
+  height: 100vh;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden; 
+}
+
+.image-container1 img {
+  height: 100vh;
+  object-fit: cover;
+}
+
+.app-container {
+  padding-top: 64px;
+}
+
+.fixed-header {
+  height: 100px; /* Set an appropriate height */
+}
+
+.password-container {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+}
+
+.toggle-password {
+  position: absolute;
+  right: 10px;
+  cursor: pointer;
+  font-size: 20px;
+  color: #555;
+}
+
+.toggle-password:hover {
+  color: #000;
+}
+
+
+
+/* Media query for tablets */
+@media (max-width: 768px) {
+  .login-page {
+    flex-direction: column; /* Stack elements vertically */
+  }
+
+  .form-container {
+    width: 100%; /* Take full width */
+    padding: 5rem; /* Reduce padding for tablets */
+  }
+
+  .image-container {
+    width: 100%; /* Make image take full width */
+    height: 50vh; /* Adjust height for tablets */
+  }
+
+  .image-container img {
+    height: 100%; /* Make sure the image covers the container */
+  }
+
+  .heading {
+    font-size: 1.75rem; /* Slightly smaller font for headings */
+    /* font-family: 'Raleway, sans-serif'; */
+  }
+
+  .button {
+    font-size: 0.875rem; /* Reduce button font size */
+  }
+}
+
+/* Media query for mobile devices */
+@media (max-width: 480px) {
+  .login-page {
+    flex-direction: column;
+    height: auto; /* Allow page to adjust based on content */
+    margin-top: 100px;
+  }
+
+  .form-container {
+    width: 100%;
+    padding: 2rem; /* Reduce padding for mobile */
+  }
+
+  .image-container {
+    display: none; /* Hide the image on mobile to save space */
+  }
+
+  .input {
+    padding: 0.5rem; /* Keep padding small on inputs */
+    font-size: 0.875rem; /* Reduce input font size */
+  }
+
+  .heading {
+    font-size: 1.5rem; /* Smaller font for headings */
+  }
+
+  .button {
+    font-size: 0.875rem; /* Smaller button font */
+    padding: 0.5rem; /* Reduce button padding */
+  }
+
+  .signup-link {
+    font-size: 0.875rem; /* Smaller font for the sign-up link */
+  }
+}
