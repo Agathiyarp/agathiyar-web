@@ -5,6 +5,47 @@ import ScanImage from "../../images/scan.png";
 import './donate.css';
 
 const Donate = () => {
+
+  const handlePayment = async () => {
+    const res = await fetch("https://agathiyarpyramid.org/api/create-order", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+    });
+    const order = await res.json();
+
+    const options = {
+      key: "rzp_test_1DP5mmOlF5G5ag", // Replace with your Test Key ID
+      amount: order.amount,
+      currency: order.currency,
+      name: "Test Store",
+      description: "Test Transaction",
+      order_id: order.id,
+      handler: function (response) {
+        alert("Payment ID: " + response.razorpay_payment_id);
+        alert("Order ID: " + response.razorpay_order_id);
+        alert("Signature: " + response.razorpay_signature);
+      },
+      method: {
+        upi: true,
+        card: true,
+        netbanking: true,
+        wallet: true,
+        paylater: true, // ✅ enables PayLater option
+      },
+      prefill: {
+        name: "Test User",
+        email: "test@example.com",
+        contact: "9999999999",
+      },
+      theme: {
+        color: "#3399cc",
+      },
+    };
+
+    const rzp = new window.Razorpay(options);
+    rzp.open();
+  };
+
   const spiritualPoints = [
     "When you do your Dharma, your own Dharma protects you",
     "Kindly do your Dharma to support Anna Prasadam & Maintenance of this Mouna Dhyana Ashram",
@@ -42,6 +83,13 @@ const Donate = () => {
           </p>
         </div>
       </div>
+      <button
+        onClick={handlePayment}
+        className="pay-button"
+      >
+        Make Payment
+      </button>
+
       <div>
         <Footer />
       </div>
