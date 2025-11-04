@@ -8,14 +8,15 @@ import AgathiyarAbout from "./about/AboutAgathiyar";
 import TextSection from './section/TextSection';
 import corePrincipleImg from '../../images/home/pyramid.png';
 import mounamImg from '../../images/home/meditation1.png';
-import home1 from '../../images/home/home1.png';
-import home2 from '../../images/home/home2.png';
-import home3 from '../../images/home/home3.png';
-// import home4 from '../../images/home/home4.jpg';
+import home1 from '../../images/home/Self_Mastery.jpg';
+import home2 from '../../images/home/service.jpg';
+import home3 from '../../images/home/Benefits_Meditation.jpg';
+import home4 from '../../images/home/What_isMeditation.jpg';
 import home5 from '../../images/home/home5.png';
+import home6 from '../../images/home/Galaxy.jpg';
 import swathayayam from '../../images/home/swathayayam.png';
-import meditationImg from '../../images/home/meditation3.png';
-import selfMasteryImg from '../../images/home/meditation.png';
+import meditationImg from '../../images/home/Buddha3.jpg';
+import selfMasteryImg from '../../images/home/howtomeditation.jpg';
 import ImageSection from '../home/section/ImageSection';
 import vegImage from '../../images/home/home4.jpg';
 
@@ -99,7 +100,7 @@ const Home = () => {
 
       <div>
         <ImageSection
-          imageSrc={home5}
+          imageSrc={home6}
           title="Pyramid Energy"
           content="The concept of 'pyramid energy' is that the unique geometric structure of a pyramid can harness and amplify a form of cosmic or universal energy. These include enhancing meditation by promoting deeper states of focus and spiritual awareness, as well as possessing healing properties that can balance the body's energy fields and reduce stress. Additionally, it is believed that the pyramid shape can preserve organic matter and clear negative energy from a space, thereby creating a more positive and revitalized environment."
         />
@@ -127,7 +128,7 @@ const Home = () => {
         <TextSection
           title="What is Meditation?"
           description="Meditation means making our mind 'rather empty'. Once our mind is more or less empty, we have a tremendous capability of receiving cosmic energy and cosmic information surrounding us. This leads to good health and absolute clarity in thought processes, leading to a joyous life."
-          image={home3}
+          image={home4}
           imagePosition="right"
         />
       </div>
