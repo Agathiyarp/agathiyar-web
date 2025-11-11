@@ -49,12 +49,53 @@ const UserManagement = () => {
     setNoResults(filtered.length === 0);
   };
 
-  const exportToExcel = () => {
-    const ws = XLSX.utils.json_to_sheet(userList);
-    const wb = XLSX.utils.book_new();
-    XLSX.utils.book_append_sheet(wb, ws, "Users");
-    XLSX.writeFile(wb, "user_list.xlsx");
-  };
+  const exportToCSV = () => {
+  if (userList.length === 0) return;
+
+  // Step 1: Clean and transform user data
+  const cleanedData = userList.map(({ useraccess, ...rest }) => ({
+    ...rest,
+    userrole: rest.userrole && rest.userrole.trim() !== "" ? rest.userrole : "Normal user",
+    usertype: rest.usertype && rest.usertype.trim() !== "" ? rest.usertype : "No access option",
+    createddate: rest.createddate ? formatDate(rest.createddate) : "",
+    creditmodifiedate: rest.creditmodifiedate ? formatDate(rest.creditmodifiedate) : "",
+    usertypemodifiedate: rest.usertypemodifiedate ? formatDate(rest.usertypemodifiedate) : "",
+  }));
+
+  // Step 2: Convert to CSV format
+  const headers = Object.keys(cleanedData[0]); // Auto headers from first record
+  const csvRows = [
+    headers.join(","), // header row
+    ...cleanedData.map(obj =>
+      headers.map(header => `"${(obj[header] ?? "").toString().replace(/"/g, '""')}"`).join(",")
+    )
+  ];
+
+  const csvContent = csvRows.join("\n");
+
+  // Step 3: Trigger download
+  const blob = new Blob([csvContent], { type: "text/csv;charset=utf-8;" });
+  const url = URL.createObjectURL(blob);
+  const a = document.createElement("a");
+  a.href = url;
+  a.download = `user_list_${new Date().toISOString().slice(0, 10)}.csv`;
+  a.click();
+  URL.revokeObjectURL(url);
+};
+
+// Helper: Convert ISO date to DD-MM-YYYY
+function formatDate(isoDate) {
+  try {
+    const date = new Date(isoDate);
+    if (isNaN(date.getTime())) return isoDate;
+    const day = String(date.getDate()).padStart(2, "0");
+    const month = String(date.getMonth() + 1).padStart(2, "0");
+    const year = date.getFullYear();
+    return `${day}-${month}-${year}`;
+  } catch {
+    return isoDate;
+  }
+}
 
   return (
     <div className="user-mgmt-container">
@@ -71,7 +112,7 @@ const UserManagement = () => {
             onChange={(e) => setUserId(e.target.value)}
           />
           <button className="btn-user btn-blue" onClick={handleFilter}>Search</button>
-          <button className="btn-user btn-green export-top" onClick={exportToExcel}>Export Excel</button>
+          <button className="btn-user btn-green export-top" onClick={exportToCSV}>Export Excel</button>
         </div>
       </div>
 

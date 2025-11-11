@@ -136,9 +136,9 @@ const BookingConfirmation = () => {
 
   const exportToCSV = () => {
     const csv = [
-      ["BookingID", "UserID", "Username", "StartDate", "EndDate", "RoomName", "Amount", "Rooms", "Status"],
+      ["BookingID", "MemberID", "Username", "StartDate", "EndDate", "RoomName", "Amount", "Rooms", "Status"],
       ...filteredBookings.map(b => [
-        b.bookingId, b.userid, b.username, b.startdate, b.enddate, b.roomname ?? b.destination, b.totalamount, b.totalroomsbooked, b.bookingstatus
+        b.bookingId, b.memberid, b.username, b.startdate, b.enddate, b.roomname ?? b.destination, b.totalamount, b.totalroomsbooked, b.bookingstatus
       ])
     ]
       .map(row => row.join(","))
