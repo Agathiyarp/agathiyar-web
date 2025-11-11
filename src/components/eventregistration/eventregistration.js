@@ -49,7 +49,7 @@ const EventRegistration = () => {
       eventid: eventId,
       memberid: memberId,
       register: true,
-      guests: participantCount,
+      guests: participantCount?.toString(),
       startdate,
       enddate,
       eventname,
@@ -129,7 +129,7 @@ const EventRegistration = () => {
           </form>
         </div>
       </div>
-      <ToastContainer position="top-right" autoClose={3000} />
+      <ToastContainer position="top-right" autoClose={1000} />
     </div>
   );
 };

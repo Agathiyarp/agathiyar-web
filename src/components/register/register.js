@@ -1035,7 +1035,7 @@ const RegistrationForm = () => {
           background: linear-gradient(135deg, #059669, #047857);
         }
       `}</style>
-      <ToastContainer position="top-right" autoClose={3000} hideProgressBar={false} />
+      <ToastContainer position="top-right" autoClose={1000} hideProgressBar={false} />
     </div>
   );
 };

@@ -227,10 +227,31 @@ const UserCard = ({ user, onSave }) => {
           )}
           <p>
             <strong>User Access:</strong>{" "}
-            {Array.isArray(user?.useraccess) && user.useraccess.length
+            {!["admin", "superadmin"].includes(user.userrole) && (
+              <span>
+                User role has no access options.
+              </span>
+            )}
+
+            {user.userrole === "superadmin" && (
+              <span>
+                Superadmin has all access.
+              </span>
+            )}
+            {user.userrole === "admin" && (
+              <span>
+                 Admin has {Array.isArray(user?.useraccess) && user.useraccess.length
               ? user.useraccess.join(", ")
-              : "None"}
+              : "None"} access.
+              </span>
+            )}
+            {user.userrole === "" && (
+              <span>
+                 Normal user with no access.
+              </span>
+            )}
           </p>
+          
         </>
       )}
     </div>
