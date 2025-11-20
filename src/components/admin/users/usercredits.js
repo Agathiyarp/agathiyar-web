@@ -154,15 +154,15 @@ const UserCredits = () => {
               <p>No history found.</p>
             ) : (
               <div
-                className="table-scroll-wrapper"
-                style={{ maxHeight: "300px", width: "600px", overflowY: "auto" }}
+                className="table-scroll-wrapper1"
+                style={{ maxHeight: "300px", width: "550px", overflowY: "auto" }}
               >
-                <table className="user-credits-table">
+                <table className="user-credits-table1">
                   <thead>
                     <tr>
-                      <th style={{width: "10%"}}>Credits</th>
-                      <th style={{width: "20%"}}>Modified Date</th>
-                      <th style={{width: "20px"}}>Modified Reason</th>
+                      <th style={{width: "20%"}}>Credits</th>
+                      <th style={{width: "25%"}}>Modified Date</th>
+                      <th style={{width: "55%"}}>Modified Reason</th>
                     </tr>
                   </thead>
                   <tbody>
@@ -170,11 +170,11 @@ const UserCredits = () => {
                       <tr key={index}>
                         <td>{row.credits}</td>
                         <td>
-                          {row.creditmodifiedate
-                            ? formatDate(row.creditmodifiedate)
+                          {row.date
+                            ? formatDate(row.date)
                             : "-"}
                         </td>
-                        <td>{row.creditmodifyreason || "-"}</td>
+                        <td>{row.reason || "-"}</td>
                       </tr>
                     ))}
                   </tbody>
