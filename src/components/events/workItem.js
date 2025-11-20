@@ -84,8 +84,8 @@ const WorkshopItem = ({
         <div className="image-placeholder" onClick={() =>  {
           if (!isDefaultImage) setShowImagePreview(true);
         }}>
-          <img className="event-image" src={imageurl} alt="event" />
-          <div className="image-overlay"></div>
+          <img className="event-image" src={finalImage} alt="event" />
+          {!isDefaultImage && <div className="image-overlay"></div>}
         </div>
         <div className="workshop-host-container">
           <p className="workshop-host">
@@ -201,7 +201,7 @@ const WorkshopItem = ({
               onClick={() => setShowImagePreview(false)}
             />
             <div className="preview-image-container">
-              <img src={imageurl} alt="Preview" className="preview-image" />
+              <img src={finalImage} alt="Preview" className="preview-image" />
             </div>
           </div>
         </div>
