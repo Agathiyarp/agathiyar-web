@@ -61,7 +61,7 @@ const AddEvent = () => {
     setLoading(true);
 
     try {
-      let imageUrl = '';
+      let imageUrl = formData.imageurl;
       if (selectedImage) {
         // Upload the image first
         const formDataImage = new FormData();
@@ -152,7 +152,7 @@ const AddEvent = () => {
           <input type="text" name="reservedeposit" placeholder="Reserve Deposit" value={formData.reservedeposit} onChange={handleChange} />
         </div>
         <div className="row">
-          <input type="file" accept="image/*" onChange={(e) => setSelectedImage(e.target.files[0])} required />
+          <input type="file" accept="image/*" onChange={(e) => setSelectedImage(e.target.files[0])} />
           <div className="language-dropdown">
             <div className="dropdown-header" onClick={() => setShowLanguageDropdown(!showLanguageDropdown)}>
               {formData.language.length > 0 ? formData.language.join(', ') : 'Select Languages'}

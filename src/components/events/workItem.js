@@ -8,6 +8,7 @@ import PlaceIcon from "@mui/icons-material/Place";
 import LanguageIcon from "@mui/icons-material/Language";
 import { Box, Typography } from "@mui/material";
 import CloseIcon from "@mui/icons-material/Close";
+import defaultImage from "../../images/default_image.png";
 
 const WorkshopItem = ({
   mastername,
@@ -70,6 +71,9 @@ const WorkshopItem = ({
   const timeLeft = calculateTimeLeft(startdate);
   const descriptionSentences = eventdescription.split(". ").filter(Boolean);
 
+  const finalImage = imageurl && imageurl.trim() !== "" ? imageurl : defaultImage;
+  const isDefaultImage = finalImage === defaultImage;
+
   return (
     <div className="workshop-item">
       <div className="image-and-time">
@@ -77,7 +81,9 @@ const WorkshopItem = ({
           <span>CLOSES IN</span>
           <strong>{timeLeft}</strong>
         </div>
-        <div className="image-placeholder" onClick={() => setShowImagePreview(true)}>
+        <div className="image-placeholder" onClick={() =>  {
+          if (!isDefaultImage) setShowImagePreview(true);
+        }}>
           <img className="event-image" src={imageurl} alt="event" />
           <div className="image-overlay"></div>
         </div>
@@ -187,7 +193,7 @@ const WorkshopItem = ({
       )}
 
       {/* Image Preview Modal */}
-      {showImagePreview && (
+      {showImagePreview && !isDefaultImage && (
         <div className="modal-overlay" onClick={() => setShowImagePreview(false)}>
           <div className="modal-content preview-modal" onClick={(e) => e.stopPropagation()}>
             <CloseIcon
