@@ -1,25 +1,29 @@
-import React, { useEffect, useState } from 'react';
-import './usercredits.css';
-import MenuBar from '../../menumain/menubar';
-import { formatDate } from '../../common/utils';
+import React, { useEffect, useState } from "react";
+import "./usercredits.css";
+import MenuBar from "../../menumain/menubar";
+import { formatDate } from "../../common/utils";
 
 const UserCredits = () => {
   const [creditsList, setCreditsList] = useState([]);
   const [loading, setLoading] = useState(true);
-  const [error, setError] = useState('');
+  const [error, setError] = useState("");
   const [showModal, setShowModal] = useState(false);
   const [selectedUser, setSelectedUser] = useState(null);
-  const [newCredit, setNewCredit] = useState('');
-  const [updateReason, setUpdateReason] = useState('');
+  const [newCredit, setNewCredit] = useState("");
+  const [updateReason, setUpdateReason] = useState("");
+  const [historyModal, setHistoryModal] = useState(false);
+  const [historyList, setHistoryList] = useState([]);
+  const [historyLoading, setHistoryLoading] = useState(false);
+
   const fetchCredits = async () => {
     try {
-      const res = await fetch('https://www.agathiyarpyramid.org/api/users');
-      if (!res.ok) throw new Error('Failed to fetch credits');
+      const res = await fetch("https://www.agathiyarpyramid.org/api/users");
+      if (!res.ok) throw new Error("Failed to fetch credits");
       const data = await res.json();
       setCreditsList(data);
     } catch (err) {
       console.error(err);
-      setError('Unable to load user credits.');
+      setError("Unable to load user credits.");
     } finally {
       setLoading(false);
     }
@@ -32,42 +36,49 @@ const UserCredits = () => {
     setSelectedUser(user);
     setNewCredit(user.credits ?? 0);
     setShowModal(true);
-    setUpdateReason('');
+    setUpdateReason("");
   };
 
   const handleCloseModal = () => {
     setShowModal(false);
     setSelectedUser(null);
-    setNewCredit('');
-    setUpdateReason('');
+    setNewCredit("");
+    setUpdateReason("");
   };
 
   const handleUpdateCredit = async () => {
-    if (!selectedUser || newCredit === '') return;
+    if (!selectedUser || newCredit === "") return;
     try {
       const res = await fetch(
         `https://www.agathiyarpyramid.org/api/update-credits/${selectedUser.usermemberid}`,
         {
-          method: 'POST', // or 'PUT'
+          method: "POST", // or 'PUT'
           headers: {
-            'Content-Type': 'application/json',
+            "Content-Type": "application/json",
           },
-          body: JSON.stringify({ 
-            credits: Number(newCredit), 
+          body: JSON.stringify({
+            credits: Number(newCredit),
             creditmodifyreason: updateReason,
-            creditmodifiedate: new Date().toISOString()
+            creditmodifiedate: new Date().toISOString(),
           }),
         }
       );
-      if (!res.ok) throw new Error('Failed to update credits');
+      if (!res.ok) throw new Error("Failed to update credits");
 
       // Update local state
       fetchCredits();
       handleCloseModal();
     } catch (err) {
       console.error(err);
-      alert('Error updating credits');
+      alert("Error updating credits");
     }
+  };
+
+  const handleViewHistory = (user) => {
+    setSelectedUser(user);
+    setHistoryList(user.userHistory || []);
+
+    setHistoryModal(true);
   };
 
   return (
@@ -97,18 +108,28 @@ const UserCredits = () => {
             <tbody>
               {creditsList.map((item, index) => (
                 <tr key={index}>
-                  <td>{item.name || '-'}</td>
-                  <td>{item.usermemberid || '-'}</td>
+                  <td>{item.name || "-"}</td>
+                  <td>{item.usermemberid || "-"}</td>
                   <td>{item.credits ?? 0}</td>
                   <td>
                     {item.creditmodifiedate
                       ? formatDate(item.creditmodifiedate)
-                      : '-'}
+                      : "-"}
                   </td>
-                  <td>{item.creditmodifyreason || '-'}</td>
+                  <td>{item.creditmodifyreason || "-"}</td>
                   <td>
-                    <button className="update-btn" onClick={() => handleOpenModal(item)}>
+                    <button
+                      className="update-btn"
+                      onClick={() => handleOpenModal(item)}
+                    >
                       Update
+                    </button>
+                    <button
+                      className="history-btn"
+                      style={{ marginLeft: "8px" }}
+                      onClick={() => handleViewHistory(item)}
+                    >
+                      View History
                     </button>
                   </td>
                 </tr>
@@ -118,10 +139,68 @@ const UserCredits = () => {
         </div>
       )}
 
+      {historyModal && (
+        <div className="modal-overlay">
+          <div className="modal" style={{ width: "600px", maxWidth: "800px" }}>
+            <h3 className="update-credit-text">Credit History</h3>
+            <p>
+              <strong>{selectedUser?.name}</strong> (
+              {selectedUser?.usermemberid})
+            </p>
+
+            {historyLoading ? (
+              <p>Loading...</p>
+            ) : historyList.length === 0 ? (
+              <p>No history found.</p>
+            ) : (
+              <div
+                className="table-scroll-wrapper"
+                style={{ maxHeight: "300px", width: "600px", overflowY: "auto" }}
+              >
+                <table className="user-credits-table">
+                  <thead>
+                    <tr>
+                      <th style={{width: "10%"}}>Credits</th>
+                      <th style={{width: "20%"}}>Modified Date</th>
+                      <th style={{width: "20px"}}>Modified Reason</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    {historyList.map((row, index) => (
+                      <tr key={index}>
+                        <td>{row.credits}</td>
+                        <td>
+                          {row.creditmodifiedate
+                            ? formatDate(row.creditmodifiedate)
+                            : "-"}
+                        </td>
+                        <td>{row.creditmodifyreason || "-"}</td>
+                      </tr>
+                    ))}
+                  </tbody>
+                </table>
+              </div>
+            )}
+
+            <div className="modal-actions-1">
+              <button
+                onClick={() => {
+                  setHistoryModal(false);
+                  setHistoryList([]);
+                }}
+                className="cancel-btn"
+              >
+                Close
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
+
       {showModal && (
         <div className="modal-overlay">
           <div className="modal">
-            <h3 className='update-credit-text'>Update Credits</h3>
+            <h3 className="update-credit-text">Update Credits</h3>
             <p>
               <strong>{selectedUser.name}</strong> ({selectedUser.usermemberid})
             </p>
@@ -139,14 +218,22 @@ const UserCredits = () => {
               placeholder="Enter reason for update"
               className="reason-textarea"
             />
-            {updateReason.trim() === '' && (
-              <p style={{ color: 'red', fontSize: '12px', marginTop: '4px' }}>
+            {updateReason.trim() === "" && (
+              <p style={{ color: "red", fontSize: "12px", marginTop: "4px" }}>
                 Reason is required to proceed.
               </p>
             )}
             <div className="modal-actions-1">
-              <button onClick={handleUpdateCredit} disabled={updateReason.trim() === ''} className="save-btn">Save</button>
-              <button onClick={handleCloseModal} className="cancel-btn">Cancel</button>
+              <button
+                onClick={handleUpdateCredit}
+                disabled={updateReason.trim() === ""}
+                className="save-btn"
+              >
+                Save
+              </button>
+              <button onClick={handleCloseModal} className="cancel-btn">
+                Cancel
+              </button>
             </div>
           </div>
         </div>
