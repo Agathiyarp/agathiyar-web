@@ -6,7 +6,7 @@ import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
 import AgathiyarAbout from "./about/AboutAgathiyar";
 import TextSection from './section/TextSection';
-import corePrincipleImg from '../../images/home/pyramid.png';
+import corePrincipleImg from '../../images/home/CorePrinciples3.png';
 import mounamImg from '../../images/home/meditation1.png';
 import home1 from '../../images/home/Self_Mastery.jpg';
 import home2 from '../../images/home/service.jpg';
