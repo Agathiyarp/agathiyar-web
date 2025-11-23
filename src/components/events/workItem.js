@@ -204,7 +204,7 @@ const WorkshopItem = ({
               onClick={() => setShowImagePreview(false)}
             />
             <div className="preview-image-container">
-              <img src={imageurl} alt="Preview" className="preview-image" />
+              <img src={finalImage} alt="Preview" className="preview-image" />
             </div>
           </div>
         </div>
