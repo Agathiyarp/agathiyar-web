@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React from "react";
 import { useNavigate } from "react-router-dom";
 import "./workItem.css";
 import PhoneIcon from "@mui/icons-material/Phone";
@@ -7,7 +7,6 @@ import AccessTimeIcon from "@mui/icons-material/AccessTime";
 import PlaceIcon from "@mui/icons-material/Place";
 import LanguageIcon from "@mui/icons-material/Language";
 import { Box, Typography } from "@mui/material";
-import CloseIcon from "@mui/icons-material/Close";
 import defaultImage from "../../images/default_image.png";
 
 const WorkshopItem = ({
@@ -23,16 +22,18 @@ const WorkshopItem = ({
   roomtype,
   contactdetails,
   language,
-  eventid
+  eventid,
+  onImageClick,
+  onLoginRequired
 }) => {
   const navigate = useNavigate();
-  const [showLoginModal, setShowLoginModal] = useState(false);
-  const [showImagePreview, setShowImagePreview] = useState(false);
+  // const [showLoginModal, setShowLoginModal] = useState(false);
+  // const [showImagePreview, setShowImagePreview] = useState(false);
 
   const handleRegister = (id) => {
     const isLoggedIn = sessionStorage.getItem("userDetails");
     if (!isLoggedIn) {
-      setShowLoginModal(true);
+      onLoginRequired();
       return;
     }
      const queryParams = new URLSearchParams();
@@ -82,9 +83,11 @@ const WorkshopItem = ({
           <strong>{timeLeft}</strong>
         </div>
         <div className="image-placeholder" onClick={() =>  {
-          if (!isDefaultImage) setShowImagePreview(true);
+           if (!isDefaultImage) {
+              onImageClick(imageurl);
+            }
         }}>
-          <img className="event-image" src={imageurl} alt="event" />
+          <img className="event-image" src={finalImage} alt="event" />
           <div className="image-overlay"></div>
         </div>
         <div className="workshop-host-container">
@@ -173,7 +176,7 @@ const WorkshopItem = ({
       </div>
 
       {/* Login Modal */}
-      {showLoginModal && (
+      {/* {showLoginModal && (
         <div className="modal-overlay" onClick={() => setShowLoginModal(false)}>
           <div className="modal-content login-modal" onClick={(e) => e.stopPropagation()}>
             <div className="modal-header">
@@ -190,9 +193,9 @@ const WorkshopItem = ({
             </div>
           </div>
         </div>
-      )}
+      )} */}
 
-      {/* Image Preview Modal */}
+      {/* Image Preview Modal
       {showImagePreview && !isDefaultImage && (
         <div className="modal-overlay" onClick={() => setShowImagePreview(false)}>
           <div className="modal-content preview-modal" onClick={(e) => e.stopPropagation()}>
@@ -205,7 +208,7 @@ const WorkshopItem = ({
             </div>
           </div>
         </div>
-      )}
+      )} */}
     </div>
   );
 };

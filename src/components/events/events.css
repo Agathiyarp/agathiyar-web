@@ -38,6 +38,37 @@
     background: #e0f7fa;
   }
 
+  .gotologin, .cancel-btn {
+  padding: 12px 24px;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+  font-weight: 600;
+  transition: all 0.3s ease;
+}
+
+.gotologin {
+  background: #007bff;
+  color: white;
+  margin-right: 10px;
+}
+
+.gotologin:hover {
+  background: #0056b3;
+  transform: translateY(-1px);
+}
+
+
+.cancel-btn {
+  background: #6c757d;
+  color: white;
+}
+
+.cancel-btn:hover {
+  background: #545b62;
+  transform: translateY(-1px);
+}
+
   .no-events-container {
     text-align: center;
     margin: 60px 0;
