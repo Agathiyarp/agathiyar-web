@@ -69,6 +69,27 @@
   transform: translateY(-1px);
 }
 
+.close-icon {
+  position: absolute;
+  top: 8px;
+  right: 8px;
+  background-color: #fff;
+  border-radius: 50%;
+  padding: 8px;
+  font-size: 20px;
+  color: #333;
+  cursor: pointer;
+  box-shadow: 0 2px 12px rgba(0, 0, 0, 0.25);
+  transition: all 0.3s ease;
+  z-index: 10;
+}
+
+.close-icon:hover {
+  background-color: #f44336;
+  color: white;
+  transform: scale(1.1);
+}
+
   .no-events-container {
     text-align: center;
     margin: 60px 0;
