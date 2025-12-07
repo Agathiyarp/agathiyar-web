@@ -21,9 +21,9 @@ const EventRegistration = () => {
   const eventmastername = queryParams.get("eventmastername") || "";
   const eventdays = queryParams.get("eventdays") || ""; 
   const eventplace = queryParams.get("eventplace") || "";
-  const contact = queryParams.get("contact") || "";
 
   const sessionData = JSON.parse(sessionStorage.getItem("userDetails"));
+  const contact = sessionData?.phoneNumber || "";
   const memberId = sessionData?.usermemberid;
   const username = sessionData?.username;
   const email = sessionData?.email;

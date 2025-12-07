@@ -116,7 +116,7 @@ const UserCredits = () => {
                       ? formatDate(item.creditmodifiedate)
                       : "-"}
                   </td>
-                  <td>{item.creditmodifyreason || "-"}</td>
+                  <td>{item?.userHistory[0]?.reason || "-"}</td>
                   <td>
                     <button
                       className="update-btn"
