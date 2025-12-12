@@ -157,7 +157,7 @@ function formatDate(isoDate) {
                     <td>{user.name}</td>
                     <td>{user.email}</td>
                     <td>{user.phoneNumber}</td>
-                    <td>{user.usertype || 'Not specified'}</td>
+                    <td>{user.usertype || 'Normal User'}</td>
                     <td>{formatDate(user.createddate)}</td>
                   </tr>
                 ))}
