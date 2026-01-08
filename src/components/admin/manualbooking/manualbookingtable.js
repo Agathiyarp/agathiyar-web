@@ -1,25 +1,85 @@
-import React, { useEffect, useState } from 'react';
-import './manualbookingtable.css';
-import { formatDate } from '../../common/utils';
+import React, { useEffect, useState } from "react";
+import "./manualbookingtable.css";
+import { formatDate } from "../../common/utils";
 
 export default function ManualBookingTable() {
   const [rows, setRows] = useState([]);
   const [loading, setLoading] = useState(false);
-  const [err, setErr] = useState('');
+  const [err, setErr] = useState("");
 
   console.log(rows, "rows");
 
+  const downloadCSV = () => {
+    if (!rows || rows.length === 0) return;
+
+    const headers = [
+      "Full Name",
+      "Age",
+      "Gender",
+      "Room Type",
+      "Phone",
+      "Email",
+      "Start Date",
+      "End Date",
+      "Payment",
+      "Address",
+    ];
+
+    const escapeCSV = (value) => {
+      if (value === null || value === undefined) return "";
+      const str = String(value);
+      if (str.includes('"') || str.includes(",") || str.includes("\n")) {
+        return `"${str.replace(/"/g, '""')}"`;
+      }
+      return str;
+    };
+
+    const csvRows = [
+      headers.join(","), // header row
+      ...rows.map((row) =>
+        [
+          escapeCSV(row.name),
+          escapeCSV(row.age),
+          escapeCSV(row.gender),
+          escapeCSV(row.roomname),
+          escapeCSV(row.phone),
+          escapeCSV(row.email),
+          escapeCSV(formatDate(row.startdate)),
+          escapeCSV(formatDate(row.enddate)),
+          escapeCSV(row.modeOfPayment),
+          escapeCSV(row.address),
+        ].join(",")
+      ),
+    ];
+
+    const csvContent = csvRows.join("\n");
+    const blob = new Blob([csvContent], { type: "text/csv;charset=utf-8;" });
+
+    const url = URL.createObjectURL(blob);
+    const link = document.createElement("a");
+    link.href = url;
+    link.download = `manual-bookings-${new Date()
+      .toISOString()
+      .slice(0, 10)}.csv`;
+    document.body.appendChild(link);
+    link.click();
+    document.body.removeChild(link);
+    URL.revokeObjectURL(url);
+  };
+
   const load = async () => {
     setLoading(true);
-    setErr('');
+    setErr("");
     try {
-      const res = await fetch('https://www.agathiyarpyramid.org/api/manualbooking');
+      const res = await fetch(
+        "https://www.agathiyarpyramid.org/api/manualbooking"
+      );
       if (!res.ok) throw new Error(`HTTP ${res.status}`);
       const data = await res.json();
       setRows(data);
     } catch (e) {
       console.error(e);
-      setErr('Failed to load manual bookings. Please try again.');
+      setErr("Failed to load manual bookings. Please try again.");
     } finally {
       setLoading(false);
     }
@@ -59,13 +119,18 @@ export default function ManualBookingTable() {
     <div className="manual-booking-table-wrap">
       <div className="table-header">
         <h2>Existing Booking</h2>
-        <button 
-          onClick={load} 
-          className="refresh-btn"
-          disabled={loading}
-        >
-          {loading ? 'Refreshing...' : 'Refresh'}
-        </button>
+        <div className="table-actions">
+          <button
+            onClick={downloadCSV}
+            className="download-btn"
+            disabled={rows.length === 0}
+          >
+            Download CSV
+          </button>
+          <button onClick={load} className="refresh-btn" disabled={loading}>
+            {loading ? "Refreshing..." : "Refresh"}
+          </button>
+        </div>
       </div>
 
       <div className="table-container">
@@ -74,15 +139,15 @@ export default function ManualBookingTable() {
             <thead>
               <tr>
                 <th>Full Name</th>
-                <th style={{width: '20px'}}>Age</th>
+                <th style={{ width: "20px" }}>Age</th>
                 <th>Gender</th>
                 <th>Room Type</th>
                 <th>Phone</th>
                 <th>Email</th>
-                <th style={{width: '120px'}}>Start Date</th>
-                <th style={{width: '120px'}}>End Date</th>
+                <th style={{ width: "120px" }}>Start Date</th>
+                <th style={{ width: "120px" }}>End Date</th>
                 <th>Payment</th>
-                <th style={{width: '120px'}}>Address</th>
+                <th style={{ width: "120px" }}>Address</th>
               </tr>
             </thead>
             <tbody>
@@ -95,16 +160,20 @@ export default function ManualBookingTable() {
               ) : (
                 rows.map((row, index) => (
                   <tr key={row.id || index}>
-                    <td data-label="Full Name">{row.name || '-'}</td>
-                    <td data-label="Age">{row.age || '-'}</td>
-                    <td data-label="Gender">{row.gender || '-'}</td>
-                    <td data-label="Room Type">{row.roomname || '-'}</td>
-                    <td data-label="Phone">{row.phone || '-'}</td>
-                    <td data-label="Email" className="email-cell">{row.email || '-'}</td>
+                    <td data-label="Full Name">{row.name || "-"}</td>
+                    <td data-label="Age">{row.age || "-"}</td>
+                    <td data-label="Gender">{row.gender || "-"}</td>
+                    <td data-label="Room Type">{row.roomname || "-"}</td>
+                    <td data-label="Phone">{row.phone || "-"}</td>
+                    <td data-label="Email" className="email-cell">
+                      {row.email || "-"}
+                    </td>
                     <td data-label="Start Date">{formatDate(row.startdate)}</td>
                     <td data-label="End Date">{formatDate(row.enddate)}</td>
-                    <td data-label="Payment">{row.modeOfPayment || '-'}</td>
-                    <td data-label="Address" className="address-cell">{row.address || '-'}</td>
+                    <td data-label="Payment">{row.modeOfPayment || "-"}</td>
+                    <td data-label="Address" className="address-cell">
+                      {row.address || "-"}
+                    </td>
                   </tr>
                 ))
               )}
