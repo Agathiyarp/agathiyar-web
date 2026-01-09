@@ -1,13 +1,49 @@
-import React, { useState } from 'react';
-import './videoupload.css';
-import MenuBar from '../../menumain/menubar';
+import React, { useState, useEffect } from "react";
+import "./videoupload.css";
+import MenuBar from "../../menumain/menubar";
 
 export default function VideoUpload() {
-  const [videoName, setVideoName] = useState('');
-  const [videoLink, setVideoLink] = useState('');
-  const [message, setMessage] = useState('');
-  const [submittedLink, setSubmittedLink] = useState('');
+  const [videoName, setVideoName] = useState("");
+  const [videoLink, setVideoLink] = useState("");
+  const [message, setMessage] = useState("");
+  const [submittedLink, setSubmittedLink] = useState("");
   const [isLoading, setIsLoading] = useState(false);
+  const [videos, setVideos] = useState([]);
+  const [loadingVideos, setLoadingVideos] = useState(false);
+
+  useEffect(() => {
+    fetchVideos();
+  }, []);
+
+  const fetchVideos = async () => {
+    setLoadingVideos(true);
+    try {
+      const res = await fetch("https://www.agathiyarpyramid.org/api/videos");
+      const data = await res.json();
+      setVideos(data);
+    } catch (err) {
+      console.error(err);
+    } finally {
+      setLoadingVideos(false);
+    }
+  };
+
+  const handleDelete = async (id) => {
+    if (!window.confirm("Delete this video?")) return;
+
+    try {
+      const res = await fetch(
+        `https://www.agathiyarpyramid.org/api/videos/${id}`,
+        { method: "DELETE" }
+      );
+
+      if (!res.ok) throw new Error("Delete failed");
+
+      setVideos((prev) => prev.filter((v) => v.id !== id));
+    } catch (err) {
+      alert(err.message);
+    }
+  };
 
   const validateURL = (url) => {
     try {
@@ -22,47 +58,50 @@ export default function VideoUpload() {
     e.preventDefault();
 
     if (!videoName.trim()) {
-      setMessage('Video name is required.');
+      setMessage("Video name is required.");
       return;
     }
 
     if (!videoLink.trim()) {
-      setMessage('Video link is required.');
+      setMessage("Video link is required.");
       return;
     }
 
     if (!validateURL(videoLink)) {
-      setMessage('Please enter a valid URL.');
+      setMessage("Please enter a valid URL.");
       return;
     }
 
     setIsLoading(true);
-    setMessage('Uploading...');
+    setMessage("Uploading...");
 
     try {
-      const response = await fetch('https://www.agathiyarpyramid.org/api/videos', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({
-          name: videoName,
-          link: videoLink,
-        }),
-      });
+      const response = await fetch(
+        "https://www.agathiyarpyramid.org/api/videos",
+        {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({
+            name: videoName,
+            link: videoLink,
+          }),
+        }
+      );
 
       const result = await response.json();
 
       if (!response.ok) {
-        throw new Error(result.message || 'Upload failed');
+        throw new Error(result.message || "Upload failed");
       }
 
       setMessage(`Uploaded "${videoName}" successfully!`);
       setSubmittedLink(videoLink);
-      setVideoName('');
-      setVideoLink('');
+      setVideoName("");
+      setVideoLink("");
     } catch (error) {
-      console.error('Upload error:', error);
+      console.error("Upload error:", error);
       setMessage(`Error: ${error.message}`);
     } finally {
       setIsLoading(false);
@@ -70,8 +109,8 @@ export default function VideoUpload() {
   };
 
   const handleClear = () => {
-    setSubmittedLink('');
-    setMessage('');
+    setSubmittedLink("");
+    setMessage("");
   };
 
   return (
@@ -96,7 +135,7 @@ export default function VideoUpload() {
         />
 
         <button type="submit" className="upload-button" disabled={isLoading}>
-          {isLoading ? 'Uploading...' : 'Add Video'}
+          {isLoading ? "Uploading..." : "Add Video"}
         </button>
       </form>
 
@@ -104,14 +143,19 @@ export default function VideoUpload() {
 
       {submittedLink && (
         <div className="upload-preview">
-          <p><strong>Video Link Added:</strong> {submittedLink}</p>
+          <p>
+            <strong>Video Link Added:</strong> {submittedLink}
+          </p>
 
-          {submittedLink.includes('youtube.com') || submittedLink.includes('youtu.be') ? (
+          {submittedLink.includes("youtube.com") ||
+          submittedLink.includes("youtu.be") ? (
             <div className="video-embed">
               <iframe
                 width="100%"
                 height="315"
-                src={`https://www.youtube.com/embed/${extractYouTubeID(submittedLink)}`}
+                src={`https://www.youtube.com/embed/${extractYouTubeID(
+                  submittedLink
+                )}`}
                 title="YouTube video preview"
                 frameBorder="0"
                 allowFullScreen
@@ -126,6 +170,36 @@ export default function VideoUpload() {
           </button>
         </div>
       )}
+      <hr />
+
+      <h2>Uploaded Videos List</h2>
+
+      {loadingVideos ? (
+        <p>Loading videos...</p>
+      ) : videos.length === 0 ? (
+        <p>No videos found</p>
+      ) : (
+        <ul className="video-list-simple">
+          {videos.map((video) => (
+            <li key={video.id} className="video-row">
+              <img
+                src={getThumbnail(video.link)}
+                alt=""
+                className="video-thumb"
+              />
+
+              <span className="video-name">{video.name}</span>
+
+              <button
+                className="delete-btn"
+                onClick={() => handleDelete(video.id)}
+              >
+                Delete
+              </button>
+            </li>
+          ))}
+        </ul>
+      )}
     </div>
   );
 }
@@ -134,14 +208,22 @@ export default function VideoUpload() {
 function extractYouTubeID(url) {
   try {
     const parsed = new URL(url);
-    if (parsed.hostname.includes('youtu.be')) {
+    if (parsed.hostname.includes("youtu.be")) {
       return parsed.pathname.slice(1);
     }
-    if (parsed.hostname.includes('youtube.com')) {
-      return parsed.searchParams.get('v');
+    if (parsed.hostname.includes("youtube.com")) {
+      return parsed.searchParams.get("v");
     }
-    return '';
+    return "";
   } catch {
-    return '';
+    return "";
   }
 }
+
+function getThumbnail(url) {
+  const id = extractYouTubeID(url);
+  return id
+    ? `https://img.youtube.com/vi/${id}/default.jpg`
+    : 'https://via.placeholder.com/60x45';
+}
+

@@ -219,7 +219,7 @@ const UserCard = ({ user, onSave }) => {
           <p><strong>Username:</strong> {user.username}</p>
           <p><strong>User Member ID:</strong> {user.usermemberid}</p>
           <p><strong>User Role:</strong> {user.userrole}</p>
-          <p><strong>User Type:</strong> {user.usertype ? user.usertype : "Normal User"}</p>
+          <p><strong>User Type:</strong> {user.usertype ? user.usertype : "normal user"}</p>
           {user.usertype && user.usertype !== "user" ? (
             <p><strong>Available Credits:</strong> {user.credits || 0}</p>
           ) : (

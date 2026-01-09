@@ -37,7 +37,7 @@
 .book-item button {
   margin-top: 10px; /* Space between title and button */
   padding: 10px 15px; /* Button padding */
-  background-color: #007bff; /* Button color */
+  background-color: #e74c3c; /* Button color */
   color: white; /* Text color */
   border: none; /* Remove border */
   border-radius: 5px; /* Rounded corners */
