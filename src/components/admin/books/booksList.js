@@ -48,9 +48,7 @@ export default function BooksList() {
         method: "DELETE",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
-          filename: book.filename,
-          filepath: book.filepath,
-          coverimgpath: book.coverimgpath,
+          id: book.id,
         }),
       });
 
