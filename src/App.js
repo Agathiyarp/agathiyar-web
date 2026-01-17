@@ -36,6 +36,8 @@ import ImageUpload from './components/admin/images/imageupload';
 import ManualBooking from './components/admin/manualbooking/manualbooking';
 import DailyAvailability from './components/admin/dailyavailability/dailyavailability';
 import { Navigate } from 'react-router-dom';
+import ForgotPassword from './components/login/forgotpassword';
+
 
 /**
  * Special route for /login and /registration
@@ -79,6 +81,11 @@ const App = () => {
             path="/registration" 
             element={<PublicOnlyRoute element={<AppRegistration />} />} 
           />
+          <Route
+            path="/forgot-password"
+            element={<PublicOnlyRoute element={<ForgotPassword />} />}
+          />
+
 
 
           {/* =================================
