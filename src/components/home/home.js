@@ -1,42 +1,79 @@
-import React from "react";
-import "./home.css"; // Custom CSS
-import Footer from '../footer/Footer';
+import React, { useEffect, useState } from "react";
+import "./home.css";
+import { SECTIONS } from "../../components/admin/constant";
+
+import Footer from "../footer/Footer";
 import MenuBar from "../menumain/menubar";
+import AgathiyarAbout from "./about/AboutAgathiyar";
+import TextSection from "./section/TextSection";
+import ImageSection from "./section/ImageSection";
+
 import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
-import AgathiyarAbout from "./about/AboutAgathiyar";
-import TextSection from './section/TextSection';
-import corePrincipleImg from '../../images/home/CorePrinciples3.png';
-import mounamImg from '../../images/home/meditation1.png';
-import home1 from '../../images/home/Self_Mastery.jpg';
-import home2 from '../../images/home/service.jpg';
-import home3 from '../../images/home/Benefits_Meditation.jpg';
-import home4 from '../../images/home/What_isMeditation.jpg';
-import home5 from '../../images/home/home5.png';
-import home6 from '../../images/home/Galaxy.jpg';
-import swathayayam from '../../images/home/swathayayam.png';
-import meditationImg from '../../images/home/Buddha3.jpg';
-import selfMasteryImg from '../../images/home/howtomeditation.jpg';
-import ImageSection from '../home/section/ImageSection';
-import vegImage from '../../images/home/home4.jpg';
+
+const API_BASE_URL = "https://agathiyarpyramid.org"; // change if needed
 
 const Home = () => {
+  const [images, setImages] = useState({});
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(false);
+
+  useEffect(() => {
+    fetch(`${API_BASE_URL}/api/home/images`)
+      .then((res) => res.json())
+      .then((data) => {
+        const mappedImages = {};
+
+        data.forEach((item) => {
+          const cleanPath = item.filepath.replace("./", "/");
+          mappedImages[item.section] = `${API_BASE_URL}${cleanPath}`;
+        });
+        console.log(mappedImages)
+        setImages(mappedImages);
+        setLoading(false);
+      })
+      .catch((err) => {
+        console.error("Image API error:", err);
+        setError(true);
+        setLoading(false);
+      });
+  }, []);
+
+  if (loading) {
+    return (
+      <div style={{ padding: "80px", textAlign: "center" }}>
+        Loading home content...
+      </div>
+    );
+  }
+
+  // if (error) {
+  //   return (
+  //     <div style={{ padding: "80px", textAlign: "center", color: "red" }}>
+  //       Failed to load content. Please try again later.
+  //     </div>
+  //   );
+  // }
 
   return (
     <div className="app-container">
       {/* Header */}
-      <MenuBar /> {/* Use MenuBar here */}
-     
+      <MenuBar />
+
+      {/* Video Section */}
       <div className="carousel-container" style={{ marginTop: "64px" }}>
         <div className="video-wrapper">
           <video controls autoPlay muted loop>
-            <source src="https://www.agathiyarpyramid.org/videos/Meditation.mp4" type="video/mp4" />
+            <source
+              src="https://www.agathiyarpyramid.org/videos/Meditation.mp4"
+              type="video/mp4"
+            />
             Your browser does not support the video tag.
           </video>
         </div>
       </div>
 
-      {/* Content Section */}
+      {/* Vision & Mission */}
       <div className="mission-vision-wrapper">
         <div className="card1">
           <h4 className="card-title1">VISION</h4>
@@ -53,120 +90,109 @@ const Home = () => {
         </div>
       </div>
 
-      <div>
-        <TextSection
-          title="Core Principles"
-          description="We operate based on seven core principles—Silence, Meditation, Vegetarianism, Swadhyayam, Pyramid Energy, Self Mastery, and Service—form a path for personal and spiritual growth. The journey begins with Silence and Meditation to quiet the mind and foster self-awareness. A Vegetarian diet and Swadhyayam (self-study) support this inner work. The belief in Pyramid Energy is thought to enhance these practices. The ultimate goal is Self Mastery, which is then expressed through selfless Service to others.."
-          image={corePrincipleImg}
-          imagePosition="right"
-        />
-      </div>
+      {/* Core Principles */}
+      <TextSection
+        title={SECTIONS[0].label}
+        description="We operate based on seven core principles—Silence, Meditation, Vegetarianism, Swadhyayam, Pyramid Energy, Self Mastery, and Service—form a path for personal and spiritual growth. The journey begins with Silence and Meditation to quiet the mind and foster self-awareness. A Vegetarian diet and Swadhyayam (self-study) support this inner work. The belief in Pyramid Energy is thought to enhance these practices. The ultimate goal is Self Mastery, which is then expressed through selfless Service to others.."
+        image={images[SECTIONS[0].value]}
+        imagePosition="right"
+      />
 
-      <div>
-        <ImageSection
-          imageSrc={mounamImg}
-          title="Mounam/Silence"
-          content="Silence plays a significant role in spiritual growth by fostering inner peace, self-awareness, and mindfulness. It allows individuals to connect with their inner selves, listen to their intuition, and gain clarity about their purpose and beliefs. Silence also helps in reducing mental noise, aligning one with the present moment, and deepening meditation or prayer practices. Overall, embracing silence facilitates a profound sense of spiritual connection and growth."
-        />
-      </div>
+      {/* Mounam */}
+      <ImageSection
+        imageSrc={images[SECTIONS[1].value]}
+        title={SECTIONS[1].label}
+        content="Silence plays a significant role in spiritual growth by fostering inner peace, self-awareness, and mindfulness. It allows individuals to connect with their inner selves, listen to their intuition, and gain clarity about their purpose and beliefs. Silence also helps in reducing mental noise, aligning one with the present moment, and deepening meditation or prayer practices. Overall, embracing silence facilitates a profound sense of spiritual connection and growth."
+      />
 
-      <div>
-        <TextSection
-          title="Dhyanam/Meditation"
-          description="Anapanasati meditation is a mindfulness practice centered around breathing. The term 'Anapanasati' is a Pali word that translates to 'mindfulness of breathing.' It is a core meditation technique in Buddhism designed to develop concentration, awareness, and insight.
+      {/* Meditation */}
+      <TextSection
+        title={SECTIONS[2].label}
+        description="Anapanasati meditation is a mindfulness practice centered around breathing. The term 'Anapanasati' is a Pali word that translates to 'mindfulness of breathing.' It is a core meditation technique in Buddhism designed to develop concentration, awareness, and insight.
 
           In Anapanasati meditation, practitioners focus their attention on the breath, observing the sensation of inhalation and exhalation. The practice involves systematically increasing awareness of breathing patterns, often in conjunction with mindful observation of bodily sensations, thoughts, and feelings. This helps cultivate a calm, clear mind and deeper understanding of the nature of impermanence and self."
-          image={meditationImg}
-          imagePosition="right"
-        />
-      </div>
+        image={images[SECTIONS[2].value]}
+        imagePosition="right"
+      />
 
-      <div>
-        <ImageSection
-          imageSrc={vegImage}
-          title="Ahimsa/Vegetarianism"
-          content="Vegetarianism is valued in many spiritual traditions as a way to practice non-violence (ahimsa) and compassion toward all living beings. It is believed to purify the body and mind, promoting inner peace, clarity, and emotional balance—qualities essential for spiritual growth. In yogic and meditative practices, a vegetarian diet is considered sattvic, meaning pure and calming, helping improve focus and awareness. Additionally, avoiding harm to animals is thought to generate positive karma and support one’s spiritual evolution. Thus, vegetarianism is seen not just as a dietary choice, but as a path to higher consciousness and ethical living."
-        />
-      </div>
+      {/* Vegetarianism */}
+      <ImageSection
+        imageSrc={images[SECTIONS[3].value]}
+         title={SECTIONS[3].label}
+        content="Vegetarianism is valued in many spiritual traditions as a way to practice non-violence (ahimsa) and compassion toward all living beings. It is believed to purify the body and mind, promoting inner peace, clarity, and emotional balance—qualities essential for spiritual growth. In yogic and meditative practices, a vegetarian diet is considered sattvic, meaning pure and calming, helping improve focus and awareness. Additionally, avoiding harm to animals is thought to generate positive karma and support one’s spiritual evolution. Thus, vegetarianism is seen not just as a dietary choice, but as a path to higher consciousness and ethical living."
+      />
 
-      <div>
-        <TextSection
-          title="Swadhyayam"
-          description="Swadhyaya is the practice of self-study and introspection, a cornerstone of spiritual growth. It involves a deep exploration of one's own thoughts, beliefs, and actions, often guided by the study of sacred texts or philosophical principles. This process of self-inquiry helps individuals understand their true nature, identify personal limitations, and cultivate virtues. Ultimately, Swadhyaya leads to greater self-awareness, inner peace, and a deeper connection to one's spiritual path."
-          image={swathayayam}
-          imagePosition="right"
-        />
-      </div>
+      {/* Swadhyayam */}
+      <TextSection
+        title={SECTIONS[4].label}
+        description="Swadhyaya is the practice of self-study and introspection, a cornerstone of spiritual growth. It involves a deep exploration of one's own thoughts, beliefs, and actions, often guided by the study of sacred texts or philosophical principles. This process of self-inquiry helps individuals understand their true nature, identify personal limitations, and cultivate virtues. Ultimately, Swadhyaya leads to greater self-awareness, inner peace, and a deeper connection to one's spiritual path."
+        image={images[SECTIONS[4].value]}
+        imagePosition="right"
+      />
 
-      <div>
-        <ImageSection
-          imageSrc={home6}
-          title="Pyramid Energy"
-          content="The concept of 'pyramid energy' is that the unique geometric structure of a pyramid can harness and amplify a form of cosmic or universal energy. These include enhancing meditation by promoting deeper states of focus and spiritual awareness, as well as possessing healing properties that can balance the body's energy fields and reduce stress. Additionally, it is believed that the pyramid shape can preserve organic matter and clear negative energy from a space, thereby creating a more positive and revitalized environment."
-        />
-      </div>
+      {/* Pyramid Energy */}
+      <ImageSection
+        title={SECTIONS[5].label}
+        imageSrc={images[SECTIONS[5].value]}
+        content="The concept of 'pyramid energy' is that the unique geometric structure of a pyramid can harness and amplify a form of cosmic or universal energy. These include enhancing meditation by promoting deeper states of focus and spiritual awareness, as well as possessing healing properties that can balance the body's energy fields and reduce stress. Additionally, it is believed that the pyramid shape can preserve organic matter and clear negative energy from a space, thereby creating a more positive and revitalized environment."
+      />
 
-      <div>
-        <TextSection
-          title="Self Mastery"
-          description="'Be a light unto yourself' encourages self-reliance and inner awareness, which are key to self-mastery. By trusting your inner wisdom and taking responsibility for your actions, you develop self-discipline, emotional balance, and clarity. It helps you stay true to your values, make conscious choices, and grow from within—leading to true personal mastery."
-          image={home1}
-          imagePosition="right"
-        />
-      </div>
+      {/* Self Mastery */}
+      <TextSection
+        title={SECTIONS[6].label}
+        image={images[SECTIONS[6].value]}
+        description="'Be a light unto yourself' encourages self-reliance and inner awareness, which are key to self-mastery. By trusting your inner wisdom and taking responsibility for your actions, you develop self-discipline, emotional balance, and clarity. It helps you stay true to your values, make conscious choices, and grow from within—leading to true personal mastery."
+        imagePosition="right"
+      />
 
-      <div>
-        <ImageSection
-          imageSrc={home2}
-          title="Service"
-          content="In spiritual development, service plays a vital role because it helps dissolve the ego, which is often the biggest barrier to inner growth. By serving others, you shift focus from 'me and mine' to the well-being of others, cultivating compassion, humility, and empathy. Service purifies the mind, opens the heart, and aligns your actions with higher values like love, generosity, and unity. It transforms spiritual knowledge into real-life practice, making your path more meaningful and grounded. 
-          Ultimately, through genuine service, you experience the interconnectedness of all beings, which deepens your spiritual understanding and brings you closer to your true self."
-        />
-      </div>
+      {/* Service */}
+      <ImageSection
+        imageSrc={images[SECTIONS[7].value]}
+        title={SECTIONS[7].label}
+        content="In spiritual development, service plays a vital role because it helps dissolve the ego, which is often the biggest barrier to inner growth. By serving others, you shift focus from 'me and mine' to the well-being of others, cultivating compassion, humility, and empathy. Service purifies the mind, opens the heart, and aligns your actions with higher values like love, generosity, and unity. It transforms spiritual knowledge into real-life practice, making your path more meaningful and grounded. 
+        Ultimately, through genuine service, you experience the interconnectedness of all beings, which deepens your spiritual understanding and brings you closer to your true self."
+      />
 
-      <div>
-        <TextSection
-          title="What is Meditation?"
-          description="Meditation means making our mind 'rather empty'. Once our mind is more or less empty, we have a tremendous capability of receiving cosmic energy and cosmic information surrounding us. This leads to good health and absolute clarity in thought processes, leading to a joyous life."
-          image={home4}
-          imagePosition="right"
-        />
-      </div>
+      {/* What is Meditation */}
+      <TextSection
+        title={SECTIONS[8].label}
+        description="Meditation means making our mind 'rather empty'. Once our mind is more or less empty, we have a tremendous capability of receiving cosmic energy and cosmic information surrounding us. This leads to good health and absolute clarity in thought processes, leading to a joyous life."
+        image={images[SECTIONS[8].value]}
+        imagePosition="right"
+      />
 
-      <div>
-        <ImageSection
-          imageSrc={selfMasteryImg}
-          title="How to do Mediation"
-          content="Find a quiet, comfortable space, sit in a comfortable posture, with your back straight, clasp your hands, cross your legs and close your eyes
-          gently bring your attention to your breath. Feel the air moving in and out of your nose. Don't try to change your breathing; just observe it as it is. 
-          It's completely normal for your mind to wander. When you notice your thoughts drifting, simply acknowledge them without judgment and gently guide your attention back to your breath."
-        />
-      </div>
+      {/* How to Meditate */}
+      <ImageSection
+        imageSrc={images[SECTIONS[9].value]}
+        title={SECTIONS[9].label}
+        content="Find a quiet, comfortable space, sit in a comfortable posture, with your back straight, clasp your hands, cross your legs and close your eyes
+        gently bring your attention to your breath. Feel the air moving in and out of your nose. Don't try to change your breathing; just observe it as it is. 
+        It's completely normal for your mind to wander. When you notice your thoughts drifting, simply acknowledge them without judgment and gently guide your attention back to your breath."
+      />
 
-      <div>
-        <TextSection
-          title="Benefits of Meditation"
-          description="Mind naturally stays in Peaceful and Joyful state
-            Wasteful Habits die naturally
-            Diseases gets Healed faster
-            Efficiency in all work increases
-            Heightened Awareness
-            Ability to Discern right and wrong gets sharpened
-            Willpower and Self-Esteem naturally become stronger
-            Interpersonal Relationships become qualitative and
-            fulfilling
-            Purpose of Life is thoroughly understood
-            Life becomes Celebration."
-          image={home3}
-          imagePosition="right"
-        />
-      </div>
+      {/* Benefits */}
+      <TextSection
+        title={SECTIONS[10].label}
+        description="Mind naturally stays in Peaceful and Joyful state
+          Wasteful Habits die naturally
+          Diseases gets Healed faster
+          Efficiency in all work increases
+          Heightened Awareness
+          Ability to Discern right and wrong gets sharpened
+          Willpower and Self-Esteem naturally become stronger
+          Interpersonal Relationships become qualitative and
+          fulfilling
+          Purpose of Life is thoroughly understood
+          Life becomes Celebration."
+        image={images[SECTIONS[10].value]}
+        imagePosition="right"
+      />
 
-      <div>
-        <ImageSection
-          imageSrc={home5}
-          title="Rules / Guidelines of the Ashram"
-          content="This ashram is for all sincere truth seekers for Mounam, Dhyanam
+      {/* Rules */}
+      <ImageSection
+        imageSrc={images[SECTIONS[11].value]}
+        title={SECTIONS[11].label}
+        content="This ashram is for all sincere truth seekers for Mounam, Dhyanam
             and Swadhyayam.
             Usage of mobile phones are prohibited as it is a Mouna Dhyana
             Ashram
@@ -177,19 +203,9 @@ const Home = () => {
             Ashram is maintained with the help of philanthropic support of all
             kind-hearted people
             Kindly support for Annadanam / maintenance of this Ashram"
-        />
-      </div>
-     
-      {/* <div>
-        <Meditation />
-      </div> */}
-
-      {/* <div>
-        <GridViewAgath />
-      </div> */}
+      />
 
       <AgathiyarAbout />
-      
       <Footer />
     </div>
   );

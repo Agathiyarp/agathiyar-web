@@ -85,6 +85,8 @@ const Admin = () => {
       navigate("/videoupload");
     } else if (cardName === "Images") {
       navigate("/imageupload");
+    } else if (cardName === "Home Images") {
+      navigate("/homeimageupload");
     } else if (cardName === "Rooms") {
       navigate("/roomlist");
     } else if (cardName === "Events") {
