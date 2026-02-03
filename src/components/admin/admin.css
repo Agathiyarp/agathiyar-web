@@ -335,6 +335,7 @@
 .icon-video::before { content: "🎬"; }
 .icon-book::before { content: "📚"; }
 .icon-images::before { content: "🏞️"; }
+.icon-home-images::before { content:  "🏠"; }
 .icon-settings::before { content: "⚙️"; }
 .icon-calendar-info::before { content: "📅ℹ️"; }
 .icon-users-credit::before { content: "👥💳"; }

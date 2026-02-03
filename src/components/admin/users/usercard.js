@@ -219,7 +219,7 @@ const UserCard = ({ user, onSave }) => {
           <p><strong>Username:</strong> {user.username}</p>
           <p><strong>User Member ID:</strong> {user.usermemberid}</p>
           <p><strong>User Role:</strong> {user.userrole}</p>
-          <p><strong>User Type:</strong> {user.usertype ? user.usertype : "Not specified"}</p>
+          <p><strong>User Type:</strong> {user.usertype ? user.usertype : "normal user"}</p>
           {user.usertype && user.usertype !== "user" ? (
             <p><strong>Available Credits:</strong> {user.credits || 0}</p>
           ) : (
@@ -227,10 +227,31 @@ const UserCard = ({ user, onSave }) => {
           )}
           <p>
             <strong>User Access:</strong>{" "}
-            {Array.isArray(user?.useraccess) && user.useraccess.length
+            {!["admin", "superadmin"].includes(user.userrole) && (
+              <span>
+                User role has no access options.
+              </span>
+            )}
+
+            {user.userrole === "superadmin" && (
+              <span>
+                Superadmin has all access.
+              </span>
+            )}
+            {user.userrole === "admin" && (
+              <span>
+                 Admin has {Array.isArray(user?.useraccess) && user.useraccess.length
               ? user.useraccess.join(", ")
-              : "None"}
+              : "None"} access.
+              </span>
+            )}
+            {user.userrole === "" && (
+              <span>
+                 Normal user with no access.
+              </span>
+            )}
           </p>
+          
         </>
       )}
     </div>

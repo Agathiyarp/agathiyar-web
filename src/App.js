@@ -33,9 +33,12 @@ import UserCredits from './components/admin/users/usercredits';
 import BookingConfirmation from './components/admin/booking/bookingconfirmation';
 import BlockRooms from './components/admin/booking/blockrooms';
 import ImageUpload from './components/admin/images/imageupload';
+import HomeImageUpload from './components/admin/images/homeimageupload';
 import ManualBooking from './components/admin/manualbooking/manualbooking';
 import DailyAvailability from './components/admin/dailyavailability/dailyavailability';
 import { Navigate } from 'react-router-dom';
+import ForgotPassword from './components/login/forgotpassword';
+
 
 /**
  * Special route for /login and /registration
@@ -79,6 +82,11 @@ const App = () => {
             path="/registration" 
             element={<PublicOnlyRoute element={<AppRegistration />} />} 
           />
+          <Route
+            path="/forgot-password"
+            element={<PublicOnlyRoute element={<ForgotPassword />} />}
+          />
+
 
 
           {/* =================================
@@ -107,6 +115,7 @@ const App = () => {
             <Route path="/updateuser" element={<UpdateUser />} />
             <Route path="/videoupload" element={<VideoUpload />}/>
             <Route path="/imageupload" element={<ImageUpload />}/>
+            <Route path="/homeimageupload" element={<HomeImageUpload />}/>
             <Route path="/eventlist" element={<EventList />}/>
             <Route path="/roomlist" element={<RoomList />} />
             <Route path="/eventdetails" element={<EventDetails />} />

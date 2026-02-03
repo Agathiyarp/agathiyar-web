@@ -580,7 +580,7 @@ const ProfilePage = () => {
         </Box>
         <ToastContainer 
           position="top-right" 
-          autoClose={3000} 
+          autoClose={1000} 
           hideProgressBar={false}
           style={{ top: '100px' }}
         />

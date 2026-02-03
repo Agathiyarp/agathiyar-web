@@ -54,3 +54,42 @@
 .clear-button:hover {
   background-color: #d32f2f;
 }
+
+
+.video-list-simple {
+  list-style: none;
+  padding: 0;
+  margin-top: 20px;
+}
+
+.video-row {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 6px 0;
+  border-bottom: 1px solid #eee;
+}
+
+.video-thumb {
+  width: 60px;
+  height: 45px;
+  object-fit: cover;
+  border-radius: 3px;
+}
+
+.video-name {
+  flex: 1;
+  font-size: 14px;
+}
+
+.upload-container  .delete-btn {
+  background: #e74c3c;
+  color: #fff;
+  border: none;
+  padding: 4px 10px;
+  font-size: 12px;
+  cursor: pointer;
+  border-radius: 3px;
+  max-width: 150px;
+}
+

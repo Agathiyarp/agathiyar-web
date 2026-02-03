@@ -28,6 +28,10 @@
   overflow-x: auto;
 }
 
+.user-credits-table1 table {
+  width: 550px;
+}
+
 .user-credits-table th,
 .user-credits-table td {
   padding: 10px;
@@ -48,6 +52,20 @@
 
 .update-btn:hover {
   background-color: #115293;
+}
+
+.history-btn {
+  padding: 6px 12px;
+  font-size: 14px;
+  background-color: #4caf50;
+  color: white;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+}
+
+.history-btn:hover {
+  background-color: #4caf50;
 }
 
 .update-credit-text {

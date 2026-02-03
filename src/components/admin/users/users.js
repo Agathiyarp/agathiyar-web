@@ -1,26 +1,31 @@
-import React, { useState, useEffect } from 'react';
-import './users.css';
-import 'jspdf-autotable';
-import * as XLSX from 'xlsx';
+import React, { useState, useEffect } from "react";
+import "./users.css";
 import MenuBar from "../../menumain/menubar";
-import { formatDate } from '../../common/utils';
+import { formatDate } from "../../common/utils";
 
 const UserManagement = () => {
-  const [userId, setUserId] = useState('');
-  const [userDetails, setUserDetails] = useState(null);
-  const [userList, setUserList] = useState([]);
+  const [search, setSearch] = useState("");
   const [allUsers, setAllUsers] = useState([]);
-  const [noResults, setNoResults] = useState(false);
+  const [userList, setUserList] = useState([]);
   const [loading, setLoading] = useState(false);
+  const [noResults, setNoResults] = useState(false);
+
+  // Edit states
+  const [editUserId, setEditUserId] = useState(null);
+  const [editEmail, setEditEmail] = useState("");
+  const [editPhone, setEditPhone] = useState("");
+
+  // TODO: replace with actual logged-in role
+  const isAdmin = true;
 
   useEffect(() => {
-    fetchAllUsers();
+    fetchUsers();
   }, []);
 
-  const fetchAllUsers = async () => {
+  const fetchUsers = async () => {
     setLoading(true);
     try {
-      const res = await fetch('https://www.agathiyarpyramid.org/api/users');
+      const res = await fetch("https://www.agathiyarpyramid.org/api/users");
       const data = await res.json();
       if (res.ok && Array.isArray(data)) {
         setAllUsers(data);
@@ -28,101 +33,215 @@ const UserManagement = () => {
         setNoResults(data.length === 0);
       }
     } catch (err) {
-      console.error(err);
       alert("Failed to load users");
     }
     setLoading(false);
   };
 
-  const handleFilter = () => {
-    let filtered = [...allUsers];
-    if (userId.trim()) {
-      const searchVal = userId.toLowerCase();
-      filtered = filtered.filter(user =>
-        (user.usermemberid && user.usermemberid.toLowerCase().includes(searchVal)) ||
-        (user.phoneNumber && user.phoneNumber.toLowerCase().includes(searchVal)) ||
-        (user.username && user.username.toLowerCase().includes(searchVal))
-      );
-    }
-    setUserDetails(null);
+  /* ---------------- SEARCH ---------------- */
+  const handleSearch = () => {
+    const val = search.toLowerCase().trim();
+    const filtered = allUsers.filter(
+      (u) =>
+        u.usermemberid?.toLowerCase().includes(val) ||
+        u.phoneNumber?.toLowerCase().includes(val) ||
+        u.username?.toLowerCase().includes(val)
+    );
     setUserList(filtered);
     setNoResults(filtered.length === 0);
+    setEditUserId(null);
   };
 
-  const exportToExcel = () => {
-    const ws = XLSX.utils.json_to_sheet(userList);
-    const wb = XLSX.utils.book_new();
-    XLSX.utils.book_append_sheet(wb, ws, "Users");
-    XLSX.writeFile(wb, "user_list.xlsx");
+  /* ---------------- EDIT ---------------- */
+  const startEdit = (user) => {
+    setEditUserId(user.usermemberid);
+    setEditEmail(user.email || "");
+    setEditPhone(user.phoneNumber || "");
+  };
+
+  const cancelEdit = () => {
+    setEditUserId(null);
+    setEditEmail("");
+    setEditPhone("");
+  };
+
+  const saveEdit = async (id) => {
+    if (!editEmail && !editPhone) {
+      alert("Nothing to update");
+      return;
+    }
+
+    try {
+      const res = await fetch(
+        `https://www.agathiyarpyramid.org/api/users/${id}`,
+        {
+          method: "PUT",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({
+            email: editEmail,
+            phoneNumber: editPhone,
+          }),
+        }
+      );
+
+      if (!res.ok) throw new Error();
+      alert("User updated successfully");
+      cancelEdit();
+      fetchUsers();
+    } catch {
+      alert("Update failed");
+    }
+  };
+
+  /* ---------------- SOFT DELETE ---------------- */
+  const softDeleteUser = async (id) => {
+    if (!window.confirm("Deactivate this user?")) return;
+
+    try {
+      const res = await fetch(
+        `https://www.agathiyarpyramid.org/api/users/${id}`,
+        { method: "DELETE" }
+      );
+
+      if (!res.ok) throw new Error();
+      alert("User deactivated");
+      fetchUsers();
+    } catch {
+      alert("Delete failed");
+    }
+  };
+
+  /* ---------------- CSV EXPORT ---------------- */
+  const exportCSV = () => {
+    if (userList.length === 0) return;
+
+    const headers = Object.keys(userList[0]);
+    const rows = [
+      headers.join(","),
+      ...userList.map((u) =>
+        headers
+          .map((h) => `"${(u[h] ?? "").toString().replace(/"/g, '""')}"`)
+          .join(",")
+      ),
+    ];
+
+    const blob = new Blob([rows.join("\n")], { type: "text/csv" });
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement("a");
+    a.href = url;
+    a.download = `users_${new Date().toISOString().slice(0, 10)}.csv`;
+    a.click();
+    URL.revokeObjectURL(url);
   };
 
   return (
     <div className="user-mgmt-container">
       <MenuBar />
-      <h2>User List</h2>
+      <h2>User Management</h2>
 
+      {/* TOOLBAR */}
       <div className="user-toolbar">
-        <div className="search-group">
-          <input
-            className="input-user"
-            type="text"
-            placeholder="Search by MemberID, Phone or Username"
-            value={userId}
-            onChange={(e) => setUserId(e.target.value)}
-          />
-          <button className="btn-user btn-blue" onClick={handleFilter}>Search</button>
-          <button className="btn-user btn-green export-top" onClick={exportToExcel}>Export Excel</button>
-        </div>
+        <input
+          className="input-user"
+          placeholder="Search MemberID / Phone / Username"
+          value={search}
+          onChange={(e) => setSearch(e.target.value)}
+        />
+        <button className="btn-user btn-blue" onClick={handleSearch}>
+          Search
+        </button>
+        <button className="btn-user btn-green" onClick={exportCSV}>
+          Export CSV
+        </button>
       </div>
 
       {loading && <p>Loading...</p>}
+      {noResults && <p>No users found</p>}
 
-      {userDetails && (
-        <div className="user-details">
-          <h4>User Details</h4>
-          <table>
+      {/* TABLE */}
+      {userList.length > 0 && (
+        <div className="table-scroll-wrapper">
+          <table className="user-table">
+            <thead>
+              <tr>
+                <th>Member ID</th>
+                <th>Username</th>
+                <th>Name</th>
+                <th>Email</th>
+                <th>Phone</th>
+                <th>User Type</th>
+                <th>Created</th>
+                {isAdmin && <th>Actions</th>}
+              </tr>
+            </thead>
             <tbody>
-              <tr><td><strong>Name</strong></td><td>{userDetails.name || '-'}</td></tr>
-              <tr><td><strong>Email</strong></td><td>{userDetails.email || '-'}</td></tr>
-              <tr><td><strong>Phone</strong></td><td>{userDetails.phoneNumber || '-'}</td></tr>
-              <tr><td><strong>Country</strong></td><td>{userDetails.country || '-'}</td></tr>
-              <tr><td><strong>UserName</strong></td><td>{userDetails.username || '-'}</td></tr>
-              <tr><td><strong>MemberID</strong></td><td>{userDetails.usermemberid || '-'}</td></tr>
-              <tr><td><strong>UserType</strong></td><td>{userDetails.usertype || '-'}</td></tr>
-              <tr><td><strong>Address</strong></td><td>{userDetails.address || '-'}</td></tr>
-              <tr><td><strong>Date of Birth</strong></td><td>{userDetails.dateofbirth || '-'}</td></tr>
-              <tr><td><strong>Gender</strong></td><td>{userDetails.gender || '-'}</td></tr>
+              {userList.map((u) => (
+                <tr key={u.usermemberid}>
+                  <td>{u.usermemberid}</td>
+                  <td>{u.username}</td>
+                  <td>{u.name}</td>
+
+                  <td>
+                    {editUserId === u.usermemberid ? (
+                      <input
+                        value={editEmail}
+                        onChange={(e) => setEditEmail(e.target.value)}
+                      />
+                    ) : (
+                      u.email
+                    )}
+                  </td>
+
+                  <td>
+                    {editUserId === u.usermemberid ? (
+                      <input
+                        value={editPhone}
+                        onChange={(e) => setEditPhone(e.target.value)}
+                      />
+                    ) : (
+                      u.phoneNumber
+                    )}
+                  </td>
+
+                  <td>{u.usertype || "Normal User"}</td>
+                  <td>{formatDate(u.createddate)}</td>
+
+                  {isAdmin && (
+                    <td>
+                      {editUserId === u.usermemberid ? (
+                        <>
+                          <button
+                            className="btn-green"
+                            onClick={() => saveEdit(u.usermemberid)}
+                          >
+                            Save
+                          </button>
+                          <button className="btn-gray" onClick={cancelEdit}>
+                            Cancel
+                          </button>
+                        </>
+                      ) : (
+                        <>
+                          <button
+                            className="btn-blue"
+                            onClick={() => startEdit(u)}
+                          >
+                            Edit
+                          </button>
+                          <button
+                            className="btn-red"
+                            onClick={() => softDeleteUser(u.usermemberid)}
+                          >
+                            Deactivate
+                          </button>
+                        </>
+                      )}
+                    </td>
+                  )}
+                </tr>
+              ))}
             </tbody>
           </table>
-        </div>
-      )}
-
-      {noResults && <div className="no-results"><p>No users found.</p></div>}
-
-      {userList?.length > 0 && (
-        <div className="user-list1">
-           <div className="table-scroll-wrapper">
-            <table>
-              <thead>
-                <tr>
-                  <th>User ID</th><th>Username</th><th>Name</th><th>Email</th><th>Mobile</th><th>User Type</th><th>Created At</th>
-                </tr>
-              </thead>
-              <tbody>
-                {userList.map((user, i) => (
-                  <tr key={i}>
-                    <td>{user.usermemberid}</td>
-                    <td>{user.username}</td>
-                    <td>{user.name}</td>
-                    <td>{user.email}</td>
-                    <td>{user.phoneNumber}</td>
-                    <td>{user.usertype || 'Not specified'}</td>
-                    <td>{formatDate(user.createddate)}</td>
-                  </tr>
-                ))}
-              </tbody>
-            </table>
-          </div>
         </div>
       )}
     </div>
