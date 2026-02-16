@@ -17,7 +17,7 @@ const AddEvent = () => {
     reservedeposit: '',
     contactdetails: '',
     imageurl: '',
-    language: '',
+    language: [],
   });
 
   const [selectedImage, setSelectedImage] = useState(null);
@@ -58,6 +58,24 @@ const AddEvent = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+    if (
+      !formData.startdate ||
+      !formData.enddate ||
+      !formData.place.trim() ||
+      !formData.retreatcost.trim() ||
+      !formData.eventdescription.trim() ||
+      !formData.contactdetails.trim() ||
+      formData.language.length === 0
+    ) {
+      alert("Please fill all mandatory fields including Language.");
+      return;
+    }
+
+    if (new Date(formData.enddate) < new Date(formData.startdate)) {
+      alert("End Date cannot be earlier than Start Date");
+      return;
+    }
+
     setLoading(true);
 
     try {
@@ -148,7 +166,7 @@ const AddEvent = () => {
           <input type="text" name="place" placeholder="Place *" value={formData.place} onChange={handleChange} required />
         </div>
         <div className="row">
-          <input type="text" name="retreatcost" placeholder="Retreat Cost" value={formData.retreatcost} onChange={handleChange} />
+          <input type="text" name="retreatcost" placeholder="Retreat Cost" value={formData.retreatcost} onChange={handleChange} required/>
           <input type="text" name="reservedeposit" placeholder="Reserve Deposit" value={formData.reservedeposit} onChange={handleChange} />
         </div>
         <div className="row">
@@ -176,8 +194,8 @@ const AddEvent = () => {
 
         </div>
 
-        <textarea name="eventdescription" placeholder="Describe your retreat event..." value={formData.eventdescription} onChange={handleChange}></textarea>
-        <textarea name="contactdetails" placeholder="Phone, email, address..." value={formData.contactdetails} onChange={handleChange}></textarea>
+        <textarea name="eventdescription" placeholder="Describe your retreat event..." value={formData.eventdescription} onChange={handleChange} required></textarea>
+        <textarea name="contactdetails" placeholder="Phone, email, address..." value={formData.contactdetails} onChange={handleChange} required></textarea>
         <button type="submit" className="submit-btn" disabled={loading}>
           {loading ? 'Submitting...' : 'CREATE EVENT'}
         </button>
