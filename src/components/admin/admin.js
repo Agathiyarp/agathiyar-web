@@ -119,7 +119,7 @@ const Admin = () => {
           <div className="admin-profile">
             <div className="profile-avatar" onClick={handleAvatarClick}>
               {avatar ? (
-                <img src={avatar} alt="Avatar" className="avatar-img" />
+                <img src={avatar} alt="Avatar" className="avatar-img" loading="lazy" />
               ) : (
                 "👤"
               )}
@@ -137,35 +137,34 @@ const Admin = () => {
             <p className="profile-role">Role: {userRole?.toUpperCase()}</p>
           </div>
           <div>
-          {[ "Users", "Events", "Rooms", "Upload"].map((group) => {
-            const groupCards = cardsWithStatus.filter(
-              (card) => card.group === group
-            );
+            {["Users", "Events", "Rooms", "Upload"].map((group) => {
+              const groupCards = cardsWithStatus.filter(
+                (card) => card.group === group
+              );
 
-            return (
-              groupCards.length > 0 && (
-                <div key={group} className="card-group">
-                  <h2 className="group-title">{group}</h2>
-                  <div className="dashboard-cards">
-                    {groupCards.map((card) => (
-                      <div
-                        key={card.key}
-                        className={`dashboard-card ${card.className} ${
-                          card.enabled ? "" : "disabled"
-                        }`}
-                        onClick={() =>
-                          handleCardClick(card.cardName, card.enabled)
-                        }
-                      >
-                        <div className={`card-icon ${card.iconClass}`}></div>
-                        <h4 className="card-title">{card.label}</h4>
-                      </div>
-                    ))}
+              return (
+                groupCards.length > 0 && (
+                  <div key={group} className="card-group">
+                    <h2 className="group-title">{group}</h2>
+                    <div className="dashboard-cards">
+                      {groupCards.map((card) => (
+                        <div
+                          key={card.key}
+                          className={`dashboard-card ${card.className} ${card.enabled ? "" : "disabled"
+                            }`}
+                          onClick={() =>
+                            handleCardClick(card.cardName, card.enabled)
+                          }
+                        >
+                          <div className={`card-icon ${card.iconClass}`}></div>
+                          <h4 className="card-title">{card.label}</h4>
+                        </div>
+                      ))}
+                    </div>
                   </div>
-                </div>
-              )
-            );
-          })}
+                )
+              );
+            })}
           </div>
 
           {/* Cards */}

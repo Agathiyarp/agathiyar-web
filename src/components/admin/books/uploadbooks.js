@@ -165,6 +165,7 @@ export default function UploadBooks() {
                   src={imagePreview}
                   alt="Cover Preview"
                   className="image-preview"
+                  loading="lazy"
                 />
               </>
             )}

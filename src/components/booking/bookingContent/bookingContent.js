@@ -20,7 +20,7 @@ const RoomBook = ({ searchResult, enabledDateRanges }) => {
   const MAX_DAYS_ALLOWED = 10;
 
   const userInfo = sessionStorage.getItem('userDetails')
-  const userDetails = userInfo ? JSON.parse(userInfo): '';
+  const userDetails = userInfo ? JSON.parse(userInfo) : '';
 
   const userType = userDetails?.usertype?.trim().toLowerCase() || "";
 
@@ -151,7 +151,7 @@ const RoomBook = ({ searchResult, enabledDateRanges }) => {
       alert(`Booking is not allowed between restricted dates.\nPlease select a different check-in or check-out Date.`);
       return;
     }
-    if(validDays.length === 0) {
+    if (validDays.length === 0) {
       alert("Rooms are not available for the current date. Please select a different date.");
       return;
     }
@@ -198,6 +198,7 @@ const RoomBook = ({ searchResult, enabledDateRanges }) => {
                       src={room.image}
                       alt={room.roomtype}
                       className="room-card__image"
+                      loading="lazy"
                     />
                   </div>
 
@@ -233,77 +234,77 @@ const RoomBook = ({ searchResult, enabledDateRanges }) => {
                           </span>{" "}
                           {validDays?.length}
                         </p>
-                          <>
-                            <div className="checkin-date">
-                              <label className="semi-bold">
-                                <span className="icon-date">🗓️</span>
-                                <span>Check-In Date:</span>
-                              </label>
-                              <DatePicker
-                                selected={new Date(checkInDate)}
-                                onChange={(date) => {
-                                  const formatted = formatDate(date);
-                                  if (checkInDisabledDates.includes(formatted)) {
-                                    alert("This Check-In date is unavailable.");
-                                    return;
-                                  }
-                                  setCheckInDate(formatted);
-                                }}
-                                dateFormat="yyyy-MM-dd"
-                                minDate={new Date()}
-                                excludeDates={checkInDisabledDates.map(dateStr => new Date(dateStr))}
-                                className="date-input"
-                                dayClassName={(date) => {
-                                  const yyyy = date.getFullYear();
-                                  const mm = String(date.getMonth() + 1).padStart(2, '0');
-                                  const dd = String(date.getDate()).padStart(2, '0');
-                                  const formatted = `${yyyy}-${mm}-${dd}`;
-                                  console.log(disabledDates, 'formatted:', formatted);
+                        <>
+                          <div className="checkin-date">
+                            <label className="semi-bold">
+                              <span className="icon-date">🗓️</span>
+                              <span>Check-In Date:</span>
+                            </label>
+                            <DatePicker
+                              selected={new Date(checkInDate)}
+                              onChange={(date) => {
+                                const formatted = formatDate(date);
+                                if (checkInDisabledDates.includes(formatted)) {
+                                  alert("This Check-In date is unavailable.");
+                                  return;
+                                }
+                                setCheckInDate(formatted);
+                              }}
+                              dateFormat="yyyy-MM-dd"
+                              minDate={new Date()}
+                              excludeDates={checkInDisabledDates.map(dateStr => new Date(dateStr))}
+                              className="date-input"
+                              dayClassName={(date) => {
+                                const yyyy = date.getFullYear();
+                                const mm = String(date.getMonth() + 1).padStart(2, '0');
+                                const dd = String(date.getDate()).padStart(2, '0');
+                                const formatted = `${yyyy}-${mm}-${dd}`;
+                                console.log(disabledDates, 'formatted:', formatted);
 
-                                  return checkInDisabledDates.includes(formatted) ? "blocked-date" : undefined;
-                                }}
-                              />
-                            </div>
+                                return checkInDisabledDates.includes(formatted) ? "blocked-date" : undefined;
+                              }}
+                            />
+                          </div>
 
-                            <div className="checkout-date">
-                              <label className="semi-bold">
-                                <span className="icon-date">🗓️</span>
-                                <span>Check-Out Date:</span>
-                              </label>
-                              <DatePicker
-                                selected={new Date(checkOutDate)}
-                                onChange={(date) => {
-                                  const formatted = formatDate(date);
-                                  const diffDays =
-                                    (date - new Date(checkInDate)) / (1000 * 60 * 60 * 24);
+                          <div className="checkout-date">
+                            <label className="semi-bold">
+                              <span className="icon-date">🗓️</span>
+                              <span>Check-Out Date:</span>
+                            </label>
+                            <DatePicker
+                              selected={new Date(checkOutDate)}
+                              onChange={(date) => {
+                                const formatted = formatDate(date);
+                                const diffDays =
+                                  (date - new Date(checkInDate)) / (1000 * 60 * 60 * 24);
 
-                                  if (checkInDisabledDates.includes(formatted)) {
-                                    alert("This Check-Out date is unavailable.");
-                                    return;
-                                  }
+                                if (checkInDisabledDates.includes(formatted)) {
+                                  alert("This Check-Out date is unavailable.");
+                                  return;
+                                }
 
-                                  if (diffDays > MAX_DAYS_ALLOWED) {
-                                    alert(`Check-in and Check-out difference cannot exceed ${MAX_DAYS_ALLOWED} days.`);
-                                  } else {
-                                    setCheckOutDate(formatted);
-                                  }
-                                }}
-                                dateFormat="yyyy-MM-dd"
-                                minDate={new Date()}
-                                excludeDates={checkInDisabledDates.map(dateStr => new Date(dateStr))}
-                                className="date-input"
-                                dayClassName={(date) => {
-                                  const yyyy = date.getFullYear();
-                                  const mm = String(date.getMonth() + 1).padStart(2, '0');
-                                  const dd = String(date.getDate()).padStart(2, '0');
-                                  const formatted = `${yyyy}-${mm}-${dd}`;
-                                  console.log(disabledDates, 'formatted:', formatted);
+                                if (diffDays > MAX_DAYS_ALLOWED) {
+                                  alert(`Check-in and Check-out difference cannot exceed ${MAX_DAYS_ALLOWED} days.`);
+                                } else {
+                                  setCheckOutDate(formatted);
+                                }
+                              }}
+                              dateFormat="yyyy-MM-dd"
+                              minDate={new Date()}
+                              excludeDates={checkInDisabledDates.map(dateStr => new Date(dateStr))}
+                              className="date-input"
+                              dayClassName={(date) => {
+                                const yyyy = date.getFullYear();
+                                const mm = String(date.getMonth() + 1).padStart(2, '0');
+                                const dd = String(date.getDate()).padStart(2, '0');
+                                const formatted = `${yyyy}-${mm}-${dd}`;
+                                console.log(disabledDates, 'formatted:', formatted);
 
-                                  return checkInDisabledDates.includes(formatted) ? "blocked-date" : undefined;
-                                }}
-                              />
-                            </div>
-                          </>
+                                return checkInDisabledDates.includes(formatted) ? "blocked-date" : undefined;
+                              }}
+                            />
+                          </div>
+                        </>
                       </div>
                     </div>
 

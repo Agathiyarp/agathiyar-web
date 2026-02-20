@@ -15,6 +15,7 @@
   color: #2b8a3e;
   margin-bottom: 30px;
 }
+
 .user-list1 {
   display: flex;
   flex-direction: column;
@@ -34,11 +35,11 @@
 
 .table-scroll-wrapper table {
   width: 100%;
-  min-width: 800px; /* Increased min-width to ensure scrolling */
+  min-width: 800px;
   border-collapse: collapse;
   table-layout: auto;
-  white-space: nowrap;
-  margin: 0; /* Remove default margin */
+  white-space: normal;
+  margin: 0;
 }
 
 .section {
@@ -114,9 +115,41 @@ table {
 table th,
 table td {
   border: 1px solid #ddd;
-  padding: 10px;
+  padding: 12px 10px;
   text-align: left;
-  min-width: 100px; /* Ensure minimum column width */
+  min-width: 100px;
+  overflow-wrap: break-word;
+  /* Ensure long text wraps */
+  word-break: break-word;
+  vertical-align: middle;
+}
+
+/* Specific column adjustments for better balance */
+.user-table th:nth-child(1),
+.user-table td:nth-child(1) {
+  /* Member ID */
+  width: 130px;
+  min-width: 130px;
+  white-space: nowrap;
+}
+
+.user-table th:nth-child(2),
+.user-table td:nth-child(2) {
+  /* Username */
+  max-width: 150px;
+}
+
+.user-table th:nth-child(3),
+.user-table td:nth-child(3) {
+  /* Name */
+  min-width: 180px;
+  max-width: 250px;
+}
+
+.user-table th:nth-child(4),
+.user-table td:nth-child(4) {
+  /* Email */
+  max-width: 200px;
 }
 
 table th {
@@ -126,6 +159,8 @@ table th {
   position: sticky;
   top: 0;
   z-index: 10;
+  white-space: nowrap;
+  /* Keep headers on one line if possible */
 }
 
 .export-buttons {
@@ -257,9 +292,11 @@ table th {
 @media screen and (max-width: 768px) {
   .user-mgmt-container {
     padding: 20px 15px;
-    margin: 20px 10px; /* Add side margins */
+    margin: 20px 10px;
+    /* Add side margins */
     margin-top: 100px;
-    width: calc(100% - 20px); /* Account for margins */
+    width: calc(100% - 20px);
+    /* Account for margins */
     box-sizing: border-box;
   }
 
@@ -285,24 +322,28 @@ table th {
   }
 
   .table-scroll-wrapper table {
-    min-width: 700px; /* Ensure table is wider than container on mobile */
+    min-width: 700px;
+    /* Ensure table is wider than container on mobile */
   }
 
   .user-list table th,
   .user-list table td {
     font-size: 13px;
     padding: 8px;
-    min-width: 120px; /* Ensure readable column width */
+    min-width: 120px;
+    /* Ensure readable column width */
   }
 
   /* Remove conflicting display: block */
   .user-details table {
-    display: table; /* Keep as table, not block */
+    display: table;
+    /* Keep as table, not block */
     width: 100%;
   }
 
   .user-list table {
-    display: table; /* Keep as table, not block */
+    display: table;
+    /* Keep as table, not block */
     width: 100%;
   }
 }
@@ -343,7 +384,8 @@ table th {
   }
 
   .table-scroll-wrapper table {
-    min-width: 1000px; /* Force horizontal scroll on small screens */
+    min-width: 1000px;
+    /* Force horizontal scroll on small screens */
   }
 
   .user-list table th,
@@ -374,7 +416,8 @@ table th {
   }
 
   .table-scroll-wrapper table {
-    min-width: 1100px; /* Even wider to ensure scrolling */
+    min-width: 1100px;
+    /* Even wider to ensure scrolling */
   }
 
   .user-list table th,

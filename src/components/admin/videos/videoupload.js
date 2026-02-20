@@ -148,7 +148,7 @@ export default function VideoUpload() {
           </p>
 
           {submittedLink.includes("youtube.com") ||
-          submittedLink.includes("youtu.be") ? (
+            submittedLink.includes("youtu.be") ? (
             <div className="video-embed">
               <iframe
                 width="100%"
@@ -186,6 +186,7 @@ export default function VideoUpload() {
                 src={getThumbnail(video.link)}
                 alt=""
                 className="video-thumb"
+                loading="lazy"
               />
 
               <span className="video-name">{video.name}</span>

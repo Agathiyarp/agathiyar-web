@@ -3,7 +3,7 @@
 .imageupload-container {
   max-width: 100%;
   padding: 20px 15px;
-  text-align: center;
+  text-align: left;
   font-family: Arial, sans-serif;
   margin-top: 100px;
 }
@@ -11,6 +11,7 @@
 .upload-image-text {
   color: #2ecc71;
   margin-bottom: 20px;
+  text-align: left;
 }
 
 /* ================== INPUTS ================== */
@@ -18,7 +19,7 @@
 .input-field {
   display: block;
   width: 100%;
-  margin: 10px auto;
+  margin: 10px 0;
   padding: 10px;
   font-size: 15px;
   border: 1px solid #ccc;
@@ -60,19 +61,19 @@
 
 .gallery-list-container {
   margin-top: 40px;
-  padding-top: 20px;
   border-top: 1px solid #e0e0e0;
 }
 
-.gallery-list-container h3 {
-  text-align: center;
-  font-size: 18px;
+.gallery-list-container h2 {
+  text-align: left;
+  font-size: 28px;
   margin-bottom: 15px;
-  color: #333;
+  margin-top: 20px;
+  color: #2ecc71;
 }
 
 .empty-text {
-  text-align: center;
+  text-align: left;
   color: #777;
   font-style: italic;
   font-size: 14px;

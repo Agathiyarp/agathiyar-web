@@ -5,7 +5,7 @@
 }
 
 .books-container .align-center {
-  text-align: center;
+  text-align: left;
   margin-bottom: 16px;
 }
 
@@ -51,7 +51,7 @@
 
 /* BUTTONS */
 .view-btn1,
-.delete-btn1{
+.delete-btn1 {
   flex: 1;
   border-radius: 4px;
   cursor: pointer;
@@ -75,7 +75,8 @@
   }
 
   .book-actions {
-    flex-direction: column; /* easier tap */
+    flex-direction: column;
+    /* easier tap */
   }
 
   .view-btn1,

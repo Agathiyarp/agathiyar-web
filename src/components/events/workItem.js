@@ -36,7 +36,7 @@ const WorkshopItem = ({
       onLoginRequired();
       return;
     }
-     const queryParams = new URLSearchParams();
+    const queryParams = new URLSearchParams();
 
     if (startdate) queryParams.append("startdate", startdate);
     if (enddate) queryParams.append("enddate", enddate);
@@ -45,7 +45,7 @@ const WorkshopItem = ({
     if (numberofdays) queryParams.append("eventdays", numberofdays);
     if (place) queryParams.append("eventplace", place);
     if (contactdetails) queryParams.append("contact", contactdetails);
-    
+
 
     navigate(`/eventregister/${id}?${queryParams.toString()}`);
   };
@@ -82,12 +82,12 @@ const WorkshopItem = ({
           <span>CLOSES IN</span>
           <strong>{timeLeft}</strong>
         </div>
-        <div className="image-placeholder" onClick={() =>  {
-           if (!isDefaultImage) {
-              onImageClick(imageurl);
-            }
+        <div className="image-placeholder" onClick={() => {
+          if (!isDefaultImage) {
+            onImageClick(imageurl);
+          }
         }}>
-          <img className="event-image" src={finalImage} alt="event" />
+          <img className="event-image" src={finalImage} alt="event" loading="lazy" />
           <div className="image-overlay"></div>
         </div>
         <div className="workshop-host-container">
@@ -99,9 +99,9 @@ const WorkshopItem = ({
         <div className="workshop-info">
           <div className="register-button">
             <button disabled={isEventCompleted(enddate)} style={{
-                opacity: isEventCompleted(enddate) ? 0.6 : 1,
-                cursor: isEventCompleted(enddate) ? "not-allowed" : "pointer",
-              }} className="btn-register" onClick={() => handleRegister(eventid)}>
+              opacity: isEventCompleted(enddate) ? 0.6 : 1,
+              cursor: isEventCompleted(enddate) ? "not-allowed" : "pointer",
+            }} className="btn-register" onClick={() => handleRegister(eventid)}>
               <span className="register-text">Register</span>
               <div className="button-shine"></div>
             </button>

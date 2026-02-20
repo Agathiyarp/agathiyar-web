@@ -39,21 +39,7 @@ const Home = () => {
       });
   }, []);
 
-  if (loading) {
-    return (
-      <div style={{ padding: "80px", textAlign: "center" }}>
-        Loading home content...
-      </div>
-    );
-  }
 
-  // if (error) {
-  //   return (
-  //     <div style={{ padding: "80px", textAlign: "center", color: "red" }}>
-  //       Failed to load content. Please try again later.
-  //     </div>
-  //   );
-  // }
 
   return (
     <div className="app-container">
@@ -63,7 +49,14 @@ const Home = () => {
       {/* Video Section */}
       <div className="carousel-container" style={{ marginTop: "64px" }}>
         <div className="video-wrapper">
-          <video controls autoPlay muted loop>
+          <video
+            controls
+            autoPlay
+            muted
+            loop
+            preload="metadata"
+            poster="https://agathiyarpyramid.org/images/video-poster.jpg"
+          >
             <source
               src="https://www.agathiyarpyramid.org/videos/Meditation.mp4"
               type="video/mp4"
@@ -118,7 +111,7 @@ const Home = () => {
       {/* Vegetarianism */}
       <ImageSection
         imageSrc={images[SECTIONS[3].value]}
-         title={SECTIONS[3].label}
+        title={SECTIONS[3].label}
         content="Vegetarianism is valued in many spiritual traditions as a way to practice non-violence (ahimsa) and compassion toward all living beings. It is believed to purify the body and mind, promoting inner peace, clarity, and emotional balance—qualities essential for spiritual growth. In yogic and meditative practices, a vegetarian diet is considered sattvic, meaning pure and calming, helping improve focus and awareness. Additionally, avoiding harm to animals is thought to generate positive karma and support one’s spiritual evolution. Thus, vegetarianism is seen not just as a dietary choice, but as a path to higher consciousness and ethical living."
       />
 

@@ -48,6 +48,7 @@ const BookGrid = () => {
             <img
               src={book.imageUrl}
               alt={book.title}
+              loading="lazy"
               onError={(e) => (e.target.src = defaultCover)}
             />
             <h4>{book.title}</h4>

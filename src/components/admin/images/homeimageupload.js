@@ -115,7 +115,7 @@ const HomeImageUpload = () => {
     <div className="imageupload-container">
       <MenuBar />
 
-      <h2 className="upload-image-text">Upload Home Image</h2>
+      <h2 className="upload-image-text">Upload Home Images</h2>
 
       <form onSubmit={handleSubmit}>
         {/* SECTION (MANDATORY) */}
@@ -168,6 +168,7 @@ const HomeImageUpload = () => {
                 "",
               )}`}
               alt={galleryImage.name}
+              loading="lazy"
             />
 
             <div className="gallery-info">

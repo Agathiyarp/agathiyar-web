@@ -65,7 +65,7 @@ const UpcomingWorkshops = () => {
               onClick={() => setPreviewImage(null)}
             />
             <div className="preview-image-container">
-              <img src={previewImage} alt="Preview" className="preview-image" />
+              <img src={previewImage} alt="Preview" className="preview-image" loading="lazy" />
             </div>
           </div>
         </div>

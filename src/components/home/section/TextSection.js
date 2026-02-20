@@ -10,7 +10,7 @@ const TextSection = ({ title, description, image }) => {
       </div>
 
       <div className="text-image-column">
-        <img src={image} alt={title} className="text-section-image" />
+        <img src={image} alt={title} className="text-section-image" loading="lazy" />
       </div>
     </div>
   );

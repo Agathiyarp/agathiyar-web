@@ -124,7 +124,7 @@ const BlockRooms = () => {
   return (
     <div className="schedule-form-container">
       <MenuBar />
-      <h2>Block Room Schedule</h2>
+      <h2 style={{ color: '#4caf50', marginTop: '20px' }}>Block Room Schedule</h2>
 
       {/* Add New Schedule Form */}
       <form onSubmit={handleSubmit} className="schedule-form">
@@ -148,7 +148,7 @@ const BlockRooms = () => {
       </form>
 
       {/* Schedule Table */}
-      <h3 style={{marginTop: '20px', color: '#4caf50', fontSize: '24px'}}>Existing Schedules</h3>
+      <h3 style={{ marginTop: '20px', color: '#4caf50', fontSize: '24px' }}>Existing Schedules</h3>
       <table className="schedule-table">
         <thead>
           <tr>

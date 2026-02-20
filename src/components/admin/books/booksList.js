@@ -79,6 +79,7 @@ export default function BooksList() {
             <img
               src={getPublicUrl(book.coverimgpath)}
               alt={book.filename}
+              loading="lazy"
             />
 
             <h4>{book.filename}</h4>

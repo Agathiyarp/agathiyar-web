@@ -60,6 +60,7 @@ const ImagePreview = ({ images, onClose }) => {
               src={images[currentIndex]}
               alt={`preview-${currentIndex}`}
               className="main-preview-image"
+              loading="lazy"
               style={{
                 objectFit: "contain", // always contain for simplicity now
               }}
@@ -77,6 +78,7 @@ const ImagePreview = ({ images, onClose }) => {
               alt={`thumbnail-${i}`}
               className={`thumbnail ${i === currentIndex ? "active" : ""}`}
               onClick={() => setCurrentIndex(i)}
+              loading="lazy"
             />
           ))}
         </div>

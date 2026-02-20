@@ -19,7 +19,7 @@ const Booking = () => {
   const userStr = sessionStorage.getItem("userDetails");
   const userDetails = userStr ? JSON.parse(userStr) : null;
   const userType = userDetails?.usertype?.trim().toLowerCase() || "";
-  const location = useLocation();   
+  const location = useLocation();
 
   useEffect(() => {
     if (userDetails) {
@@ -100,7 +100,7 @@ const Booking = () => {
   }, [selectedDate]);
 
   // Check if selectedDate is inside any restricted enabled date range
- const isDateBlocked = enabledDateRanges.length > 0;
+  const isDateBlocked = enabledDateRanges.length > 0;
 
 
   return (
@@ -126,16 +126,23 @@ const Booking = () => {
 
         {isDateBlocked && (
           <div className="custom-date-warning">
-            ⚠️ Booking is currently blocked and not available for the selected date ranges
-            <br />
-            Blocked Dates:
-            <ul>
-              {enabledDateRanges.map((range, idx) => (
-                <li key={idx}>
-                  {range.startDate} to {range.endDate}
-                </li>
-              ))}
-            </ul>
+            <div className="warning-title">
+              <span className="warning-icon">⚠️</span>
+              <span>Booking Restricted</span>
+            </div>
+            <p className="warning-description">
+              Accommodation booking is currently unavailable for the following date ranges:
+            </p>
+            <div className="blocked-dates-container">
+              <span className="blocked-dates-label">Blocked Dates:</span>
+              <ul className="blocked-dates-list">
+                {enabledDateRanges.map((range, idx) => (
+                  <li key={idx} className="blocked-date-badge">
+                    {range.startDate} to {range.endDate}
+                  </li>
+                ))}
+              </ul>
+            </div>
           </div>
         )}
 

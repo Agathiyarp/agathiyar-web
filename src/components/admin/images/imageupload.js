@@ -181,6 +181,7 @@ const ImageUpload = () => {
                 <img
                   src={`https://www.agathiyarpyramid.org${img.filepath}`}
                   alt={img.name}
+                  loading="lazy"
                 />
 
                 <div className="gallery-info">

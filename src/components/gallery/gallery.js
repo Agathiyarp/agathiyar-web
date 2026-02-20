@@ -55,8 +55,8 @@ export default function Gallery() {
   useEffect(() => {
     const handleKeyDown = (e) => {
       if (!selectedImage) return;
-     
-      switch(e.key) {
+
+      switch (e.key) {
         case 'Escape':
           setSelectedImage(null);
           break;
@@ -99,7 +99,7 @@ export default function Gallery() {
                 loading="lazy"
               />
             </div>
-           
+
             {/* Separated Text Container */}
             <div className="image-text">
               {item.text}
@@ -124,7 +124,7 @@ export default function Gallery() {
         >
           &times;
         </button>
-       
+
         <button
           className="modal-nav-button prev"
           onClick={() => navigateImages('prev')}
@@ -132,7 +132,7 @@ export default function Gallery() {
         >
           &#10094;
         </button>
-       
+
         {selectedImage && (
           <div className="modal-content-wrapper">
             <div className="modal-image-container">
@@ -140,6 +140,7 @@ export default function Gallery() {
                 src={selectedImage.url}
                 alt={selectedImage.text}
                 className="gallery-full-image"
+                loading="lazy"
                 onError={(e) => {
                   e.target.src = `${BASE_DOMAIN}galleryall/placeholder.jpg`;
                 }}
@@ -150,7 +151,7 @@ export default function Gallery() {
             </div>
           </div>
         )}
-       
+
         <button
           className="modal-nav-button next"
           onClick={() => navigateImages('next')}

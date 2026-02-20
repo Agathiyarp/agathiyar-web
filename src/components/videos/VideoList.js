@@ -125,6 +125,7 @@ const VideoList = () => {
                     src={`https://img.youtube.com/vi/${video.videoId}/hqdefault.jpg`}
                     alt={video.title}
                     className="video-thumbnail"
+                    loading="lazy"
                   />
                 )}
               </div>
