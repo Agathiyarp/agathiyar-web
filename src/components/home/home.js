@@ -8,53 +8,41 @@ import AgathiyarAbout from "./about/AboutAgathiyar";
 import TextSection from "./section/TextSection";
 import ImageSection from "./section/ImageSection";
 
-import "slick-carousel/slick/slick.css";
-import "slick-carousel/slick/slick-theme.css";
-
-const API_BASE_URL = "https://agathiyarpyramid.org"; // change if needed
+const API_BASE_URL = "https://agathiyarpyramid.org";
 
 const Home = () => {
   const [images, setImages] = useState({});
-  const [loading, setLoading] = useState(true);
-  const [error, setError] = useState(false);
 
   useEffect(() => {
     fetch(`${API_BASE_URL}/api/home/images`)
       .then((res) => res.json())
       .then((data) => {
         const mappedImages = {};
-
         data.forEach((item) => {
           const cleanPath = item.filepath.replace("./", "/");
           mappedImages[item.section] = `${API_BASE_URL}${cleanPath}`;
         });
-        console.log(mappedImages)
         setImages(mappedImages);
-        setLoading(false);
       })
       .catch((err) => {
         console.error("Image API error:", err);
-        setError(true);
-        setLoading(false);
       });
   }, []);
 
-
-
   return (
     <div className="app-container">
-      {/* Header */}
       <MenuBar />
 
       {/* Video Section */}
-      <div className="carousel-container" style={{ marginTop: "64px" }}>
+      <div className="carousel-container video-section-margin">
         <div className="video-wrapper">
           <video
             controls
             autoPlay
             muted
             loop
-            preload="metadata"
+            playsInline
+            preload="auto"
             poster="https://agathiyarpyramid.org/images/video-poster.jpg"
           >
             <source

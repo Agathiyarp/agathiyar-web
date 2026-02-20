@@ -40,7 +40,7 @@ export default function Gallery() {
     setCurrentIndex(index);
   };
 
-  const navigateImages = (direction) => {
+  const navigateImages = React.useCallback((direction) => {
     let newIndex;
     if (direction === 'prev') {
       newIndex = currentIndex === 0 ? galleryImages.length - 1 : currentIndex - 1;
@@ -49,7 +49,7 @@ export default function Gallery() {
     }
     setSelectedImage(galleryImages[newIndex]);
     setCurrentIndex(newIndex);
-  };
+  }, [currentIndex, galleryImages]);
 
   // Keyboard navigation
   useEffect(() => {
@@ -73,7 +73,7 @@ export default function Gallery() {
 
     document.addEventListener('keydown', handleKeyDown);
     return () => document.removeEventListener('keydown', handleKeyDown);
-  }, [selectedImage, currentIndex, galleryImages.length]);
+  }, [selectedImage, navigateImages]);
 
   return (
     <div className="gallery-page">
