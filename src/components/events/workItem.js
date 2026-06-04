@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React from "react";
 import { useNavigate } from "react-router-dom";
 import "./workItem.css";
 import PhoneIcon from "@mui/icons-material/Phone";
@@ -7,7 +7,7 @@ import AccessTimeIcon from "@mui/icons-material/AccessTime";
 import PlaceIcon from "@mui/icons-material/Place";
 import LanguageIcon from "@mui/icons-material/Language";
 import { Box, Typography } from "@mui/material";
-import CloseIcon from "@mui/icons-material/Close";
+import defaultImage from "../../images/default_image.png";
 
 const WorkshopItem = ({
   mastername,
@@ -22,19 +22,21 @@ const WorkshopItem = ({
   roomtype,
   contactdetails,
   language,
-  eventid
+  eventid,
+  onImageClick,
+  onLoginRequired
 }) => {
   const navigate = useNavigate();
-  const [showLoginModal, setShowLoginModal] = useState(false);
-  const [showImagePreview, setShowImagePreview] = useState(false);
+  // const [showLoginModal, setShowLoginModal] = useState(false);
+  // const [showImagePreview, setShowImagePreview] = useState(false);
 
   const handleRegister = (id) => {
     const isLoggedIn = sessionStorage.getItem("userDetails");
     if (!isLoggedIn) {
-      setShowLoginModal(true);
+      onLoginRequired();
       return;
     }
-     const queryParams = new URLSearchParams();
+    const queryParams = new URLSearchParams();
 
     if (startdate) queryParams.append("startdate", startdate);
     if (enddate) queryParams.append("enddate", enddate);
@@ -44,8 +46,16 @@ const WorkshopItem = ({
     if (place) queryParams.append("eventplace", place);
     if (contactdetails) queryParams.append("contact", contactdetails);
 
+
     navigate(`/eventregister/${id}?${queryParams.toString()}`);
   };
+
+  const isEventCompleted = (endDate) => {
+    const currentDate = new Date();
+    const eventEndDate = new Date(endDate);
+    return eventEndDate < currentDate; // true if event is over
+  };
+
 
   const calculateTimeLeft = (date) => {
     const currentDate = new Date();
@@ -62,6 +72,9 @@ const WorkshopItem = ({
   const timeLeft = calculateTimeLeft(startdate);
   const descriptionSentences = eventdescription.split(". ").filter(Boolean);
 
+  const finalImage = imageurl && imageurl.trim() !== "" ? imageurl : defaultImage;
+  const isDefaultImage = finalImage === defaultImage;
+
   return (
     <div className="workshop-item">
       <div className="image-and-time">
@@ -69,8 +82,12 @@ const WorkshopItem = ({
           <span>CLOSES IN</span>
           <strong>{timeLeft}</strong>
         </div>
-        <div className="image-placeholder" onClick={() => setShowImagePreview(true)}>
-          <img className="event-image" src={imageurl} alt="event" />
+        <div className="image-placeholder" onClick={() => {
+          if (!isDefaultImage) {
+            onImageClick(imageurl);
+          }
+        }}>
+          <img className="event-image" src={finalImage} alt="event" loading="lazy" />
           <div className="image-overlay"></div>
         </div>
         <div className="workshop-host-container">
@@ -81,7 +98,10 @@ const WorkshopItem = ({
         </div>
         <div className="workshop-info">
           <div className="register-button">
-            <button className="btn-register" onClick={() => handleRegister(eventid)}>
+            <button disabled={isEventCompleted(enddate)} style={{
+              opacity: isEventCompleted(enddate) ? 0.6 : 1,
+              cursor: isEventCompleted(enddate) ? "not-allowed" : "pointer",
+            }} className="btn-register" onClick={() => handleRegister(eventid)}>
               <span className="register-text">Register</span>
               <div className="button-shine"></div>
             </button>
@@ -156,7 +176,7 @@ const WorkshopItem = ({
       </div>
 
       {/* Login Modal */}
-      {showLoginModal && (
+      {/* {showLoginModal && (
         <div className="modal-overlay" onClick={() => setShowLoginModal(false)}>
           <div className="modal-content login-modal" onClick={(e) => e.stopPropagation()}>
             <div className="modal-header">
@@ -173,10 +193,10 @@ const WorkshopItem = ({
             </div>
           </div>
         </div>
-      )}
+      )} */}
 
-      {/* Image Preview Modal */}
-      {showImagePreview && (
+      {/* Image Preview Modal
+      {showImagePreview && !isDefaultImage && (
         <div className="modal-overlay" onClick={() => setShowImagePreview(false)}>
           <div className="modal-content preview-modal" onClick={(e) => e.stopPropagation()}>
             <CloseIcon
@@ -184,11 +204,11 @@ const WorkshopItem = ({
               onClick={() => setShowImagePreview(false)}
             />
             <div className="preview-image-container">
-              <img src={imageurl} alt="Preview" className="preview-image" />
+              <img src={finalImage} alt="Preview" className="preview-image" />
             </div>
           </div>
         </div>
-      )}
+      )} */}
     </div>
   );
 };

@@ -119,4 +119,12 @@ export const ALL_CARDS = [
     iconClass: "icon-images",
     cardName: "Images",
   },
+  {
+    key: "home-images",
+    label: "HOME IMAGES",
+    group: "Upload",
+    className: "images",
+    iconClass: "icon-home-images",
+    cardName: "Home Images",
+  },
 ];

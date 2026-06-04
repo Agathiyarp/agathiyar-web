@@ -53,10 +53,79 @@
   max-width: 900px;
   font-size: 16px;
   color: #333;
-  box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
   box-sizing: border-box;
 }
 
+.custom-date-warning {
+  background-color: #fff5f5;
+  border-left: 5px solid #e53e3e;
+  padding: 20px;
+  border-radius: 12px;
+  margin: 24px auto;
+  max-width: 900px;
+  box-shadow: 0 4px 15px rgba(229, 62, 62, 0.08);
+  text-align: left;
+  box-sizing: border-box;
+  border-top: 1px solid #fed7d7;
+  border-right: 1px solid #fed7d7;
+  border-bottom: 1px solid #fed7d7;
+}
+
+.warning-title {
+  display: flex;
+  align-items: center;
+  font-size: 18px;
+  font-weight: 700;
+  color: #c53030;
+  margin-bottom: 8px;
+}
+
+.warning-icon {
+  margin-right: 12px;
+  font-size: 22px;
+}
+
+.warning-description {
+  margin: 0 0 16px 0;
+  color: #718096;
+  font-size: 14px;
+}
+
+.blocked-dates-label {
+  font-weight: 600;
+  color: #4a5568;
+  margin-bottom: 10px;
+  display: block;
+  font-size: 13px;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+
+.blocked-dates-list {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  padding: 0;
+  margin: 0;
+  list-style: none;
+}
+
+.blocked-date-badge {
+  background-color: #fed7d7;
+  color: #9b2c2c;
+  padding: 6px 14px;
+  border-radius: 30px;
+  font-size: 13px;
+  font-weight: 600;
+  border: 1px solid #feb2b2;
+  transition: transform 0.2s, box-shadow 0.2s;
+}
+
+.blocked-date-badge:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 2px 8px rgba(229, 62, 62, 0.2);
+}
 
 .available-credits {
   font-size: 18px;
@@ -67,6 +136,7 @@
   margin: 10px auto;
   width: 250px;
 }
+
 .credit-value {
   font-weight: bold;
   font-size: 18px;
@@ -170,6 +240,7 @@
     width: 100%;
     align-items: stretch;
   }
+
   .info-strip-booking li {
     flex-direction: column;
   }
@@ -187,9 +258,11 @@
   .info-section-booking {
     font-size: 12px;
   }
+
   .room-card__name {
     margin: 0
   }
+
   .room-card__description {
     margin: 0;
   }

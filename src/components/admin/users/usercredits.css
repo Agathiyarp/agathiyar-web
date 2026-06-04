@@ -24,30 +24,122 @@
 .user-credits-table {
   width: 100%;
   border-collapse: collapse;
-  margin-top: 20px;
-  overflow-x: auto;
+  margin-top: 0;
+  table-layout: auto;
+  white-space: normal;
+  /* Allow text wrapping */
 }
 
 .user-credits-table th,
 .user-credits-table td {
-  padding: 10px;
+  padding: 12px 10px;
   text-align: center;
   border: 1px solid #ddd;
   font-size: 14px;
+  vertical-align: middle;
+  overflow-wrap: break-word;
+  word-break: break-all;
+}
+
+.user-credits-table th {
+  background-color: #28a745;
+  color: white;
+  font-weight: bold;
+  position: sticky;
+  top: 0;
+  z-index: 10;
+  white-space: nowrap;
+}
+
+/* Specific column adjustments */
+.user-credits-table th:nth-child(1),
+.user-credits-table td:nth-child(1) {
+  /* Name */
+  min-width: 150px;
+  max-width: 250px;
+  text-align: left;
+}
+
+.user-credits-table th:nth-child(2),
+.user-credits-table td:nth-child(2) {
+  /* User ID */
+  width: 130px;
+  white-space: nowrap;
+}
+
+.user-credits-table th:nth-child(3),
+.user-credits-table td:nth-child(3) {
+  /* Credits */
+  width: 80px;
+}
+
+.user-credits-table th:nth-child(4),
+.user-credits-table td:nth-child(4) {
+  /* Modified Date */
+  width: 120px;
+  white-space: nowrap;
+}
+
+.user-credits-table th:nth-child(5),
+.user-credits-table td:nth-child(5) {
+  /* Modified Reason */
+  min-width: 180px;
+  max-width: 300px;
+  text-align: left;
+}
+
+.user-credits-table th:nth-child(6),
+.user-credits-table td:nth-child(6) {
+  /* Actions */
+  width: 180px;
+  white-space: nowrap;
+}
+
+.user-credits-table1 {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+.user-credits-table1 th,
+.user-credits-table1 td {
+  padding: 10px;
+  border: 1px solid #ddd;
+  text-align: left;
+}
+
+.user-credits-table1 th {
+  background-color: #f8f9fa;
+  color: #333;
 }
 
 .update-btn {
   padding: 6px 12px;
-  font-size: 14px;
+  font-size: 13px;
   background-color: #1976d2;
   color: white;
   border: none;
   border-radius: 4px;
   cursor: pointer;
+  font-weight: 600;
 }
 
 .update-btn:hover {
   background-color: #115293;
+}
+
+.history-btn {
+  padding: 6px 12px;
+  font-size: 13px;
+  background-color: #2e7d32;
+  color: white;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  font-weight: 600;
+}
+
+.history-btn:hover {
+  background-color: #1b5e20;
 }
 
 .update-credit-text {

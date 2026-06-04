@@ -4,6 +4,11 @@
   padding: 20px;
   margin-top: 100px;
 }
+      
+.books-list-container {
+  max-width: 800px;
+  margin: 0 auto;
+}
 
 .upload-form {
   display: flex;

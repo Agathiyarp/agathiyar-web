@@ -1,18 +1,18 @@
-import React, { useEffect, useMemo, useState } from 'react';
-import './dailyavailability.css'; // reuse your styles; table/buttons/inputs match EventDetails
-import * as XLSX from 'xlsx';
+import React, { useEffect, useMemo, useState } from "react";
+import "./dailyavailability.css"; // reuse your styles; table/buttons/inputs match EventDetails
+import * as XLSX from "xlsx";
 import MenuBar from "../../menumain/menubar";
-import { formatDate } from '../../common/utils';
+import { formatDate } from "../../common/utils";
 
-const API = 'https://www.agathiyarpyramid.org/api/dailyavailability';
+const API = "https://www.agathiyarpyramid.org/api/dailyavailability";
 
 const fmtISO = (d) => {
-  if (!d) return '';
+  if (!d) return "";
   const dt = new Date(d);
-  if (Number.isNaN(dt.getTime())) return '';
+  if (Number.isNaN(dt.getTime())) return "";
   const y = dt.getFullYear();
-  const m = String(dt.getMonth() + 1).padStart(2, '0');
-  const da = String(dt.getDate()).padStart(2, '0');
+  const m = String(dt.getMonth() + 1).padStart(2, "0");
+  const da = String(dt.getDate()).padStart(2, "0");
   return `${y}-${m}-${da}`;
 };
 
@@ -24,33 +24,31 @@ const parseAsISODate = (maybeDate) => {
 
 // Safely read values with lenient keys
 const pickCounts = (row) => {
-  const date = row.date || row.day || row.dt || '';
+  const date = row.date || row.day || row.dt || "";
   const agathiyar =
     row.agathiyar ?? row.Agathiyar ?? row.agathiya ?? row.agathi ?? 0;
-  const patriji =
-    row.patriji ?? row.patrjii ?? row.Patriji ?? row.patri ?? 0;
-  const dormitory =
-    row.dormitory ?? row.Dormitory ?? row.dorm ?? 0;
+  const patriji = row.patriji ?? row.patrjii ?? row.Patriji ?? row.patri ?? 0;
+  const dormitory = row.dormitory ?? row.Dormitory ?? row.dorm ?? 0;
   return { date, agathiyar, patriji, dormitory };
 };
 
 const DailyAvailability = () => {
   const [allRows, setAllRows] = useState([]);
   const [loading, setLoading] = useState(false);
-  const [loadErr, setLoadErr] = useState('');
-  const [dateFilter, setDateFilter] = useState({ start: '', end: '' });
+  const [loadErr, setLoadErr] = useState("");
+  const [dateFilter, setDateFilter] = useState({ start: "", end: "" });
 
   // Fetch once
   useEffect(() => {
     const run = async () => {
       setLoading(true);
-      setLoadErr('');
+      setLoadErr("");
       try {
         const res = await fetch(API);
         const data = await res.json();
         if (!res.ok || !Array.isArray(data)) {
           setAllRows([]);
-          setLoadErr('Failed to load availability.');
+          setLoadErr("Failed to load availability.");
         } else {
           // Normalize each row
           const normalized = data
@@ -60,7 +58,7 @@ const DailyAvailability = () => {
         }
       } catch (e) {
         console.error(e);
-        setLoadErr('Error fetching availability.');
+        setLoadErr("Error fetching availability.");
         setAllRows([]);
       } finally {
         setLoading(false);
@@ -93,13 +91,44 @@ const DailyAvailability = () => {
 
   const exportToExcel = () => {
     if (filteredRows.length === 0) return;
-    const ws = XLSX.utils.json_to_sheet(filteredRows);
-    const wb = XLSX.utils.book_new();
-    XLSX.utils.book_append_sheet(wb, ws, 'DailyAvailability');
-    XLSX.writeFile(wb, 'daily_availability.xlsx');
+
+    // Step 1: Format date and prepare data
+    const formattedData = filteredRows.map((item) => ({
+      ...item,
+      date: formatDate(item.date),
+    }));
+
+    // Step 2: Build CSV headers dynamically
+    const headers = Object.keys(formattedData[0]);
+    const csvRows = [
+      headers.join(","), // header row
+      ...formattedData.map((row) =>
+        headers
+          .map((h) => {
+            const cell = row[h] ?? "";
+            // Escape quotes and wrap each field safely
+            return `"${cell.toString().replace(/"/g, '""')}"`;
+          })
+          .join(",")
+      ),
+    ];
+
+    // Step 3: Convert rows to CSV string
+    const csvString = csvRows.join("\n");
+
+    // Step 4: Trigger download
+    const blob = new Blob([csvString], { type: "text/csv;charset=utf-8;" });
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement("a");
+    a.href = url;
+    a.download = `daily_room_availability_${new Date()
+      .toISOString()
+      .slice(0, 10)}.csv`;
+    a.click();
+    URL.revokeObjectURL(url);
   };
 
-  const clearFilter = () => setDateFilter({ start: '', end: '' });
+  const clearFilter = () => setDateFilter({ start: "", end: "" });
 
   return (
     <div className="event-mgmt-container">
@@ -108,29 +137,41 @@ const DailyAvailability = () => {
 
       {/* Date Filter */}
       <div className="section">
-        <h4 style={{ marginBottom: 10, width: '100%' }}>Filter by Date:</h4>
+        <h4 style={{ marginBottom: 10, width: "100%" }}>Filter by Date:</h4>
         <input
           className="input-event"
           type="date"
           value={dateFilter.start}
-          onChange={(e) => setDateFilter({ ...dateFilter, start: e.target.value })}
+          onChange={(e) =>
+            setDateFilter({ ...dateFilter, start: e.target.value })
+          }
         />
         <input
           className="input-event"
           type="date"
           value={dateFilter.end}
-          onChange={(e) => setDateFilter({ ...dateFilter, end: e.target.value })}
+          onChange={(e) =>
+            setDateFilter({ ...dateFilter, end: e.target.value })
+          }
         />
-        <button className="btn-event" style={{ marginLeft: 8 }} onClick={clearFilter}>
+        <button
+          className="btn-event"
+          style={{ marginLeft: 8 }}
+          onClick={clearFilter}
+        >
           Reset
         </button>
-        <button className="btn-event" style={{ marginLeft: 8 }} onClick={exportToExcel}>
+        <button
+          className="btn-event"
+          style={{ marginLeft: 8 }}
+          onClick={exportToExcel}
+        >
           Export Excel
         </button>
       </div>
 
       {loading && <p style={{ marginTop: 12 }}>Loading...</p>}
-      {loadErr && <p style={{ color: 'tomato', marginTop: 12 }}>{loadErr}</p>}
+      {loadErr && <p style={{ color: "tomato", marginTop: 12 }}>{loadErr}</p>}
 
       {/* Results */}
       {!loading && !loadErr && (
@@ -144,19 +185,25 @@ const DailyAvailability = () => {
               <table>
                 <thead>
                   <tr>
-                    <th style={{ width: 220, textAlign: 'center' }}>Date</th>
-                    <th style={{ textAlign: 'center' }}>Agathiyar Bhavan</th>
-                    <th style={{ textAlign: 'center' }}>Patriji Bhavan</th>
-                    <th style={{ textAlign: 'center'}}>Dormitory</th>
+                    <th style={{ width: 220, textAlign: "center" }}>Date</th>
+                    <th style={{ textAlign: "center" }}>Agathiyar Bhavan</th>
+                    <th style={{ textAlign: "center" }}>Patriji Bhavan</th>
+                    <th style={{ textAlign: "center" }}>Dormitory</th>
                   </tr>
                 </thead>
                 <tbody>
                   {filteredRows.map((r, idx) => (
                     <tr key={`${r.date}-${idx}`}>
-                      <td style={{ textAlign: 'center' }}>{formatDate(r.date)}</td>
-                      <td style={{ textAlign: 'center' }}>{r.agathiyar ?? 0}</td>
-                      <td style={{ textAlign: 'center' }}>{r.patriji ?? 0}</td>
-                      <td style={{ textAlign: 'center' }}>{r.dormitory ?? 0}</td>
+                      <td style={{ textAlign: "center" }}>
+                        {formatDate(r.date)}
+                      </td>
+                      <td style={{ textAlign: "center" }}>
+                        {r.agathiyar ?? 0}
+                      </td>
+                      <td style={{ textAlign: "center" }}>{r.patriji ?? 0}</td>
+                      <td style={{ textAlign: "center" }}>
+                        {r.dormitory ?? 0}
+                      </td>
                     </tr>
                   ))}
                 </tbody>

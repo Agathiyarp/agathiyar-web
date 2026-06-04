@@ -48,6 +48,8 @@ const MenuBar = () => {
         toast.success("Logout successful!");
         sessionStorage.setItem("userDetails", "");
         setUser(null);
+        setTimeout(() => navigate("/login"), 3000);
+        console.log("User logged out:", data);
       }
     } catch (err) {
       toast.error("Logout failed");
@@ -251,7 +253,7 @@ const MenuBar = () => {
       </Toolbar>
       <ToastContainer
         position="top-right"
-        autoClose={3000}
+        autoClose={1000}
         hideProgressBar={false}
         closeOnClick
         pauseOnHover

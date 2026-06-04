@@ -1,6 +1,7 @@
 import React, { useState, useRef } from "react";
 import "./uploadbooks.css";
 import MenuBar from "../../menumain/menubar";
+import BooksList from "./booksList";
 
 export default function UploadBooks() {
   const [filename, setFilename] = useState("");
@@ -27,10 +28,10 @@ export default function UploadBooks() {
     setPdfFile(null);
     setImageFile(null);
     setImagePreview(null);
-    setMessage('');
-    setFilename('');
-    if (pdfInputRef.current) pdfInputRef.current.value = '';
-    if (imageInputRef.current) imageInputRef.current.value = '';
+    setMessage("");
+    setFilename("");
+    if (pdfInputRef.current) pdfInputRef.current.value = "";
+    if (imageInputRef.current) imageInputRef.current.value = "";
   };
 
   const handleImageChange = (e) => {
@@ -82,18 +83,18 @@ export default function UploadBooks() {
       const resultMessage = await response.text();
 
       if (!response.ok) {
-        throw new Error(resultMessage || 'Upload failed');
+        throw new Error(resultMessage || "Upload failed");
       }
 
       setMessage(`✅ ${resultMessage}`);
       alert(`Book "${filename}" uploaded successfully!`);
-      setFilename('');
+      setFilename("");
       setPdfFile(null);
       setImageFile(null);
       setImagePreview(null);
 
-      if (pdfInputRef.current) pdfInputRef.current.value = '';
-      if (imageInputRef.current) imageInputRef.current.value = '';
+      if (pdfInputRef.current) pdfInputRef.current.value = "";
+      if (imageInputRef.current) imageInputRef.current.value = "";
     } catch (error) {
       console.error("Upload failed:", error);
       setMessage(`❌ Error: ${error.message}`);
@@ -102,78 +103,82 @@ export default function UploadBooks() {
     }
   };
 
-
   return (
-    <div className="upload-container">
-      <MenuBar />
-      <h2>Upload Book</h2>
-      <form onSubmit={handleSubmit} className="upload-form">
-        <input
-          type="text"
-          placeholder="Enter custom filename"
-          value={filename}
-          onChange={(e) => setFilename(e.target.value)}
-          className="upload-input"
-        />
+    <div>
+      <div className="upload-container">
+        <MenuBar />
+        <h2>Upload Book</h2>
+        <form onSubmit={handleSubmit} className="upload-form">
+          <input
+            type="text"
+            placeholder="Enter custom filename"
+            value={filename}
+            onChange={(e) => setFilename(e.target.value)}
+            className="upload-input"
+          />
 
-        <label className="upload-label">Select PDF File:</label>
-        <input
-          type="file"
-          accept="application/pdf"
-          onChange={handlePdfChange}
-          className="upload-input"
-          ref={pdfInputRef}
-        />
+          <label className="upload-label">Select PDF File:</label>
+          <input
+            type="file"
+            accept="application/pdf"
+            onChange={handlePdfChange}
+            className="upload-input"
+            ref={pdfInputRef}
+          />
 
-        <label className="upload-label">Select Cover Image:</label>
-        <input
-          type="file"
-          accept="image/*"
-          onChange={handleImageChange}
-          className="upload-input"
-          ref={imageInputRef}
-        />
+          <label className="upload-label">Select Cover Image:</label>
+          <input
+            type="file"
+            accept="image/*"
+            onChange={handleImageChange}
+            className="upload-input"
+            ref={imageInputRef}
+          />
 
-        {isLoading ? (
-          <button type="button" className="upload-button" disabled>
-            Uploading...
-          </button>
-        ) : (
-          <button type="submit" className="upload-button">
-            Upload
-          </button>
-        )}
-
-      </form>
-
-      {message && <p className="upload-message">{message}</p>}
-
-      {(pdfFile || imagePreview) && (
-        <div className="upload-preview">
-          {pdfFile && (
-            <p>
-              <strong>Selected PDF:</strong> {pdfFile.name}
-            </p>
+          {isLoading ? (
+            <button type="button" className="upload-button" disabled>
+              Uploading...
+            </button>
+          ) : (
+            <button type="submit" className="upload-button">
+              Upload
+            </button>
           )}
+        </form>
 
-          {imagePreview && (
-            <>
+        {message && <p className="upload-message">{message}</p>}
+
+        {(pdfFile || imagePreview) && (
+          <div className="upload-preview">
+            {pdfFile && (
               <p>
-                <strong>Cover Image Preview:</strong>
+                <strong>Selected PDF:</strong> {pdfFile.name}
               </p>
-              <img
-                src={imagePreview}
-                alt="Cover Preview"
-                className="image-preview"
-              />
-            </>
-          )}
+            )}
 
-          <button onClick={handleClear} className="clear-button">
-            Clear All
-          </button>
-        </div>
-      )}
+            {imagePreview && (
+              <>
+                <p>
+                  <strong>Cover Image Preview:</strong>
+                </p>
+                <img
+                  src={imagePreview}
+                  alt="Cover Preview"
+                  className="image-preview"
+                  loading="lazy"
+                />
+              </>
+            )}
+
+            <button onClick={handleClear} className="clear-button">
+              Clear All
+            </button>
+          </div>
+        )}
+      </div>
+      <div className="books-list-container">
+        <BooksList />
+      </div>
     </div>
   );
 }

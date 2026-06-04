@@ -12,7 +12,7 @@
 .text-image-column {
   flex: 1 1 50%;
   box-sizing: border-box;
-  padding:0 10px;
+  padding: 0 10px;
 }
 
 .text-title {
@@ -34,7 +34,7 @@
   max-width: 100%;
   height: auto;
   object-fit: fill;
-  box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
 }
 
 @media (max-width: 768px) {

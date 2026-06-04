@@ -19,6 +19,9 @@ const BookingConfirmation = () => {
   const [actionType, setActionType] = useState('');
   const [confirming, setConfirming] = useState(false); // 👈 add loader state
 
+  const [comments, setComments] = useState('');
+  const [showError, setShowError] = useState(false);
+
   const userInfo = sessionStorage.getItem('userDetails')
   const userDetails = userInfo ? JSON.parse(userInfo): '';
   const userType = userDetails?.usertype?.trim().toLowerCase() || "";
@@ -68,6 +71,7 @@ const BookingConfirmation = () => {
       creditused: userType !== "user" ? (actionType === 'approved' ? selectedBooking.creditused : 0) : 0,
       startdate: selectedBooking.startdate,
       enddate: selectedBooking.enddate,
+      reason: actionType === 'rejected' ? comments : '',
     };
 
     setConfirming(true);
@@ -136,9 +140,9 @@ const BookingConfirmation = () => {
 
   const exportToCSV = () => {
     const csv = [
-      ["BookingID", "UserID", "Username", "StartDate", "EndDate", "RoomName", "Amount", "Rooms", "Status"],
+      ["BookingID", "MemberID", "Username", "StartDate", "EndDate", "RoomName", "Amount", "Rooms", "Status"],
       ...filteredBookings.map(b => [
-        b.bookingId, b.userid, b.username, b.startdate, b.enddate, b.roomname ?? b.destination, b.totalamount, b.totalroomsbooked, b.bookingstatus
+        b.bookingId, b.memberid, b.username, b.startdate, b.enddate, b.roomname ?? b.destination, b.totalamount, b.totalroomsbooked, b.bookingstatus
       ])
     ]
       .map(row => row.join(","))
@@ -274,9 +278,34 @@ const BookingConfirmation = () => {
               Are you sure you want to <strong>{actionType}</strong> booking ID{' '}
               <strong>{selectedBooking.bookingId}</strong>?
             </p>
+            {actionType === 'rejected' && (
+            <div className="comments-section">
+              <label htmlFor="comments" style={{ textAlign: 'left', display: 'block', marginBottom: '10px' }}>
+                Reason for Booking Rejection <span style={{ color: 'red' }}>*</span>
+              </label>
+              <textarea
+                id="comments"
+                className="comments-box"
+                rows={4}
+                value={comments}
+                onChange={(e) => setComments(e.target.value)}
+                placeholder="Enter the reason for rejection"
+                required
+              ></textarea>
+              {showError && comments.trim() === '' && (
+                <p className="error-text" style={{ textAlign: 'left', color: 'red' }}>Reason is required</p>
+              )}
+            </div>
+          )}
             <div className="modal-actions">
               <button
-                onClick={confirmAction}
+                onClick={() => {
+                  if (actionType === 'rejected' && comments.trim() === '') {
+                    setShowError(true);
+                    return;
+                  }
+                  confirmAction();
+                }}
                 className="save-btn"
                 disabled={confirming}
               >

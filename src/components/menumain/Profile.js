@@ -22,7 +22,7 @@ const ProfileMenu = ({ user, onLogout }) => {
 
   // const data = sessionStorage.getItem('userDetails');
 
-  const handleProfileClick = ()=> {
+  const handleProfileClick = () => {
     handleMenuClose();
     navigate('/profileview');
   }
@@ -40,7 +40,7 @@ const ProfileMenu = ({ user, onLogout }) => {
             onClick={handleMenuOpen}
             color="inherit"
           >
-            <Avatar src={user.profilePicture}>
+            <Avatar src={user.profilePicture} imgProps={{ loading: 'lazy' }}>
               {!user.profilePicture && user.name?.[0]?.toUpperCase()}
             </Avatar>
 
@@ -61,9 +61,9 @@ const ProfileMenu = ({ user, onLogout }) => {
               horizontal: 'right',
             }}
           >
-            <MenuItem  onClick={() => {
-                handleProfileClick();
-              }}>{"profile"}
+            <MenuItem onClick={() => {
+              handleProfileClick();
+            }}>{"profile"}
               {/* <Typography variant="body1" style={{ whiteSpace: 'pre-line' }}>
                 {`Username: ${data && JSON.parse(data)?.username}
                 ${`MemberId: ${JSON.parse(data)?.usermemberid}`}

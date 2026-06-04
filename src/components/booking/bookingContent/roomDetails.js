@@ -26,8 +26,8 @@ const RoomDetails = () => {
   const [galleryImages] = useState(
     multipleimage
       ? multipleimage.map((img) =>
-          img.startsWith("http") ? img : `${baseUrl}${img}`
-        )
+        img.startsWith("http") ? img : `${baseUrl}${img}`
+      )
       : []
   );
   const numberOfDays = moment(checkOut).diff(moment(checkIn), "days");
@@ -162,12 +162,12 @@ const RoomDetails = () => {
       prevData.map((item, i) =>
         i === index
           ? {
-              ...item,
-              additionalBeds: item.additionalBeds + 1,
-              price:
-                item.rooms * item.basePrice +
-                (item.additionalBeds + 1) * perBedCost,
-            }
+            ...item,
+            additionalBeds: item.additionalBeds + 1,
+            price:
+              item.rooms * item.basePrice +
+              (item.additionalBeds + 1) * perBedCost,
+          }
           : item
       )
     );
@@ -178,12 +178,12 @@ const RoomDetails = () => {
       prevData.map((item, i) =>
         i === index && item.additionalBeds > 0
           ? {
-              ...item,
-              additionalBeds: item.additionalBeds - 1,
-              price:
-                item.rooms * item.basePrice +
-                (item.additionalBeds - 1) * perBedCost,
-            }
+            ...item,
+            additionalBeds: item.additionalBeds - 1,
+            price:
+              item.rooms * item.basePrice +
+              (item.additionalBeds - 1) * perBedCost,
+          }
           : item
       )
     );
@@ -266,7 +266,7 @@ const RoomDetails = () => {
               onClick={() => setPreviewOpen(true)}
               style={{ cursor: "pointer" }}
             >
-              <img src={mainImage} alt="Main room view" />
+              <img src={mainImage} alt="Main room view" loading="lazy" />
             </div>
           </div>
           <div className="gallery-grid1">
@@ -277,7 +277,7 @@ const RoomDetails = () => {
                 onClick={() => setPreviewOpen(true)}
                 style={{ cursor: "pointer" }}
               >
-                <img src={src} alt={`Room view ${index + 1}`} />
+                <img src={src} alt={`Room view ${index + 1}`} loading="lazy" />
               </div>
             ))}
             <div
@@ -289,6 +289,7 @@ const RoomDetails = () => {
                 className="see-all-image"
                 src={galleryImages[0]}
                 alt="See all"
+                loading="lazy"
               />
               <div className="overlay">
                 <p style={{ color: "#fff" }}>See All</p>
@@ -327,7 +328,7 @@ const RoomDetails = () => {
         </div>
         <ToastContainer
           position="top-right"
-          autoClose={3000}
+          autoClose={1000}
           hideProgressBar={false}
           closeOnClick
           pauseOnHover

@@ -21,9 +21,9 @@ const EventRegistration = () => {
   const eventmastername = queryParams.get("eventmastername") || "";
   const eventdays = queryParams.get("eventdays") || ""; 
   const eventplace = queryParams.get("eventplace") || "";
-  const contact = queryParams.get("contact") || "";
 
   const sessionData = JSON.parse(sessionStorage.getItem("userDetails"));
+  const contact = sessionData?.phoneNumber || "";
   const memberId = sessionData?.usermemberid;
   const username = sessionData?.username;
   const email = sessionData?.email;
@@ -49,7 +49,7 @@ const EventRegistration = () => {
       eventid: eventId,
       memberid: memberId,
       register: true,
-      guests: participantCount,
+      guests: participantCount?.toString(),
       startdate,
       enddate,
       eventname,
@@ -106,9 +106,14 @@ const EventRegistration = () => {
                 label="Number of Participants"
                 type="number"
                 value={participantCount}
-                onChange={(e) => setParticipantCount(e.target.value)}
+                onChange={(e) => {
+                  const value = Number(e.target.value);
+                  if (value <= 10) {
+                    setParticipantCount(value);
+                  }
+                }}
                 required
-                inputProps={{ min: 1 }}
+                inputProps={{ min: 1, max: 10 }}
                 style={styles.textField}
               />
             )}
@@ -124,7 +129,7 @@ const EventRegistration = () => {
           </form>
         </div>
       </div>
-      <ToastContainer position="top-right" autoClose={3000} />
+      <ToastContainer position="top-right" autoClose={1000} />
     </div>
   );
 };

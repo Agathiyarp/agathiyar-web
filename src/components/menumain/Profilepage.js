@@ -61,7 +61,7 @@ const ProfilePage = () => {
   const normalizeEvent = (e) => ({
     userId: e?.memberid || '',
     eventName: e?.eventname || '',
-    masterName: e?.eventmastername ||  '',
+    masterName: e?.eventmastername || '',
     startDate: e?.startdate || '',
     endDate: e?.enddate || '',
     eventDays: e?.eventdays || '',
@@ -140,7 +140,8 @@ const ProfilePage = () => {
           if (data) {
             toast.success("Logout successful!");
             sessionStorage.setItem("userDetails", "");
-            setTimeout(() => navigate("/"), 3000);
+            console.log("User logged out:", data);
+            setTimeout(() => navigate("/login"), 3000);
           }
         } catch (err) {
           toast.error("Logout failed");
@@ -199,16 +200,17 @@ const ProfilePage = () => {
   // Sidebar content
   const drawerContent = (
     <>
-      <Box sx={{ 
-        display: 'flex', 
-        flexDirection: 'column', 
-        alignItems: 'center', 
-        p: { xs: 1, sm: 2 } 
+      <Box sx={{
+        display: 'flex',
+        flexDirection: 'column',
+        alignItems: 'center',
+        p: { xs: 1, sm: 2 }
       }}>
         <Box sx={{ display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
           <Avatar
             src={profileImg}
             alt="Profile"
+            imgProps={{ loading: 'lazy' }}
             sx={{
               width: { xs: 100, sm: 150, md: 200 },
               height: { xs: 100, sm: 150, md: 200 },
@@ -241,10 +243,10 @@ const ProfilePage = () => {
             Upload Image
           </button>
         </Box>
-        <Typography 
-          variant={isMobile ? "subtitle1" : "h6"} 
-          sx={{ 
-            fontWeight: 500, 
+        <Typography
+          variant={isMobile ? "subtitle1" : "h6"}
+          sx={{
+            fontWeight: 500,
             marginTop: '1rem',
             textAlign: 'center',
             fontSize: { xs: '1rem', sm: '1.25rem' }
@@ -256,10 +258,10 @@ const ProfilePage = () => {
       <Divider />
       <List>
         {menuItems.map((item, index) => (
-          <ListItem 
-            className="menu-item" 
-            onClick={() => handleNavigate(item.title)} 
-            button 
+          <ListItem
+            className="menu-item"
+            onClick={() => handleNavigate(item.title)}
+            button
             key={index}
             sx={{
               py: { xs: 1, sm: 1.5 },
@@ -269,7 +271,7 @@ const ProfilePage = () => {
             <ListItemIcon sx={{ minWidth: { xs: 35, sm: 40 } }}>
               {item.icon}
             </ListItemIcon>
-            <ListItemText 
+            <ListItemText
               primary={item.title}
               primaryTypographyProps={{
                 fontSize: { xs: '0.9rem', sm: '1rem' }
@@ -290,11 +292,11 @@ const ProfilePage = () => {
             <Typography variant="subtitle2" color="primary" fontWeight="bold">
               Booking ID: {booking.id}
             </Typography>
-            <Typography 
-              variant="caption" 
-              sx={{ 
-                px: 1, 
-                py: 0.5, 
+            <Typography
+              variant="caption"
+              sx={{
+                px: 1,
+                py: 0.5,
                 borderRadius: 1,
                 backgroundColor: booking.bookingstatus === 'confirmed' ? '#e8f5e8' : '#fff3e0',
                 color: booking.bookingstatus === 'confirmed' ? '#2e7d32' : '#ef6c00'
@@ -337,8 +339,8 @@ const ProfilePage = () => {
 
   return (
     <div className='profile-page'>
-      <MenuBar/>
-      
+      <MenuBar />
+
       {/* Mobile menu button */}
       {isMobile && (
         <IconButton
@@ -362,9 +364,9 @@ const ProfilePage = () => {
         </IconButton>
       )}
 
-      <Box sx={{ 
-        display: 'flex', 
-        minHeight: '100vh', 
+      <Box sx={{
+        display: 'flex',
+        minHeight: '100vh',
         bgcolor: 'grey.100',
         pt: { xs: 2, sm: 0 }
       }}>
@@ -408,18 +410,18 @@ const ProfilePage = () => {
         )}
 
         {/* Main Content */}
-        <Box sx={{ 
+        <Box sx={{
           flexGrow: 1,
           ml: { xs: 0, md: 0 },
           width: { xs: '100%', md: `calc(100% - ${drawerWidth}px)` }
         }}>
-          <Container sx={{ 
+          <Container sx={{
             py: { xs: 2, sm: 4 },
             px: { xs: 1, sm: 3 },
             maxWidth: { xs: '100%', sm: 'lg' }
           }}>
             {/* User Details Card */}
-            <Card sx={{ 
+            <Card sx={{
               mb: { xs: 2, sm: 4 },
               mx: { xs: 0, sm: 'auto' }
             }}>
@@ -428,9 +430,9 @@ const ProfilePage = () => {
                   About
                 </Typography>
                 {Object.entries(userDetails).map(([key, value]) => (
-                  <Box 
-                    key={key} 
-                    sx={{ 
+                  <Box
+                    key={key}
+                    sx={{
                       display: 'flex',
                       flexDirection: { xs: 'column', sm: 'row' },
                       py: { xs: 1, sm: 1 },
@@ -439,16 +441,16 @@ const ProfilePage = () => {
                       gap: { xs: 0, sm: 2 }
                     }}
                   >
-                    <Typography sx={{ 
+                    <Typography sx={{
                       width: { xs: '100%', sm: '35%' },
-                      fontWeight: 600, 
+                      fontWeight: 600,
                       textTransform: 'capitalize',
                       fontSize: { xs: '0.9rem', sm: '1rem' }
                     }}>
                       {key.replace(/([A-Z])/g, ' $1').trim()}:
                     </Typography>
-                    <Typography sx={{ 
-                      color: 'text.secondary', 
+                    <Typography sx={{
+                      color: 'text.secondary',
                       fontWeight: 'normal',
                       fontSize: { xs: '0.9rem', sm: '1rem' },
                       wordBreak: 'break-word'
@@ -461,7 +463,7 @@ const ProfilePage = () => {
             </Card>
 
             {/* Booking History Card */}
-            <Card sx={{ 
+            <Card sx={{
               mb: { xs: 2, sm: 4 },
               mx: { xs: 0, sm: 'auto' }
             }}>
@@ -577,9 +579,9 @@ const ProfilePage = () => {
 
           </Container>
         </Box>
-        <ToastContainer 
-          position="top-right" 
-          autoClose={3000} 
+        <ToastContainer
+          position="top-right"
+          autoClose={1000}
           hideProgressBar={false}
           style={{ top: '100px' }}
         />

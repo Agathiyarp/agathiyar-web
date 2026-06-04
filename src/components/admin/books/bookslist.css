@@ -1,0 +1,153 @@
+.books-container {
+  margin-top: 20px;
+  padding: 0 16px;
+  border-top: 1px solid #e0e0e0;
+}
+
+.books-container .align-center {
+  text-align: left;
+  margin-bottom: 16px;
+}
+
+/* SINGLE ROW – RESPONSIVE */
+.book-grid-container1 {
+  display: flex;
+  gap: 14px;
+  overflow-x: auto;
+  padding: 10px 0;
+  width: 100%;
+}
+
+/* CARD BASE */
+.book-item1 {
+  flex-shrink: 0;
+  border: 1px solid #ddd;
+  border-radius: 6px;
+  padding: 6px;
+  background: #fff;
+  text-align: center;
+}
+
+/* IMAGE BASE */
+.book-item1 img {
+  width: 100%;
+  object-fit: cover;
+  border-radius: 4px;
+}
+
+/* TITLE */
+.book-item1 h4 {
+  margin: 6px 0;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+/* ACTIONS */
+.book-actions {
+  display: flex;
+  gap: 6px;
+}
+
+/* BUTTONS */
+.view-btn1,
+.delete-btn1 {
+  flex: 1;
+  border-radius: 4px;
+  cursor: pointer;
+}
+
+/* =========================
+   📱 MOBILE PHONES
+   ========================= */
+@media (max-width: 480px) {
+  .book-item1 {
+    min-width: 120px;
+    max-width: 120px;
+  }
+
+  .book-item1 img {
+    height: 140px;
+  }
+
+  .book-item1 h4 {
+    font-size: 11px;
+  }
+
+  .book-actions {
+    flex-direction: column;
+    /* easier tap */
+  }
+
+  .view-btn1,
+  .delete-btn1 {
+    font-size: 11px;
+    padding: 4px;
+  }
+}
+
+/* =========================
+   📱 TABLETS
+   ========================= */
+@media (min-width: 481px) and (max-width: 768px) {
+  .book-item1 {
+    min-width: 140px;
+    max-width: 140px;
+  }
+
+  .book-item1 img {
+    height: 160px;
+  }
+
+  .book-item1 h4 {
+    font-size: 12px;
+  }
+
+  .view-btn1,
+  .delete-btn1 {
+    font-size: 12px;
+    padding: 5px;
+  }
+}
+
+/* =========================
+   🖥 DESKTOP
+   ========================= */
+@media (min-width: 769px) {
+  .book-item1 {
+    min-width: 150px;
+    max-width: 150px;
+  }
+
+  .book-item1 img {
+    height: 170px;
+  }
+
+  .book-item1 h4 {
+    font-size: 12px;
+  }
+
+  .view-btn1,
+  .delete-btn1 {
+    font-size: 12px;
+    padding: 5px;
+    background: #e74c3c;
+    color: #fff;
+    border: none;
+    padding: 4px 10px;
+    font-size: 12px;
+    cursor: pointer;
+    border-radius: 3px;
+    max-width: 150px;
+  }
+}
+
+/* OPTIONAL: CLEAN SCROLLBAR */
+.book-grid-container1::-webkit-scrollbar {
+  height: 6px;
+}
+
+.book-grid-container1::-webkit-scrollbar-thumb {
+  background: #ccc;
+  border-radius: 10px;
+}

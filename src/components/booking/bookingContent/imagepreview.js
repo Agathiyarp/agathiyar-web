@@ -5,17 +5,17 @@ const ImagePreview = ({ images, onClose }) => {
   const [currentIndex, setCurrentIndex] = useState(0);
   const [isHorizontal, setIsHorizontal] = useState(false);
 
-  const goToPrevious = () => {
+  const goToPrevious = React.useCallback(() => {
     setCurrentIndex((prevIndex) =>
       prevIndex === 0 ? images.length - 1 : prevIndex - 1
     );
-  };
+  }, [images.length]);
 
-  const goToNext = () => {
+  const goToNext = React.useCallback(() => {
     setCurrentIndex((prevIndex) =>
       prevIndex === images.length - 1 ? 0 : prevIndex + 1
     );
-  };
+  }, [images.length]);
 
   useEffect(() => {
     const handleKeyDown = (e) => {
@@ -26,7 +26,7 @@ const ImagePreview = ({ images, onClose }) => {
 
     window.addEventListener("keydown", handleKeyDown);
     return () => window.removeEventListener("keydown", handleKeyDown);
-  }, [onClose]);
+  }, [onClose, goToNext, goToPrevious]);
 
   const toggleOrientation = () => {
     setIsHorizontal((prev) => !prev);
@@ -60,6 +60,7 @@ const ImagePreview = ({ images, onClose }) => {
               src={images[currentIndex]}
               alt={`preview-${currentIndex}`}
               className="main-preview-image"
+              loading="lazy"
               style={{
                 objectFit: "contain", // always contain for simplicity now
               }}
@@ -77,6 +78,7 @@ const ImagePreview = ({ images, onClose }) => {
               alt={`thumbnail-${i}`}
               className={`thumbnail ${i === currentIndex ? "active" : ""}`}
               onClick={() => setCurrentIndex(i)}
+              loading="lazy"
             />
           ))}
         </div>

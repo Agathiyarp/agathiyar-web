@@ -40,7 +40,7 @@ export default function Gallery() {
     setCurrentIndex(index);
   };
 
-  const navigateImages = (direction) => {
+  const navigateImages = React.useCallback((direction) => {
     let newIndex;
     if (direction === 'prev') {
       newIndex = currentIndex === 0 ? galleryImages.length - 1 : currentIndex - 1;
@@ -49,14 +49,14 @@ export default function Gallery() {
     }
     setSelectedImage(galleryImages[newIndex]);
     setCurrentIndex(newIndex);
-  };
+  }, [currentIndex, galleryImages]);
 
   // Keyboard navigation
   useEffect(() => {
     const handleKeyDown = (e) => {
       if (!selectedImage) return;
-     
-      switch(e.key) {
+
+      switch (e.key) {
         case 'Escape':
           setSelectedImage(null);
           break;
@@ -73,7 +73,7 @@ export default function Gallery() {
 
     document.addEventListener('keydown', handleKeyDown);
     return () => document.removeEventListener('keydown', handleKeyDown);
-  }, [selectedImage, currentIndex, galleryImages.length]);
+  }, [selectedImage, navigateImages]);
 
   return (
     <div className="gallery-page">
@@ -99,7 +99,7 @@ export default function Gallery() {
                 loading="lazy"
               />
             </div>
-           
+
             {/* Separated Text Container */}
             <div className="image-text">
               {item.text}
@@ -124,7 +124,7 @@ export default function Gallery() {
         >
           &times;
         </button>
-       
+
         <button
           className="modal-nav-button prev"
           onClick={() => navigateImages('prev')}
@@ -132,7 +132,7 @@ export default function Gallery() {
         >
           &#10094;
         </button>
-       
+
         {selectedImage && (
           <div className="modal-content-wrapper">
             <div className="modal-image-container">
@@ -140,6 +140,7 @@ export default function Gallery() {
                 src={selectedImage.url}
                 alt={selectedImage.text}
                 className="gallery-full-image"
+                loading="lazy"
                 onError={(e) => {
                   e.target.src = `${BASE_DOMAIN}galleryall/placeholder.jpg`;
                 }}
@@ -150,7 +151,7 @@ export default function Gallery() {
             </div>
           </div>
         )}
-       
+
         <button
           className="modal-nav-button next"
           onClick={() => navigateImages('next')}

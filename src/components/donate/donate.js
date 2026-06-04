@@ -26,7 +26,7 @@ const Donate = () => {
       <div className="grid-container">
         <div className="donate-image-container">
           <div className="photo-frame">
-            <img className="image" src={ScanImage} alt="ScanImage" />
+            <img className="image" src={ScanImage} alt="ScanImage" loading="lazy" />
           </div>
         </div>
         <div className="donate-container">
